@@ -27,7 +27,7 @@ use crate::mock::Runtime as AssetHub;
 fn sovereign_account_translation() {
 	// https://docs.google.com/document/d/1DXYWPXEwi0DkDfG8Fb2ZTI4DQBAz87DBCIW7yQIVrj0
 	let bifrost_cases = [
-		// Bifrost Polkadot #1
+		// Bifrost Pezkuwi #1
 		(
 			// para 2030
 			"13YMK2eeopZtUNpeHnJ1Ws2HqMQG6Ts9PGCZYGyFbSYoZfcm",
@@ -35,7 +35,7 @@ fn sovereign_account_translation() {
 			"13cKp89TtYknbyYnqnF6dWN75q5ZosvFSuqzoEVkUAaNR47A",
 			None,
 		),
-		// Bifrost Polkadot #2
+		// Bifrost Pezkuwi #2
 		(
 			// para 2030 index 0
 			"14vtfeKAVKh1Jzb3s7e43SqZ3zB5MLsdCxZPoKDxeoCFKLu5",
@@ -44,7 +44,7 @@ fn sovereign_account_translation() {
 			// derivation proof (para 2030, index 0)
 			Some(("13YMK2eeopZtUNpeHnJ1Ws2HqMQG6Ts9PGCZYGyFbSYoZfcm", 0u16)),
 		),
-		// Bifrost Polkadot #3
+		// Bifrost Pezkuwi #3
 		(
 			// para 2030 index 1
 			"14QkQ7wVVDRrhbC1UqHsFwKFUns1SRud94CXMWGHWB8Jhtro",
@@ -53,7 +53,7 @@ fn sovereign_account_translation() {
 			// derivation proof (para 2030, index 1)
 			Some(("13YMK2eeopZtUNpeHnJ1Ws2HqMQG6Ts9PGCZYGyFbSYoZfcm", 1u16)),
 		),
-		// Bifrost Polkadot #4
+		// Bifrost Pezkuwi #4
 		(
 			// para 2030 index 2
 			"13hLwqcVHqjiJMbZhR9LtfdhoxmTdssi7Kp8EJaW2yfk3knK",
@@ -143,7 +143,7 @@ fn translate_sovereign_acc_good() {
 		let lock = balance / 20;
 		const LID: [u8; 8] = *b"lockID00";
 
-		// Test for Para 2030 index 0 (Bifrost Polkadot derived 0)
+		// Test for Para 2030 index 0 (Bifrost Pezkuwi derived 0)
 		let from =
 			AccountId32::from_str("14vtfeKAVKh1Jzb3s7e43SqZ3zB5MLsdCxZPoKDxeoCFKLu5").unwrap();
 		let to = AccountId32::from_str("5ETehspFKFNpBbe5DsfuziN6BWq5Qwp1J8qcTQQoAxwa7BsS").unwrap();
@@ -153,14 +153,14 @@ fn translate_sovereign_acc_good() {
 
 		// Works if the account does not exist
 		hypothetically!({
-			crate::Pallet::<AssetHub>::do_migrate_parachain_sovereign_derived_acc(
+			crate::Pallet::<AssetHub>::do_migrate_teyrchain_sovereign_derived_acc(
 				&from,
 				&to,
 				derivation_proof.clone(),
 			)
 			.unwrap();
 			// Also twice
-			crate::Pallet::<AssetHub>::do_migrate_parachain_sovereign_derived_acc(
+			crate::Pallet::<AssetHub>::do_migrate_teyrchain_sovereign_derived_acc(
 				&from,
 				&to,
 				derivation_proof.clone(),
@@ -171,14 +171,14 @@ fn translate_sovereign_acc_good() {
 		// But also if it exists
 		<AssetHub as crate::Config>::Currency::mint_into(&from, balance).unwrap();
 		hypothetically!({
-			crate::Pallet::<AssetHub>::do_migrate_parachain_sovereign_derived_acc(
+			crate::Pallet::<AssetHub>::do_migrate_teyrchain_sovereign_derived_acc(
 				&from,
 				&to,
 				derivation_proof.clone(),
 			)
 			.unwrap();
 			// Also twice
-			crate::Pallet::<AssetHub>::do_migrate_parachain_sovereign_derived_acc(
+			crate::Pallet::<AssetHub>::do_migrate_teyrchain_sovereign_derived_acc(
 				&from,
 				&to,
 				derivation_proof.clone(),
@@ -193,7 +193,7 @@ fn translate_sovereign_acc_good() {
 		// Can also have locks
 		<AssetHub as crate::Config>::Currency::set_lock(LID, &from, lock, WithdrawReasons::FEE);
 		hypothetically!({
-			crate::Pallet::<AssetHub>::do_migrate_parachain_sovereign_derived_acc(
+			crate::Pallet::<AssetHub>::do_migrate_teyrchain_sovereign_derived_acc(
 				&from,
 				&to,
 				derivation_proof.clone(),

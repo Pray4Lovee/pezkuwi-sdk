@@ -48,14 +48,14 @@ use url::Url;
 
 use crate::runtime::Weight;
 use cumulus_client_cli::{CollatorOptions, RelayChainMode};
-use cumulus_client_consensus_common::ParachainBlockImport as TParachainBlockImport;
+use cumulus_client_consensus_common::TeyrchainBlockImport as TTeyrchainBlockImport;
 use cumulus_client_pov_recovery::{RecoveryDelayRange, RecoveryHandle};
 use cumulus_client_service::{
 	build_network, prepare_node_config, start_relay_chain_tasks, BuildNetworkParams,
-	CollatorSybilResistance, DARecoveryProfile, ParachainTracingExecuteBlock,
+	CollatorSybilResistance, DARecoveryProfile, TeyrchainTracingExecuteBlock,
 	StartRelayChainTasksParams,
 };
-use cumulus_primitives_core::{relay_chain::ValidationCode, GetParachainInfo, ParaId};
+use cumulus_primitives_core::{relay_chain::ValidationCode, GetTeyrchainInfo, ParaId};
 use cumulus_relay_chain_inprocess_interface::RelayChainInProcessInterface;
 use cumulus_relay_chain_interface::{RelayChainError, RelayChainInterface, RelayChainResult};
 use cumulus_relay_chain_minimal_node::build_minimal_relay_chain_node_with_rpc;
@@ -63,10 +63,10 @@ use cumulus_relay_chain_minimal_node::build_minimal_relay_chain_node_with_rpc;
 use cumulus_test_runtime::{Hash, NodeBlock as Block, RuntimeApi};
 
 use frame_system_rpc_runtime_api::AccountNonceApi;
-use polkadot_node_subsystem::{errors::RecoveryError, messages::AvailabilityRecoveryMessage};
-use polkadot_overseer::Handle as OverseerHandle;
-use polkadot_primitives::{CandidateHash, CollatorPair};
-use polkadot_service::ProvideRuntimeApi;
+use pezkuwi_node_subsystem::{errors::RecoveryError, messages::AvailabilityRecoveryMessage};
+use pezkuwi_overseer::Handle as OverseerHandle;
+use pezkuwi_primitives::{CandidateHash, CollatorPair};
+use pezkuwi_service::ProvideRuntimeApi;
 use sc_consensus::ImportQueue;
 use sc_network::{
 	config::{FullNetworkConfiguration, TransportConfig},
@@ -112,8 +112,8 @@ pub type Client = TFullClient<runtime::NodeBlock, runtime::RuntimeApi, WasmExecu
 pub type Backend = TFullBackend<Block>;
 
 /// The block-import type being used by the test service.
-pub type ParachainBlockImport =
-	TParachainBlockImport<Block, SlotBasedBlockImport<Block, Arc<Client>, Client>, Backend>;
+pub type TeyrchainBlockImport =
+	TTeyrchainBlockImport<Block, SlotBasedBlockImport<Block, Arc<Client>, Client>, Backend>;
 
 /// Transaction pool type used by the test service
 pub type TransactionPool = Arc<sc_transaction_pool::TransactionPoolHandle<Block, Client>>;
@@ -166,7 +166,7 @@ pub type Service = PartialComponents<
 	(),
 	sc_consensus::import_queue::BasicQueue<Block>,
 	sc_transaction_pool::TransactionPoolHandle<Block, Client>,
-	(ParachainBlockImport, SlotBasedBlockImportHandle<Block>),
+	(TeyrchainBlockImport, SlotBasedBlockImportHandle<Block>),
 >;
 
 /// Starts a `ServiceBuilder` for a full service.
@@ -201,7 +201,7 @@ pub fn new_partial(
 
 	let (block_import, slot_based_handle) =
 		SlotBasedBlockImport::new(client.clone(), client.clone());
-	let block_import = ParachainBlockImport::new(block_import, backend.clone());
+	let block_import = TeyrchainBlockImport::new(block_import, backend.clone());
 
 	let transaction_pool = Arc::from(
 		sc_transaction_pool::Builder::new(
@@ -252,28 +252,28 @@ pub fn new_partial(
 
 async fn build_relay_chain_interface(
 	relay_chain_config: Configuration,
-	parachain_prometheus_registry: Option<&Registry>,
+	teyrchain_prometheus_registry: Option<&Registry>,
 	collator_key: Option<CollatorPair>,
 	collator_options: CollatorOptions,
 	task_manager: &mut TaskManager,
 ) -> RelayChainResult<Arc<dyn RelayChainInterface + 'static>> {
 	let relay_chain_node = match collator_options.relay_chain_mode {
-		cumulus_client_cli::RelayChainMode::Embedded => polkadot_test_service::new_full(
+		cumulus_client_cli::RelayChainMode::Embedded => pezkuwi_test_service::new_full(
 			relay_chain_config,
 			if let Some(ref key) = collator_key {
-				polkadot_service::IsParachainNode::Collator(key.clone())
+				pezkuwi_service::IsTeyrchainNode::Collator(key.clone())
 			} else {
-				polkadot_service::IsParachainNode::Collator(CollatorPair::generate().0)
+				pezkuwi_service::IsTeyrchainNode::Collator(CollatorPair::generate().0)
 			},
 			None,
-			polkadot_service::CollatorOverseerGen,
+			pezkuwi_service::CollatorOverseerGen,
 			Some("Relaychain"),
 		)
 		.map_err(|e| RelayChainError::Application(Box::new(e) as Box<_>))?,
 		cumulus_client_cli::RelayChainMode::ExternalRpc(rpc_target_urls) =>
 			return build_minimal_relay_chain_node_with_rpc(
 				relay_chain_config,
-				parachain_prometheus_registry,
+				teyrchain_prometheus_registry,
 				task_manager,
 				rpc_target_urls,
 			)
@@ -293,12 +293,12 @@ async fn build_relay_chain_interface(
 	)))
 }
 
-/// Start a node with the given parachain `Configuration` and relay chain `Configuration`.
+/// Start a node with the given teyrchain `Configuration` and relay chain `Configuration`.
 ///
 /// This is the actual implementation that is abstract over the executor and the runtime api.
-#[sc_tracing::logging::prefix_logs_with("Parachain")]
+#[sc_tracing::logging::prefix_logs_with("Teyrchain")]
 pub async fn start_node_impl<RB, Net: NetworkBackend<Block, Hash>>(
-	parachain_config: Configuration,
+	teyrchain_config: Configuration,
 	collator_key: Option<CollatorPair>,
 	relay_chain_config: Configuration,
 	wrap_announce_block: Option<Box<dyn FnOnce(AnnounceBlockFn) -> AnnounceBlockFn>>,
@@ -318,9 +318,9 @@ pub async fn start_node_impl<RB, Net: NetworkBackend<Block, Hash>>(
 where
 	RB: Fn(Arc<Client>) -> Result<jsonrpsee::RpcModule<()>, sc_service::Error> + Send + 'static,
 {
-	let mut parachain_config = prepare_node_config(parachain_config);
+	let mut teyrchain_config = prepare_node_config(teyrchain_config);
 
-	let params = new_partial(&mut parachain_config, proof_recording_during_import)?;
+	let params = new_partial(&mut teyrchain_config, proof_recording_during_import)?;
 
 	let transaction_pool = params.transaction_pool.clone();
 	let mut task_manager = params.task_manager;
@@ -332,7 +332,7 @@ where
 	let slot_based_handle = params.other.1;
 	let relay_chain_interface = build_relay_chain_interface(
 		relay_chain_config,
-		parachain_config.prometheus_registry(),
+		teyrchain_config.prometheus_registry(),
 		collator_key.clone(),
 		collator_options.clone(),
 		&mut task_manager,
@@ -341,22 +341,22 @@ where
 	.map_err(|e| sc_service::Error::Application(Box::new(e) as Box<_>))?;
 
 	let import_queue_service = params.import_queue.service();
-	let prometheus_registry = parachain_config.prometheus_registry().cloned();
+	let prometheus_registry = teyrchain_config.prometheus_registry().cloned();
 	let net_config = FullNetworkConfiguration::<Block, Hash, Net>::new(
-		&parachain_config.network,
+		&teyrchain_config.network,
 		prometheus_registry.clone(),
 	);
 
 	let best_hash = client.chain_info().best_hash;
 	let para_id = client
 		.runtime_api()
-		.parachain_id(best_hash)
+		.teyrchain_id(best_hash)
 		.map_err(|e| sc_service::Error::Application(Box::new(e) as Box<_>))?;
-	tracing::info!("Parachain id: {:?}", para_id);
+	tracing::info!("Teyrchain id: {:?}", para_id);
 
 	let (network, system_rpc_tx, tx_handler_controller, sync_service) =
 		build_network(BuildNetworkParams {
-			parachain_config: &parachain_config,
+			teyrchain_config: &teyrchain_config,
 			net_config,
 			client: client.clone(),
 			transaction_pool: transaction_pool.clone(),
@@ -365,7 +365,7 @@ where
 			relay_chain_interface: relay_chain_interface.clone(),
 			import_queue: params.import_queue,
 			metrics: Net::register_notification_metrics(
-				parachain_config.prometheus_config.as_ref().map(|config| &config.registry),
+				teyrchain_config.prometheus_config.as_ref().map(|config| &config.registry),
 			),
 			sybil_resistance_level: CollatorSybilResistance::Resistant,
 		})
@@ -382,7 +382,7 @@ where
 		client: client.clone(),
 		transaction_pool: transaction_pool.clone(),
 		task_manager: &mut task_manager,
-		config: parachain_config,
+		config: teyrchain_config,
 		keystore: keystore.clone(),
 		backend: backend.clone(),
 		network: network.clone(),
@@ -390,7 +390,7 @@ where
 		system_rpc_tx,
 		tx_handler_controller,
 		telemetry: None,
-		tracing_execute_block: Some(Arc::new(ParachainTracingExecuteBlock::new(client.clone()))),
+		tracing_execute_block: Some(Arc::new(TeyrchainTracingExecuteBlock::new(client.clone()))),
 	})?;
 
 	let announce_block = {
@@ -535,11 +535,11 @@ pub struct TestNodeBuilder {
 	tokio_handle: tokio::runtime::Handle,
 	key: Sr25519Keyring,
 	collator_key: Option<CollatorPair>,
-	parachain_nodes: Vec<MultiaddrWithPeerId>,
-	parachain_nodes_exclusive: bool,
+	teyrchain_nodes: Vec<MultiaddrWithPeerId>,
+	teyrchain_nodes_exclusive: bool,
 	relay_chain_nodes: Vec<MultiaddrWithPeerId>,
 	wrap_announce_block: Option<Box<dyn FnOnce(AnnounceBlockFn) -> AnnounceBlockFn>>,
-	storage_update_func_parachain: Option<Box<dyn Fn()>>,
+	storage_update_func_teyrchain: Option<Box<dyn Fn()>>,
 	storage_update_func_relay_chain: Option<Box<dyn Fn()>>,
 	relay_chain_mode: RelayChainMode,
 	endowed_accounts: Vec<AccountId>,
@@ -549,7 +549,7 @@ pub struct TestNodeBuilder {
 impl TestNodeBuilder {
 	/// Create a new instance of `Self`.
 	///
-	/// `para_id` - The parachain id this node is running for.
+	/// `para_id` - The teyrchain id this node is running for.
 	/// `tokio_handle` - The tokio handler to use.
 	/// `key` - The key that will be used to generate the name and that will be passed as
 	/// `dev_seed`.
@@ -559,11 +559,11 @@ impl TestNodeBuilder {
 			para_id,
 			tokio_handle,
 			collator_key: None,
-			parachain_nodes: Vec::new(),
-			parachain_nodes_exclusive: false,
+			teyrchain_nodes: Vec::new(),
+			teyrchain_nodes_exclusive: false,
 			relay_chain_nodes: Vec::new(),
 			wrap_announce_block: None,
-			storage_update_func_parachain: None,
+			storage_update_func_teyrchain: None,
 			storage_update_func_relay_chain: None,
 			endowed_accounts: Default::default(),
 			relay_chain_mode: RelayChainMode::Embedded,
@@ -578,33 +578,33 @@ impl TestNodeBuilder {
 		self
 	}
 
-	/// Instruct the node to exclusively connect to registered parachain nodes.
+	/// Instruct the node to exclusively connect to registered teyrchain nodes.
 	///
-	/// Parachain nodes can be registered using [`Self::connect_to_parachain_node`] and
-	/// [`Self::connect_to_parachain_nodes`].
-	pub fn exclusively_connect_to_registered_parachain_nodes(mut self) -> Self {
-		self.parachain_nodes_exclusive = true;
+	/// Teyrchain nodes can be registered using [`Self::connect_to_teyrchain_node`] and
+	/// [`Self::connect_to_teyrchain_nodes`].
+	pub fn exclusively_connect_to_registered_teyrchain_nodes(mut self) -> Self {
+		self.teyrchain_nodes_exclusive = true;
 		self
 	}
 
-	/// Make the node connect to the given parachain node.
+	/// Make the node connect to the given teyrchain node.
 	///
 	/// By default the node will not be connected to any node or will be able to discover any other
 	/// node.
-	pub fn connect_to_parachain_node(mut self, node: &TestNode) -> Self {
-		self.parachain_nodes.push(node.addr.clone());
+	pub fn connect_to_teyrchain_node(mut self, node: &TestNode) -> Self {
+		self.teyrchain_nodes.push(node.addr.clone());
 		self
 	}
 
-	/// Make the node connect to the given parachain nodes.
+	/// Make the node connect to the given teyrchain nodes.
 	///
 	/// By default the node will not be connected to any node or will be able to discover any other
 	/// node.
-	pub fn connect_to_parachain_nodes<'a>(
+	pub fn connect_to_teyrchain_nodes<'a>(
 		mut self,
 		nodes: impl IntoIterator<Item = &'a TestNode>,
 	) -> Self {
-		self.parachain_nodes.extend(nodes.into_iter().map(|n| n.addr.clone()));
+		self.teyrchain_nodes.extend(nodes.into_iter().map(|n| n.addr.clone()));
 		self
 	}
 
@@ -614,7 +614,7 @@ impl TestNodeBuilder {
 	/// node.
 	pub fn connect_to_relay_chain_node(
 		mut self,
-		node: &polkadot_test_service::PolkadotTestNode,
+		node: &pezkuwi_test_service::PezkuwiTestNode,
 	) -> Self {
 		self.relay_chain_nodes.push(node.addr.clone());
 		self
@@ -626,7 +626,7 @@ impl TestNodeBuilder {
 	/// node.
 	pub fn connect_to_relay_chain_nodes<'a>(
 		mut self,
-		nodes: impl IntoIterator<Item = &'a polkadot_test_service::PolkadotTestNode>,
+		nodes: impl IntoIterator<Item = &'a pezkuwi_test_service::PezkuwiTestNode>,
 	) -> Self {
 		self.relay_chain_nodes.extend(nodes.into_iter().map(|n| n.addr.clone()));
 		self
@@ -641,9 +641,9 @@ impl TestNodeBuilder {
 		self
 	}
 
-	/// Allows accessing the parachain storage before the test node is built.
-	pub fn update_storage_parachain(mut self, updater: impl Fn() + 'static) -> Self {
-		self.storage_update_func_parachain = Some(Box::new(updater));
+	/// Allows accessing the teyrchain storage before the test node is built.
+	pub fn update_storage_teyrchain(mut self, updater: impl Fn() + 'static) -> Self {
+		self.storage_update_func_teyrchain = Some(Box::new(updater));
 		self
 	}
 
@@ -682,19 +682,19 @@ impl TestNodeBuilder {
 
 	/// Build the [`TestNode`].
 	pub async fn build(self) -> TestNode {
-		let parachain_config = node_config(
-			self.storage_update_func_parachain.unwrap_or_else(|| Box::new(|| ())),
+		let teyrchain_config = node_config(
+			self.storage_update_func_teyrchain.unwrap_or_else(|| Box::new(|| ())),
 			self.tokio_handle.clone(),
 			self.key,
-			self.parachain_nodes,
-			self.parachain_nodes_exclusive,
+			self.teyrchain_nodes,
+			self.teyrchain_nodes_exclusive,
 			self.para_id,
 			self.collator_key.is_some(),
 			self.endowed_accounts,
 		)
 		.expect("could not generate Configuration");
 
-		let mut relay_chain_config = polkadot_test_service::node_config(
+		let mut relay_chain_config = pezkuwi_test_service::node_config(
 			self.storage_update_func_relay_chain.unwrap_or_else(|| Box::new(|| ())),
 			self.tokio_handle,
 			self.key,
@@ -715,7 +715,7 @@ impl TestNodeBuilder {
 			match relay_chain_config.network.network_backend {
 				sc_network::config::NetworkBackendType::Libp2p =>
 					start_node_impl::<_, sc_network::NetworkWorker<_, _>>(
-						parachain_config,
+						teyrchain_config,
 						self.collator_key,
 						relay_chain_config,
 						self.wrap_announce_block,
@@ -729,7 +729,7 @@ impl TestNodeBuilder {
 					.expect("could not create Cumulus test service"),
 				sc_network::config::NetworkBackendType::Litep2p =>
 					start_node_impl::<_, sc_network::Litep2pNetworkBackend>(
-						parachain_config,
+						teyrchain_config,
 						self.collator_key,
 						relay_chain_config,
 						self.wrap_announce_block,
@@ -743,7 +743,7 @@ impl TestNodeBuilder {
 					.expect("could not create Cumulus test service"),
 			};
 		let peer_id = network.local_peer_id();
-		let multiaddr = polkadot_test_service::get_listen_address(network.clone()).await;
+		let multiaddr = pezkuwi_test_service::get_listen_address(network.clone()).await;
 		let addr = MultiaddrWithPeerId { multiaddr, peer_id };
 
 		TestNode { task_manager, client, network, addr, rpc_handlers, transaction_pool, backend }
@@ -785,7 +785,7 @@ pub fn node_config(
 	spec.set_storage(storage);
 
 	let mut network_config = NetworkConfiguration::new(
-		format!("{} (parachain)", key_seed),
+		format!("{} (teyrchain)", key_seed),
 		"network/test/0.1",
 		Default::default(),
 		None,
@@ -878,7 +878,7 @@ impl TestNode {
 		self.rpc_handlers.send_transaction(extrinsic.into()).await
 	}
 
-	/// Register a parachain at this relay chain.
+	/// Register a teyrchain at this relay chain.
 	pub async fn schedule_upgrade(&self, validation: Vec<u8>) -> Result<(), RpcTransactionError> {
 		let call = frame_system::Call::set_code { code: validation };
 
@@ -951,15 +951,15 @@ pub fn construct_extrinsic(
 /// Run a relay-chain validator node.
 ///
 /// This is essentially a wrapper around
-/// [`run_validator_node`](polkadot_test_service::run_validator_node).
+/// [`run_validator_node`](pezkuwi_test_service::run_validator_node).
 pub fn run_relay_chain_validator_node(
 	tokio_handle: tokio::runtime::Handle,
 	key: Sr25519Keyring,
 	storage_update_func: impl Fn(),
 	boot_nodes: Vec<MultiaddrWithPeerId>,
 	port: Option<u16>,
-) -> polkadot_test_service::PolkadotTestNode {
-	let mut config = polkadot_test_service::node_config(
+) -> pezkuwi_test_service::PezkuwiTestNode {
+	let mut config = pezkuwi_test_service::node_config(
 		storage_update_func,
 		tokio_handle.clone(),
 		key,
@@ -991,6 +991,6 @@ pub fn run_relay_chain_validator_node(
 	workers_path.pop();
 
 	tokio_handle.block_on(async move {
-		polkadot_test_service::run_validator_node(config, Some(workers_path)).await
+		pezkuwi_test_service::run_validator_node(config, Some(workers_path)).await
 	})
 }

@@ -18,8 +18,8 @@
 //! Stock, pure Aura collators.
 //!
 //! This includes the [`basic`] collator, which only builds on top of the most recently
-//! included parachain block, as well as the [`lookahead`] collator, which prospectively
-//! builds on parachain blocks which have not yet been included in the relay chain.
+//! included teyrchain block, as well as the [`lookahead`] collator, which prospectively
+//! builds on teyrchain blocks which have not yet been included in the relay chain.
 
 use crate::collator::SlotClaim;
 use codec::Codec;
@@ -27,9 +27,9 @@ use cumulus_client_consensus_common::{self as consensus_common, ParentSearchPara
 use cumulus_primitives_aura::{AuraUnincludedSegmentApi, Slot};
 use cumulus_primitives_core::{relay_chain::Header as RelayHeader, BlockT};
 use cumulus_relay_chain_interface::{OverseerHandle, RelayChainInterface};
-use polkadot_node_subsystem::messages::{CollatorProtocolMessage, RuntimeApiRequest};
-use polkadot_node_subsystem_util::runtime::ClaimQueueSnapshot;
-use polkadot_primitives::{
+use pezkuwi_node_subsystem::messages::{CollatorProtocolMessage, RuntimeApiRequest};
+use pezkuwi_node_subsystem_util::runtime::ClaimQueueSnapshot;
+use pezkuwi_primitives::{
 	Hash as RelayHash, Id as ParaId, OccupiedCoreAssumption, ValidationCodeHash,
 	DEFAULT_SCHEDULING_LOOKAHEAD,
 };
@@ -46,13 +46,13 @@ pub mod slot_based;
 // This is an arbitrary value which is guaranteed to exceed the required depth for 500ms blocks
 // built with a relay parent offset of 1. It must be larger than the unincluded segment capacity.
 //
-// The formula we use to compute the capacity of the unincluded segment in the parachain runtime
+// The formula we use to compute the capacity of the unincluded segment in the teyrchain runtime
 // is:
 // UNINCLUDED_SEGMENT_CAPACITY = (2 + RELAY_PARENT_OFFSET) * BLOCK_PROCESSING_VELOCITY + 1.
 //
 // Since we only search for parent blocks which have already been imported,
 // we can guarantee that all imported blocks respect the unincluded segment
-// rules specified by the parachain's runtime and thus will never be too deep. This is just an extra
+// rules specified by the teyrchain's runtime and thus will never be too deep. This is just an extra
 // sanity check.
 const PARENT_SEARCH_DEPTH: usize = 40;
 
@@ -146,7 +146,7 @@ async fn check_validation_code_or_log(
 					?relay_parent,
 					?local_validation_code_hash,
 					relay_validation_code_hash = ?state,
-					"Parachain code doesn't match validation code stored in the relay chain state.",
+					"Teyrchain code doesn't match validation code stored in the relay chain state.",
 				);
 			},
 		None => {
@@ -154,7 +154,7 @@ async fn check_validation_code_or_log(
 				target: super::LOG_TARGET,
 				%para_id,
 				?relay_parent,
-				"Could not find validation code for parachain in the relay chain state.",
+				"Could not find validation code for teyrchain in the relay chain state.",
 			);
 		},
 	}
@@ -177,13 +177,13 @@ async fn scheduling_lookahead(
 		})
 		.ok()?;
 
-	let parachain_host_runtime_api_version = runtime_api_version
+	let teyrchain_host_runtime_api_version = runtime_api_version
 		.api_version(
-			&<dyn polkadot_primitives::runtime_api::ParachainHost<polkadot_primitives::Block>>::ID,
+			&<dyn pezkuwi_primitives::runtime_api::TeyrchainHost<pezkuwi_primitives::Block>>::ID,
 		)
 		.unwrap_or_default();
 
-	if parachain_host_runtime_api_version <
+	if teyrchain_host_runtime_api_version <
 		RuntimeApiRequest::SCHEDULING_LOOKAHEAD_RUNTIME_REQUIREMENT
 	{
 		return None
@@ -267,7 +267,7 @@ where
 		.then(|| SlotClaim::unchecked::<P>(author_pub, para_slot, timestamp))
 }
 
-/// Use [`cumulus_client_consensus_common::find_potential_parents`] to find parachain blocks that
+/// Use [`cumulus_client_consensus_common::find_potential_parents`] to find teyrchain blocks that
 /// we can build on. Once a list of potential parents is retrieved, return the last one of the
 /// longest chain.
 async fn find_parent<Block>(
@@ -333,8 +333,8 @@ mod tests {
 	};
 	use cumulus_test_relay_sproof_builder::RelayStateSproofBuilder;
 	use futures::StreamExt;
-	use polkadot_overseer::{Event, Handle};
-	use polkadot_primitives::HeadData;
+	use pezkuwi_overseer::{Event, Handle};
+	use pezkuwi_primitives::HeadData;
 	use sc_consensus::{BlockImport, BlockImportParams, ForkChoiceStrategy};
 	use sp_consensus::BlockOrigin;
 	use sp_keystore::{Keystore, KeystorePtr};
@@ -359,7 +359,7 @@ mod tests {
 		let header = client.header(hash).ok().flatten().expect("No header for parent block");
 		let included = HeadData(header.encode());
 		let mut builder = RelayStateSproofBuilder::default();
-		builder.para_id = cumulus_test_client::runtime::PARACHAIN_ID.into();
+		builder.para_id = cumulus_test_client::runtime::TEYRCHAIN_ID.into();
 		builder.included_para_head = Some(included);
 
 		builder
@@ -438,13 +438,13 @@ mod tests {
 		let messages = Arc::new(Mutex::new(Vec::new()));
 		let messages_clone = messages.clone();
 
-		let (tx, mut rx) = polkadot_node_subsystem_util::metered::channel(100);
+		let (tx, mut rx) = pezkuwi_node_subsystem_util::metered::channel(100);
 
 		// Spawn a task to receive and record overseer messages
 		tokio::spawn(async move {
 			while let Some(event) = rx.next().await {
 				if let Event::MsgToSubsystem { msg, .. } = event {
-					if let polkadot_node_subsystem::AllMessages::CollatorProtocol(cp_msg) = msg {
+					if let pezkuwi_node_subsystem::AllMessages::CollatorProtocol(cp_msg) = msg {
 						messages_clone.lock().unwrap().push(cp_msg);
 					}
 				}
@@ -693,7 +693,7 @@ impl RelayParentData {
 	}
 
 	/// Consumes the structure and returns a vector containing the relay parent followed by its
-	/// descendants in chronological order. The resulting list should be provided to the parachain
+	/// descendants in chronological order. The resulting list should be provided to the teyrchain
 	/// inherent data.
 	pub fn into_inherent_descendant_list(self) -> Vec<RelayHeader> {
 		let Self { relay_parent, mut descendants } = self;

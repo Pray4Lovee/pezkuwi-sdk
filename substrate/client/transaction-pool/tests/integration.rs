@@ -23,8 +23,8 @@ pub mod zombienet;
 use std::time::Duration;
 
 use crate::zombienet::{
-	default_zn_scenario_builder, relaychain_rococo_local_network_spec as relay,
-	relaychain_rococo_local_network_spec::parachain_asset_hub_network_spec as para,
+	default_zn_scenario_builder, relaychain_pezkuwichain_local_network_spec as relay,
+	relaychain_pezkuwichain_local_network_spec::teyrchain_asset_hub_network_spec as para,
 	BlockSubscriptionType, NetworkSpawner,
 };
 use futures::future::join_all;
@@ -33,15 +33,15 @@ use txtesttool::{execution_log::ExecutionLog, scenario::ScenarioExecutor};
 use zombienet::DEFAULT_SEND_FUTURE_AND_READY_TXS_TESTS_TIMEOUT_IN_SECS;
 
 // Test which sends future and ready txs from many accounts
-// to an unlimited pool of a parachain collator based on the asset-hub-rococo runtime.
+// to an unlimited pool of a teyrchain collator based on the asset-hub-pezkuwichain runtime.
 #[tokio::test(flavor = "multi_thread")]
 #[ignore]
-async fn send_future_and_ready_from_many_accounts_to_parachain() {
+async fn send_future_and_ready_from_many_accounts_to_teyrchain() {
 	let net = NetworkSpawner::from_toml_with_env_logger(para::HIGH_POOL_LIMIT_FATP)
 		.await
 		.unwrap();
 
-	// Wait for the parachain collator to start block production.
+	// Wait for the teyrchain collator to start block production.
 	net.wait_for_block("charlie", BlockSubscriptionType::Best).await.unwrap();
 
 	// Create future & ready txs executors.
@@ -84,7 +84,7 @@ async fn send_future_and_ready_from_many_accounts_to_parachain() {
 }
 
 // Test which sends future and ready txs from many accounts
-// to an unlimited pool of a relaychain node based on `rococo-local` runtime.
+// to an unlimited pool of a relaychain node based on `pezkuwichain-local` runtime.
 #[tokio::test(flavor = "multi_thread")]
 #[ignore]
 async fn send_future_and_ready_from_many_accounts_to_relaychain() {
@@ -140,7 +140,7 @@ async fn send_future_and_ready_from_many_accounts_to_relaychain() {
 // while others to succeed. Mortal txs are future so not being able to become ready in time and
 // included in blocks result in their dropping.
 //
-// Block length for rococo for user txs is 75% of maximum 5MB (per frame-system setup),
+// Block length for pezkuwichain for user txs is 75% of maximum 5MB (per frame-system setup),
 // so we get 3750KB. In the test scenario we aim for 5 txs per block roughly (not precesily)
 // so to fill a block each user tx must have around 750kb.
 #[tokio::test(flavor = "multi_thread")]
@@ -150,7 +150,7 @@ async fn send_future_mortal_txs() {
 		.await
 		.unwrap();
 
-	// Wait for the parachain collator to start block production.
+	// Wait for the teyrchain collator to start block production.
 	net.wait_for_block("alice", BlockSubscriptionType::Finalized).await.unwrap();
 
 	// Create txs executors.
@@ -160,7 +160,7 @@ async fn send_future_mortal_txs() {
 		.with_start_id(0)
 		.with_nonce_from(Some(0))
 		.with_txs_count(50)
-		// Block length for rococo for user txs is 75% of maximum 5MB (per frame-system setup),
+		// Block length for pezkuwichain for user txs is 75% of maximum 5MB (per frame-system setup),
 		// so we get 3750KB. In the test scenario we aim for 5 txs per block roughly (not precesily)
 		// so to fill a block each user tx must have around 750kb. We aim for 5 txs per block
 		// because we send 50 ready txs which we want to distribute over 10 blocks, so mortal txs
@@ -224,7 +224,7 @@ async fn send_lower_priority_mortal_txs() {
 		.await
 		.unwrap();
 
-	// Wait for the parachain collator to start block production.
+	// Wait for the teyrchain collator to start block production.
 	net.wait_for_block("alice", BlockSubscriptionType::Finalized).await.unwrap();
 
 	// Create txs executors.
@@ -235,7 +235,7 @@ async fn send_lower_priority_mortal_txs() {
 		.with_nonce_from(Some(0))
 		.with_txs_count(50)
 		.with_executor_id("ready-txs-executor".to_string())
-		// Block length for rococo for user txs is 75% of maximum 5MB (per frame-system setup),
+		// Block length for pezkuwichain for user txs is 75% of maximum 5MB (per frame-system setup),
 		// so we get 3750KB. In the test scenario we aim for 5 txs per block roughly (not precesily)
 		// so to fill a block each user tx must have around 750kb. We aim for 5 txs per block
 		// because we send 50 ready txs which we want to distribute over 10 blocks, so mortal txs
@@ -301,15 +301,15 @@ async fn send_lower_priority_mortal_txs() {
 	assert_eq!(finalized_ready, 50);
 }
 
-// Test which sends 5m transactions to parachain. Long execution time expected.
+// Test which sends 5m transactions to teyrchain. Long execution time expected.
 #[tokio::test(flavor = "multi_thread")]
 #[ignore]
-async fn send_5m_from_many_accounts_to_parachain() {
+async fn send_5m_from_many_accounts_to_teyrchain() {
 	let net = NetworkSpawner::from_toml_with_env_logger(para::HIGH_POOL_LIMIT_FATP)
 		.await
 		.unwrap();
 
-	// Wait for the parachain collator to start block production.
+	// Wait for the teyrchain collator to start block production.
 	net.wait_for_block("charlie", BlockSubscriptionType::Best).await.unwrap();
 
 	// Create txs executor.
@@ -339,7 +339,7 @@ async fn send_5m_from_many_accounts_to_relaychain() {
 		.await
 		.unwrap();
 
-	// Wait for the parachain collator to start block production.
+	// Wait for the teyrchain collator to start block production.
 	net.wait_for_block("alice", BlockSubscriptionType::Best).await.unwrap();
 
 	// Create txs executor.
@@ -371,7 +371,7 @@ async fn gossiping() {
 		.await
 		.unwrap();
 
-	// Wait for the parachain collator to start block production.
+	// Wait for the teyrchain collator to start block production.
 	net.wait_for_block("a00", BlockSubscriptionType::Best).await.unwrap();
 
 	// Create the txs executor.
@@ -449,12 +449,12 @@ async fn batch_loop<F>(
 	}
 }
 
-/// Tests the transaction pool limits by continuously sending transaction batches to a parachain
+/// Tests the transaction pool limits by continuously sending transaction batches to a teyrchain
 /// network node. This test checks the pool's behavior under high load by simulating multiple
 /// senders with increasing priorities.
 #[tokio::test(flavor = "multi_thread")]
 #[ignore]
-async fn test_limits_increasing_prio_parachain() {
+async fn test_limits_increasing_prio_teyrchain() {
 	let net = NetworkSpawner::from_toml_with_env_logger(para::LOW_POOL_LIMIT_FATP)
 		.await
 		.unwrap();

@@ -213,7 +213,7 @@ pub enum BridgeLocationsError {
 	/// Destination network is not the network we are bridged with.
 	UnreachableDestination,
 	/// Destination location is unsupported. We only support bridges with relay
-	/// chain or its parachains.
+	/// chain or its teyrchains.
 	UnsupportedDestinationLocation,
 	/// The version of XCM location argument is unsupported.
 	UnsupportedXcmVersion,
@@ -228,13 +228,13 @@ impl BridgeLocations {
 	///
 	/// The `bridge_origin_relative_location` is the relative (to the `here_universal_location`)
 	/// location of the bridge endpoint at this side of the bridge. It may be the parent relay
-	/// chain or the sibling parachain. All junctions below parachain level are dropped.
+	/// chain or the sibling teyrchain. All junctions below teyrchain level are dropped.
 	///
 	/// The `bridge_destination_universal_location` is the universal location of the bridge
-	/// destination. It may be the parent relay or the sibling parachain of the **bridged**
-	/// bridge hub. All junctions below parachain level are dropped.
+	/// destination. It may be the parent relay or the sibling teyrchain of the **bridged**
+	/// bridge hub. All junctions below teyrchain level are dropped.
 	///
-	/// Why we drop all junctions between parachain level - that's because the lane is a bridge
+	/// Why we drop all junctions between teyrchain level - that's because the lane is a bridge
 	/// between two chains. All routing under this level happens when the message is delivered
 	/// to the bridge destination. So at bridge level we don't care about low level junctions.
 	///
@@ -256,15 +256,15 @@ impl BridgeLocations {
 				.filter(|junction| matches!(junction, GlobalConsensus(_)))
 				.ok_or(BridgeLocationsError::NonUniversalLocation)?;
 
-			// we only expect `Parachain` junction here. There are other junctions that
+			// we only expect `Teyrchain` junction here. There are other junctions that
 			// may need to be supported (like `GeneralKey` and `OnlyChild`), but now we
 			// only support bridges with relay and parachans
 			//
-			// if there's something other than parachain, let's strip it
-			let maybe_parachain =
-				junctions.next().filter(|junction| matches!(junction, Parachain(_)));
-			Ok(match maybe_parachain {
-				Some(parachain) => [global_consensus, parachain].into(),
+			// if there's something other than teyrchain, let's strip it
+			let maybe_teyrchain =
+				junctions.next().filter(|junction| matches!(junction, Teyrchain(_)));
+			Ok(match maybe_teyrchain {
+				Some(teyrchain) => [global_consensus, teyrchain].into(),
 				None => [global_consensus].into(),
 			})
 		}
@@ -367,14 +367,14 @@ impl BridgeLocations {
 #[cfg(test)]
 mod tests {
 	use super::*;
-	use xcm::latest::ROCOCO_GENESIS_HASH;
+	use xcm::latest::PEZKUWICHAIN_GENESIS_HASH;
 
 	const LOCAL_NETWORK: NetworkId = Kusama;
-	const REMOTE_NETWORK: NetworkId = Polkadot;
-	const UNREACHABLE_NETWORK: NetworkId = NetworkId::ByGenesis(ROCOCO_GENESIS_HASH);
-	const SIBLING_PARACHAIN: u32 = 1000;
+	const REMOTE_NETWORK: NetworkId = Pezkuwi;
+	const UNREACHABLE_NETWORK: NetworkId = NetworkId::ByGenesis(PEZKUWICHAIN_GENESIS_HASH);
+	const SIBLING_TEYRCHAIN: u32 = 1000;
 	const LOCAL_BRIDGE_HUB: u32 = 1001;
-	const REMOTE_PARACHAIN: u32 = 2000;
+	const REMOTE_TEYRCHAIN: u32 = 2000;
 
 	struct SuccessfulTest {
 		here_universal_location: InteriorLocation,
@@ -427,14 +427,14 @@ mod tests {
 	}
 
 	#[test]
-	fn at_relay_from_sibling_parachain_to_remote_relay_works() {
+	fn at_relay_from_sibling_teyrchain_to_remote_relay_works() {
 		run_successful_test(SuccessfulTest {
 			here_universal_location: [GlobalConsensus(LOCAL_NETWORK)].into(),
-			bridge_origin_relative_location: [Parachain(SIBLING_PARACHAIN)].into(),
+			bridge_origin_relative_location: [Teyrchain(SIBLING_TEYRCHAIN)].into(),
 
 			bridge_origin_universal_location: [
 				GlobalConsensus(LOCAL_NETWORK),
-				Parachain(SIBLING_PARACHAIN),
+				Teyrchain(SIBLING_TEYRCHAIN),
 			]
 			.into(),
 			bridge_destination_universal_location: [GlobalConsensus(REMOTE_NETWORK)].into(),
@@ -444,7 +444,7 @@ mod tests {
 	}
 
 	#[test]
-	fn at_relay_from_local_relay_to_remote_parachain_works() {
+	fn at_relay_from_local_relay_to_remote_teyrchain_works() {
 		run_successful_test(SuccessfulTest {
 			here_universal_location: [GlobalConsensus(LOCAL_NETWORK)].into(),
 			bridge_origin_relative_location: Here.into(),
@@ -452,7 +452,7 @@ mod tests {
 			bridge_origin_universal_location: [GlobalConsensus(LOCAL_NETWORK)].into(),
 			bridge_destination_universal_location: [
 				GlobalConsensus(REMOTE_NETWORK),
-				Parachain(REMOTE_PARACHAIN),
+				Teyrchain(REMOTE_TEYRCHAIN),
 			]
 			.into(),
 
@@ -461,19 +461,19 @@ mod tests {
 	}
 
 	#[test]
-	fn at_relay_from_sibling_parachain_to_remote_parachain_works() {
+	fn at_relay_from_sibling_teyrchain_to_remote_teyrchain_works() {
 		run_successful_test(SuccessfulTest {
 			here_universal_location: [GlobalConsensus(LOCAL_NETWORK)].into(),
-			bridge_origin_relative_location: [Parachain(SIBLING_PARACHAIN)].into(),
+			bridge_origin_relative_location: [Teyrchain(SIBLING_TEYRCHAIN)].into(),
 
 			bridge_origin_universal_location: [
 				GlobalConsensus(LOCAL_NETWORK),
-				Parachain(SIBLING_PARACHAIN),
+				Teyrchain(SIBLING_TEYRCHAIN),
 			]
 			.into(),
 			bridge_destination_universal_location: [
 				GlobalConsensus(REMOTE_NETWORK),
-				Parachain(REMOTE_PARACHAIN),
+				Teyrchain(REMOTE_TEYRCHAIN),
 			]
 			.into(),
 
@@ -484,7 +484,7 @@ mod tests {
 	#[test]
 	fn at_bridge_hub_from_local_relay_to_remote_relay_works() {
 		run_successful_test(SuccessfulTest {
-			here_universal_location: [GlobalConsensus(LOCAL_NETWORK), Parachain(LOCAL_BRIDGE_HUB)]
+			here_universal_location: [GlobalConsensus(LOCAL_NETWORK), Teyrchain(LOCAL_BRIDGE_HUB)]
 				.into(),
 			bridge_origin_relative_location: Parent.into(),
 
@@ -496,16 +496,16 @@ mod tests {
 	}
 
 	#[test]
-	fn at_bridge_hub_from_sibling_parachain_to_remote_relay_works() {
+	fn at_bridge_hub_from_sibling_teyrchain_to_remote_relay_works() {
 		run_successful_test(SuccessfulTest {
-			here_universal_location: [GlobalConsensus(LOCAL_NETWORK), Parachain(LOCAL_BRIDGE_HUB)]
+			here_universal_location: [GlobalConsensus(LOCAL_NETWORK), Teyrchain(LOCAL_BRIDGE_HUB)]
 				.into(),
-			bridge_origin_relative_location: ParentThen([Parachain(SIBLING_PARACHAIN)].into())
+			bridge_origin_relative_location: ParentThen([Teyrchain(SIBLING_TEYRCHAIN)].into())
 				.into(),
 
 			bridge_origin_universal_location: [
 				GlobalConsensus(LOCAL_NETWORK),
-				Parachain(SIBLING_PARACHAIN),
+				Teyrchain(SIBLING_TEYRCHAIN),
 			]
 			.into(),
 			bridge_destination_universal_location: [GlobalConsensus(REMOTE_NETWORK)].into(),
@@ -515,16 +515,16 @@ mod tests {
 	}
 
 	#[test]
-	fn at_bridge_hub_from_local_relay_to_remote_parachain_works() {
+	fn at_bridge_hub_from_local_relay_to_remote_teyrchain_works() {
 		run_successful_test(SuccessfulTest {
-			here_universal_location: [GlobalConsensus(LOCAL_NETWORK), Parachain(LOCAL_BRIDGE_HUB)]
+			here_universal_location: [GlobalConsensus(LOCAL_NETWORK), Teyrchain(LOCAL_BRIDGE_HUB)]
 				.into(),
 			bridge_origin_relative_location: Parent.into(),
 
 			bridge_origin_universal_location: [GlobalConsensus(LOCAL_NETWORK)].into(),
 			bridge_destination_universal_location: [
 				GlobalConsensus(REMOTE_NETWORK),
-				Parachain(REMOTE_PARACHAIN),
+				Teyrchain(REMOTE_TEYRCHAIN),
 			]
 			.into(),
 
@@ -533,21 +533,21 @@ mod tests {
 	}
 
 	#[test]
-	fn at_bridge_hub_from_sibling_parachain_to_remote_parachain_works() {
+	fn at_bridge_hub_from_sibling_teyrchain_to_remote_teyrchain_works() {
 		run_successful_test(SuccessfulTest {
-			here_universal_location: [GlobalConsensus(LOCAL_NETWORK), Parachain(LOCAL_BRIDGE_HUB)]
+			here_universal_location: [GlobalConsensus(LOCAL_NETWORK), Teyrchain(LOCAL_BRIDGE_HUB)]
 				.into(),
-			bridge_origin_relative_location: ParentThen([Parachain(SIBLING_PARACHAIN)].into())
+			bridge_origin_relative_location: ParentThen([Teyrchain(SIBLING_TEYRCHAIN)].into())
 				.into(),
 
 			bridge_origin_universal_location: [
 				GlobalConsensus(LOCAL_NETWORK),
-				Parachain(SIBLING_PARACHAIN),
+				Teyrchain(SIBLING_TEYRCHAIN),
 			]
 			.into(),
 			bridge_destination_universal_location: [
 				GlobalConsensus(REMOTE_NETWORK),
-				Parachain(REMOTE_PARACHAIN),
+				Teyrchain(REMOTE_TEYRCHAIN),
 			]
 			.into(),
 
@@ -610,19 +610,19 @@ mod tests {
 		type TestLaneId = bp_messages::HashedLaneId;
 
 		let from_local_to_remote = run_successful_test(SuccessfulTest {
-			here_universal_location: [GlobalConsensus(LOCAL_NETWORK), Parachain(LOCAL_BRIDGE_HUB)]
+			here_universal_location: [GlobalConsensus(LOCAL_NETWORK), Teyrchain(LOCAL_BRIDGE_HUB)]
 				.into(),
-			bridge_origin_relative_location: ParentThen([Parachain(SIBLING_PARACHAIN)].into())
+			bridge_origin_relative_location: ParentThen([Teyrchain(SIBLING_TEYRCHAIN)].into())
 				.into(),
 
 			bridge_origin_universal_location: [
 				GlobalConsensus(LOCAL_NETWORK),
-				Parachain(SIBLING_PARACHAIN),
+				Teyrchain(SIBLING_TEYRCHAIN),
 			]
 			.into(),
 			bridge_destination_universal_location: [
 				GlobalConsensus(REMOTE_NETWORK),
-				Parachain(REMOTE_PARACHAIN),
+				Teyrchain(REMOTE_TEYRCHAIN),
 			]
 			.into(),
 
@@ -630,19 +630,19 @@ mod tests {
 		});
 
 		let from_remote_to_local = run_successful_test(SuccessfulTest {
-			here_universal_location: [GlobalConsensus(REMOTE_NETWORK), Parachain(LOCAL_BRIDGE_HUB)]
+			here_universal_location: [GlobalConsensus(REMOTE_NETWORK), Teyrchain(LOCAL_BRIDGE_HUB)]
 				.into(),
-			bridge_origin_relative_location: ParentThen([Parachain(REMOTE_PARACHAIN)].into())
+			bridge_origin_relative_location: ParentThen([Teyrchain(REMOTE_TEYRCHAIN)].into())
 				.into(),
 
 			bridge_origin_universal_location: [
 				GlobalConsensus(REMOTE_NETWORK),
-				Parachain(REMOTE_PARACHAIN),
+				Teyrchain(REMOTE_TEYRCHAIN),
 			]
 			.into(),
 			bridge_destination_universal_location: [
 				GlobalConsensus(LOCAL_NETWORK),
-				Parachain(SIBLING_PARACHAIN),
+				Teyrchain(SIBLING_TEYRCHAIN),
 			]
 			.into(),
 
@@ -665,7 +665,7 @@ mod tests {
 	fn bridge_locations_fails_when_here_is_not_universal_location() {
 		assert_eq!(
 			BridgeLocations::bridge_locations(
-				[Parachain(1000)].into(),
+				[Teyrchain(1000)].into(),
 				Here.into(),
 				[GlobalConsensus(REMOTE_NETWORK)].into(),
 				REMOTE_NETWORK,

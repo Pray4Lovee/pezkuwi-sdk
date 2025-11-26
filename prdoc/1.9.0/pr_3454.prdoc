@@ -9,7 +9,7 @@ doc:
       Allows marking storage items with \#[disable_try_decode_storage], which disables that storage item from being decoded
       during try_decode_entire_state calls.
 
-      Applied the attribute to System::Events to close https://github.com/paritytech/polkadot-sdk/issues/2560.
+      Applied the attribute to System::Events to close https://github.com/pezkuwichain/pezkuwichain-sdk/issues/2560.
       Applied the attribute to ParachainSystem::HostConfiguration to resolve periodic issues with it.
 
 crates:

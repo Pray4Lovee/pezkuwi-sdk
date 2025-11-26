@@ -6,7 +6,7 @@ use sp_core::RuntimeDebug;
 use xcm::latest::Xcm;
 
 /// Converts an inbound message from Ethereum to an XCM message that can be
-/// executed on a parachain.
+/// executed on a teyrchain.
 pub trait ConvertMessage {
 	fn convert(message: Message) -> Result<Xcm<()>, ConvertMessageError>;
 }

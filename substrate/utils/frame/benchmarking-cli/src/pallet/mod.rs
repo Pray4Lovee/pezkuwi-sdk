@@ -281,7 +281,7 @@ pub struct PalletCmd {
 	/// Do not enable proof recording during time benchmarking.
 	///
 	/// By default, proof recording is enabled during benchmark execution. This can slightly
-	/// inflate the resulting time weights. For parachains using PoV-reclaim, this is typically the
+	/// inflate the resulting time weights. For teyrchains using PoV-reclaim, this is typically the
 	/// correct setting. Chains that ignore the proof size dimension of weight (e.g. relay chain,
 	/// solo-chains) can disable proof recording to get more accurate results.
 	#[arg(long)]

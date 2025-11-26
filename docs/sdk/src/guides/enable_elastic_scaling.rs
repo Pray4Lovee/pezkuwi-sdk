@@ -1,13 +1,13 @@
-//! # Enable elastic scaling for a parachain
+//! # Enable elastic scaling for a teyrchain
 //!
 //! <div class="warning">This guide assumes full familiarity with Asynchronous Backing and its
-//! terminology, as defined in <a href="https://paritytech.github.io/polkadot-sdk/master/polkadot_sdk_docs/guides/async_backing_guide/index.html">the Polkadot SDK Docs</a>.
+//! terminology, as defined in <a href="https://docs.pezkuwichain.io/sdk/master/polkadot_sdk_docs/guides/async_backing_guide/index.html">the Pezkuwi SDK Docs</a>.
 //! </div>
 //!
 //! ## Quick introduction to Elastic Scaling
 //!
-//! [Elastic scaling](https://www.parity.io/blog/polkadot-web3-cloud) is a feature that enables parachains (rollups) to use multiple cores.
-//! Parachains can adjust their usage of core resources on the fly to increase TPS and decrease
+//! [Elastic scaling](https://www.parity.io/blog/polkadot-web3-cloud) is a feature that enables teyrchains (rollups) to use multiple cores.
+//! Teyrchains can adjust their usage of core resources on the fly to increase TPS and decrease
 //! latency.
 //!
 //! ### When do you need Elastic Scaling?
@@ -19,7 +19,7 @@
 //!
 //! ### High throughput (TPS) and lower latency
 //!
-//! If the main bottleneck is the CPU, then your parachain needs to maximize the compute usage of
+//! If the main bottleneck is the CPU, then your teyrchain needs to maximize the compute usage of
 //! each core while also achieving a lower latency.
 //! 3 cores provide the best balance between CPU, bandwidth and latency: up to 6s of execution,
 //! 5MB/s of DA bandwidth and fast block time of just 2 seconds.
@@ -40,7 +40,7 @@
 //!
 //! ## Dependencies
 //!
-//! Prerequisites: Polkadot-SDK `2509` or newer.
+//! Prerequisites: Pezkuwi-SDK `2509` or newer.
 //!
 //! To ensure the security and reliability of your chain when using this feature you need the
 //! following:
@@ -48,25 +48,25 @@
 //! - UMP signal support.
 //! [RFC103](https://github.com/polkadot-fellows/RFCs/blob/main/text/0103-introduce-core-index-commitment.md).
 //!   This is mandatory protection against PoV replay attacks.
-//! - Enabling the relay parent offset feature. This is required to ensure the parachain block times
+//! - Enabling the relay parent offset feature. This is required to ensure the teyrchain block times
 //!   and transaction in-block confidence are not negatively affected by relay chain forks. Read
-//!   [`crate::guides::handling_parachain_forks`] for more information.
+//!   [`crate::guides::handling_teyrchain_forks`] for more information.
 //! - Block production configuration adjustments.
 //!
-//! ### Upgrade to Polkadot Omni node
+//! ### Upgrade to Pezkuwi Omni node
 //!
-//! Your collators need to run `polkadot-parachain` or `polkadot-omni-node` with the `--authoring
+//! Your collators need to run `pezkuwi-teyrchain` or `pezkuwi-omni-node` with the `--authoring
 //! slot-based` CLI argument.
 //! To avoid potential issues and get best performance it is recommeneded to always run the  
 //! latest release on all of the collators.
 //!
 //! Further information about omni-node and how to upgrade is available:
-//! - [high level docs](https://docs.polkadot.com/develop/toolkit/parachains/polkadot-omni-node/)
+//! - [high level docs](https://docs.pezkuwichain.io/develop/toolkit/parachains/polkadot-omni-node/)
 //! - [`crate::reference_docs::omni_node`]
 //!
 //! ### UMP signals
 //!
-//! UMP signals are now enabled by default in the `parachain-system` pallet and are used for
+//! UMP signals are now enabled by default in the `teyrchain-system` pallet and are used for
 //! elastic scaling. You can find more technical details about UMP signals and their usage for
 //! elastic scaling
 //! [here](https://github.com/polkadot-fellows/RFCs/blob/main/text/0103-introduce-core-index-commitment.md).
@@ -81,7 +81,7 @@
 //!     /// Build with an offset of 1 behind the relay chain best block.
 //!     const RELAY_PARENT_OFFSET: u32 = 1;
 //!
-//!     impl cumulus_pallet_parachain_system::Config for Runtime {
+//!     impl cumulus_pallet_teyrchain_system::Config for Runtime {
 //!         // ...
 //!         type RelayParentOffset = ConstU32<RELAY_PARENT_OFFSET>;
 //!     }
@@ -99,13 +99,13 @@
 //! ### Block production configuration
 //!
 //! This configuration directly controls the minimum block time and maximum number of cores
-//! the parachain can use.
+//! the teyrchain can use.
 //!
-//! Example configuration for a 3 core parachain:
+//! Example configuration for a 3 core teyrchain:
 //!  ```ignore
-//!     /// The upper limit of how many parachain blocks are processed by the relay chain per
+//!     /// The upper limit of how many teyrchain blocks are processed by the relay chain per
 //!     /// parent. Limits the number of blocks authored per slot. This determines the minimum
-//!     /// block time of the parachain:
+//!     /// block time of the teyrchain:
 //!     /// `RELAY_CHAIN_SLOT_DURATION_MILLIS/BLOCK_PROCESSING_VELOCITY`
 //!     const BLOCK_PROCESSING_VELOCITY: u32 = 3;
 //!
@@ -126,7 +126,7 @@
 //!
 //!  ```
 //!
-//! ### Parachain Slot Duration
+//! ### Teyrchain Slot Duration
 //!
 //! A common source of confusion is the correct configuration of the `SlotDuration` that is passed
 //! to `pallet-aura`.
@@ -142,41 +142,41 @@
 //! slot duration is required to be at least 6s (same as on the relay chain).**
 //!
 //! **Configuration recommendations:**
-//! - For new parachains starting from genesis: use a slot duration of 24 seconds
-//! - For existing live parachains: leave the slot duration unchanged
+//! - For new teyrchains starting from genesis: use a slot duration of 24 seconds
+//! - For existing live teyrchains: leave the slot duration unchanged
 //!
 //!
 //! ## Current limitations
 //!
 //! ### Maximum execution time per relay chain block.
 //!
-//! Since parachain block authoring is sequential, the next block can only be built after
+//! Since teyrchain block authoring is sequential, the next block can only be built after
 //! the previous one has been imported.
 //! At present, a core allows up to 2 seconds of execution per relay chain block.
 //!
-//! If we assume a 6s parachain slot, and each block takes the full 2 seconds to execute,
-//! the parachain will not be able to fully utilize the compute resources of all 3 cores.
+//! If we assume a 6s teyrchain slot, and each block takes the full 2 seconds to execute,
+//! the teyrchain will not be able to fully utilize the compute resources of all 3 cores.
 //!    
 //! If the collator hardware is faster, it can author and import full blocks more quickly,
 //! making it possible to utilize even more than 3 cores efficiently.
 //!
 //! #### Why?
 //!
-//! Within a 6-second parachain slot, collators can author multiple parachain blocks.
+//! Within a 6-second teyrchain slot, collators can author multiple teyrchain blocks.
 //! Before building the first block in a slot, the new block author must import the last
 //! block produced by the previous author.
 //! If the import of the last block is not completed before the next relay chain slot starts,
 //! the new author will build on its parent (assuming it was imported). This will create a fork
-//! which degrades the parachain block confidence and block times.
+//! which degrades the teyrchain block confidence and block times.
 //!
-//! This means that, on reference hardware, a parachain with a slot time of 6s can
+//! This means that, on reference hardware, a teyrchain with a slot time of 6s can
 //! effectively utilize up to 4 seconds of execution per relay chain block, because it needs to
 //! ensure the next block author has enough time to import the last block.
-//! Hardware with higher single-core performance can enable a parachain to fully utilize more
+//! Hardware with higher single-core performance can enable a teyrchain to fully utilize more
 //! cores.
 //!
 //! ### Fixed factor scaling.
 //!
-//! For true elasticity, a parachain needs to acquire more cores when needed in an automated
+//! For true elasticity, a teyrchain needs to acquire more cores when needed in an automated
 //! manner. This functionality is not yet available in the SDK, thus acquiring additional
 //! on-demand or bulk cores has to be managed externally.

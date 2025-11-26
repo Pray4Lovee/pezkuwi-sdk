@@ -9,7 +9,7 @@ on:
         type: choice
         options:
           - polkadot
-          - polkadot-parachain
+          - polkadot-teyrchain
           - polkadot-omni-node
           - frame-omni-bencher
           - chain-spec-builder
@@ -73,15 +73,15 @@ jobs:
       AWS_RELEASE_ACCESS_KEY_ID: ${{ secrets.AWS_RELEASE_ACCESS_KEY_ID }}
       AWS_RELEASE_SECRET_ACCESS_KEY: ${{ secrets.AWS_RELEASE_SECRET_ACCESS_KEY }}
 
-  promote-polkadot-parachain-rc-to-final:
-    if: ${{ inputs.binary == 'polkadot-parachain' || inputs.binary == 'all' }}
+  promote-polkadot-teyrchain-rc-to-final:
+    if: ${{ inputs.binary == 'polkadot-teyrchain' || inputs.binary == 'all' }}
     needs: [ validate-inputs ]
     uses: ./.github/workflows/release-reusable-promote-to-final.yml
     strategy:
       matrix:
         target: [ x86_64-unknown-linux-gnu, aarch64-apple-darwin ]
     with:
-      package: polkadot-parachain
+      package: polkadot-teyrchain
       release_tag: ${{ needs.validate-inputs.outputs.release_tag }}
       target: ${{ matrix.target }}
     secrets:

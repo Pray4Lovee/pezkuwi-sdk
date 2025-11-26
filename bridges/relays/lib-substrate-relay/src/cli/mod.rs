@@ -28,7 +28,7 @@ pub mod init_bridge;
 pub mod relay_headers;
 pub mod relay_headers_and_messages;
 pub mod relay_messages;
-pub mod relay_parachains;
+pub mod relay_teyrchains;
 
 /// The target that will be used when publishing logs related to this pallet.
 pub const LOG_TARGET: &str = "bridge";

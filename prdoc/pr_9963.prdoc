@@ -6,9 +6,9 @@ doc:
     
     Adds a new parameter to `XcmPaymentApi.query_delivery_fees` to specify the asset id in which you'd like to get the delivery fees. This makes it possible to estimate how much to pay for fees for assets other than the native asset.
 
-    Fixes https://github.com/paritytech/polkadot-sdk/issues/7061
+    Fixes https://github.com/pezkuwichain/pezkuwichain-sdk/issues/7061
 
-    Continuation of https://github.com/paritytech/polkadot-sdk/pull/8297
+    Continuation of https://github.com/pezkuwichain/pezkuwichain-sdk/pull/8297
 crates:
 - name: asset-hub-rococo-runtime
   bump: major

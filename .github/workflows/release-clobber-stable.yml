@@ -1,7 +1,7 @@
 name: Clobber Stable
 
 # This action implements the
-# [Clobbering](https://github.com/paritytech/polkadot-sdk/blob/master/docs/RELEASE.md#clobbering)
+# [Clobbering](https://github.com/pezkuwichain/pezkuwichain-sdk/blob/master/docs/RELEASE.md#clobbering)
 # process from the release process. It pushes a new commit to the `stable` branch with all the
 # current content of the `audited` tag. It does not use a merge commit, but rather 'clobbers' the
 # branch with a single commit that contains all the changes. It has a naming scheme of `Clobber with

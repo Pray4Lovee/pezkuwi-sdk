@@ -4,7 +4,7 @@ doc:
   description: |-
     `FungibleAdapter` will now check if the _refund amount_ is zero before calling deposit & emitting an event.
 
-    Fixes https://github.com/paritytech/polkadot-sdk/issues/6469.
+    Fixes https://github.com/pezkuwichain/pezkuwichain-sdk/issues/6469.
 crates:
 - name: pallet-transaction-payment
   bump: patch

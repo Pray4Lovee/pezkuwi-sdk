@@ -15,21 +15,21 @@
 // You should have received a copy of the GNU General Public License
 // along with Cumulus. If not, see <https://www.gnu.org/licenses/>.
 
-//! (unstable) Composable utilities for constructing import queues for parachains.
+//! (unstable) Composable utilities for constructing import queues for teyrchains.
 //!
-//! Unlike standalone chains, parachains have the requirement that all consensus logic
+//! Unlike standalone chains, teyrchains have the requirement that all consensus logic
 //! must be checked within the runtime. This property means that work which is normally
 //! done in the import queue per-block, such as checking signatures, quorums, and whether
 //! inherent extrinsics were constructed faithfully do not need to be done, per se.
 //!
 //! It may seem that it would be beneficial for the client to do these checks regardless,
 //! but in practice this means that clients would just reject blocks which are _valid_ according
-//! to their Parachain Validation Function, which is the ultimate source of consensus truth.
+//! to their Teyrchain Validation Function, which is the ultimate source of consensus truth.
 //!
-//! However, parachain runtimes expose two different access points for executing blocks
-//! in full nodes versus executing those blocks in the parachain validation environment.
+//! However, teyrchain runtimes expose two different access points for executing blocks
+//! in full nodes versus executing those blocks in the teyrchain validation environment.
 //! At the time of writing, the inherent and consensus checks in most Cumulus runtimes
-//! are only performed during parachain validation, not full node block execution.
+//! are only performed during teyrchain validation, not full node block execution.
 //!
 //! See <https://github.com/paritytech/cumulus/issues/2436> for details.
 
@@ -41,7 +41,7 @@ use sc_consensus::{
 	import_queue::{BasicQueue, Verifier},
 };
 
-use crate::ParachainBlockImportMarker;
+use crate::TeyrchainBlockImportMarker;
 
 /// A [`Verifier`] for blocks which verifies absolutely nothing.
 ///
@@ -68,7 +68,7 @@ pub fn verify_nothing_import_queue<Block: BlockT, I>(
 ) -> BasicQueue<Block>
 where
 	I: BlockImport<Block, Error = ConsensusError>
-		+ ParachainBlockImportMarker
+		+ TeyrchainBlockImportMarker
 		+ Send
 		+ Sync
 		+ 'static,

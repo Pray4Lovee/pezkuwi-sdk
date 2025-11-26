@@ -3,7 +3,7 @@ title: Fix DryRunApi client-facing XCM versions
 doc:
   - audience: Runtime Dev
     description: |-
-      Fixes https://github.com/paritytech/polkadot-sdk/issues/7413
+      Fixes https://github.com/pezkuwichain/pezkuwichain-sdk/issues/7413
 
       This PR updates the DryRunApi. The signature of the dry_run_call is changed, and the XCM version of the return values of dry_run_xcm now follows the version of the input XCM program.
 

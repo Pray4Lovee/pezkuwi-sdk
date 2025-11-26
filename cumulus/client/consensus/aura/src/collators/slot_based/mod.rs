@@ -19,7 +19,7 @@
 //!
 //! The block building mechanism operates through two coordinated tasks:
 //!
-//! 1. **Block Builder Task**: Orchestrates the timing and execution of parachain block production
+//! 1. **Block Builder Task**: Orchestrates the timing and execution of teyrchain block production
 //! 2. **Collator Task**: Processes built blocks into collations for relay chain submission
 //!
 //! # Block Builder Task Details
@@ -32,7 +32,7 @@
 //!    [find_potential_parents][cumulus_client_consensus_common::find_potential_parents] for parent
 //!    selection criteria)
 //! 3. Validates that:
-//!    - The parachain has an assigned core on the relay chain
+//!    - The teyrchain has an assigned core on the relay chain
 //!    - No block has been previously built on the target core
 //! 4. Executes block building and import operations
 //! 5. Transmits the completed block to the collator task
@@ -41,9 +41,9 @@
 //!
 //! When a block is produced is determined by the following parameters:
 //!
-//! - Parachain slot duration
-//! - Number of assigned parachain cores
-//! - Parachain runtime configuration
+//! - Teyrchain slot duration
+//! - Number of assigned teyrchain cores
+//! - Teyrchain runtime configuration
 //!
 //! ## Timing Examples
 //!
@@ -69,15 +69,15 @@
 use self::{block_builder_task::run_block_builder, collation_task::run_collation_task};
 pub use block_import::{SlotBasedBlockImport, SlotBasedBlockImportHandle};
 use codec::Codec;
-use consensus_common::ParachainCandidate;
+use consensus_common::TeyrchainCandidate;
 use cumulus_client_collator::service::ServiceInterface as CollatorServiceInterface;
-use cumulus_client_consensus_common::{self as consensus_common, ParachainBlockImportMarker};
+use cumulus_client_consensus_common::{self as consensus_common, TeyrchainBlockImportMarker};
 use cumulus_client_consensus_proposer::ProposerInterface;
 use cumulus_primitives_aura::AuraUnincludedSegmentApi;
 use cumulus_primitives_core::RelayParentOffsetApi;
 use cumulus_relay_chain_interface::RelayChainInterface;
 use futures::FutureExt;
-use polkadot_primitives::{
+use pezkuwi_primitives::{
 	CollatorPair, CoreIndex, Hash as RelayHash, Id as ParaId, ValidationCodeHash,
 };
 use sc_client_api::{backend::AuxStore, BlockBackend, BlockOf, UsageProvider};
@@ -147,7 +147,7 @@ pub struct Params<Block, BI, CIDP, Client, Backend, RClient, CHP, Proposer, CS, 
 	/// When set, the collator will export every produced `POV` to this folder.
 	pub export_pov: Option<PathBuf>,
 	/// The maximum percentage of the maximum PoV size that the collator can use.
-	/// It will be removed once <https://github.com/paritytech/polkadot-sdk/issues/6020> is fixed.
+	/// It will be removed once <https://github.com/pezkuwichain/pezkuwichain-sdk/issues/6020> is fixed.
 	pub max_pov_percentage: Option<u32>,
 }
 
@@ -171,7 +171,7 @@ pub fn run<Block, P, BI, CIDP, Client, Backend, RClient, CHP, Proposer, CS, Spaw
 	RClient: RelayChainInterface + Clone + 'static,
 	CIDP: CreateInherentDataProviders<Block, ()> + 'static,
 	CIDP::InherentDataProviders: Send,
-	BI: BlockImport<Block> + ParachainBlockImportMarker + Send + Sync + 'static,
+	BI: BlockImport<Block> + TeyrchainBlockImportMarker + Send + Sync + 'static,
 	Proposer: ProposerInterface<Block> + Send + Sync + 'static,
 	CS: CollatorServiceInterface<Block> + Send + Sync + Clone + 'static,
 	CHP: consensus_common::ValidationCodeHashProvider<Block::Hash> + Send + 'static,
@@ -255,12 +255,12 @@ pub fn run<Block, P, BI, CIDP, Client, Backend, RClient, CHP, Proposer, CS, Spaw
 ///
 /// Contains all data necessary to submit a collation to the relay chain.
 struct CollatorMessage<Block: BlockT> {
-	/// The hash of the relay chain block that provides the context for the parachain block.
+	/// The hash of the relay chain block that provides the context for the teyrchain block.
 	pub relay_parent: RelayHash,
 	/// The header of the parent block.
 	pub parent_header: Block::Header,
-	/// The parachain block candidate.
-	pub parachain_candidate: ParachainCandidate<Block>,
+	/// The teyrchain block candidate.
+	pub teyrchain_candidate: TeyrchainCandidate<Block>,
 	/// The validation code hash at the parent block.
 	pub validation_code_hash: ValidationCodeHash,
 	/// Core index that this block should be submitted on

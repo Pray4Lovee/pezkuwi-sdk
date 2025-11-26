@@ -29,7 +29,7 @@ use sp_trie::StorageProof;
 
 #[cfg(all(not(feature = "std"), feature = "runtime-benchmarks"))]
 use {
-	cumulus_pallet_parachain_system::validate_block::{
+	cumulus_pallet_teyrchain_system::validate_block::{
 		trie_cache::CacheProvider, trie_recorder::SizeOnlyRecorderProvider,
 	},
 	sp_core::storage::StateVersion,
@@ -103,7 +103,7 @@ impl<B: traits::Block> StorageAccessParams<B> {
 	}
 }
 
-/// Imitates `cumulus_pallet_parachain_system::validate_block::implementation::validate_block`
+/// Imitates `cumulus_pallet_teyrchain_system::validate_block::implementation::validate_block`
 ///
 /// Only performs the storage access, this is used to benchmark the storage access cost.
 #[doc(hidden)]

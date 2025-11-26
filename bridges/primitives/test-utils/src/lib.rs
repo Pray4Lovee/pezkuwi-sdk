@@ -20,8 +20,8 @@
 #![cfg_attr(not(feature = "std"), no_std)]
 
 use bp_header_chain::justification::{required_justification_precommits, GrandpaJustification};
-use bp_parachains::parachain_head_storage_key_at_source;
-use bp_polkadot_core::parachains::{ParaHash, ParaHead, ParaHeadsProof, ParaId};
+use bp_teyrchains::teyrchain_head_storage_key_at_source;
+use bp_pezkuwi_core::teyrchains::{ParaHash, ParaHead, ParaHeadsProof, ParaId};
 use bp_runtime::record_all_trie_keys;
 use codec::Encode;
 use sp_consensus_grandpa::{AuthorityId, AuthoritySignature, AuthorityWeight, SetId};
@@ -170,24 +170,24 @@ fn generate_chain<H: HeaderT>(fork_id: u32, depth: u32, ancestor: &H) -> Vec<H> 
 	headers
 }
 
-/// Make valid proof for parachain `heads`
-pub fn prepare_parachain_heads_proof<H: HeaderT>(
+/// Make valid proof for teyrchain `heads`
+pub fn prepare_teyrchain_heads_proof<H: HeaderT>(
 	heads: Vec<(u32, ParaHead)>,
 ) -> (H::Hash, ParaHeadsProof, Vec<(ParaId, ParaHash)>) {
-	let mut parachains = Vec::with_capacity(heads.len());
+	let mut teyrchains = Vec::with_capacity(heads.len());
 	let mut root = Default::default();
 	let mut mdb = MemoryDB::default();
 	let mut storage_keys = vec![];
 	{
 		let mut trie = TrieDBMutBuilderV1::<H::Hashing>::new(&mut mdb, &mut root).build();
-		for (parachain, head) in heads {
+		for (teyrchain, head) in heads {
 			let storage_key =
-				parachain_head_storage_key_at_source(PARAS_PALLET_NAME, ParaId(parachain));
+				teyrchain_head_storage_key_at_source(PARAS_PALLET_NAME, ParaId(teyrchain));
 			trie.insert(&storage_key.0, &head.encode())
 				.map_err(|_| "TrieMut::insert has failed")
 				.expect("TrieMut::insert should not fail in tests");
 			storage_keys.push(storage_key.0);
-			parachains.push((ParaId(parachain), head.hash()));
+			teyrchains.push((ParaId(teyrchain), head.hash()));
 		}
 	}
 
@@ -196,7 +196,7 @@ pub fn prepare_parachain_heads_proof<H: HeaderT>(
 		.map_err(|_| "record_all_trie_keys has failed")
 		.expect("record_all_trie_keys should not fail in benchmarks");
 
-	(root, ParaHeadsProof { storage_proof }, parachains)
+	(root, ParaHeadsProof { storage_proof }, teyrchains)
 }
 
 /// Create signed precommit with given target.

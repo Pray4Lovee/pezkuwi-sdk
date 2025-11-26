@@ -47,11 +47,11 @@
 //! ### Example Usage
 //!
 //! ```
-//! use polkadot_sdk_frame as frame;
+//! use pezkuwi_sdk_frame as frame;
 //!
 //! #[frame::pallet]
 //! pub mod pallet {
-//! 	# use polkadot_sdk_frame as frame;
+//! 	# use pezkuwi_sdk_frame as frame;
 //! 	use frame::prelude::*;
 //! 	// ^^ using the prelude!
 //!
@@ -64,18 +64,18 @@
 //!
 //! #[cfg(test)]
 //! pub mod tests {
-//! 	# use polkadot_sdk_frame as frame;
+//! 	# use pezkuwi_sdk_frame as frame;
 //! 	use frame::testing_prelude::*;
 //! }
 //!
 //! #[cfg(feature = "runtime-benchmarks")]
 //! pub mod benchmarking {
-//! 	# use polkadot_sdk_frame as frame;
+//! 	# use pezkuwi_sdk_frame as frame;
 //! 	use frame::benchmarking::prelude::*;
 //! }
 //!
 //! pub mod runtime {
-//! 	# use polkadot_sdk_frame as frame;
+//! 	# use pezkuwi_sdk_frame as frame;
 //! 	use frame::runtime::prelude::*;
 //! }
 //! ```
@@ -86,13 +86,13 @@
 //! runtimes. For runtime development, import it as:
 //!
 //! ```text
-//! polkadot-sdk-frame = { version = "foo", features = ["runtime"] }
+//! pezkuwi-sdk-frame = { version = "foo", features = ["runtime"] }
 //! ```
 //!
 //! If you just want to build a pallet instead, import it as
 //!
 //! ```text
-//! polkadot-sdk-frame = { version = "foo" }
+//! pezkuwi-sdk-frame = { version = "foo" }
 //! ```
 //!
 //! ### Prelude Relationships
@@ -104,7 +104,7 @@
 //!
 //! ## Naming
 //!
-//! Please note that this crate can only be imported as `polkadot-sdk-frame` or `frame`. This is due
+//! Please note that this crate can only be imported as `pezkuwi-sdk-frame` or `frame`. This is due
 //! to compatibility matters with `frame-support`.
 //!
 //! A typical pallet's `Cargo.toml` using this crate looks like:
@@ -132,7 +132,7 @@
 //!
 //! ## Documentation
 //!
-//! For more detailed documentation and examples, see [`polkadot_sdk_frame`](https://paritytech.github.io/polkadot-sdk/master/polkadot_sdk_frame/index.html).
+//! For more detailed documentation and examples, see [`pezkuwi_sdk_frame`](https://docs.pezkuwichain.io/sdk/master/polkadot_sdk_frame/index.html).
 
 #![cfg_attr(not(feature = "std"), no_std)]
 
@@ -165,7 +165,7 @@ pub mod pallet_macros {
 /// This prelude should almost always be the first line of code in any pallet or runtime.
 ///
 /// ```
-/// use polkadot_sdk_frame::prelude::*;
+/// use pezkuwi_sdk_frame::prelude::*;
 ///
 /// // rest of your pallet..
 /// mod pallet {}
@@ -174,7 +174,7 @@ pub mod prelude {
 	/// `frame_system`'s parent crate, which is mandatory in all pallets build with this crate.
 	///
 	/// Conveniently, the keyword `frame_system` is in scope as one uses `use
-	/// polkadot_sdk_frame::prelude::*`.
+	/// pezkuwi_sdk_frame::prelude::*`.
 	#[doc(inline)]
 	pub use frame_system;
 
@@ -253,11 +253,11 @@ pub mod try_runtime {
 /// It supports both the `benchmarking::v1::benchmarks` and `benchmarking::v2::benchmark` syntax.
 ///
 /// ```
-/// use polkadot_sdk_frame::benchmarking::prelude::*;
+/// use pezkuwi_sdk_frame::benchmarking::prelude::*;
 /// // rest of your code.
 /// ```
 ///
-/// It already includes `polkadot_sdk_frame::prelude::*` and `polkadot_sdk_frame::testing_prelude`.
+/// It already includes `pezkuwi_sdk_frame::prelude::*` and `pezkuwi_sdk_frame::testing_prelude`.
 #[cfg(feature = "runtime-benchmarks")]
 pub mod benchmarking {
 	mod shared {
@@ -270,7 +270,7 @@ pub mod benchmarking {
 	}
 
 	#[deprecated(
-		note = "'The V1 benchmarking syntax is deprecated. Please use the V2 syntax. This warning may become a hard error any time after April 2025. For more info, see: https://github.com/paritytech/polkadot-sdk/pull/5995"
+		note = "'The V1 benchmarking syntax is deprecated. Please use the V2 syntax. This warning may become a hard error any time after April 2025. For more info, see: https://github.com/pezkuwichain/pezkuwichain-sdk/pull/5995"
 	)]
 	pub mod v1 {
 		pub use super::shared::*;
@@ -291,7 +291,7 @@ pub mod benchmarking {
 /// Prelude to be included in the `weight.rs` of each pallet.
 ///
 /// ```
-/// pub use polkadot_sdk_frame::weights_prelude::*;
+/// pub use pezkuwi_sdk_frame::weights_prelude::*;
 /// ```
 pub mod weights_prelude {
 	pub use core::marker::PhantomData;
@@ -310,12 +310,12 @@ pub mod weights_prelude {
 /// A test setup typically starts with:
 ///
 /// ```
-/// use polkadot_sdk_frame::testing_prelude::*;
+/// use pezkuwi_sdk_frame::testing_prelude::*;
 /// // rest of your test setup.
 /// ```
 ///
-/// This automatically brings in `polkadot_sdk_frame::prelude::*` and
-/// `polkadot_sdk_frame::runtime::prelude::*`.
+/// This automatically brings in `pezkuwi_sdk_frame::prelude::*` and
+/// `pezkuwi_sdk_frame::runtime::prelude::*`.
 #[cfg(feature = "std")]
 pub mod testing_prelude {
 	pub use crate::{prelude::*, runtime::prelude::*};
@@ -351,10 +351,10 @@ pub mod runtime {
 	/// A runtime typically starts with:
 	///
 	/// ```
-	/// use polkadot_sdk_frame::runtime::prelude::*;
+	/// use pezkuwi_sdk_frame::runtime::prelude::*;
 	/// ```
 	///
-	/// This automatically brings in `polkadot_sdk_frame::prelude::*`.
+	/// This automatically brings in `pezkuwi_sdk_frame::prelude::*`.
 	pub mod prelude {
 		pub use crate::prelude::*;
 
@@ -426,7 +426,7 @@ pub mod runtime {
 	/// A non-testing runtime should have this enabled, as such:
 	///
 	/// ```
-	/// use polkadot_sdk_frame::runtime::{prelude::*, apis::{*,}};
+	/// use pezkuwi_sdk_frame::runtime::{prelude::*, apis::{*,}};
 	/// ```
 	// TODO: This is because of wildcard imports, and it should be not needed once we can avoid
 	// that. Imports like that are needed because we seem to need some unknown types in the macro

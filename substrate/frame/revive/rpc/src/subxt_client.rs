@@ -17,7 +17,7 @@
 //! The generated subxt client.
 //! Generated against a substrate chain configured with [`pallet_revive`] using:
 //! subxt metadata  --url ws://localhost:9944 -o rpc/revive_chain.scale
-pub use subxt::config::PolkadotConfig as SrcChainConfig;
+pub use subxt::config::PezkuwiConfig as SrcChainConfig;
 
 #[subxt::subxt(
 	runtime_metadata_path = "revive_chain.scale",

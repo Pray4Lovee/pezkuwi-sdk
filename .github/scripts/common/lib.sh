@@ -340,7 +340,7 @@ function get_s3_url_base() {
         printf "https://releases.parity.io/polkadot"
         ;;
 
-      polkadot-parachain)
+      polkadot-teyrchain)
         printf "https://releases.parity.io/polkadot-parachain"
         ;;
 
@@ -419,8 +419,8 @@ function get_latest_rc_tag() {
 
   if [[ "$product" == "polkadot" ]]; then
     last_rc=$(git tag -l "$version-rc*" | sort -V | tail -n 1)
-  elif [[ "$product" == "polkadot-parachain"  ]]; then
-    last_rc=$(git tag -l "polkadot-parachains-$version-rc*" | sort -V | tail -n 1)
+  elif [[ "$product" == "polkadot-teyrchain"  ]]; then
+    last_rc=$(git tag -l "polkadot-teyrchains-$version-rc*" | sort -V | tail -n 1)
   fi
   echo "${last_rc}"
 }

@@ -76,12 +76,12 @@ pub const DEFAULT_IDLE_CONNECTION_TIMEOUT: Duration = Duration::from_secs(10);
 
 /// Maximum number of locally kept Kademlia provider keys.
 ///
-/// 10000 keys is enough for a testnet with fast runtime (1-minute epoch) and 13 parachains.
+/// 10000 keys is enough for a testnet with fast runtime (1-minute epoch) and 13 teyrchains.
 pub const KADEMLIA_MAX_PROVIDER_KEYS: usize = 10000;
 
 /// Time to keep Kademlia content provider records.
 ///
-/// 10 h is enough time to keep the parachain bootnode record for two 4-hour epochs.
+/// 10 h is enough time to keep the teyrchain bootnode record for two 4-hour epochs.
 pub const KADEMLIA_PROVIDER_RECORD_TTL: Duration = Duration::from_secs(10 * 3600);
 
 /// Interval of republishing Kademlia provider records.
@@ -90,7 +90,7 @@ pub const KADEMLIA_PROVIDER_RECORD_TTL: Duration = Duration::from_secs(10 * 3600
 pub const KADEMLIA_PROVIDER_REPUBLISH_INTERVAL: Duration = Duration::from_secs(12600);
 
 /// Protocol name prefix, transmitted on the wire for legacy protocol names.
-/// I.e., `dot` in `/dot/sync/2`. Should be unique for each chain. Always UTF-8.
+/// I.e., `dot` in `/hez/sync/2`. Should be unique for each chain. Always UTF-8.
 /// Deprecated in favour of genesis hash & fork ID based protocol names.
 #[derive(Clone, PartialEq, Eq, Hash)]
 pub struct ProtocolId(smallvec::SmallVec<[u8; 6]>);

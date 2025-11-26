@@ -32,7 +32,7 @@ pub mod finality;
 pub mod finality_base;
 pub mod messages;
 pub mod on_demand;
-pub mod parachains;
+pub mod teyrchains;
 
 /// Transaction creation parameters.
 #[derive(Clone, Debug)]
@@ -46,7 +46,7 @@ pub struct TransactionParams<TS> {
 /// Tagged relay account, which balance may be exposed as metrics by the relay.
 #[derive(Clone, Debug)]
 pub enum TaggedAccount<AccountId> {
-	/// Account, used to sign message (also headers and parachains) relay transactions from given
+	/// Account, used to sign message (also headers and teyrchains) relay transactions from given
 	/// bridged chain.
 	Messages {
 		/// Account id.

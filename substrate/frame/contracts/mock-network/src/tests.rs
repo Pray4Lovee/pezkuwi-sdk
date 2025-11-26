@@ -16,10 +16,10 @@
 // limitations under the License.
 
 use crate::{
-	parachain::{self, Runtime},
-	parachain_account_sovereign_account_id,
+	teyrchain::{self, Runtime},
+	teyrchain_account_sovereign_account_id,
 	primitives::{AccountId, CENTS},
-	relay_chain, MockNet, ParaA, ParachainBalances, Relay, ALICE, BOB, INITIAL_BALANCE,
+	relay_chain, MockNet, ParaA, TeyrchainBalances, Relay, ALICE, BOB, INITIAL_BALANCE,
 };
 use codec::{Decode, Encode};
 use frame_support::traits::{fungibles::Mutate, Currency};
@@ -35,8 +35,8 @@ macro_rules! assert_return_code {
 	}};
 }
 
-fn bare_call(dest: sp_runtime::AccountId32) -> BareCallBuilder<parachain::Runtime> {
-	BareCallBuilder::<parachain::Runtime>::bare_call(ALICE, dest)
+fn bare_call(dest: sp_runtime::AccountId32) -> BareCallBuilder<teyrchain::Runtime> {
+	BareCallBuilder::<teyrchain::Runtime>::bare_call(ALICE, dest)
 }
 
 /// Instantiate the tests contract, and fund it with some balance and assets.
@@ -45,17 +45,17 @@ fn instantiate_test_contract(name: &str) -> AccountId {
 
 	// Instantiate contract.
 	let contract_addr = ParaA::execute_with(|| {
-		BareInstantiateBuilder::<parachain::Runtime>::bare_instantiate(ALICE, Code::Upload(wasm))
+		BareInstantiateBuilder::<teyrchain::Runtime>::bare_instantiate(ALICE, Code::Upload(wasm))
 			.build_and_unwrap_account_id()
 	});
 
 	// Funds contract account with some balance and assets.
 	ParaA::execute_with(|| {
-		parachain::Balances::make_free_balance_be(&contract_addr, INITIAL_BALANCE);
-		parachain::Assets::mint_into(0u32.into(), &contract_addr, INITIAL_BALANCE).unwrap();
+		teyrchain::Balances::make_free_balance_be(&contract_addr, INITIAL_BALANCE);
+		teyrchain::Assets::mint_into(0u32.into(), &contract_addr, INITIAL_BALANCE).unwrap();
 	});
 	Relay::execute_with(|| {
-		let sovereign_account = parachain_account_sovereign_account_id(1u32, contract_addr.clone());
+		let sovereign_account = teyrchain_account_sovereign_account_id(1u32, contract_addr.clone());
 		relay_chain::Balances::make_free_balance_be(&sovereign_account, INITIAL_BALANCE);
 	});
 
@@ -90,8 +90,8 @@ fn test_xcm_execute() {
 		// Check if the funds are subtracted from the account of Alice and added to the account of
 		// Bob.
 		let initial = INITIAL_BALANCE;
-		assert_eq!(ParachainBalances::free_balance(BOB), initial + amount);
-		assert_eq!(ParachainBalances::free_balance(&contract_addr), initial - amount);
+		assert_eq!(TeyrchainBalances::free_balance(BOB), initial + amount);
+		assert_eq!(TeyrchainBalances::free_balance(&contract_addr), initial - amount);
 	});
 }
 
@@ -124,8 +124,8 @@ fn test_xcm_execute_incomplete() {
 		assert_eq!(result.gas_consumed, result.gas_required);
 		assert_return_code!(&result.result.unwrap(), ReturnErrorCode::XcmExecutionFailed);
 
-		assert_eq!(ParachainBalances::free_balance(BOB), INITIAL_BALANCE);
-		assert_eq!(ParachainBalances::free_balance(&contract_addr), INITIAL_BALANCE - amount);
+		assert_eq!(TeyrchainBalances::free_balance(BOB), INITIAL_BALANCE);
+		assert_eq!(TeyrchainBalances::free_balance(&contract_addr), INITIAL_BALANCE - amount);
 	});
 }
 
@@ -136,7 +136,7 @@ fn test_xcm_execute_reentrant_call() {
 	let contract_addr = instantiate_test_contract("xcm_execute");
 
 	ParaA::execute_with(|| {
-		let transact_call = parachain::RuntimeCall::Contracts(pallet_contracts::Call::call {
+		let transact_call = teyrchain::RuntimeCall::Contracts(pallet_contracts::Call::call {
 			dest: contract_addr.clone(),
 			gas_limit: 1_000_000.into(),
 			storage_deposit_limit: None,
@@ -145,7 +145,7 @@ fn test_xcm_execute_reentrant_call() {
 		});
 
 		// The XCM used to transfer funds to Bob.
-		let message: Xcm<parachain::RuntimeCall> = Xcm::builder_unsafe()
+		let message: Xcm<teyrchain::RuntimeCall> = Xcm::builder_unsafe()
 			.transact(OriginKind::Native, 1_000_000_000, transact_call.encode())
 			.expect_transact_status(MaybeErrorCode::Success)
 			.build();
@@ -157,7 +157,7 @@ fn test_xcm_execute_reentrant_call() {
 		assert_return_code!(&result, ReturnErrorCode::XcmExecutionFailed);
 
 		// Funds should not change hands as the XCM transact failed.
-		assert_eq!(ParachainBalances::free_balance(BOB), INITIAL_BALANCE);
+		assert_eq!(TeyrchainBalances::free_balance(BOB), INITIAL_BALANCE);
 	});
 }
 
@@ -166,7 +166,7 @@ fn test_xcm_send() {
 	MockNet::reset();
 	let contract_addr = instantiate_test_contract("xcm_send");
 	let amount = 1_000 * CENTS;
-	let fee = parachain::estimate_message_fee(4); // Accounts for the `DescendOrigin` instruction added by `send_xcm`
+	let fee = teyrchain::estimate_message_fee(4); // Accounts for the `DescendOrigin` instruction added by `send_xcm`
 
 	// Send XCM instructions through the contract, to transfer some funds from the contract
 	// derivative account to Alice on the relay chain.
@@ -190,7 +190,7 @@ fn test_xcm_send() {
 	});
 
 	Relay::execute_with(|| {
-		let derived_contract_addr = &parachain_account_sovereign_account_id(1, contract_addr);
+		let derived_contract_addr = &teyrchain_account_sovereign_account_id(1, contract_addr);
 		assert_eq!(
 			INITIAL_BALANCE - amount,
 			relay_chain::Balances::free_balance(derived_contract_addr)

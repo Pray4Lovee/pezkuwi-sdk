@@ -485,7 +485,7 @@ and add the new service:
 ##### Telemetry
 
 The telemetry subsystem has seen a few fixes and refactorings to allow for a more flexible handling, in particular in
-regards to parachains. Most notably `sc_service::spawn_tasks` now returns the `telemetry_connection_notifier` as the
+regards to teyrchains. Most notably `sc_service::spawn_tasks` now returns the `telemetry_connection_notifier` as the
 second member of the tuple, (`let (_rpc_handlers, telemetry_connection_notifier) = sc_service::spawn_tasks(`), which
 should be passed to `telemetry_on_connect` of `new_full_base` now: `telemetry_on_connect:
 telemetry_connection_notifier.map(|x| x.on_connect_stream()),` (see the service-section below for a full diff).
@@ -498,7 +498,7 @@ hand out keys and thus to operate any Substrate-based node in a manner without e
 system memory.
 
 There are some operations, however, that the keystore must be local for performance reasons and for which a remote
-keystore won't work (in particular around parachains). As such, the keystore has both a slot for remote but also always
+keystore won't work (in particular around teyrchains). As such, the keystore has both a slot for remote but also always
 a local instance, where some operations hard bind to the local variant, while most subsystems just ask the generic
 keystore which prefers a remote signer if given. To reflect this change, `sc_service::new_full_parts` now returns a
 `KeystoreContainer` rather than the keystore, and the other subsystems (e.g. `sc_service::PartialComponents`) expect to

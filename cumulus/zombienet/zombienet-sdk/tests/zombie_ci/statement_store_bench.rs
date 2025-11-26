@@ -307,26 +307,26 @@ async fn statement_store_memory_stress_bench() -> Result<(), anyhow::Error> {
 	Ok(())
 }
 
-/// Spawns a network using a custom chain spec (people-rococo-spec.json) which validates any signed
+/// Spawns a network using a custom chain spec (people-pezkuwichain-spec.json) which validates any signed
 /// statement in the statement-store without additional verification.
 async fn spawn_network(collators: &[&str]) -> Result<Network<LocalFileSystem>, anyhow::Error> {
 	assert!(collators.len() >= 2);
 	let images = zombienet_sdk::environment::get_images_from_env();
 	let config = NetworkConfigBuilder::new()
 		.with_relaychain(|r| {
-			r.with_chain("rococo-local")
-				.with_default_command("polkadot")
-				.with_default_image(images.polkadot.as_str())
-				.with_default_args(vec!["-lparachain=debug".into()])
+			r.with_chain("pezkuwichain-local")
+				.with_default_command("pezkuwi")
+				.with_default_image(images.pezkuwi.as_str())
+				.with_default_args(vec!["-lteyrchain=debug".into()])
 				.with_node(|node| node.with_name("validator-0"))
 				.with_node(|node| node.with_name("validator-1"))
 		})
-		.with_parachain(|p| {
+		.with_teyrchain(|p| {
 			let p = p
 				.with_id(2400)
-				.with_default_command("polkadot-parachain")
+				.with_default_command("pezkuwi-teyrchain")
 				.with_default_image(images.cumulus.as_str())
-				.with_chain_spec_path("tests/zombie_ci/people-rococo-spec.json")
+				.with_chain_spec_path("tests/zombie_ci/people-pezkuwichain-spec.json")
 				.with_default_args(vec![
 					"--force-authoring".into(),
 					"-lstatement-store=info,statement-gossip=info,error".into(),

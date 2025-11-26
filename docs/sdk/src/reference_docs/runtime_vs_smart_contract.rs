@@ -14,7 +14,7 @@
 //!
 //! ## Substrate
 //! Substrate is a modular framework that enables the creation of purpose-specific blockchains. In
-//! the Polkadot ecosystem you can find two distinct approaches for on-chain code execution:
+//! the Pezkuwi ecosystem you can find two distinct approaches for on-chain code execution:
 //! [Runtime Development](#runtime-in-substrate) and [Smart Contracts](#smart-contracts).
 //!
 //! #### Smart Contracts in Substrate

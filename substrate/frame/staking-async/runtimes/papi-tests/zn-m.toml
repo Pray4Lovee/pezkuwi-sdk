@@ -1,5 +1,5 @@
 [relaychain]
-default_command = "polkadot"
+default_command = "pezkuwi"
 chain_spec_path = "./rc.json"
 
 [[relaychain.nodes]]
@@ -26,11 +26,11 @@ name = "dave"
 validator = true
 rpc_port = 9945
 
-[[parachains]]
+[[teyrchains]]
 id = 1100
-chain_spec_path = "./parachain.json"
+chain_spec_path = "./teyrchain.json"
 
-[parachains.collator]
+[teyrchains.collator]
 name = "charlie"
 rpc_port = 9946
 args = [

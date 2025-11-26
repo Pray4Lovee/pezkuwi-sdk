@@ -17,7 +17,7 @@
 
 use crate::*;
 
-use crate::parachain_consensus::run_parachain_consensus;
+use crate::teyrchain_consensus::run_teyrchain_consensus;
 use async_trait::async_trait;
 use codec::Encode;
 use cumulus_client_pov_recovery::RecoveryKind;
@@ -36,7 +36,7 @@ use cumulus_test_client::{
 use cumulus_test_relay_sproof_builder::RelayStateSproofBuilder;
 use futures::{channel::mpsc, executor::block_on, select, FutureExt, Stream, StreamExt};
 use futures_timer::Delay;
-use polkadot_primitives::{CandidateEvent, HeadData};
+use pezkuwi_primitives::{CandidateEvent, HeadData};
 use sc_client_api::{Backend as _, UsageProvider};
 use sc_consensus::{BlockImport, BlockImportParams, ForkChoiceStrategy};
 use sp_blockchain::Backend as BlockchainBackend;
@@ -187,7 +187,7 @@ impl RelayChainInterface for Relaychain {
 			.take()
 			.unwrap()
 			.map(move |h| {
-				// Let's abuse the "parachain header" directly as relay chain header.
+				// Let's abuse the "teyrchain header" directly as relay chain header.
 				inner.lock().unwrap().relay_chain_hash_to_header.insert(h.hash(), h.clone());
 				h
 			})
@@ -234,7 +234,7 @@ impl RelayChainInterface for Relaychain {
 			.take()
 			.unwrap()
 			.map(move |h| {
-				// Let's abuse the "parachain header" directly as relay chain header.
+				// Let's abuse the "teyrchain header" directly as relay chain header.
 				inner.lock().unwrap().relay_chain_hash_to_header.insert(h.hash(), h.clone());
 				h
 			})
@@ -308,7 +308,7 @@ fn sproof_with_parent_by_hash(client: &Client, hash: PHash) -> RelayStateSproofB
 
 fn sproof_with_parent(parent: HeadData) -> RelayStateSproofBuilder {
 	let mut x = RelayStateSproofBuilder::default();
-	x.para_id = cumulus_test_client::runtime::PARACHAIN_ID.into();
+	x.para_id = cumulus_test_client::runtime::TEYRCHAIN_ID.into();
 	x.included_para_head = Some(parent);
 
 	x
@@ -416,7 +416,7 @@ async fn follow_new_best_works() {
 	let new_best_heads_sender = relay_chain.inner.lock().unwrap().new_best_heads_sender.clone();
 
 	let (_finalized_sender, finalized_receiver) = futures::channel::mpsc::unbounded();
-	let consensus = run_parachain_consensus(
+	let consensus = run_teyrchain_consensus(
 		100.into(),
 		client.clone(),
 		relay_chain,
@@ -456,7 +456,7 @@ async fn follow_new_best_with_dummy_recovery_works() {
 	let (recovery_chan_tx, mut recovery_chan_rx) = futures::channel::mpsc::channel(3);
 
 	let (_finalized_sender, finalized_receiver) = futures::channel::mpsc::unbounded();
-	let consensus = run_parachain_consensus(
+	let consensus = run_teyrchain_consensus(
 		100.into(),
 		client.clone(),
 		relay_chain,
@@ -522,7 +522,7 @@ async fn follow_finalized_works() {
 	let _finalized_sender = relay_chain.inner.lock().unwrap().finalized_heads_sender.clone();
 
 	let (mock_finalized_sender, finalized_receiver) = futures::channel::mpsc::unbounded();
-	let consensus = run_parachain_consensus(
+	let consensus = run_teyrchain_consensus(
 		100.into(),
 		client.clone(),
 		relay_chain,
@@ -568,7 +568,7 @@ async fn follow_finalized_does_not_stop_on_unknown_block() {
 	let _finalized_sender = relay_chain.inner.lock().unwrap().finalized_heads_sender.clone();
 
 	let (mock_finalized_sender, finalized_receiver) = futures::channel::mpsc::unbounded();
-	let consensus = run_parachain_consensus(
+	let consensus = run_teyrchain_consensus(
 		100.into(),
 		client.clone(),
 		relay_chain,
@@ -602,7 +602,7 @@ async fn follow_finalized_does_not_stop_on_unknown_block() {
 	}
 }
 
-// It can happen that we first import a relay chain block, while not yet having the parachain
+// It can happen that we first import a relay chain block, while not yet having the teyrchain
 // block imported that would be set to the best block. We need to make sure to import this
 // block as new best block in the moment it is imported.
 #[tokio::test]
@@ -623,7 +623,7 @@ async fn follow_new_best_sets_best_after_it_is_imported() {
 	let new_best_heads_sender = relay_chain.inner.lock().unwrap().new_best_heads_sender.clone();
 
 	let (_finalized_sender, finalized_receiver) = futures::channel::mpsc::unbounded();
-	let consensus = run_parachain_consensus(
+	let consensus = run_teyrchain_consensus(
 		100.into(),
 		client.clone(),
 		relay_chain,
@@ -677,12 +677,12 @@ async fn follow_new_best_sets_best_after_it_is_imported() {
 	}
 }
 
-/// When we import a new best relay chain block, we extract the best parachain block from it and set
-/// it. This works when we follow the relay chain and parachain at the tip of each other, but there
+/// When we import a new best relay chain block, we extract the best teyrchain block from it and set
+/// it. This works when we follow the relay chain and teyrchain at the tip of each other, but there
 /// can be race conditions when we are doing a full sync of both or just the relay chain.
-/// The problem is that we import parachain blocks as best as long as we are in major sync. So, we
+/// The problem is that we import teyrchain blocks as best as long as we are in major sync. So, we
 /// could import block 100 as best and then import a relay chain block that says that block 99 is
-/// the best parachain block. This should not happen, we should never set the best block to a lower
+/// the best teyrchain block. This should not happen, we should never set the best block to a lower
 /// block number.
 #[tokio::test]
 async fn do_not_set_best_block_to_older_block() {
@@ -704,7 +704,7 @@ async fn do_not_set_best_block_to_older_block() {
 	let new_best_heads_sender = relay_chain.inner.lock().unwrap().new_best_heads_sender.clone();
 
 	let (_finalized_sender, finalized_receiver) = futures::channel::mpsc::unbounded();
-	let consensus = run_parachain_consensus(
+	let consensus = run_teyrchain_consensus(
 		100.into(),
 		client.clone(),
 		relay_chain,
@@ -741,7 +741,7 @@ fn prune_blocks_on_level_overflow() {
 	let mut ts_producer = std::iter::successors(Some(0), |&x| Some(x + 6000));
 	let backend = Arc::new(Backend::new_test(1000, 3));
 	let client = Arc::new(TestClientBuilder::with_backend(backend.clone()).build());
-	let mut para_import = ParachainBlockImport::new_with_limit(
+	let mut para_import = TeyrchainBlockImport::new_with_limit(
 		client.clone(),
 		backend.clone(),
 		LevelLimit::Some(LEVEL_LIMIT),
@@ -858,7 +858,7 @@ fn restore_limit_monitor() {
 	let client = Arc::new(TestClientBuilder::with_backend(backend.clone()).build());
 
 	// Start with a block import not enforcing any limit...
-	let mut para_import = ParachainBlockImport::new_with_limit(
+	let mut para_import = TeyrchainBlockImport::new_with_limit(
 		client.clone(),
 		backend.clone(),
 		LevelLimit::Some(usize::MAX),
@@ -914,7 +914,7 @@ fn restore_limit_monitor() {
 
 	// Simulate a restart by forcing a new monitor structure instance
 
-	let mut para_import = ParachainBlockImport::new_with_limit(
+	let mut para_import = TeyrchainBlockImport::new_with_limit(
 		client.clone(),
 		backend.clone(),
 		LevelLimit::Some(LEVEL_LIMIT),
@@ -962,7 +962,7 @@ fn find_potential_parents_in_allowed_ancestry() {
 
 	let backend = Arc::new(Backend::new_test(1000, 1));
 	let client = Arc::new(TestClientBuilder::with_backend(backend.clone()).build());
-	let mut para_import = ParachainBlockImport::new(client.clone(), backend.clone());
+	let mut para_import = TeyrchainBlockImport::new(client.clone(), backend.clone());
 
 	let relay_parent = relay_hash_from_block_num(10);
 	let block = build_and_import_block_ext(
@@ -1063,7 +1063,7 @@ fn find_potential_pending_parent() {
 
 	let backend = Arc::new(Backend::new_test(1000, 1));
 	let client = Arc::new(TestClientBuilder::with_backend(backend.clone()).build());
-	let mut para_import = ParachainBlockImport::new(client.clone(), backend.clone());
+	let mut para_import = TeyrchainBlockImport::new(client.clone(), backend.clone());
 
 	let relay_parent = relay_hash_from_block_num(10);
 	let included_block = build_and_import_block_ext(
@@ -1134,7 +1134,7 @@ fn find_potential_parents_with_max_depth() {
 
 	let backend = Arc::new(Backend::new_test(1000, 1));
 	let client = Arc::new(TestClientBuilder::with_backend(backend.clone()).build());
-	let mut para_import = ParachainBlockImport::new(client.clone(), backend.clone());
+	let mut para_import = TeyrchainBlockImport::new(client.clone(), backend.clone());
 
 	let relay_parent = relay_hash_from_block_num(10);
 	let included_block = build_and_import_block_ext(
@@ -1246,7 +1246,7 @@ fn find_potential_parents_unknown_pending() {
 	let backend = Arc::new(Backend::new_test(1000, 1));
 	let client = Arc::new(TestClientBuilder::with_backend(backend.clone()).build());
 	let mut para_import =
-		ParachainBlockImport::new_with_delayed_best_block(client.clone(), backend.clone());
+		TeyrchainBlockImport::new_with_delayed_best_block(client.clone(), backend.clone());
 
 	let relay_parent = relay_hash_from_block_num(10);
 	// Choose different relay parent for alternative chain to get new hashes.
@@ -1307,7 +1307,7 @@ fn find_potential_parents_unknown_pending_include_alternative_branches() {
 	let backend = Arc::new(Backend::new_test(1000, 1));
 	let client = Arc::new(TestClientBuilder::with_backend(backend.clone()).build());
 	let mut para_import =
-		ParachainBlockImport::new_with_delayed_best_block(client.clone(), backend.clone());
+		TeyrchainBlockImport::new_with_delayed_best_block(client.clone(), backend.clone());
 
 	let relay_parent = relay_hash_from_block_num(10);
 
@@ -1385,7 +1385,7 @@ fn find_potential_parents_aligned_with_late_pending() {
 	let backend = Arc::new(Backend::new_test(1000, 1));
 	let client = Arc::new(TestClientBuilder::with_backend(backend.clone()).build());
 	let mut para_import =
-		ParachainBlockImport::new_with_delayed_best_block(client.clone(), backend.clone());
+		TeyrchainBlockImport::new_with_delayed_best_block(client.clone(), backend.clone());
 
 	let relay_parent = relay_hash_from_block_num(10);
 	// Choose different relay parent for alternative chain to get new hashes.
@@ -1557,7 +1557,7 @@ fn find_potential_parents_aligned_with_pending() {
 	let backend = Arc::new(Backend::new_test(1000, 1));
 	let client = Arc::new(TestClientBuilder::with_backend(backend.clone()).build());
 	let mut para_import =
-		ParachainBlockImport::new_with_delayed_best_block(client.clone(), backend.clone());
+		TeyrchainBlockImport::new_with_delayed_best_block(client.clone(), backend.clone());
 
 	let relay_parent = relay_hash_from_block_num(10);
 	// Choose different relay parent for alternative chain to get new hashes.
@@ -1721,7 +1721,7 @@ fn find_potential_parents_aligned_no_pending() {
 	let backend = Arc::new(Backend::new_test(1000, 1));
 	let client = Arc::new(TestClientBuilder::with_backend(backend.clone()).build());
 	let mut para_import =
-		ParachainBlockImport::new_with_delayed_best_block(client.clone(), backend.clone());
+		TeyrchainBlockImport::new_with_delayed_best_block(client.clone(), backend.clone());
 
 	let relay_parent = relay_hash_from_block_num(10);
 	// Choose different relay parent for alternative chain to get new hashes.

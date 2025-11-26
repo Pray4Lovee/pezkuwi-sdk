@@ -4,7 +4,7 @@ doc:
   description: |-
     This bumps `ethbloom`, `ethereum-types`, `primitive-types` and `rlp` to their latest version.
 
-    Fixes: https://github.com/paritytech/polkadot-sdk/issues/5870
+    Fixes: https://github.com/pezkuwichain/pezkuwichain-sdk/issues/5870
 crates:
 - name: sc-consensus-babe
   bump: patch

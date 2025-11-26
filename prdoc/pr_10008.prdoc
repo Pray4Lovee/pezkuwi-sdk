@@ -6,7 +6,7 @@ doc:
     is passed, blocks are produced immediately upon receiving transactions, rather than at fixed
     intervals. This flag cannot be used together with `--dev-block-time`.
 
-    fixes https://github.com/paritytech/polkadot-sdk/issues/9996
+    fixes https://github.com/pezkuwichain/pezkuwichain-sdk/issues/9996
 crates:
 - name: polkadot-omni-node-lib
   bump: patch

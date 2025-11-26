@@ -20,7 +20,7 @@ use crate::SimpleRuntimeVersion;
 use bp_header_chain::ChainWithGrandpa as ChainWithGrandpaBase;
 use bp_messages::ChainWithMessages as ChainWithMessagesBase;
 use bp_runtime::{
-	Chain as ChainBase, EncodedOrDecodedCall, HashOf, Parachain as ParachainBase, TransactionEra,
+	Chain as ChainBase, EncodedOrDecodedCall, HashOf, Teyrchain as TeyrchainBase, TransactionEra,
 	TransactionEraOf, UnderlyingChainProvider,
 };
 use codec::{Codec, Decode, Encode, MaxEncodedLen};
@@ -79,21 +79,21 @@ pub trait ChainWithRuntimeVersion: Chain {
 	const RUNTIME_VERSION: Option<SimpleRuntimeVersion>;
 }
 
-/// Substrate-based relay chain that supports parachains.
+/// Substrate-based relay chain that supports teyrchains.
 ///
-/// We assume that the parachains are supported using `runtime_parachains::paras` pallet.
+/// We assume that the teyrchains are supported using `runtime_teyrchains::paras` pallet.
 pub trait RelayChain: Chain {
-	/// Name of the `runtime_parachains::paras` pallet in the runtime of this chain.
+	/// Name of the `runtime_teyrchains::paras` pallet in the runtime of this chain.
 	const PARAS_PALLET_NAME: &'static str;
-	/// Name of the `pallet-bridge-parachains`, deployed at the **bridged** chain to sync
-	/// parachains of **this** chain.
-	const WITH_CHAIN_BRIDGE_PARACHAINS_PALLET_NAME: &'static str;
+	/// Name of the `pallet-bridge-teyrchains`, deployed at the **bridged** chain to sync
+	/// teyrchains of **this** chain.
+	const WITH_CHAIN_BRIDGE_TEYRCHAINS_PALLET_NAME: &'static str;
 }
 
 /// Substrate-based chain that is using direct GRANDPA finality from minimal relay-client point of
 /// view.
 ///
-/// Keep in mind that parachains are relying on relay chain GRANDPA, so they should not implement
+/// Keep in mind that teyrchains are relying on relay chain GRANDPA, so they should not implement
 /// this trait.
 pub trait ChainWithGrandpa: Chain + ChainWithGrandpaBase {
 	/// Name of the runtime API method that is returning the GRANDPA info associated with the
@@ -107,10 +107,10 @@ pub trait ChainWithGrandpa: Chain + ChainWithGrandpaBase {
 	type KeyOwnerProof: Decode + TypeInfo + Send;
 }
 
-/// Substrate-based parachain from minimal relay-client point of view.
-pub trait Parachain: Chain + ParachainBase {}
+/// Substrate-based teyrchain from minimal relay-client point of view.
+pub trait Teyrchain: Chain + TeyrchainBase {}
 
-impl<T> Parachain for T where T: UnderlyingChainProvider + Chain + ParachainBase {}
+impl<T> Teyrchain for T where T: UnderlyingChainProvider + Chain + TeyrchainBase {}
 
 /// Substrate-based chain with messaging support from minimal relay-client point of view.
 pub trait ChainWithMessages: Chain + ChainWithMessagesBase {

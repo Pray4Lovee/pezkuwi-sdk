@@ -19,20 +19,20 @@ test(
 			// first relay session change at block 11
 			Observe.on(Chain.Relay, "Session", "NewSession").byBlock(11),
 			// eventually AH will will be instructed to plan a new session.
-			Observe.on(Chain.Parachain, "Staking", "SessionRotated")
+			Observe.on(Chain.Teyrchain, "Staking", "SessionRotated")
 				.withDataCheck((x: any) => x.active_era == 0 && x.planned_era == 1)
 				.onPass(() => {
 					nullifySigned(apis.paraApi);
 				}),
 			// Eventually we will receive an activation timestamp in AH, meaning the first era was complete.
-			Observe.on(Chain.Parachain, "StakingRcClient", "SessionReportReceived")
+			Observe.on(Chain.Teyrchain, "StakingRcClient", "SessionReportReceived")
 				.withDataCheck((x) => x.activation_timestamp !== undefined)
 				.onPass(() => {
 					// upon completion, submit a slash to rc
 					logger.info("Submitting slash to RC");
 					const call = apis.rcApi.tx.RootOffences.create_offence({
 						offenders: [
-							// alice//Stash, 50%, which will cause any disabling. See `DisablingStrategy` in `./runtimes/parachain`.
+							// alice//Stash, 50%, which will cause any disabling. See `DisablingStrategy` in `./runtimes/teyrchain`.
 							[aliceStash, 500000000],
 						],
 						maybe_identifications: undefined,
@@ -53,12 +53,12 @@ test(
 
 			// Rest of the events are the same as in the non-disabling test.
 
-			// eventually we will receive an offence in the parachain, first the rc-client
-			Observe.on(Chain.Parachain, "StakingRcClient", "OffenceReceived").withDataCheck(
+			// eventually we will receive an offence in the teyrchain, first the rc-client
+			Observe.on(Chain.Teyrchain, "StakingRcClient", "OffenceReceived").withDataCheck(
 				(x: any) => x.offences_count === 1
 			),
 			// then staking
-			Observe.on(Chain.Parachain, "Staking", "OffenceReported")
+			Observe.on(Chain.Teyrchain, "Staking", "OffenceReported")
 				.withDataCheck((x: any) => x.offence_era === 1 && x.fraction === 500000000)
 				.onPass(async () => {
 					// let's calculate how many pages of exposure alice has -- this will impact the number of next events.
@@ -75,18 +75,18 @@ test(
 				}),
 
 			// then staking will calculate the slashes, we only check 1 page
-			Observe.on(Chain.Parachain, "Staking", "SlashComputed").withDataCheck(
+			Observe.on(Chain.Teyrchain, "Staking", "SlashComputed").withDataCheck(
 				(x: any) => x.page === 0
 			),
 
 			// staking will eventually bump to active era 2, where slashes will be applied.
-			Observe.on(Chain.Parachain, "Staking", "EraPaid"),
-			Observe.on(Chain.Parachain, "Staking", "SessionRotated").withDataCheck(
+			Observe.on(Chain.Teyrchain, "Staking", "EraPaid"),
+			Observe.on(Chain.Teyrchain, "Staking", "SessionRotated").withDataCheck(
 				(x: any) => x.active_era === 2
 			),
 
 			// staking will apply slashes, we only check one slash.
-			Observe.on(Chain.Parachain, "Staking", "Slashed"),
+			Observe.on(Chain.Teyrchain, "Staking", "Slashed"),
 		];
 		const testCase = new TestCase(
 			steps.map((s) => s.build()),

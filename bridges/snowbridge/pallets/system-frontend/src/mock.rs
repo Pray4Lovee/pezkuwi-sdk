@@ -70,9 +70,9 @@ parameter_types! {
 				],
 	);
 	pub storage DeliveryFee: Asset = (Location::parent(), 80_000_000_000u128).into();
-	pub BridgeHubLocation: Location = Location::new(1, [Parachain(1002)]);
+	pub BridgeHubLocation: Location = Location::new(1, [Teyrchain(1002)]);
 	pub UniversalLocation: InteriorLocation =
-		[GlobalConsensus(Polkadot), Parachain(1000)].into();
+		[GlobalConsensus(Pezkuwi), Teyrchain(1000)].into();
 	pub PalletLocation: InteriorLocation = [PalletInstance(36)].into();
 }
 
@@ -82,7 +82,7 @@ impl xcm_executor::traits::ConvertLocation<AccountId> for AccountIdConverter {
 		match ml.unpack() {
 			(0, [Junction::AccountId32 { id, .. }]) =>
 				Some(<AccountId as codec::Decode>::decode(&mut &*id.to_vec()).unwrap()),
-			(1, [Parachain(id)]) => Some(ParaId::from(*id).into_account_truncating()),
+			(1, [Teyrchain(id)]) => Some(ParaId::from(*id).into_account_truncating()),
 			_ => None,
 		}
 	}

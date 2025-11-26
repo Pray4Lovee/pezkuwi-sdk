@@ -63,7 +63,7 @@ jobs:
     needs: [preflight, runtime-matrix]
     runs-on: ${{ needs.preflight.outputs.RUNNER_WEIGHTS }}
     # 24 hours per runtime. 
-    # Max it takes 14hr for westend to recalculate, but due to limited runners,
+    # Max it takes 14hr for zagros to recalculate, but due to limited runners,
     # sometimes it can take longer.
     timeout-minutes: 1440
     strategy:

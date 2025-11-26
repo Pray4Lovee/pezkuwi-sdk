@@ -57,12 +57,12 @@ use sp_runtime::{
 
 pub use grandpa_adapter::WithGrandpaChainExtensionConfig;
 pub use messages_adapter::WithMessagesExtensionConfig;
-pub use parachain_adapter::WithParachainExtensionConfig;
+pub use teyrchain_adapter::WithTeyrchainExtensionConfig;
 pub use priority::*;
 
 mod grandpa_adapter;
 mod messages_adapter;
-mod parachain_adapter;
+mod teyrchain_adapter;
 mod priority;
 
 /// Data that is crafted in `validate`, passed to `prepare` and used at `post_dispatch` method.
@@ -462,10 +462,10 @@ mod tests {
 		ReceiveMessagesDeliveryProofInfo, ReceiveMessagesProofInfo, UnrewardedRelayer,
 		UnrewardedRelayerOccupation, UnrewardedRelayersState,
 	};
-	use bp_parachains::{BestParaHeadHash, ParaInfo, SubmitParachainHeadsInfo};
-	use bp_polkadot_core::parachains::{ParaHeadsProof, ParaId};
+	use bp_teyrchains::{BestParaHeadHash, ParaInfo, SubmitTeyrchainHeadsInfo};
+	use bp_pezkuwi_core::teyrchains::{ParaHeadsProof, ParaId};
 	use bp_relayers::RuntimeWithUtilityPallet;
-	use bp_runtime::{BasicOperatingMode, HeaderId, Parachain};
+	use bp_runtime::{BasicOperatingMode, HeaderId, Teyrchain};
 	use bp_test_utils::{make_default_justification, test_keyring, TEST_GRANDPA_SET_ID};
 	use frame_support::{
 		__private::sp_tracing,
@@ -475,7 +475,7 @@ mod tests {
 	};
 	use pallet_bridge_grandpa::{Call as GrandpaCall, Pallet as GrandpaPallet, StoredAuthoritySet};
 	use pallet_bridge_messages::{Call as MessagesCall, Pallet as MessagesPallet};
-	use pallet_bridge_parachains::{Call as ParachainsCall, Pallet as ParachainsPallet};
+	use pallet_bridge_teyrchains::{Call as TeyrchainsCall, Pallet as TeyrchainsPallet};
 	use pallet_utility::Call as UtilityCall;
 	use sp_runtime::{
 		traits::{ConstU64, DispatchTransaction, Header as HeaderT},
@@ -486,7 +486,7 @@ mod tests {
 	};
 
 	parameter_types! {
-		TestParachain: u32 = BridgedUnderlyingParachain::PARACHAIN_ID;
+		TestTeyrchain: u32 = BridgedUnderlyingTeyrchain::TEYRCHAIN_ID;
 		pub MsgProofsRewardsAccount: RewardsAccountParams<TestLaneIdType> = RewardsAccountParams::new(
 			test_lane_id(),
 			TEST_BRIDGED_CHAIN_ID,
@@ -514,7 +514,7 @@ mod tests {
 	>;
 	type TestGrandpaExtension =
 		BridgeRelayersTransactionExtension<TestRuntime, TestGrandpaExtensionConfig>;
-	type TestExtensionConfig = parachain_adapter::WithParachainExtensionConfig<
+	type TestExtensionConfig = teyrchain_adapter::WithTeyrchainExtensionConfig<
 		StrTestExtension,
 		TestRuntime,
 		RuntimeWithUtilityPallet<TestRuntime>,
@@ -560,7 +560,7 @@ mod tests {
 
 	fn initialize_environment(
 		best_relay_header_number: BridgedChainBlockNumber,
-		parachain_head_at_relay_header_number: BridgedChainBlockNumber,
+		teyrchain_head_at_relay_header_number: BridgedChainBlockNumber,
 		best_message: MessageNonce,
 	) {
 		let authorities = test_keyring().into_iter().map(|(a, w)| (a.into(), w)).collect();
@@ -574,15 +574,15 @@ mod tests {
 			bp_test_utils::test_header::<BridgedChainHeader>(0).build(),
 		);
 
-		let para_id = ParaId(TestParachain::get());
+		let para_id = ParaId(TestTeyrchain::get());
 		let para_info = ParaInfo {
 			best_head_hash: BestParaHeadHash {
-				at_relay_block_number: parachain_head_at_relay_header_number,
-				head_hash: [parachain_head_at_relay_header_number as u8; 32].into(),
+				at_relay_block_number: teyrchain_head_at_relay_header_number,
+				head_hash: [teyrchain_head_at_relay_header_number as u8; 32].into(),
 			},
 			next_imported_hash_position: 0,
 		};
-		pallet_bridge_parachains::ParasInfo::<TestRuntime>::insert(para_id, para_info);
+		pallet_bridge_teyrchains::ParasInfo::<TestRuntime>::insert(para_id, para_info);
 
 		let lane_id = test_lane_id();
 		let in_lane_data =
@@ -636,29 +636,29 @@ mod tests {
 		})
 	}
 
-	fn submit_parachain_head_call(
-		parachain_head_at_relay_header_number: BridgedChainBlockNumber,
+	fn submit_teyrchain_head_call(
+		teyrchain_head_at_relay_header_number: BridgedChainBlockNumber,
 	) -> RuntimeCall {
-		RuntimeCall::BridgeParachains(ParachainsCall::submit_parachain_heads {
-			at_relay_block: (parachain_head_at_relay_header_number, BridgedChainHash::default()),
-			parachains: vec![(
-				ParaId(TestParachain::get()),
-				[parachain_head_at_relay_header_number as u8; 32].into(),
+		RuntimeCall::BridgeTeyrchains(TeyrchainsCall::submit_teyrchain_heads {
+			at_relay_block: (teyrchain_head_at_relay_header_number, BridgedChainHash::default()),
+			teyrchains: vec![(
+				ParaId(TestTeyrchain::get()),
+				[teyrchain_head_at_relay_header_number as u8; 32].into(),
 			)],
-			parachain_heads_proof: ParaHeadsProof { storage_proof: Default::default() },
+			teyrchain_heads_proof: ParaHeadsProof { storage_proof: Default::default() },
 		})
 	}
 
-	pub fn submit_parachain_head_call_ex(
-		parachain_head_at_relay_header_number: BridgedChainBlockNumber,
+	pub fn submit_teyrchain_head_call_ex(
+		teyrchain_head_at_relay_header_number: BridgedChainBlockNumber,
 	) -> RuntimeCall {
-		RuntimeCall::BridgeParachains(ParachainsCall::submit_parachain_heads_ex {
-			at_relay_block: (parachain_head_at_relay_header_number, BridgedChainHash::default()),
-			parachains: vec![(
-				ParaId(TestParachain::get()),
-				[parachain_head_at_relay_header_number as u8; 32].into(),
+		RuntimeCall::BridgeTeyrchains(TeyrchainsCall::submit_teyrchain_heads_ex {
+			at_relay_block: (teyrchain_head_at_relay_header_number, BridgedChainHash::default()),
+			teyrchains: vec![(
+				ParaId(TestTeyrchain::get()),
+				[teyrchain_head_at_relay_header_number as u8; 32].into(),
 			)],
-			parachain_heads_proof: ParaHeadsProof { storage_proof: Default::default() },
+			teyrchain_heads_proof: ParaHeadsProof { storage_proof: Default::default() },
 			is_free_execution_expected: false,
 		})
 	}
@@ -697,25 +697,25 @@ mod tests {
 		})
 	}
 
-	fn parachain_finality_and_delivery_batch_call(
-		parachain_head_at_relay_header_number: BridgedChainBlockNumber,
+	fn teyrchain_finality_and_delivery_batch_call(
+		teyrchain_head_at_relay_header_number: BridgedChainBlockNumber,
 		best_message: MessageNonce,
 	) -> RuntimeCall {
 		RuntimeCall::Utility(UtilityCall::batch_all {
 			calls: vec![
-				submit_parachain_head_call(parachain_head_at_relay_header_number),
+				submit_teyrchain_head_call(teyrchain_head_at_relay_header_number),
 				message_delivery_call(best_message),
 			],
 		})
 	}
 
-	fn parachain_finality_and_confirmation_batch_call(
-		parachain_head_at_relay_header_number: BridgedChainBlockNumber,
+	fn teyrchain_finality_and_confirmation_batch_call(
+		teyrchain_head_at_relay_header_number: BridgedChainBlockNumber,
 		best_message: MessageNonce,
 	) -> RuntimeCall {
 		RuntimeCall::Utility(UtilityCall::batch_all {
 			calls: vec![
-				submit_parachain_head_call(parachain_head_at_relay_header_number),
+				submit_teyrchain_head_call(teyrchain_head_at_relay_header_number),
 				message_confirmation_call(best_message),
 			],
 		})
@@ -771,13 +771,13 @@ mod tests {
 
 	fn all_finality_and_delivery_batch_call(
 		relay_header_number: BridgedChainBlockNumber,
-		parachain_head_at_relay_header_number: BridgedChainBlockNumber,
+		teyrchain_head_at_relay_header_number: BridgedChainBlockNumber,
 		best_message: MessageNonce,
 	) -> RuntimeCall {
 		RuntimeCall::Utility(UtilityCall::batch_all {
 			calls: vec![
 				submit_relay_header_call(relay_header_number),
-				submit_parachain_head_call(parachain_head_at_relay_header_number),
+				submit_teyrchain_head_call(teyrchain_head_at_relay_header_number),
 				message_delivery_call(best_message),
 			],
 		})
@@ -785,13 +785,13 @@ mod tests {
 
 	fn all_finality_and_delivery_batch_call_ex(
 		relay_header_number: BridgedChainBlockNumber,
-		parachain_head_at_relay_header_number: BridgedChainBlockNumber,
+		teyrchain_head_at_relay_header_number: BridgedChainBlockNumber,
 		best_message: MessageNonce,
 	) -> RuntimeCall {
 		RuntimeCall::Utility(UtilityCall::batch_all {
 			calls: vec![
 				submit_relay_header_call_ex(relay_header_number),
-				submit_parachain_head_call_ex(parachain_head_at_relay_header_number),
+				submit_teyrchain_head_call_ex(teyrchain_head_at_relay_header_number),
 				message_delivery_call(best_message),
 			],
 		})
@@ -799,13 +799,13 @@ mod tests {
 
 	fn all_finality_and_confirmation_batch_call(
 		relay_header_number: BridgedChainBlockNumber,
-		parachain_head_at_relay_header_number: BridgedChainBlockNumber,
+		teyrchain_head_at_relay_header_number: BridgedChainBlockNumber,
 		best_message: MessageNonce,
 	) -> RuntimeCall {
 		RuntimeCall::Utility(UtilityCall::batch_all {
 			calls: vec![
 				submit_relay_header_call(relay_header_number),
-				submit_parachain_head_call(parachain_head_at_relay_header_number),
+				submit_teyrchain_head_call(teyrchain_head_at_relay_header_number),
 				message_confirmation_call(best_message),
 			],
 		})
@@ -813,13 +813,13 @@ mod tests {
 
 	fn all_finality_and_confirmation_batch_call_ex(
 		relay_header_number: BridgedChainBlockNumber,
-		parachain_head_at_relay_header_number: BridgedChainBlockNumber,
+		teyrchain_head_at_relay_header_number: BridgedChainBlockNumber,
 		best_message: MessageNonce,
 	) -> RuntimeCall {
 		RuntimeCall::Utility(UtilityCall::batch_all {
 			calls: vec![
 				submit_relay_header_call_ex(relay_header_number),
-				submit_parachain_head_call_ex(parachain_head_at_relay_header_number),
+				submit_teyrchain_head_call_ex(teyrchain_head_at_relay_header_number),
 				message_confirmation_call(best_message),
 			],
 		})
@@ -838,9 +838,9 @@ mod tests {
 					is_mandatory: false,
 					is_free_execution_expected: false,
 				},
-				SubmitParachainHeadsInfo {
+				SubmitTeyrchainHeadsInfo {
 					at_relay_block: HeaderId(200, [0u8; 32].into()),
-					para_id: ParaId(TestParachain::get()),
+					para_id: ParaId(TestTeyrchain::get()),
 					para_head_hash: [200u8; 32].into(),
 					is_free_execution_expected: false,
 				},
@@ -852,9 +852,9 @@ mod tests {
 					},
 					unrewarded_relayers: UnrewardedRelayerOccupation {
 						free_relayer_slots:
-							BridgedUnderlyingParachain::MAX_UNREWARDED_RELAYERS_IN_CONFIRMATION_TX,
+							BridgedUnderlyingTeyrchain::MAX_UNREWARDED_RELAYERS_IN_CONFIRMATION_TX,
 						free_message_slots:
-							BridgedUnderlyingParachain::MAX_UNCONFIRMED_MESSAGES_IN_CONFIRMATION_TX,
+							BridgedUnderlyingTeyrchain::MAX_UNCONFIRMED_MESSAGES_IN_CONFIRMATION_TX,
 					},
 				}),
 			),
@@ -882,9 +882,9 @@ mod tests {
 					is_mandatory: false,
 					is_free_execution_expected: false,
 				},
-				SubmitParachainHeadsInfo {
+				SubmitTeyrchainHeadsInfo {
 					at_relay_block: HeaderId(200, [0u8; 32].into()),
-					para_id: ParaId(TestParachain::get()),
+					para_id: ParaId(TestTeyrchain::get()),
 					para_head_hash: [200u8; 32].into(),
 					is_free_execution_expected: false,
 				},
@@ -927,9 +927,9 @@ mod tests {
 					},
 					unrewarded_relayers: UnrewardedRelayerOccupation {
 						free_relayer_slots:
-							BridgedUnderlyingParachain::MAX_UNREWARDED_RELAYERS_IN_CONFIRMATION_TX,
+							BridgedUnderlyingTeyrchain::MAX_UNREWARDED_RELAYERS_IN_CONFIRMATION_TX,
 						free_message_slots:
-							BridgedUnderlyingParachain::MAX_UNCONFIRMED_MESSAGES_IN_CONFIRMATION_TX,
+							BridgedUnderlyingTeyrchain::MAX_UNCONFIRMED_MESSAGES_IN_CONFIRMATION_TX,
 					},
 				}),
 			),
@@ -974,14 +974,14 @@ mod tests {
 		data
 	}
 
-	fn parachain_finality_pre_dispatch_data(
+	fn teyrchain_finality_pre_dispatch_data(
 	) -> PreDispatchData<ThisChainAccountId, BridgedChainBlockNumber, TestLaneIdType> {
 		PreDispatchData {
 			relayer: relayer_account_at_this_chain(),
-			call_info: ExtensionCallInfo::ParachainFinalityAndMsgs(
-				SubmitParachainHeadsInfo {
+			call_info: ExtensionCallInfo::TeyrchainFinalityAndMsgs(
+				SubmitTeyrchainHeadsInfo {
 					at_relay_block: HeaderId(200, [0u8; 32].into()),
-					para_id: ParaId(TestParachain::get()),
+					para_id: ParaId(TestTeyrchain::get()),
 					para_head_hash: [200u8; 32].into(),
 					is_free_execution_expected: false,
 				},
@@ -993,23 +993,23 @@ mod tests {
 					},
 					unrewarded_relayers: UnrewardedRelayerOccupation {
 						free_relayer_slots:
-							BridgedUnderlyingParachain::MAX_UNREWARDED_RELAYERS_IN_CONFIRMATION_TX,
+							BridgedUnderlyingTeyrchain::MAX_UNREWARDED_RELAYERS_IN_CONFIRMATION_TX,
 						free_message_slots:
-							BridgedUnderlyingParachain::MAX_UNCONFIRMED_MESSAGES_IN_CONFIRMATION_TX,
+							BridgedUnderlyingTeyrchain::MAX_UNCONFIRMED_MESSAGES_IN_CONFIRMATION_TX,
 					},
 				}),
 			),
 		}
 	}
 
-	fn parachain_finality_confirmation_pre_dispatch_data(
+	fn teyrchain_finality_confirmation_pre_dispatch_data(
 	) -> PreDispatchData<ThisChainAccountId, BridgedChainBlockNumber, TestLaneIdType> {
 		PreDispatchData {
 			relayer: relayer_account_at_this_chain(),
-			call_info: ExtensionCallInfo::ParachainFinalityAndMsgs(
-				SubmitParachainHeadsInfo {
+			call_info: ExtensionCallInfo::TeyrchainFinalityAndMsgs(
+				SubmitTeyrchainHeadsInfo {
 					at_relay_block: HeaderId(200, [0u8; 32].into()),
-					para_id: ParaId(TestParachain::get()),
+					para_id: ParaId(TestTeyrchain::get()),
 					para_head_hash: [200u8; 32].into(),
 					is_free_execution_expected: false,
 				},
@@ -1037,9 +1037,9 @@ mod tests {
 					},
 					unrewarded_relayers: UnrewardedRelayerOccupation {
 						free_relayer_slots:
-							BridgedUnderlyingParachain::MAX_UNREWARDED_RELAYERS_IN_CONFIRMATION_TX,
+							BridgedUnderlyingTeyrchain::MAX_UNREWARDED_RELAYERS_IN_CONFIRMATION_TX,
 						free_message_slots:
-							BridgedUnderlyingParachain::MAX_UNCONFIRMED_MESSAGES_IN_CONFIRMATION_TX,
+							BridgedUnderlyingTeyrchain::MAX_UNCONFIRMED_MESSAGES_IN_CONFIRMATION_TX,
 					},
 				},
 			)),
@@ -1071,7 +1071,7 @@ mod tests {
 		let msg_info = match pre_dispatch_data.call_info {
 			ExtensionCallInfo::AllFinalityAndMsgs(_, _, ref mut info) => info,
 			ExtensionCallInfo::RelayFinalityAndMsgs(_, ref mut info) => info,
-			ExtensionCallInfo::ParachainFinalityAndMsgs(_, ref mut info) => info,
+			ExtensionCallInfo::TeyrchainFinalityAndMsgs(_, ref mut info) => info,
 			ExtensionCallInfo::Msgs(ref mut info) => info,
 		};
 
@@ -1249,7 +1249,7 @@ mod tests {
 			// message delivery is failing
 			assert_eq!(run_validate(message_delivery_call(200)), Ok(Default::default()),);
 			assert_eq!(
-				run_validate(parachain_finality_and_delivery_batch_call(200, 200)),
+				run_validate(teyrchain_finality_and_delivery_batch_call(200, 200)),
 				Ok(Default::default()),
 			);
 			assert_eq!(
@@ -1262,7 +1262,7 @@ mod tests {
 				Ok(Default::default()),
 			);
 			assert_eq!(
-				ignore_priority(run_validate(parachain_finality_and_confirmation_batch_call(
+				ignore_priority(run_validate(teyrchain_finality_and_confirmation_batch_call(
 					200, 200
 				))),
 				Ok(Default::default()),
@@ -1315,12 +1315,12 @@ mod tests {
 				.unwrap();
 
 			let priority_of_max_messages_delivery = run_validate(message_delivery_call(
-				100 + BridgedUnderlyingParachain::MAX_UNCONFIRMED_MESSAGES_IN_CONFIRMATION_TX,
+				100 + BridgedUnderlyingTeyrchain::MAX_UNCONFIRMED_MESSAGES_IN_CONFIRMATION_TX,
 			))
 			.unwrap()
 			.priority;
 			let priority_of_more_than_max_messages_delivery = run_validate(message_delivery_call(
-				100 + BridgedUnderlyingParachain::MAX_UNCONFIRMED_MESSAGES_IN_CONFIRMATION_TX + 1,
+				100 + BridgedUnderlyingTeyrchain::MAX_UNCONFIRMED_MESSAGES_IN_CONFIRMATION_TX + 1,
 			))
 			.unwrap()
 			.priority;
@@ -1353,11 +1353,11 @@ mod tests {
 			);
 
 			assert_eq!(
-				ignore_priority(run_validate(parachain_finality_and_delivery_batch_call(200, 200))),
+				ignore_priority(run_validate(teyrchain_finality_and_delivery_batch_call(200, 200))),
 				Ok(ValidTransaction::default()),
 			);
 			assert_eq!(
-				ignore_priority(run_validate(parachain_finality_and_confirmation_batch_call(
+				ignore_priority(run_validate(teyrchain_finality_and_confirmation_batch_call(
 					200, 200
 				))),
 				Ok(ValidTransaction::default()),
@@ -1402,7 +1402,7 @@ mod tests {
 	}
 
 	#[test]
-	fn ext_rejects_batch_with_obsolete_parachain_head() {
+	fn ext_rejects_batch_with_obsolete_teyrchain_head() {
 		run_test(|| {
 			initialize_environment(100, 100, 100);
 
@@ -1424,11 +1424,11 @@ mod tests {
 			);
 
 			assert_eq!(
-				run_pre_dispatch(parachain_finality_and_delivery_batch_call(100, 200)),
+				run_pre_dispatch(teyrchain_finality_and_delivery_batch_call(100, 200)),
 				Err(TransactionValidityError::Invalid(InvalidTransaction::Stale)),
 			);
 			assert_eq!(
-				run_validate(parachain_finality_and_delivery_batch_call(100, 200)),
+				run_validate(teyrchain_finality_and_delivery_batch_call(100, 200)),
 				Err(TransactionValidityError::Invalid(InvalidTransaction::Stale)),
 			);
 		});
@@ -1474,20 +1474,20 @@ mod tests {
 			);
 
 			assert_eq!(
-				run_pre_dispatch(parachain_finality_and_delivery_batch_call(200, 100)),
+				run_pre_dispatch(teyrchain_finality_and_delivery_batch_call(200, 100)),
 				Err(TransactionValidityError::Invalid(InvalidTransaction::Stale)),
 			);
 			assert_eq!(
-				run_pre_dispatch(parachain_finality_and_confirmation_batch_call(200, 100)),
+				run_pre_dispatch(teyrchain_finality_and_confirmation_batch_call(200, 100)),
 				Err(TransactionValidityError::Invalid(InvalidTransaction::Stale)),
 			);
 
 			assert_eq!(
-				run_validate(parachain_finality_and_delivery_batch_call(200, 100)),
+				run_validate(teyrchain_finality_and_delivery_batch_call(200, 100)),
 				Err(TransactionValidityError::Invalid(InvalidTransaction::Stale)),
 			);
 			assert_eq!(
-				run_validate(parachain_finality_and_confirmation_batch_call(200, 100)),
+				run_validate(teyrchain_finality_and_confirmation_batch_call(200, 100)),
 				Err(TransactionValidityError::Invalid(InvalidTransaction::Stale)),
 			);
 		});
@@ -1524,11 +1524,11 @@ mod tests {
 	}
 
 	#[test]
-	fn ext_rejects_batch_with_parachain_finality_proof_when_parachains_pallet_is_halted() {
+	fn ext_rejects_batch_with_teyrchain_finality_proof_when_teyrchains_pallet_is_halted() {
 		run_test(|| {
 			initialize_environment(100, 100, 100);
 
-			ParachainsPallet::<TestRuntime, ()>::set_operating_mode(
+			TeyrchainsPallet::<TestRuntime, ()>::set_operating_mode(
 				RuntimeOrigin::root(),
 				BasicOperatingMode::Halted,
 			)
@@ -1552,11 +1552,11 @@ mod tests {
 			);
 
 			assert_eq!(
-				run_pre_dispatch(parachain_finality_and_delivery_batch_call(200, 200)),
+				run_pre_dispatch(teyrchain_finality_and_delivery_batch_call(200, 200)),
 				Err(TransactionValidityError::Invalid(InvalidTransaction::Call)),
 			);
 			assert_eq!(
-				run_pre_dispatch(parachain_finality_and_confirmation_batch_call(200, 200)),
+				run_pre_dispatch(teyrchain_finality_and_confirmation_batch_call(200, 200)),
 				Err(TransactionValidityError::Invalid(InvalidTransaction::Call)),
 			);
 		});
@@ -1591,11 +1591,11 @@ mod tests {
 			);
 
 			assert_eq!(
-				run_pre_dispatch(parachain_finality_and_delivery_batch_call(200, 200)),
+				run_pre_dispatch(teyrchain_finality_and_delivery_batch_call(200, 200)),
 				Err(TransactionValidityError::Invalid(InvalidTransaction::Call)),
 			);
 			assert_eq!(
-				run_pre_dispatch(parachain_finality_and_confirmation_batch_call(200, 200)),
+				run_pre_dispatch(teyrchain_finality_and_confirmation_batch_call(200, 200)),
 				Err(TransactionValidityError::Invalid(InvalidTransaction::Call)),
 			);
 
@@ -1611,7 +1611,7 @@ mod tests {
 	}
 
 	#[test]
-	fn pre_dispatch_parses_batch_with_relay_chain_and_parachain_headers() {
+	fn pre_dispatch_parses_batch_with_relay_chain_and_teyrchain_headers() {
 		run_test(|| {
 			initialize_environment(100, 100, 100);
 
@@ -1635,35 +1635,35 @@ mod tests {
 	}
 
 	#[test]
-	fn pre_dispatch_parses_batch_with_parachain_header() {
+	fn pre_dispatch_parses_batch_with_teyrchain_header() {
 		run_test(|| {
 			initialize_environment(100, 100, 100);
 
 			assert_eq!(
-				run_pre_dispatch(parachain_finality_and_delivery_batch_call(200, 200)),
-				Ok(Some(parachain_finality_pre_dispatch_data())),
+				run_pre_dispatch(teyrchain_finality_and_delivery_batch_call(200, 200)),
+				Ok(Some(teyrchain_finality_pre_dispatch_data())),
 			);
 			assert_eq!(
-				run_pre_dispatch(parachain_finality_and_confirmation_batch_call(200, 200)),
-				Ok(Some(parachain_finality_confirmation_pre_dispatch_data())),
+				run_pre_dispatch(teyrchain_finality_and_confirmation_batch_call(200, 200)),
+				Ok(Some(teyrchain_finality_confirmation_pre_dispatch_data())),
 			);
 		});
 	}
 
 	#[test]
-	fn pre_dispatch_fails_to_parse_batch_with_multiple_parachain_headers() {
+	fn pre_dispatch_fails_to_parse_batch_with_multiple_teyrchain_headers() {
 		run_test(|| {
 			initialize_environment(100, 100, 100);
 
 			let call = RuntimeCall::Utility(UtilityCall::batch_all {
 				calls: vec![
-					RuntimeCall::BridgeParachains(ParachainsCall::submit_parachain_heads {
+					RuntimeCall::BridgeTeyrchains(TeyrchainsCall::submit_teyrchain_heads {
 						at_relay_block: (100, BridgedChainHash::default()),
-						parachains: vec![
-							(ParaId(TestParachain::get()), [1u8; 32].into()),
-							(ParaId(TestParachain::get() + 1), [1u8; 32].into()),
+						teyrchains: vec![
+							(ParaId(TestTeyrchain::get()), [1u8; 32].into()),
+							(ParaId(TestTeyrchain::get() + 1), [1u8; 32].into()),
 						],
-						parachain_heads_proof: ParaHeadsProof { storage_proof: Default::default() },
+						teyrchain_heads_proof: ParaHeadsProof { storage_proof: Default::default() },
 					}),
 					message_delivery_call(200),
 				],
@@ -1716,13 +1716,13 @@ mod tests {
 	}
 
 	#[test]
-	fn post_dispatch_ignores_transaction_that_has_not_updated_parachain_state() {
+	fn post_dispatch_ignores_transaction_that_has_not_updated_teyrchain_state() {
 		run_test(|| {
 			initialize_environment(200, 100, 200);
 
 			assert_storage_noop!(run_post_dispatch(Some(all_finality_pre_dispatch_data()), Ok(())));
 			assert_storage_noop!(run_post_dispatch(
-				Some(parachain_finality_pre_dispatch_data()),
+				Some(teyrchain_finality_pre_dispatch_data()),
 				Ok(())
 			));
 		});
@@ -1735,7 +1735,7 @@ mod tests {
 
 			assert_storage_noop!(run_post_dispatch(Some(all_finality_pre_dispatch_data()), Ok(())));
 			assert_storage_noop!(run_post_dispatch(
-				Some(parachain_finality_pre_dispatch_data()),
+				Some(teyrchain_finality_pre_dispatch_data()),
 				Ok(())
 			));
 			assert_storage_noop!(run_post_dispatch(Some(delivery_pre_dispatch_data()), Ok(())));
@@ -1745,7 +1745,7 @@ mod tests {
 				Ok(())
 			));
 			assert_storage_noop!(run_post_dispatch(
-				Some(parachain_finality_confirmation_pre_dispatch_data()),
+				Some(teyrchain_finality_confirmation_pre_dispatch_data()),
 				Ok(())
 			));
 			assert_storage_noop!(run_post_dispatch(Some(confirmation_pre_dispatch_data()), Ok(())));
@@ -1759,7 +1759,7 @@ mod tests {
 
 			assert_storage_noop!(run_post_dispatch(Some(all_finality_pre_dispatch_data()), Ok(())));
 			assert_storage_noop!(run_post_dispatch(
-				Some(parachain_finality_pre_dispatch_data()),
+				Some(teyrchain_finality_pre_dispatch_data()),
 				Ok(())
 			));
 			assert_storage_noop!(run_post_dispatch(Some(delivery_pre_dispatch_data()), Ok(())));
@@ -1769,7 +1769,7 @@ mod tests {
 				Ok(())
 			));
 			assert_storage_noop!(run_post_dispatch(
-				Some(parachain_finality_confirmation_pre_dispatch_data()),
+				Some(teyrchain_finality_confirmation_pre_dispatch_data()),
 				Ok(())
 			));
 			assert_storage_noop!(run_post_dispatch(Some(confirmation_pre_dispatch_data()), Ok(())));
@@ -1851,11 +1851,11 @@ mod tests {
 	}
 
 	#[test]
-	fn post_dispatch_refunds_relayer_in_parachain_finality_batch() {
+	fn post_dispatch_refunds_relayer_in_teyrchain_finality_batch() {
 		run_test(|| {
 			initialize_environment(200, 200, 200);
 
-			run_post_dispatch(Some(parachain_finality_pre_dispatch_data()), Ok(()));
+			run_post_dispatch(Some(teyrchain_finality_pre_dispatch_data()), Ok(()));
 			assert_eq!(
 				RelayersPallet::<TestRuntime>::relayer_reward(
 					relayer_account_at_this_chain(),
@@ -1864,7 +1864,7 @@ mod tests {
 				Some(expected_delivery_reward()),
 			);
 
-			run_post_dispatch(Some(parachain_finality_confirmation_pre_dispatch_data()), Ok(()));
+			run_post_dispatch(Some(teyrchain_finality_confirmation_pre_dispatch_data()), Ok(()));
 			assert_eq!(
 				RelayersPallet::<TestRuntime>::relayer_reward(
 					relayer_account_at_this_chain(),
@@ -1928,7 +1928,7 @@ mod tests {
 			BridgeRelayers::register(RuntimeOrigin::signed(relayer_account_at_this_chain()), 1000)
 				.unwrap();
 			assert_eq!(Balances::reserved_balance(relayer_account_at_this_chain()), test_stake);
-			run_post_dispatch(Some(parachain_finality_pre_dispatch_data()), Ok(()));
+			run_post_dispatch(Some(teyrchain_finality_pre_dispatch_data()), Ok(()));
 			assert_eq!(Balances::reserved_balance(relayer_account_at_this_chain()), 0);
 			assert_eq!(
 				delivery_rewards_account_balance + test_stake * 2,
@@ -1959,7 +1959,7 @@ mod tests {
 			run_post_dispatch(Some(confirmation_pre_dispatch_data()), Ok(()));
 			assert_eq!(Balances::reserved_balance(relayer_account_at_this_chain()), test_stake);
 
-			run_post_dispatch(Some(parachain_finality_confirmation_pre_dispatch_data()), Ok(()));
+			run_post_dispatch(Some(teyrchain_finality_confirmation_pre_dispatch_data()), Ok(()));
 			assert_eq!(Balances::reserved_balance(relayer_account_at_this_chain()), test_stake);
 
 			run_post_dispatch(Some(all_finality_confirmation_pre_dispatch_data()), Ok(()));
@@ -2009,7 +2009,7 @@ mod tests {
 				),
 			);
 			assert_eq!(
-				run_analyze_call_result(parachain_finality_pre_dispatch_data(), Ok(())),
+				run_analyze_call_result(teyrchain_finality_pre_dispatch_data(), Ok(())),
 				RelayerAccountAction::Slash(
 					relayer_account_at_this_chain(),
 					MsgProofsRewardsAccount::get()
@@ -2034,7 +2034,7 @@ mod tests {
 			);
 			assert_eq!(
 				run_analyze_call_result(
-					set_bundled_range_end(parachain_finality_pre_dispatch_data(), 1_000_000),
+					set_bundled_range_end(teyrchain_finality_pre_dispatch_data(), 1_000_000),
 					Ok(())
 				),
 				RelayerAccountAction::None,
@@ -2054,7 +2054,7 @@ mod tests {
 		run_test(|| {
 			initialize_environment(100, 100, 100);
 
-			// relay + parachain + message delivery calls batch is ignored
+			// relay + teyrchain + message delivery calls batch is ignored
 			assert_eq!(
 				TestGrandpaExtensionConfig::parse_and_check_for_obsolete_call(
 					&all_finality_and_delivery_batch_call(200, 200, 200)
@@ -2062,7 +2062,7 @@ mod tests {
 				Ok(None),
 			);
 
-			// relay + parachain + message confirmation calls batch is ignored
+			// relay + teyrchain + message confirmation calls batch is ignored
 			assert_eq!(
 				TestGrandpaExtensionConfig::parse_and_check_for_obsolete_call(
 					&all_finality_and_confirmation_batch_call(200, 200, 200)
@@ -2070,18 +2070,18 @@ mod tests {
 				Ok(None),
 			);
 
-			// parachain + message delivery call batch is ignored
+			// teyrchain + message delivery call batch is ignored
 			assert_eq!(
 				TestGrandpaExtensionConfig::parse_and_check_for_obsolete_call(
-					&parachain_finality_and_delivery_batch_call(200, 200)
+					&teyrchain_finality_and_delivery_batch_call(200, 200)
 				),
 				Ok(None),
 			);
 
-			// parachain + message confirmation call batch is ignored
+			// teyrchain + message confirmation call batch is ignored
 			assert_eq!(
 				TestGrandpaExtensionConfig::parse_and_check_for_obsolete_call(
-					&parachain_finality_and_confirmation_batch_call(200, 200)
+					&teyrchain_finality_and_confirmation_batch_call(200, 200)
 				),
 				Ok(None),
 			);
@@ -2125,7 +2125,7 @@ mod tests {
 		run_test(|| {
 			initialize_environment(100, 100, 100);
 
-			// relay + parachain + message delivery calls batch is ignored
+			// relay + teyrchain + message delivery calls batch is ignored
 			assert_eq!(
 				TestMessagesExtensionConfig::parse_and_check_for_obsolete_call(
 					&all_finality_and_delivery_batch_call(200, 200, 200)
@@ -2139,7 +2139,7 @@ mod tests {
 				Ok(None),
 			);
 
-			// relay + parachain + message confirmation calls batch is ignored
+			// relay + teyrchain + message confirmation calls batch is ignored
 			assert_eq!(
 				TestMessagesExtensionConfig::parse_and_check_for_obsolete_call(
 					&all_finality_and_confirmation_batch_call(200, 200, 200)
@@ -2153,18 +2153,18 @@ mod tests {
 				Ok(None),
 			);
 
-			// parachain + message delivery call batch is ignored
+			// teyrchain + message delivery call batch is ignored
 			assert_eq!(
 				TestMessagesExtensionConfig::parse_and_check_for_obsolete_call(
-					&parachain_finality_and_delivery_batch_call(200, 200)
+					&teyrchain_finality_and_delivery_batch_call(200, 200)
 				),
 				Ok(None),
 			);
 
-			// parachain + message confirmation call batch is ignored
+			// teyrchain + message confirmation call batch is ignored
 			assert_eq!(
 				TestMessagesExtensionConfig::parse_and_check_for_obsolete_call(
-					&parachain_finality_and_confirmation_batch_call(200, 200)
+					&teyrchain_finality_and_confirmation_batch_call(200, 200)
 				),
 				Ok(None),
 			);
@@ -2406,7 +2406,7 @@ mod tests {
 	fn does_not_panic_on_boosting_priority_of_empty_message_delivery_transaction() {
 		run_test(|| {
 			let best_delivered_message =
-				BridgedUnderlyingParachain::MAX_UNCONFIRMED_MESSAGES_IN_CONFIRMATION_TX;
+				BridgedUnderlyingTeyrchain::MAX_UNCONFIRMED_MESSAGES_IN_CONFIRMATION_TX;
 			initialize_environment(100, 100, best_delivered_message);
 
 			// register relayer so it gets priority boost

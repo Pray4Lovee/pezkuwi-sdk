@@ -5,10 +5,10 @@
 //! # Overview
 //!
 //! Receives messages emitted by the Gateway contract on Ethereum, whereupon they are verified,
-//! translated to XCM, and finally sent to their final destination parachain.
+//! translated to XCM, and finally sent to their final destination teyrchain.
 //!
 //! The message relayers are rewarded using native currency from the sovereign account of the
-//! destination parachain.
+//! destination teyrchain.
 //!
 //! # Extrinsics
 //!
@@ -20,7 +20,7 @@
 //! ## Message Submission
 //!
 //! * [`Call::submit`]: Submit a message for verification and dispatch the final destination
-//!   parachain.
+//!   teyrchain.
 #![cfg_attr(not(feature = "std"), no_std)]
 
 mod envelope;
@@ -155,7 +155,7 @@ pub mod pallet {
 			channel_id: ChannelId,
 			/// The message nonce
 			nonce: u64,
-			/// ID of the XCM message which was forwarded to the final destination parachain
+			/// ID of the XCM message which was forwarded to the final destination teyrchain
 			message_id: [u8; 32],
 			/// Fee burned for the teleport
 			fee_burned: BalanceOf<T>,
@@ -265,7 +265,7 @@ pub mod pallet {
 				}
 			})?;
 
-			// Reward relayer from the sovereign account of the destination parachain, only if funds
+			// Reward relayer from the sovereign account of the destination teyrchain, only if funds
 			// are available
 			let sovereign_account = sibling_sovereign_account::<T>(channel.para_id);
 			let delivery_cost = Self::calculate_delivery_cost(event.encode().len() as u32);
@@ -296,7 +296,7 @@ pub mod pallet {
 			// Burning fees for teleport
 			Self::burn_fees(channel.para_id, fee)?;
 
-			// Attempt to send XCM to a dest parachain
+			// Attempt to send XCM to a dest teyrchain
 			let message_id = Self::send_xcm(xcm, channel.para_id)?;
 
 			Self::deposit_event(Event::MessageReceived {
@@ -334,7 +334,7 @@ pub mod pallet {
 		}
 
 		pub fn send_xcm(xcm: Xcm<()>, dest: ParaId) -> Result<XcmHash, Error<T>> {
-			let dest = Location::new(1, [Parachain(dest.into())]);
+			let dest = Location::new(1, [Teyrchain(dest.into())]);
 			let (xcm_hash, _) = send_xcm::<T::XcmSender>(dest, xcm).map_err(Error::<T>::from)?;
 			Ok(xcm_hash)
 		}
@@ -351,7 +351,7 @@ pub mod pallet {
 		pub fn burn_fees(para_id: ParaId, fee: BalanceOf<T>) -> DispatchResult {
 			let dummy_context =
 				XcmContext { origin: None, message_id: Default::default(), topic: None };
-			let dest = Location::new(1, [Parachain(para_id.into())]);
+			let dest = Location::new(1, [Teyrchain(para_id.into())]);
 			let fees = (Location::parent(), fee.saturated_into::<u128>()).into();
 			T::AssetTransactor::can_check_out(&dest, &fees, &dummy_context).map_err(|error| {
 				tracing::error!(

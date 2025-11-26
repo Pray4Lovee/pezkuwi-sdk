@@ -23,9 +23,9 @@ use bp_messages::{
 	target_chain::{DispatchMessage, MessageDispatch},
 	ChainWithMessages, HashedLaneId, LaneIdType, MessageNonce,
 };
-use bp_parachains::SingleParaStoredHeaderDataBuilder;
+use bp_teyrchains::SingleParaStoredHeaderDataBuilder;
 use bp_relayers::{PayRewardFromAccount, RewardsAccountParams};
-use bp_runtime::{messages::MessageDispatchResult, Chain, ChainId, Parachain};
+use bp_runtime::{messages::MessageDispatchResult, Chain, ChainId, Teyrchain};
 use codec::Encode;
 use frame_support::{
 	derive_impl, parameter_types,
@@ -107,14 +107,14 @@ frame_support::construct_runtime! {
 		TransactionPayment: pallet_transaction_payment::{Pallet, Storage, Event<T>},
 		BridgeRelayers: pallet_bridge_relayers::{Pallet, Call, Storage, Event<T>},
 		BridgeGrandpa: pallet_bridge_grandpa::{Pallet, Call, Storage, Event<T>},
-		BridgeParachains: pallet_bridge_parachains::{Pallet, Call, Storage, Event<T>},
+		BridgeTeyrchains: pallet_bridge_teyrchains::{Pallet, Call, Storage, Event<T>},
 		BridgeMessages: pallet_bridge_messages::{Pallet, Call, Storage, Event<T>, Config<T>},
 	}
 }
 
 crate::generate_bridge_reject_obsolete_headers_and_messages! {
 	ThisChainRuntimeCall, ThisChainAccountId,
-	BridgeGrandpa, BridgeParachains, BridgeMessages
+	BridgeGrandpa, BridgeTeyrchains, BridgeMessages
 }
 
 parameter_types! {
@@ -176,15 +176,15 @@ impl pallet_bridge_grandpa::Config for TestRuntime {
 	type WeightInfo = pallet_bridge_grandpa::weights::BridgeWeight<TestRuntime>;
 }
 
-impl pallet_bridge_parachains::Config for TestRuntime {
+impl pallet_bridge_teyrchains::Config for TestRuntime {
 	type RuntimeEvent = RuntimeEvent;
 	type BridgesGrandpaPalletInstance = ();
 	type ParasPalletName = BridgedParasPalletName;
 	type ParaStoredHeaderDataBuilder =
-		SingleParaStoredHeaderDataBuilder<BridgedUnderlyingParachain>;
+		SingleParaStoredHeaderDataBuilder<BridgedUnderlyingTeyrchain>;
 	type HeadsToKeep = ConstU32<8>;
 	type MaxParaHeadDataSize = ConstU32<1024>;
-	type WeightInfo = pallet_bridge_parachains::weights::BridgeWeight<TestRuntime>;
+	type WeightInfo = pallet_bridge_teyrchains::weights::BridgeWeight<TestRuntime>;
 	type OnNewHead = ();
 }
 
@@ -289,8 +289,8 @@ impl ChainWithMessages for ThisUnderlyingChain {
 
 /// Underlying chain of `BridgedChain`.
 pub struct BridgedUnderlyingChain;
-/// Some parachain under `BridgedChain` consensus.
-pub struct BridgedUnderlyingParachain;
+/// Some teyrchain under `BridgedChain` consensus.
+pub struct BridgedUnderlyingTeyrchain;
 
 impl Chain for BridgedUnderlyingChain {
 	const ID: ChainId = TEST_BRIDGED_CHAIN_ID;
@@ -328,7 +328,7 @@ impl ChainWithMessages for BridgedUnderlyingChain {
 	const MAX_UNCONFIRMED_MESSAGES_IN_CONFIRMATION_TX: MessageNonce = 1000;
 }
 
-impl Chain for BridgedUnderlyingParachain {
+impl Chain for BridgedUnderlyingTeyrchain {
 	const ID: ChainId = *b"bupc";
 
 	type BlockNumber = BridgedChainBlockNumber;
@@ -350,8 +350,8 @@ impl Chain for BridgedUnderlyingParachain {
 	}
 }
 
-impl Parachain for BridgedUnderlyingParachain {
-	const PARACHAIN_ID: u32 = 42;
+impl Teyrchain for BridgedUnderlyingTeyrchain {
+	const TEYRCHAIN_ID: u32 = 42;
 	const MAX_HEADER_SIZE: u32 = 1_024;
 }
 

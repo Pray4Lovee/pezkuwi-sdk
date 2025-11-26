@@ -4,7 +4,7 @@ use crate::{mock::*, DispatchError::BadOrigin, *};
 use frame_support::{assert_noop, assert_ok};
 use snowbridge_test_utils::FAILING_NONCE;
 use sp_keyring::sr25519::Keyring;
-use xcm::{latest::WESTEND_GENESIS_HASH, prelude::*};
+use xcm::{latest::ZAGROS_GENESIS_HASH, prelude::*};
 
 #[test]
 fn register_tokens_succeeds() {
@@ -29,9 +29,9 @@ fn agent_id_from_location() {
 		let origin = Location::new(
 			1,
 			[
-				Parachain(1000),
+				Teyrchain(1000),
 				AccountId32 {
-					network: Some(NetworkId::ByGenesis(WESTEND_GENESIS_HASH)),
+					network: Some(NetworkId::ByGenesis(ZAGROS_GENESIS_HASH)),
 					id: bob.into(),
 				},
 			],
@@ -99,26 +99,26 @@ fn set_operating_mode() {
 }
 
 pub struct RegisterTokenTestCase {
-	/// Input: Location of Polkadot-native token relative to BH
+	/// Input: Location of Pezkuwi-native token relative to BH
 	pub native: Location,
 }
 
 #[test]
 fn register_all_tokens_succeeds() {
 	let test_cases = vec![
-		// DOT
+		// HEZ
 		RegisterTokenTestCase { native: Location::parent() },
-		// GLMR (Some Polkadot parachain currency)
-		RegisterTokenTestCase { native: Location::new(1, [Parachain(2004)]) },
+		// GLMR (Some Pezkuwi teyrchain currency)
+		RegisterTokenTestCase { native: Location::new(1, [Teyrchain(2004)]) },
 		// USDT
 		RegisterTokenTestCase {
-			native: Location::new(1, [Parachain(1000), PalletInstance(50), GeneralIndex(1984)]),
+			native: Location::new(1, [Teyrchain(1000), PalletInstance(50), GeneralIndex(1984)]),
 		},
 		// KSM
 		RegisterTokenTestCase { native: Location::new(2, [GlobalConsensus(Kusama)]) },
-		// KAR (Some Kusama parachain currency)
+		// KAR (Some Kusama teyrchain currency)
 		RegisterTokenTestCase {
-			native: Location::new(2, [GlobalConsensus(Kusama), Parachain(2000)]),
+			native: Location::new(2, [GlobalConsensus(Kusama), Teyrchain(2000)]),
 		},
 	];
 	for tc in test_cases.iter() {

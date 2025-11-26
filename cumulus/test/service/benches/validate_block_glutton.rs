@@ -20,12 +20,12 @@ use core::time::Duration;
 use criterion::{criterion_group, criterion_main, BatchSize, Criterion};
 use cumulus_primitives_core::{relay_chain::AccountId, PersistedValidationData, ValidationParams};
 use cumulus_test_client::{
-	generate_extrinsic_with_pair, BlockBuilderAndSupportData, BuildParachainBlockData, Client,
-	InitBlockBuilder, ParachainBlockData, TestClientBuilder, ValidationResult,
+	generate_extrinsic_with_pair, BlockBuilderAndSupportData, BuildTeyrchainBlockData, Client,
+	InitBlockBuilder, TeyrchainBlockData, TestClientBuilder, ValidationResult,
 };
 use cumulus_test_relay_sproof_builder::RelayStateSproofBuilder;
 use cumulus_test_runtime::{Block, GluttonCall, Header, SudoCall};
-use polkadot_primitives::HeadData;
+use pezkuwi_primitives::HeadData;
 use sc_client_api::UsageProvider;
 use sc_consensus::{BlockImport, BlockImportParams, ForkChoiceStrategy, ImportResult, StateAction};
 use sc_executor_common::wasm_runtime::WasmModule;
@@ -74,11 +74,11 @@ fn benchmark_block_validation(c: &mut Criterion) {
 	// In the first iteration we want to initialize the glutton pallet.
 	let mut is_first = true;
 	for (compute_ratio, storage_ratio) in &[(One::one(), Zero::zero()), (One::one(), One::one())] {
-		let parachain_block =
+		let teyrchain_block =
 			set_glutton_parameters(&client, is_first, compute_ratio, storage_ratio);
 		is_first = false;
 
-		runtime.block_on(import_block(&client, parachain_block.blocks()[0].clone(), false));
+		runtime.block_on(import_block(&client, teyrchain_block.blocks()[0].clone(), false));
 
 		// Build benchmark block
 		let parent_hash = client.usage_info().chain.best_hash;
@@ -90,16 +90,16 @@ fn benchmark_block_validation(c: &mut Criterion) {
 		};
 		let BlockBuilderAndSupportData { block_builder, .. } =
 			client.init_block_builder(Some(validation_data), Default::default());
-		let parachain_block = block_builder.build_parachain_block(*parent_header.state_root());
+		let teyrchain_block = block_builder.build_teyrchain_block(*parent_header.state_root());
 
-		let proof_size_in_kb = parachain_block.proof().encoded_size() as f64 / 1024f64;
-		runtime.block_on(import_block(&client, parachain_block.blocks()[0].clone(), false));
+		let proof_size_in_kb = teyrchain_block.proof().encoded_size() as f64 / 1024f64;
+		runtime.block_on(import_block(&client, teyrchain_block.blocks()[0].clone(), false));
 		let runtime = utils::get_wasm_module();
 
 		let sproof_builder: RelayStateSproofBuilder = Default::default();
 		let (relay_parent_storage_root, _) = sproof_builder.clone().into_state_root_and_proof();
 		let encoded_params = ValidationParams {
-			block_data: cumulus_test_client::BlockData(parachain_block.clone().encode()),
+			block_data: cumulus_test_client::BlockData(teyrchain_block.clone().encode()),
 			parent_head: HeadData(parent_header.encode()),
 			relay_parent_number: 1,
 			relay_parent_storage_root,
@@ -109,7 +109,7 @@ fn benchmark_block_validation(c: &mut Criterion) {
 		// This is not strictly necessary for this benchmark, but
 		// let us make sure that the result of `validate_block` is what
 		// we expect.
-		verify_expected_result(&runtime, &encoded_params, parachain_block.blocks()[0].clone());
+		verify_expected_result(&runtime, &encoded_params, teyrchain_block.blocks()[0].clone());
 
 		group.bench_function(
 			format!(
@@ -147,7 +147,7 @@ fn set_glutton_parameters(
 	initialize: bool,
 	compute_ratio: &FixedU64,
 	storage_ratio: &FixedU64,
-) -> ParachainBlockData {
+) -> TeyrchainBlockData {
 	let parent_hash = client.usage_info().chain.best_hash;
 	let parent_header = client.header(parent_hash).expect("Just fetched this hash.").unwrap();
 
@@ -205,7 +205,7 @@ fn set_glutton_parameters(
 		block_builder.push(extrinsic).unwrap();
 	}
 
-	block_builder.build_parachain_block(*parent_header.state_root())
+	block_builder.build_teyrchain_block(*parent_header.state_root())
 }
 
 criterion_group!(benches, benchmark_block_validation);

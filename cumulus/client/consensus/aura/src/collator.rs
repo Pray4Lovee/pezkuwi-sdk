@@ -28,17 +28,17 @@
 use codec::Codec;
 use cumulus_client_collator::service::ServiceInterface as CollatorServiceInterface;
 use cumulus_client_consensus_common::{
-	self as consensus_common, ParachainBlockImportMarker, ParachainCandidate,
+	self as consensus_common, TeyrchainBlockImportMarker, TeyrchainCandidate,
 };
 use cumulus_client_consensus_proposer::ProposerInterface;
-use cumulus_client_parachain_inherent::{ParachainInherentData, ParachainInherentDataProvider};
+use cumulus_client_teyrchain_inherent::{TeyrchainInherentData, TeyrchainInherentDataProvider};
 use cumulus_primitives_core::{
-	relay_chain::Hash as PHash, DigestItem, ParachainBlockData, PersistedValidationData,
+	relay_chain::Hash as PHash, DigestItem, TeyrchainBlockData, PersistedValidationData,
 };
 use cumulus_relay_chain_interface::RelayChainInterface;
 
-use polkadot_node_primitives::{Collation, MaybeCompressedPoV};
-use polkadot_primitives::{Header as PHeader, Id as ParaId};
+use pezkuwi_node_primitives::{Collation, MaybeCompressedPoV};
+use pezkuwi_primitives::{Header as PHeader, Id as ParaId};
 
 use crate::collators::RelayParentData;
 use futures::prelude::*;
@@ -68,11 +68,11 @@ pub struct Params<BI, CIDP, RClient, Proposer, CS> {
 	pub block_import: BI,
 	/// An interface to the relay-chain client.
 	pub relay_client: RClient,
-	/// The keystore handle used for accessing parachain key material.
+	/// The keystore handle used for accessing teyrchain key material.
 	pub keystore: KeystorePtr,
 	/// The collator network peer id.
 	pub collator_peer_id: PeerId,
-	/// The identifier of the parachain within the relay-chain.
+	/// The identifier of the teyrchain within the relay-chain.
 	pub para_id: ParaId,
 	/// The block proposer used for building blocks.
 	pub proposer: Proposer,
@@ -99,7 +99,7 @@ where
 	Block: BlockT,
 	RClient: RelayChainInterface,
 	CIDP: CreateInherentDataProviders<Block, ()> + 'static,
-	BI: BlockImport<Block> + ParachainBlockImportMarker + Send + Sync + 'static,
+	BI: BlockImport<Block> + TeyrchainBlockImportMarker + Send + Sync + 'static,
 	Proposer: ProposerInterface<Block>,
 	CS: CollatorServiceInterface<Block>,
 	P: Pair,
@@ -120,7 +120,7 @@ where
 		}
 	}
 
-	/// Explicitly creates the inherent data for parachain block authoring and overrides
+	/// Explicitly creates the inherent data for teyrchain block authoring and overrides
 	/// the timestamp inherent data with the one provided, if any. Additionally allows to specify
 	/// relay parent descendants that can be used to prevent authoring at the tip of the relay
 	/// chain.
@@ -132,8 +132,8 @@ where
 		timestamp: impl Into<Option<Timestamp>>,
 		relay_parent_descendants: Option<RelayParentData>,
 		collator_peer_id: PeerId,
-	) -> Result<(ParachainInherentData, InherentData), Box<dyn Error + Send + Sync + 'static>> {
-		let paras_inherent_data = ParachainInherentDataProvider::create_at(
+	) -> Result<(TeyrchainInherentData, InherentData), Box<dyn Error + Send + Sync + 'static>> {
+		let paras_inherent_data = TeyrchainInherentDataProvider::create_at(
 			relay_parent,
 			&self.relay_client,
 			validation_data,
@@ -170,7 +170,7 @@ where
 		Ok((paras_inherent_data, other_inherent_data))
 	}
 
-	/// Explicitly creates the inherent data for parachain block authoring and overrides
+	/// Explicitly creates the inherent data for teyrchain block authoring and overrides
 	/// the timestamp inherent data with the one provided, if any.
 	pub async fn create_inherent_data(
 		&self,
@@ -179,7 +179,7 @@ where
 		parent_hash: Block::Hash,
 		timestamp: impl Into<Option<Timestamp>>,
 		collator_peer_id: PeerId,
-	) -> Result<(ParachainInherentData, InherentData), Box<dyn Error + Send + Sync + 'static>> {
+	) -> Result<(TeyrchainInherentData, InherentData), Box<dyn Error + Send + Sync + 'static>> {
 		self.create_inherent_data_with_rp_offset(
 			relay_parent,
 			validation_data,
@@ -191,16 +191,16 @@ where
 		.await
 	}
 
-	/// Build and import a parachain block on the given parent header, using the given slot claim.
+	/// Build and import a teyrchain block on the given parent header, using the given slot claim.
 	pub async fn build_block_and_import(
 		&mut self,
 		parent_header: &Block::Header,
 		slot_claim: &SlotClaim<P::Public>,
 		additional_pre_digest: impl Into<Option<Vec<DigestItem>>>,
-		inherent_data: (ParachainInherentData, InherentData),
+		inherent_data: (TeyrchainInherentData, InherentData),
 		proposal_duration: Duration,
 		max_pov_size: usize,
-	) -> Result<Option<ParachainCandidate<Block>>, Box<dyn Error + Send + 'static>> {
+	) -> Result<Option<TeyrchainCandidate<Block>>, Box<dyn Error + Send + 'static>> {
 		let mut digest = additional_pre_digest.into().unwrap_or_default();
 		digest.push(slot_claim.pre_digest.clone());
 
@@ -244,7 +244,7 @@ where
 			.map_err(|e| Box::new(e) as Box<dyn Error + Send>)
 			.await?;
 
-		Ok(Some(ParachainCandidate { block, proof: proposal.proof }))
+		Ok(Some(TeyrchainCandidate { block, proof: proposal.proof }))
 	}
 
 	/// Propose, seal, import a block and packaging it into a collation.
@@ -254,16 +254,16 @@ where
 	///
 	/// The Aura pre-digest should not be explicitly provided and is set internally.
 	///
-	/// This does not announce the collation to the parachain network or the relay chain.
+	/// This does not announce the collation to the teyrchain network or the relay chain.
 	pub async fn collate(
 		&mut self,
 		parent_header: &Block::Header,
 		slot_claim: &SlotClaim<P::Public>,
 		additional_pre_digest: impl Into<Option<Vec<DigestItem>>>,
-		inherent_data: (ParachainInherentData, InherentData),
+		inherent_data: (TeyrchainInherentData, InherentData),
 		proposal_duration: Duration,
 		max_pov_size: usize,
-	) -> Result<Option<(Collation, ParachainBlockData<Block>)>, Box<dyn Error + Send + 'static>> {
+	) -> Result<Option<(Collation, TeyrchainBlockData<Block>)>, Box<dyn Error + Send + 'static>> {
 		let maybe_candidate = self
 			.build_block_and_import(
 				parent_header,
@@ -381,7 +381,7 @@ where
 				timestamp = ?t,
 				?slot_duration,
 				?relay_chain_slot_duration,
-				"Adjusted relay-chain slot to parachain slot"
+				"Adjusted relay-chain slot to teyrchain slot"
 			);
 			(our_slot, t)
 		},

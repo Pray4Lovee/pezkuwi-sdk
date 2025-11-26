@@ -1,6 +1,6 @@
 # Phase 0.2: Cryptographic Parameters & Security Audit
 
-**Project:** Polkadot SDK Rebranding (Polkadot → Pezkuwi, Rococo → PezkuwiChain, Westend → Zagros, Parachain → TeyrChain)
+**Project:** Polkadot SDK Rebranding (polkadot → pezkuwi, Polkadot → Pezkuwi, POLKADOT → PEZKUWI, Pezkuwichain → PezkuwiChain, ...., Zagros → Zagros, ...,  Teyrchain → TeyrChain, ..., )
 **Date:** 2025-11-26
 **Scope:** Complete cryptographic and security-critical parameter inventory
 
@@ -11,23 +11,23 @@
 ### Total Parameters Cataloged: 147+
 
 - **SS58 Address Prefixes:** 4 distinct prefixes across all networks
-- **System Parachain IDs:** 7 system parachains per relay chain
+- **System Teyrchain IDs:** 7 system teyrchains per relay chain
 - **Token Configurations:** 5 distinct token configurations
 - **Development Keys:** 6 well-known test accounts identified
-- **Protocol IDs:** 1 default protocol ID ("dot")
+- **Protocol IDs:** 1 default protocol ID ("hez") → 1 default protocol ID ("hez") 
 - **Chain Spec Files:** 35+ JSON configuration files
 - **Runtime Configuration Files:** 50+ Rust files with critical constants
 
 ### Critical Findings
 
 **CRITICAL - Security Impact:**
-1. **SS58 Prefix Hardcoded as 42** - Both Rococo and Westend use SS58 prefix 42 (generic Substrate), which MUST be changed for Pezkuwi/Zagros networks to ensure address format uniqueness
-2. **Protocol ID "dot" Used Universally** - The default protocol ID is hardcoded as "dot" across all testnets, requiring rebrand to avoid network confusion
+1. **SS58 Prefix Hardcoded as 42** - Both Pezkuwichain and Zagros use SS58 prefix 42 (generic Substrate), which MUST be changed for Pezkuwi/Zagros networks to ensure address format uniqueness
+2. **Protocol ID "hez" Used Universally** - The default protocol ID is hardcoded as "hez" across all testnets, requiring rebrand to avoid network confusion
 3. **Development Keys Widely Distributed** - Alice, Bob, Charlie, Dave, Eve, Ferdie keys are used throughout genesis configs and MUST NOT be used in production
 
 **HIGH - Rebranding Impact:**
-4. **System Parachain IDs are Network-Specific** - Different para ID mappings between Rococo/Westend (e.g., Bridge Hub: 1013 vs 1002)
-5. **Token Decimals Variation** - DOT uses 10 decimals while ROC/WND use 12 decimals; new HEZ token needs decision
+4. **System Teyrchain IDs are Network-Specific** - Different para ID mappings between Pezkuwichain/Zagros (e.g., Bridge Hub: 1013 vs 1002)
+5. **Token Decimals Variation** - HEZ uses 10 decimals while TYR/ZGR use 12 decimals; new HEZ token needs decision
 6. **Genesis Hash Dependencies** - Multiple runtime checks depend on genesis hashes which will change with rebranding
 
 **MEDIUM - Operational:**
@@ -45,53 +45,53 @@
 |---------|-------------|----------|------------------------|
 | **Polkadot** | 0 | `/polkadot/node/service/chain-specs/polkadot.json` | N/A (production chain) |
 | **Kusama** | 2 | `/polkadot/node/service/chain-specs/kusama.json` | N/A (production chain) |
-| **Rococo** | **42** | `/polkadot/runtime/rococo/src/lib.rs:218` | **TBD (register new)** |
-| **Westend** | **42** | `/polkadot/runtime/westend/src/lib.rs:209` | **TBD (register new)** |
+| **Pezkuwichain** | **42** | `/polkadot/runtime/pezkuwichain/src/lib.rs:218` | **TBD (register new)** |
+| **Zagros** | **42** | `/polkadot/runtime/zagros/src/lib.rs:209` | **TBD (register new)** |
 | **Generic Substrate** | 42 | Default fallback | - |
 
 ### Critical File Locations for SS58 Prefix
 
 #### Relay Chain Runtime Configurations:
 ```
-/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/rococo/src/lib.rs
+/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/pezkuwichain/src/lib.rs
   Line 218: pub const SS58Prefix: u8 = 42;
 
-/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/westend/src/lib.rs
+/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/zagros/src/lib.rs
   Line 209: pub const SS58Prefix: u8 = 42;
 ```
 
-#### Parachain Runtime Configurations:
+#### Teyrchain Runtime Configurations:
 ```
-/home/mamostehp/polkadot-sdk-fresh/cumulus/parachains/runtimes/assets/asset-hub-rococo/src/lib.rs:186
-/home/mamostehp/polkadot-sdk-fresh/cumulus/parachains/runtimes/assets/asset-hub-westend/src/lib.rs:203
-/home/mamostehp/polkadot-sdk-fresh/cumulus/parachains/runtimes/bridge-hubs/bridge-hub-rococo/src/lib.rs:322
-/home/mamostehp/polkadot-sdk-fresh/cumulus/parachains/runtimes/bridge-hubs/bridge-hub-westend/src/lib.rs:312
-/home/mamostehp/polkadot-sdk-fresh/cumulus/parachains/runtimes/people/people-rococo/src/lib.rs:201
-/home/mamostehp/polkadot-sdk-fresh/cumulus/parachains/runtimes/people/people-westend/src/lib.rs:204
-/home/mamostehp/polkadot-sdk-fresh/cumulus/parachains/runtimes/coretime/coretime-rococo/src/lib.rs:227
-/home/mamostehp/polkadot-sdk-fresh/cumulus/parachains/runtimes/coretime/coretime-westend/src/lib.rs:227
-/home/mamostehp/polkadot-sdk-fresh/cumulus/parachains/runtimes/collectives/collectives-westend/src/lib.rs:193
+/home/mamostehp/polkadot-sdk-fresh/cumulus/teyrchains/runtimes/assets/asset-hub-pezkuwichain/src/lib.rs:186   →   /home/mamostehp/polkadot-sdk-fresh/cumulus/teyrchains/runtimes/assets/asset-hub-pezkuwichain/src/lib.rs:186
+/home/mamostehp/polkadot-sdk-fresh/cumulus/teyrchains/runtimes/assets/asset-hub-zagros/src/lib.rs:203
+/home/mamostehp/polkadot-sdk-fresh/cumulus/teyrchains/runtimes/bridge-hubs/bridge-hub-pezkuwichain/src/lib.rs:322
+/home/mamostehp/polkadot-sdk-fresh/cumulus/teyrchains/runtimes/bridge-hubs/bridge-hub-zagros/src/lib.rs:312
+/home/mamostehp/polkadot-sdk-fresh/cumulus/teyrchains/runtimes/people/people-pezkuwichain/src/lib.rs:201
+/home/mamostehp/polkadot-sdk-fresh/cumulus/teyrchains/runtimes/people/people-zagros/src/lib.rs:204
+/home/mamostehp/polkadot-sdk-fresh/cumulus/teyrchains/runtimes/coretime/coretime-pezkuwichain/src/lib.rs:227
+/home/mamostehp/polkadot-sdk-fresh/cumulus/teyrchains/runtimes/coretime/coretime-zagros/src/lib.rs:227
+/home/mamostehp/polkadot-sdk-fresh/cumulus/teyrchains/runtimes/collectives/collectives-zagros/src/lib.rs:193
 ```
 
 #### Chain Specification Files:
 ```
-/home/mamostehp/polkadot-sdk-fresh/polkadot/node/service/chain-specs/rococo.json
+/home/mamostehp/polkadot-sdk-fresh/polkadot/node/service/chain-specs/pezkuwichain.json   →   /home/mamostehp/polkadot-sdk-fresh/pezkuwi/node/service/chain-specs/pezkuwichain.json
   "properties": { "ss58Format": 42 }
 
-/home/mamostehp/polkadot-sdk-fresh/polkadot/node/service/chain-specs/westend.json
+/home/mamostehp/polkadot-sdk-fresh/polkadot/node/service/chain-specs/zagros.json   →  /home/mamostehp/polkadot-sdk-fresh/pezkuwi/node/service/chain-specs/zagros.json
   "properties": { "ss58Format": 42 }
 ```
 
 #### Additional References (115+ files):
-- All parachain chain spec JSON files in `/cumulus/parachains/chain-specs/`
+- All teyrchain chain spec JSON files in `/cumulus/teyrchains/chain-specs/`
 - Test runtime configurations in `/substrate/` directory
 - Mock configurations in test files
 
 ### Rebranding Action Required:
 
 **CRITICAL:** Register new SS58 prefixes in the official SS58 Registry for:
-- **PezkuwiChain** (Rococo replacement) - Recommend unique prefix
-- **Zagros** (Westend replacement) - Recommend unique prefix
+- **PezkuwiChain** (Pezkuwichain replacement) - Recommend unique prefix
+- **Zagros** (Zagros replacement) - Recommend unique prefix
 
 **Reference:** SS58 Registry managed via `ss58-registry` crate (used in `/substrate/primitives/core/src/crypto.rs:34`)
 
@@ -101,33 +101,33 @@
 
 ### Protocol ID Configuration
 
-**Default Protocol ID:** `"dot"`
+**Default Protocol ID:** `"hez"`
 
 **Location:** `/polkadot/node/service/src/chain_spec.rs:36`
 ```rust
-const DEFAULT_PROTOCOL_ID: &str = "dot";
+const DEFAULT_PROTOCOL_ID: &str = "hez";
 ```
 
 **Usage Locations:**
 ```
 /polkadot/node/service/src/chain_spec.rs:111
-  .with_protocol_id(DEFAULT_PROTOCOL_ID)  // Westend staging
+  .with_protocol_id(DEFAULT_PROTOCOL_ID)  // Zagros staging
 
 /polkadot/node/service/src/chain_spec.rs:131
-  .with_protocol_id(DEFAULT_PROTOCOL_ID)  // Rococo staging
+  .with_protocol_id(DEFAULT_PROTOCOL_ID)  // Pezkuwichain staging
 ```
 
 ### Chain IDs (Ethereum Bridge)
 
-**Rococo → Sepolia Testnet:**
+**Pezkuwichain → Sepolia Testnet:**
 ```
-/cumulus/parachains/runtimes/constants/src/rococo.rs:161
+/cumulus/teyrchains/runtimes/constants/src/pezkuwichain.rs:161
   pub EthereumNetwork: NetworkId = NetworkId::Ethereum { chain_id: 11155111 };
 ```
 
-**Westend → Sepolia Testnet:**
+**Zagros → Sepolia Testnet:**
 ```
-/cumulus/parachains/runtimes/constants/src/westend.rs:188
+/cumulus/teyrchains/runtimes/constants/src/zagros.rs:188
   pub EthereumNetwork: NetworkId = NetworkId::Ethereum { chain_id: 11155111 };
 ```
 
@@ -135,8 +135,8 @@ const DEFAULT_PROTOCOL_ID: &str = "dot";
 
 | Current | Protocol ID | Proposed Protocol ID | Ethereum Chain ID |
 |---------|-------------|---------------------|-------------------|
-| Rococo | `"dot"` | `"pez"` or `"pezkuwi"` | 11155111 (keep Sepolia) |
-| Westend | `"dot"` | `"zgr"` or `"zagros"` | 11155111 (keep Sepolia) |
+| Pezkuwichain | `"hez"` | `"pez"` or `"pezkuwi"` | 11155111 (keep Sepolia) |
+| Zagros | `"hez"` | `"zgr"` or `"zagros"` | 11155111 (keep Sepolia) |
 
 **Files Requiring Updates:**
 1. `/polkadot/node/service/src/chain_spec.rs` - DEFAULT_PROTOCOL_ID constant
@@ -145,13 +145,13 @@ const DEFAULT_PROTOCOL_ID: &str = "dot";
 
 ---
 
-## 3. System Parachain IDs
+## 3. System Teyrchain IDs
 
-### Rococo System Parachains
+### Pezkuwichain System Teyrchains
 
-**Source:** `/polkadot/runtime/rococo/constants/src/lib.rs:105-127`
+**Source:** `/polkadot/runtime/pezkuwichain/constants/src/lib.rs:105-127`
 
-| System Parachain | Para ID | Purpose |
+| System Teyrchain | Para ID | Purpose |
 |-----------------|---------|----------|
 | **Asset Hub** | 1000 | ASSET_HUB_ID |
 | **Contracts** | 1002 | CONTRACTS_ID |
@@ -161,18 +161,18 @@ const DEFAULT_PROTOCOL_ID: &str = "dot";
 | **Bridge Hub** | 1013 | BRIDGE_HUB_ID |
 
 **Verified via chain specs:**
-- Asset Hub Rococo: Para ID 1000 ✓
-- Bridge Hub Rococo: Para ID 1013 ✓
-- People Rococo: Para ID 1004 ✓
-- Coretime Rococo: Para ID 1005 ✓
+- Asset Hub Pezkuwichain: Para ID 1000 ✓
+- Bridge Hub Pezkuwichain: Para ID 1013 ✓
+- People Pezkuwichain: Para ID 1004 ✓
+- Coretime Pezkuwichain: Para ID 1005 ✓
 
-### Westend System Parachains
+### Zagros System Teyrchains
 
-**Source:** `/polkadot/runtime/westend/constants/src/lib.rs:100-124`
+**Source:** `/polkadot/runtime/zagros/constants/src/lib.rs:100-124`
 
-| System Parachain | Para ID | Purpose |
+| System Teyrchain | Para ID | Purpose |
 |-----------------|---------|----------|
-| **Asset Hub** | 1000 | ASSET_HUB_ID |
+| **Asset Hub** | 1000 | ASSET_HUB_ID |    →  | **Asset Hub** | 3000 | ASSET_HUB_ID | 
 | **Collectives** | 1001 | COLLECTIVES_ID |
 | **Bridge Hub** | 1002 | BRIDGE_HUB_ID |
 | **Encointer** | 1003 | ENCOINTER_ID |
@@ -180,40 +180,40 @@ const DEFAULT_PROTOCOL_ID: &str = "dot";
 | **Broker (Coretime)** | 1005 | BROKER_ID |
 | **Asset Hub Next** | 1100 | ASSET_HUB_NEXT_ID (temporary) |
 
-**Key Difference:** Bridge Hub ID differs (Rococo: 1013, Westend: 1002)
+**Key Difference:** Bridge Hub ID differs (Pezkuwichain: 1013, Zagros: 1002)
 
-### Polkadot/Kusama System Parachains (Reference Only)
+### Polkadot/Kusama System Teyrchains (Reference Only)
 
 | Network | Asset Hub | Bridge Hub | Collectives | People | Coretime |
 |---------|-----------|------------|-------------|---------|----------|
-| Polkadot | 1000 | 1002 | 1001 | 1004 | 1005 |
-| Kusama | 1000 | 1002 | 1001 | 1004 | 1005 |
+| Polkadot | 1000 | 1002 | 1001 | 1004 | 1005 |    →     | Pezkuwi | 30000 | 3002 | 3001 | 3004 | 3005 |
+| Kusama | 1000 | 1002 | 1001 | 1004 | 1005 |     →    | Kusama | 3000 | 3002 | 3001 | 3004 | 3005 |
 
 ### Critical File Locations:
 
 **Relay Chain Constants:**
 ```
-/polkadot/runtime/rococo/constants/src/lib.rs:105-127
-/polkadot/runtime/westend/constants/src/lib.rs:100-124
+/polkadot/runtime/pezkuwichain/constants/src/lib.rs:105-127
+/polkadot/runtime/zagros/constants/src/lib.rs:100-124
 ```
 
-**Parachain Constants References:**
+**Teyrchain Constants References:**
 ```
-/cumulus/parachains/runtimes/constants/src/rococo.rs:173-179
-/cumulus/parachains/runtimes/constants/src/westend.rs:199-207
+/cumulus/teyrchains/runtimes/constants/src/pezkuwichain.rs:173-179
+/cumulus/teyrchains/runtimes/constants/src/zagros.rs:199-207
 ```
 
 **Chain Spec Files:**
 ```
-/cumulus/parachains/chain-specs/asset-hub-rococo.json
-/cumulus/parachains/chain-specs/bridge-hub-rococo.json
-/cumulus/parachains/chain-specs/people-rococo.json
-/cumulus/parachains/chain-specs/coretime-rococo.json
-/cumulus/parachains/chain-specs/asset-hub-westend.json
-/cumulus/parachains/chain-specs/bridge-hub-westend.json
-/cumulus/parachains/chain-specs/people-westend.json
-/cumulus/parachains/chain-specs/coretime-westend.json
-/cumulus/parachains/chain-specs/collectives-westend.json
+/cumulus/teyrchains/chain-specs/asset-hub-pezkuwichain.json
+/cumulus/teyrchains/chain-specs/bridge-hub-pezkuwichain.json
+/cumulus/teyrchains/chain-specs/people-pezkuwichain.json
+/cumulus/teyrchains/chain-specs/coretime-pezkuwichain.json
+/cumulus/teyrchains/chain-specs/asset-hub-zagros.json
+/cumulus/teyrchains/chain-specs/bridge-hub-zagros.json
+/cumulus/teyrchains/chain-specs/people-zagros.json
+/cumulus/teyrchains/chain-specs/coretime-zagros.json
+/cumulus/teyrchains/chain-specs/collectives-zagros.json
 ```
 
 ### Rebranding Decision Required:
@@ -224,8 +224,8 @@ const DEFAULT_PROTOCOL_ID: &str = "dot";
 - Simpler rebranding process
 
 **Option 2: Assign New Para IDs**
-- Clean break from Rococo/Westend history
-- Requires re-registration of all system parachains
+- Clean break from Pezkuwichain/Zagros history
+- Requires re-registration of all system teyrchains
 - Higher complexity, risk of issues
 
 **Recommendation:** Keep existing Para IDs for continuity
@@ -238,24 +238,24 @@ const DEFAULT_PROTOCOL_ID: &str = "dot";
 
 | Network | Token Symbol | Decimals | UNITS Value | SS58 Prefix | Chain Spec Location |
 |---------|--------------|----------|-------------|-------------|---------------------|
-| **Polkadot** | DOT | 10 | 10_000_000_000 | 0 | `/polkadot/node/service/chain-specs/polkadot.json` |
+| **Polkadot** | HEZ | 10 | 10_000_000_000 | 0 | `/polkadot/node/service/chain-specs/polkadot.json` |      →       | **Pezkuwi** | HEZ | 10 | 10_000_000_000 | 0 | `/pezkuwi/node/service/chain-specs/pezkuwi.json` |
 | **Kusama** | KSM | 12 | 1_000_000_000_000 | 2 | `/polkadot/node/service/chain-specs/kusama.json` |
-| **Rococo** | ROC | 12 | 1_000_000_000_000 | 42 | `/polkadot/node/service/chain-specs/rococo.json` |
-| **Westend** | WND | 12 | 1_000_000_000_000 | 42 | `/polkadot/node/service/chain-specs/westend.json` |
+| **Pezkuwichain** | TYR | 12 | 1_000_000_000_000 | 42 | `/polkadot/node/service/chain-specs/pezkuwichain.json` |
+| **Zagros** | ZGR | 12 | 1_000_000_000_000 | 42 | `/polkadot/node/service/chain-specs/zagros.json` |
 | **Versi** | VRS | 12 | 1_000_000_000_000 | 42 | `/polkadot/node/service/src/chain_spec.rs:134-143` |
 
 ### Proposed Pezkuwi Token Configurations
 
 | Network | Current Symbol | Proposed Symbol | Proposed Decimals | Rationale |
 |---------|---------------|-----------------|-------------------|-----------|
-| **PezkuwiChain** (Rococo) | ROC | **HEZ** or **PEZ** | **12** (recommended) | Match testnet standard; maintains 1e12 UNITS |
-| **Zagros** (Westend) | WND | **ZGR** | **12** (recommended) | Match testnet standard; maintains 1e12 UNITS |
+| **PezkuwiChain** (Pezkuwichain) | TYR | **HEZ** or **PEZ** | **12** (recommended) | Match testnet standard; maintains 1e12 UNITS |
+| **Zagros** (Zagros) | ZGR | **ZGR** | **12** (recommended) | Match testnet standard; maintains 1e12 UNITS |
 
 ### Currency Constants Locations
 
-**Rococo Currency Configuration:**
+**Pezkuwichain Currency Configuration:**
 ```
-/polkadot/runtime/rococo/constants/src/lib.rs:22-36
+/polkadot/runtime/pezkuwichain/constants/src/lib.rs:22-36
 pub const EXISTENTIAL_DEPOSIT: Balance = 1 * CENTS;
 pub const UNITS: Balance = 1_000_000_000_000;  // 12 decimals
 pub const CENTS: Balance = UNITS / 30_000;
@@ -263,9 +263,9 @@ pub const GRAND: Balance = CENTS * 100_000;
 pub const MILLICENTS: Balance = CENTS / 1_000;
 ```
 
-**Westend Currency Configuration:**
+**Zagros Currency Configuration:**
 ```
-/polkadot/runtime/westend/constants/src/lib.rs:22-36
+/polkadot/runtime/zagros/constants/src/lib.rs:22-36
 pub const EXISTENTIAL_DEPOSIT: Balance = 1 * CENTS;
 pub const UNITS: Balance = 1_000_000_000_000;  // 12 decimals
 pub const CENTS: Balance = UNITS / 100;
@@ -273,18 +273,18 @@ pub const MILLICENTS: Balance = CENTS / 1_000;
 pub const GRAND: Balance = CENTS * 100_000;
 ```
 
-**Key Difference:** Rococo CENTS = UNITS/30_000, Westend CENTS = UNITS/100
+**Key Difference:** Pezkuwichain CENTS = UNITS/30_000, Zagros CENTS = UNITS/100
 
-### Parachain Token Configurations
+### Teyrchain Token Configurations
 
-**All system parachains inherit from relay chain:**
+**All system teyrchains inherit from relay chain:**
 ```
-/cumulus/parachains/runtimes/constants/src/rococo.rs:16-31
+/cumulus/teyrchains/runtimes/constants/src/pezkuwichain.rs:16-31
 pub const EXISTENTIAL_DEPOSIT: Balance = constants::currency::EXISTENTIAL_DEPOSIT / 10;
 pub const UNITS: Balance = constants::currency::UNITS;
 pub const CENTS: Balance = constants::currency::CENTS;
 
-/cumulus/parachains/runtimes/constants/src/westend.rs:36-53
+/cumulus/teyrchains/runtimes/constants/src/zagros.rs:36-53
 pub const EXISTENTIAL_DEPOSIT: Balance = constants::currency::EXISTENTIAL_DEPOSIT / 10;
 pub const UNITS: Balance = constants::currency::UNITS;
 pub const CENTS: Balance = constants::currency::CENTS;
@@ -294,37 +294,37 @@ pub const CENTS: Balance = constants::currency::CENTS;
 
 **Chain Specification Files (Properties):**
 ```
-/polkadot/node/service/chain-specs/rococo.json - "tokenSymbol": "ROC"
-/polkadot/node/service/chain-specs/westend.json - "tokenSymbol": "WND"
+/polkadot/node/service/chain-specs/pezkuwichain.json - "tokenSymbol": "TYR"
+/polkadot/node/service/chain-specs/zagros.json - "tokenSymbol": "ZGR"
 /polkadot/node/service/src/chain_spec.rs:134-143 - Versi properties
-/cumulus/parachains/chain-specs/asset-hub-rococo.json - "tokenSymbol": "ROC"
-/cumulus/parachains/chain-specs/asset-hub-westend.json - "tokenSymbol": "WND"
-(+30 more parachain chain spec files)
+/cumulus/teyrchains/chain-specs/asset-hub-pezkuwichain.json - "tokenSymbol": "TYR"
+/cumulus/teyrchains/chain-specs/asset-hub-zagros.json - "tokenSymbol": "ZGR"
+(+30 more teyrchain chain spec files)
 ```
 
 **Runtime Constant Files:**
 ```
-/polkadot/runtime/rococo/constants/src/lib.rs
-/polkadot/runtime/westend/constants/src/lib.rs
-/cumulus/parachains/runtimes/constants/src/rococo.rs
-/cumulus/parachains/runtimes/constants/src/westend.rs
+/polkadot/runtime/pezkuwichain/constants/src/lib.rs
+/polkadot/runtime/zagros/constants/src/lib.rs
+/cumulus/teyrchains/runtimes/constants/src/pezkuwichain.rs
+/cumulus/teyrchains/runtimes/constants/src/zagros.rs
 ```
 
 **Genesis Configuration Presets:**
 ```
-/polkadot/runtime/rococo/src/genesis_config_presets.rs:27
-  use rococo_runtime_constants::currency::UNITS as ROC;
+/polkadot/runtime/pezkuwichain/src/genesis_config_presets.rs:27
+  use pezkuwichain_runtime_constants::currency::UNITS as TYR;
 
-/polkadot/runtime/westend/src/genesis_config_presets.rs:36
-  use westend_runtime_constants::currency::UNITS as WND;
+/polkadot/runtime/zagros/src/genesis_config_presets.rs:36
+  use zagros_runtime_constants::currency::UNITS as ZGR;
 ```
 
 ### Decimal Decision Matrix
 
 | Decimals | Pros | Cons | Recommendation |
 |----------|------|------|----------------|
-| **10 (like DOT)** | - Smaller numbers<br>- Less precision needed | - Different from current testnets<br>- Requires UNITS value change | Not recommended |
-| **12 (like ROC/WND)** | - Matches current testnets<br>- No math changes needed<br>- Familiar to testnet users | - Larger numbers | **Recommended** |
+| **10 (like HEZ)** | - Smaller numbers<br>- Less precision needed | - Different from current testnets<br>- Requires UNITS value change | Not recommended |
+| **12 (like TYR/ZGR)** | - Matches current testnets<br>- No math changes needed<br>- Familiar to testnet users | - Larger numbers | **Recommended** |
 | **18 (like ETH)** | - Maximum precision<br>- EVM compatibility | - Unnecessarily complex<br>- Breaking change | Not recommended |
 
 **Recommendation:** Keep 12 decimals for both PezkuwiChain (HEZ) and Zagros (ZGR) tokens
@@ -357,9 +357,9 @@ pub const CENTS: Balance = constants::currency::CENTS;
 
 ### Genesis Configuration Usage
 
-**Rococo Development Genesis:**
+**Pezkuwichain Development Genesis:**
 ```
-/polkadot/runtime/rococo/src/genesis_config_presets.rs:450-475
+/polkadot/runtime/pezkuwichain/src/genesis_config_presets.rs:450-475
 
 development_config():
   - Alice (single validator)
@@ -375,9 +375,9 @@ staging_testnet():
   - Dave
 ```
 
-**Westend Development Genesis:**
+**Zagros Development Genesis:**
 ```
-/polkadot/runtime/westend/src/genesis_config_presets.rs (similar structure)
+/polkadot/runtime/zagros/src/genesis_config_presets.rs (similar structure)
   - Same Alice/Bob/Charlie/Dave pattern
   - Additional staking configurations
 ```
@@ -386,14 +386,14 @@ staging_testnet():
 
 **Authority Key Generation:**
 ```rust
-/polkadot/runtime/rococo/src/genesis_config_presets.rs:36-75
+/polkadot/runtime/pezkuwichain/src/genesis_config_presets.rs:36-75
 
 fn get_authority_keys_from_seed(seed: &str) -> (
     AccountId,        // Stash account
     AccountId,        // Controller account
     BabeId,          // Block authoring
     GrandpaId,       // Finality
-    ValidatorId,     // Parachain validation
+    ValidatorId,     // Teyrchain validation
     AssignmentId,    // Core assignment
     AuthorityDiscoveryId,  // Peer discovery
     BeefyId,         // BEEFY consensus
@@ -407,22 +407,22 @@ fn get_authority_keys_from_seed(seed: &str) -> (
 
 **Runtime Genesis Presets:**
 ```
-/polkadot/runtime/rococo/src/genesis_config_presets.rs
-/polkadot/runtime/westend/src/genesis_config_presets.rs
-/cumulus/parachains/runtimes/assets/asset-hub-rococo/src/genesis_config_presets.rs
-/cumulus/parachains/runtimes/assets/asset-hub-westend/src/genesis_config_presets.rs
-/cumulus/parachains/runtimes/bridge-hubs/bridge-hub-rococo/src/genesis_config_presets.rs
-/cumulus/parachains/runtimes/bridge-hubs/bridge-hub-westend/src/genesis_config_presets.rs
-/cumulus/parachains/runtimes/people/people-rococo/src/genesis_config_presets.rs
-/cumulus/parachains/runtimes/people/people-westend/src/genesis_config_presets.rs
-/cumulus/parachains/runtimes/coretime/coretime-rococo/src/genesis_config_presets.rs
-/cumulus/parachains/runtimes/coretime/coretime-westend/src/genesis_config_presets.rs
+/polkadot/runtime/pezkuwichain/src/genesis_config_presets.rs
+/polkadot/runtime/zagros/src/genesis_config_presets.rs
+/cumulus/teyrchains/runtimes/assets/asset-hub-pezkuwichain/src/genesis_config_presets.rs
+/cumulus/teyrchains/runtimes/assets/asset-hub-zagros/src/genesis_config_presets.rs
+/cumulus/teyrchains/runtimes/bridge-hubs/bridge-hub-pezkuwichain/src/genesis_config_presets.rs
+/cumulus/teyrchains/runtimes/bridge-hubs/bridge-hub-zagros/src/genesis_config_presets.rs
+/cumulus/teyrchains/runtimes/people/people-pezkuwichain/src/genesis_config_presets.rs
+/cumulus/teyrchains/runtimes/people/people-zagros/src/genesis_config_presets.rs
+/cumulus/teyrchains/runtimes/coretime/coretime-pezkuwichain/src/genesis_config_presets.rs
+/cumulus/teyrchains/runtimes/coretime/coretime-zagros/src/genesis_config_presets.rs
 ```
 
 **Test Configurations:**
 ```
 /substrate/test-utils/runtime/src/lib.rs
-/polkadot/runtime/parachains/src/mock.rs
+/polkadot/runtime/teyrchains/src/mock.rs
 /cumulus/test/runtime/src/lib.rs
 (+50 more test files)
 ```
@@ -430,7 +430,7 @@ fn get_authority_keys_from_seed(seed: &str) -> (
 **Chain Spec Builders:**
 ```
 /polkadot/node/service/src/chain_spec.rs
-/cumulus/polkadot-parachain/src/chain_spec/*
+/cumulus/polkadot-teyrchain/src/chain_spec/*
 ```
 
 ### Standard Development Phrase
@@ -493,24 +493,24 @@ Genesis hashes are automatically computed from the genesis state and are **uniqu
 
 ### Session Keys Configuration
 
-**Session Key Structure (Rococo):**
+**Session Key Structure (Pezkuwichain):**
 ```rust
-/polkadot/runtime/rococo/src/genesis_config_presets.rs:81-90
+/polkadot/runtime/pezkuwichain/src/genesis_config_presets.rs:81-90
 
 SessionKeys {
     babe: BabeId,                      // Block production
     grandpa: GrandpaId,                // Finality gadget
-    para_validator: ValidatorId,       // Parachain validation
+    para_validator: ValidatorId,       // Teyrchain validation
     para_assignment: AssignmentId,     // Core assignment
     authority_discovery: AuthorityDiscoveryId,  // Peer discovery
     beefy: BeefyId,                    // BEEFY light client
 }
 ```
 
-**Session Key Structure (Westend):**
+**Session Key Structure (Zagros):**
 ```rust
-/polkadot/runtime/westend/src/genesis_config_presets.rs:83-92
-(Identical to Rococo)
+/polkadot/runtime/zagros/src/genesis_config_presets.rs:83-92
+(Identical to Pezkuwichain)
 ```
 
 ### Cryptographic Schemes Used
@@ -519,7 +519,7 @@ SessionKeys {
 |----------|-----------|---------|----------|
 | **BABE** | SR25519 | Block production | 32 bytes |
 | **GRANDPA** | ED25519 | Finality voting | 32 bytes |
-| **Para Validator** | SR25519 | Parachain validation | 32 bytes |
+| **Para Validator** | SR25519 | Teyrchain validation | 32 bytes |
 | **Para Assignment** | SR25519 | Core assignment | 32 bytes |
 | **Authority Discovery** | SR25519 | Peer discovery | 32 bytes |
 | **BEEFY** | ECDSA (K256) | Light client proofs | 33 bytes (compressed) |
@@ -527,9 +527,9 @@ SessionKeys {
 
 ### BABE Consensus Configuration
 
-**Rococo BABE Config:**
+**Pezkuwichain BABE Config:**
 ```rust
-/polkadot/runtime/rococo/src/lib.rs:192-196
+/polkadot/runtime/pezkuwichain/src/lib.rs:192-196
 
 pub const BABE_GENESIS_EPOCH_CONFIG: sp_consensus_babe::BabeEpochConfiguration =
     sp_consensus_babe::BabeEpochConfiguration {
@@ -538,29 +538,29 @@ pub const BABE_GENESIS_EPOCH_CONFIG: sp_consensus_babe::BabeEpochConfiguration =
     };
 ```
 
-**Primary Probability:** (1, 4) - defined in `/polkadot/runtime/rococo/constants/src/lib.rs:61`
+**Primary Probability:** (1, 4) - defined in `/polkadot/runtime/pezkuwichain/constants/src/lib.rs:61`
 
 **Slot Duration:**
 ```
-/polkadot/runtime/rococo/constants/src/lib.rs:43-44
+/polkadot/runtime/pezkuwichain/constants/src/lib.rs:43-44
 pub const MILLISECS_PER_BLOCK: Moment = 6000;  // 6 second blocks
 pub const SLOT_DURATION: Moment = MILLISECS_PER_BLOCK;
 ```
 
-### Parachain Consensus Parameters
+### Teyrchain Consensus Parameters
 
 **Relay Chain Slot Duration:**
 ```
-/cumulus/parachains/runtimes/constants/src/rococo.rs:120
+/cumulus/teyrchains/runtimes/constants/src/pezkuwichain.rs:120
 pub const RELAY_CHAIN_SLOT_DURATION_MILLIS: u32 = 6000;
 
-/cumulus/parachains/runtimes/constants/src/westend.rs:143
+/cumulus/teyrchains/runtimes/constants/src/zagros.rs:143
 pub const RELAY_CHAIN_SLOT_DURATION_MILLIS: u32 = 6000;
 ```
 
-**Parachain Block Time:**
+**Teyrchain Block Time:**
 ```
-/cumulus/parachains/runtimes/constants/src/rococo.rs:134-135
+/cumulus/teyrchains/runtimes/constants/src/pezkuwichain.rs:134-135
 pub const MILLISECS_PER_BLOCK: u64 = 6000;
 pub const SLOT_DURATION: u64 = MILLISECS_PER_BLOCK;
 ```
@@ -569,14 +569,14 @@ pub const SLOT_DURATION: u64 = MILLISECS_PER_BLOCK;
 
 **Relay Chain:**
 ```
-Rococo: 1 * CENTS = 1_000_000_000_000 / 30_000 = 33_333_333
-Westend: 1 * CENTS = 1_000_000_000_000 / 100 = 10_000_000_000
+Pezkuwichain: 1 * CENTS = 1_000_000_000_000 / 30_000 = 33_333_333
+Zagros: 1 * CENTS = 1_000_000_000_000 / 100 = 10_000_000_000
 ```
 
-**Parachains (1/10 of relay chain):**
+**Teyrchains (1/10 of relay chain):**
 ```
-Rococo parachains: 3_333_333
-Westend parachains: 1_000_000_000
+Pezkuwichain teyrchains: 3_333_333
+Zagros teyrchains: 1_000_000_000
 ```
 
 ### Cryptographic Configuration Files
@@ -592,21 +592,21 @@ Westend parachains: 1_000_000_000
 
 **Runtime Cryptographic Configs:**
 ```
-/polkadot/runtime/rococo/src/lib.rs - Runtime version, genesis config
-/polkadot/runtime/westend/src/lib.rs - Runtime version, genesis config
-/polkadot/runtime/rococo/src/genesis_config_presets.rs - Genesis authorities
-/polkadot/runtime/westend/src/genesis_config_presets.rs - Genesis authorities
+/polkadot/runtime/pezkuwichain/src/lib.rs - Runtime version, genesis config
+/polkadot/runtime/zagros/src/lib.rs - Runtime version, genesis config
+/polkadot/runtime/pezkuwichain/src/genesis_config_presets.rs - Genesis authorities
+/polkadot/runtime/zagros/src/genesis_config_presets.rs - Genesis authorities
 ```
 
 ### Version Configuration
 
-**Rococo Runtime Version:**
+**Pezkuwichain Runtime Version:**
 ```rust
-/polkadot/runtime/rococo/src/lib.rs:178-189
+/polkadot/runtime/pezkuwichain/src/lib.rs:178-189
 
 pub const VERSION: RuntimeVersion = RuntimeVersion {
-    spec_name: alloc::borrow::Cow::Borrowed("rococo"),
-    impl_name: alloc::borrow::Cow::Borrowed("parity-rococo-v2.0"),
+    spec_name: alloc::borrow::Cow::Borrowed("pezkuwichain"),
+    impl_name: alloc::borrow::Cow::Borrowed("parity-pezkuwichain-v2.0"),
     authoring_version: 0,
     spec_version: 1_020_001,
     impl_version: 0,
@@ -616,13 +616,13 @@ pub const VERSION: RuntimeVersion = RuntimeVersion {
 };
 ```
 
-**Westend Runtime Version:**
+**Zagros Runtime Version:**
 ```rust
-/polkadot/runtime/westend/src/lib.rs:169-180
+/polkadot/runtime/zagros/src/lib.rs:169-180
 
 pub const VERSION: RuntimeVersion = RuntimeVersion {
-    spec_name: alloc::borrow::Cow::Borrowed("westend"),
-    impl_name: alloc::borrow::Cow::Borrowed("parity-westend"),
+    spec_name: alloc::borrow::Cow::Borrowed("zagros"),
+    impl_name: alloc::borrow::Cow::Borrowed("parity-zagros"),
     authoring_version: 2,
     spec_version: 1_020_001,
     impl_version: 0,
@@ -633,22 +633,22 @@ pub const VERSION: RuntimeVersion = RuntimeVersion {
 ```
 
 **Rebranding Required:**
-- `spec_name`: "rococo" → "pezkuwichain", "westend" → "zagros"
-- `impl_name`: "parity-rococo-v2.0" → "pezkuwi-v1.0", "parity-westend" → "zagros-v1.0"
+- `spec_name`: "pezkuwichain" → "pezkuwichain", "zagros" → "zagros"
+- `impl_name`: "parity-pezkuwichain-v2.0" → "pezkuwi-v1.0", "parity-zagros" → "zagros-v1.0"
 
 ### Files Requiring Genesis/Crypto Updates
 
 1. **Runtime Version Specs:** (2 files)
-   - `/polkadot/runtime/rococo/src/lib.rs`
-   - `/polkadot/runtime/westend/src/lib.rs`
+   - `/polkadot/runtime/pezkuwichain/src/lib.rs`
+   - `/polkadot/runtime/zagros/src/lib.rs`
 
 2. **Genesis Presets:** (10+ files)
    - All files in `/polkadot/runtime/*/src/genesis_config_presets.rs`
-   - All files in `/cumulus/parachains/runtimes/*/src/genesis_config_presets.rs`
+   - All files in `/cumulus/teyrchains/runtimes/*/src/genesis_config_presets.rs`
 
 3. **Chain Specifications:** (35+ files)
    - All JSON files in `/polkadot/node/service/chain-specs/`
-   - All JSON files in `/cumulus/parachains/chain-specs/`
+   - All JSON files in `/cumulus/teyrchains/chain-specs/`
 
 4. **Session Key Configurations:** (15+ files)
    - All runtime `lib.rs` files defining SessionKeys
@@ -662,11 +662,11 @@ pub const VERSION: RuntimeVersion = RuntimeVersion {
 **Chain Spec Structure:**
 ```json
 {
-  "name": "Rococo",
-  "id": "rococo",
+  "name": "Pezkuwichain",
+  "id": "pezkuwichain",
   "bootNodes": [
-    "/dns/rococo-bootnode-0.polkadot.io/tcp/30333/p2p/...",
-    "/dns/rococo-bootnode-1.polkadot.io/tcp/30333/p2p/...",
+    "/dns/pezkuwichain-bootnode-0.polkadot.io/tcp/30333/p2p/...",
+    "/dns/pezkuwichain-bootnode-1.polkadot.io/tcp/30333/p2p/...",
     ...
   ],
   "properties": { ... }
@@ -679,22 +679,22 @@ pub const VERSION: RuntimeVersion = RuntimeVersion {
 ```
 /polkadot/node/service/chain-specs/polkadot.json - 12 bootnodes
 /polkadot/node/service/chain-specs/kusama.json - 10 bootnodes
-/polkadot/node/service/chain-specs/rococo.json - 8+ bootnodes
-/polkadot/node/service/chain-specs/westend.json - 8+ bootnodes
+/polkadot/node/service/chain-specs/pezkuwichain.json - 8+ bootnodes
+/polkadot/node/service/chain-specs/zagros.json - 8+ bootnodes
 /polkadot/node/service/chain-specs/paseo.json - bootnodes
 ```
 
-**Parachain Bootnodes:**
+**Teyrchain Bootnodes:**
 ```
-/cumulus/parachains/chain-specs/asset-hub-rococo.json
-/cumulus/parachains/chain-specs/asset-hub-westend.json
-/cumulus/parachains/chain-specs/bridge-hub-rococo.json
-/cumulus/parachains/chain-specs/bridge-hub-westend.json
-/cumulus/parachains/chain-specs/people-rococo.json
-/cumulus/parachains/chain-specs/people-westend.json
-/cumulus/parachains/chain-specs/coretime-rococo.json
-/cumulus/parachains/chain-specs/coretime-westend.json
-/cumulus/parachains/chain-specs/collectives-westend.json
+/cumulus/teyrchains/chain-specs/asset-hub-pezkuwichain.json
+/cumulus/teyrchains/chain-specs/asset-hub-zagros.json
+/cumulus/teyrchains/chain-specs/bridge-hub-pezkuwichain.json
+/cumulus/teyrchains/chain-specs/bridge-hub-zagros.json
+/cumulus/teyrchains/chain-specs/people-pezkuwichain.json
+/cumulus/teyrchains/chain-specs/people-zagros.json
+/cumulus/teyrchains/chain-specs/coretime-pezkuwichain.json
+/cumulus/teyrchains/chain-specs/coretime-zagros.json
+/cumulus/teyrchains/chain-specs/collectives-zagros.json
 (+20 more files)
 ```
 
@@ -708,9 +708,9 @@ pub const VERSION: RuntimeVersion = RuntimeVersion {
 /ip6/<ipv6-address>/tcp/<port>/p2p/<peer-id>
 ```
 
-**Example from Rococo:**
+**Example from Pezkuwichain:**
 ```
-/dns/rococo-bootnode-0.polkadot.io/tcp/30333/p2p/12D3KooW...
+/dns/pezkuwichain-bootnode-0.polkadot.io/tcp/30333/p2p/12D3KooW...
 ```
 
 ### Bootnode Discovery Mechanisms
@@ -723,7 +723,7 @@ pub const VERSION: RuntimeVersion = RuntimeVersion {
   - Bootstrap nodes seed the DHT
 ```
 
-**Parachain Bootnode Advertisement:**
+**Teyrchain Bootnode Advertisement:**
 ```
 /cumulus/client/bootnodes/src/advertisement.rs
 /cumulus/client/bootnodes/src/discovery.rs
@@ -738,8 +738,8 @@ pub const VERSION: RuntimeVersion = RuntimeVersion {
 ```
 /polkadot/node/service/src/chain_spec.rs:30-34
 
-const WESTEND_STAGING_TELEMETRY_URL: &str = "wss://telemetry.polkadot.io/submit/";
-const ROCOCO_STAGING_TELEMETRY_URL: &str = "wss://telemetry.polkadot.io/submit/";
+const ZAGROS_STAGING_TELEMETRY_URL: &str = "wss://telemetry.polkadot.io/submit/";
+const PEZKUWICHAIN_STAGING_TELEMETRY_URL: &str = "wss://telemetry.polkadot.io/submit/";
 const VERSI_STAGING_TELEMETRY_URL: &str = "wss://telemetry.polkadot.io/submit/";
 ```
 
@@ -748,21 +748,21 @@ const VERSI_STAGING_TELEMETRY_URL: &str = "wss://telemetry.polkadot.io/submit/";
 /polkadot/node/service/src/chain_spec.rs:107-110
 
 .with_telemetry_endpoints(
-    TelemetryEndpoints::new(vec![(WESTEND_STAGING_TELEMETRY_URL.to_string(), 0)])
-        .expect("Westend Staging telemetry url is valid; qed"),
+    TelemetryEndpoints::new(vec![(ZAGROS_STAGING_TELEMETRY_URL.to_string(), 0)])
+        .expect("Zagros Staging telemetry url is valid; qed"),
 )
 ```
 
 ### Bootnode Infrastructure Requirements
 
-**For PezkuwiChain (Rococo replacement):**
+**For PezkuwiChain (Pezkuwichain replacement):**
 1. **Minimum 4 Bootnodes** (Recommended 6-8 for redundancy)
 2. **Geographic Distribution:** Multi-region deployment
 3. **DNS Setup:** `pezkuwichain-bootnode-{0,1,2,3}.{domain}`
 4. **Peer ID Generation:** New unique peer IDs for each bootnode
 5. **Port Configuration:** Default 30333 (TCP/WebSocket)
 
-**For Zagros (Westend replacement):**
+**For Zagros (Zagros replacement):**
 1. **Minimum 4 Bootnodes** (Recommended 6-8 for redundancy)
 2. **Geographic Distribution:** Multi-region deployment
 3. **DNS Setup:** `zagros-bootnode-{0,1,2,3}.{domain}`
@@ -854,26 +854,26 @@ const VERSI_STAGING_TELEMETRY_URL: &str = "wss://telemetry.polkadot.io/submit/";
 **Priority: HIGH**
 
 **SS58 Prefix Updates (After Registration):**
-- [ ] `/polkadot/runtime/rococo/src/lib.rs:218` - Update SS58Prefix constant
-- [ ] `/polkadot/runtime/westend/src/lib.rs:209` - Update SS58Prefix constant
-- [ ] All parachain runtime `lib.rs` files (10+ files)
+- [ ] `/polkadot/runtime/pezkuwichain/src/lib.rs:218` - Update SS58Prefix constant
+- [ ] `/polkadot/runtime/zagros/src/lib.rs:209` - Update SS58Prefix constant
+- [ ] All teyrchain runtime `lib.rs` files (10+ files)
 - [ ] All chain spec JSON files `properties.ss58Format` (35+ files)
 
 **Token Symbol & Decimals Updates:**
-- [ ] `/polkadot/node/service/chain-specs/rococo.json` - Update tokenSymbol to HEZ
-- [ ] `/polkadot/node/service/chain-specs/westend.json` - Update tokenSymbol to ZGR
-- [ ] All parachain chain spec JSON properties (30+ files)
-- [ ] `/polkadot/runtime/rococo/src/genesis_config_presets.rs:27` - Update ROC → HEZ
-- [ ] `/polkadot/runtime/westend/src/genesis_config_presets.rs:36` - Update WND → ZGR
+- [ ] `/polkadot/node/service/chain-specs/pezkuwichain.json` - Update tokenSymbol to HEZ
+- [ ] `/polkadot/node/service/chain-specs/zagros.json` - Update tokenSymbol to ZGR
+- [ ] All teyrchain chain spec JSON properties (30+ files)
+- [ ] `/polkadot/runtime/pezkuwichain/src/genesis_config_presets.rs:27` - Update TYR → HEZ
+- [ ] `/polkadot/runtime/zagros/src/genesis_config_presets.rs:36` - Update ZGR → ZGR
 
 **Protocol ID Updates:**
 - [ ] `/polkadot/node/service/src/chain_spec.rs:36` - Change DEFAULT_PROTOCOL_ID
 - [ ] Test protocol ID changes with network client
 
 **Runtime Version Updates:**
-- [ ] `/polkadot/runtime/rococo/src/lib.rs:178-189` - Update spec_name, impl_name
-- [ ] `/polkadot/runtime/westend/src/lib.rs:169-180` - Update spec_name, impl_name
-- [ ] All parachain runtime version configs
+- [ ] `/polkadot/runtime/pezkuwichain/src/lib.rs:178-189` - Update spec_name, impl_name
+- [ ] `/polkadot/runtime/zagros/src/lib.rs:169-180` - Update spec_name, impl_name
+- [ ] All teyrchain runtime version configs
 
 ### Phase 3: Infrastructure Deployment
 
@@ -898,8 +898,8 @@ const VERSI_STAGING_TELEMETRY_URL: &str = "wss://telemetry.polkadot.io/submit/";
 **Priority: HIGH**
 
 **All Chain Spec JSON Files:**
-- [ ] Update `name` field (Rococo → PezkuwiChain, etc.)
-- [ ] Update `id` field (rococo → pezkuwichain, etc.)
+- [ ] Update `name` field (Pezkuwichain → PezkuwiChain, etc.)
+- [ ] Update `id` field (pezkuwichain → pezkuwichain, etc.)
 - [ ] Replace all `bootNodes` with new infrastructure
 - [ ] Update `telemetryEndpoints` URLs
 - [ ] Update `properties.tokenSymbol`
@@ -909,19 +909,19 @@ const VERSI_STAGING_TELEMETRY_URL: &str = "wss://telemetry.polkadot.io/submit/";
 **Files to Update (35+ total):**
 ```
 Relay Chains:
-- /polkadot/node/service/chain-specs/rococo.json
-- /polkadot/node/service/chain-specs/westend.json
+- /polkadot/node/service/chain-specs/pezkuwichain.json
+- /polkadot/node/service/chain-specs/zagros.json
 
-Parachains:
-- /cumulus/parachains/chain-specs/asset-hub-rococo.json
-- /cumulus/parachains/chain-specs/asset-hub-westend.json
-- /cumulus/parachains/chain-specs/bridge-hub-rococo.json
-- /cumulus/parachains/chain-specs/bridge-hub-westend.json
-- /cumulus/parachains/chain-specs/people-rococo.json
-- /cumulus/parachains/chain-specs/people-westend.json
-- /cumulus/parachains/chain-specs/coretime-rococo.json
-- /cumulus/parachains/chain-specs/coretime-westend.json
-- /cumulus/parachains/chain-specs/collectives-westend.json
+Teyrchains:
+- /cumulus/teyrchains/chain-specs/asset-hub-pezkuwichain.json
+- /cumulus/teyrchains/chain-specs/asset-hub-zagros.json
+- /cumulus/teyrchains/chain-specs/bridge-hub-pezkuwichain.json
+- /cumulus/teyrchains/chain-specs/bridge-hub-zagros.json
+- /cumulus/teyrchains/chain-specs/people-pezkuwichain.json
+- /cumulus/teyrchains/chain-specs/people-zagros.json
+- /cumulus/teyrchains/chain-specs/coretime-pezkuwichain.json
+- /cumulus/teyrchains/chain-specs/coretime-zagros.json
+- /cumulus/teyrchains/chain-specs/collectives-zagros.json
 (+25 more including genesis files)
 ```
 
@@ -931,7 +931,7 @@ Parachains:
 
 **Development Genesis:**
 - [ ] Keep Alice/Bob/Charlie/Dave for local development (no change)
-- [ ] Update comments referencing Rococo/Westend
+- [ ] Update comments referencing Pezkuwichain/Zagros
 
 **Staging/Testnet Genesis:**
 - [ ] Generate NEW authority keys (NOT Alice/Bob/etc.)
@@ -940,26 +940,26 @@ Parachains:
 - [ ] Test genesis generation
 
 **Genesis Files to Review:**
-- [ ] `/polkadot/runtime/rococo/src/genesis_config_presets.rs`
-- [ ] `/polkadot/runtime/westend/src/genesis_config_presets.rs`
-- [ ] All parachain genesis_config_presets.rs files (10+ files)
+- [ ] `/polkadot/runtime/pezkuwichain/src/genesis_config_presets.rs`
+- [ ] `/polkadot/runtime/zagros/src/genesis_config_presets.rs`
+- [ ] All teyrchain genesis_config_presets.rs files (10+ files)
 
 ### Phase 6: Documentation & String Updates
 
 **Priority: MEDIUM**
 
 **User-Facing Strings:**
-- [ ] Update all error messages mentioning Rococo/Westend
+- [ ] Update all error messages mentioning Pezkuwichain/Zagros
 - [ ] Update CLI help text
 - [ ] Update chain selection menus
 - [ ] Update log messages and warnings
 
 **Code Comments:**
-- [ ] Search and replace "Rococo" → "PezkuwiChain" in comments
-- [ ] Search and replace "Westend" → "Zagros" in comments
-- [ ] Search and replace "ROC" → "HEZ" in comments
-- [ ] Search and replace "WND" → "ZGR" in comments
-- [ ] Update parachain references
+- [ ] Search and replace "Pezkuwichain" → "PezkuwiChain" in comments
+- [ ] Search and replace "Zagros" → "Zagros" in comments
+- [ ] Search and replace "TYR" → "HEZ" in comments
+- [ ] Search and replace "ZGR" → "ZGR" in comments
+- [ ] Update teyrchain references
 
 **Documentation Files:**
 - [ ] Update README files
@@ -976,8 +976,8 @@ Parachains:
 - [ ] Test bootnode connectivity
 - [ ] Verify SS58 address generation with new prefix
 - [ ] Test token transfers with new symbols
-- [ ] Validate all parachain registrations
-- [ ] Test XCM between relay and parachains
+- [ ] Validate all teyrchain registrations
+- [ ] Test XCM between relay and teyrchains
 - [ ] Test bridge configurations (if applicable)
 - [ ] Performance testing under load
 
@@ -996,19 +996,19 @@ Parachains:
 - [ ] Test network upgrades
 - [ ] Stress test network
 
-### Phase 8: Parachain-Specific Updates
+### Phase 8: Teyrchain-Specific Updates
 
 **Priority: HIGH**
 
-**System Parachain Decision:**
+**System Teyrchain Decision:**
 - [ ] Decide: Keep existing Para IDs or reassign new ones
 - [ ] If reassigning: Plan migration strategy
-- [ ] Update parachain registration code
+- [ ] Update teyrchain registration code
 - [ ] Update XCM routing configurations
 
-**Parachain Files Requiring Para ID Updates (if reassigning):**
-- [ ] `/polkadot/runtime/rococo/constants/src/lib.rs:105-127`
-- [ ] `/polkadot/runtime/westend/constants/src/lib.rs:100-124`
+**Teyrchain Files Requiring Para ID Updates (if reassigning):**
+- [ ] `/polkadot/runtime/pezkuwichain/constants/src/lib.rs:105-127`
+- [ ] `/polkadot/runtime/zagros/constants/src/lib.rs:100-124`
 - [ ] All chain spec JSON `para_id` fields
 
 **Bridge Configurations:**
@@ -1025,89 +1025,89 @@ Parachains:
 
 **Relay Chain Runtimes:**
 ```
-/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/rococo/src/lib.rs
-/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/westend/src/lib.rs
-/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/rococo/constants/src/lib.rs
-/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/westend/constants/src/lib.rs
-/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/rococo/src/genesis_config_presets.rs
-/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/westend/src/genesis_config_presets.rs
+/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/pezkuwichain/src/lib.rs
+/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/zagros/src/lib.rs
+/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/pezkuwichain/constants/src/lib.rs
+/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/zagros/constants/src/lib.rs
+/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/pezkuwichain/src/genesis_config_presets.rs
+/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/zagros/src/genesis_config_presets.rs
 ```
 
-**Parachain Runtime Constants:**
+**Teyrchain Runtime Constants:**
 ```
-/home/mamostehp/polkadot-sdk-fresh/cumulus/parachains/runtimes/constants/src/lib.rs
-/home/mamostehp/polkadot-sdk-fresh/cumulus/parachains/runtimes/constants/src/rococo.rs
-/home/mamostehp/polkadot-sdk-fresh/cumulus/parachains/runtimes/constants/src/westend.rs
-```
-
-**System Parachain Runtimes (Rococo):**
-```
-/home/mamostehp/polkadot-sdk-fresh/cumulus/parachains/runtimes/assets/asset-hub-rococo/src/lib.rs
-/home/mamostehp/polkadot-sdk-fresh/cumulus/parachains/runtimes/bridge-hubs/bridge-hub-rococo/src/lib.rs
-/home/mamostehp/polkadot-sdk-fresh/cumulus/parachains/runtimes/people/people-rococo/src/lib.rs
-/home/mamostehp/polkadot-sdk-fresh/cumulus/parachains/runtimes/coretime/coretime-rococo/src/lib.rs
+/home/mamostehp/polkadot-sdk-fresh/cumulus/teyrchains/runtimes/constants/src/lib.rs
+/home/mamostehp/polkadot-sdk-fresh/cumulus/teyrchains/runtimes/constants/src/pezkuwichain.rs
+/home/mamostehp/polkadot-sdk-fresh/cumulus/teyrchains/runtimes/constants/src/zagros.rs
 ```
 
-**System Parachain Runtimes (Westend):**
+**System Teyrchain Runtimes (Pezkuwichain):**
 ```
-/home/mamostehp/polkadot-sdk-fresh/cumulus/parachains/runtimes/assets/asset-hub-westend/src/lib.rs
-/home/mamostehp/polkadot-sdk-fresh/cumulus/parachains/runtimes/bridge-hubs/bridge-hub-westend/src/lib.rs
-/home/mamostehp/polkadot-sdk-fresh/cumulus/parachains/runtimes/people/people-westend/src/lib.rs
-/home/mamostehp/polkadot-sdk-fresh/cumulus/parachains/runtimes/coretime/coretime-westend/src/lib.rs
-/home/mamostehp/polkadot-sdk-fresh/cumulus/parachains/runtimes/collectives/collectives-westend/src/lib.rs
+/home/mamostehp/polkadot-sdk-fresh/cumulus/teyrchains/runtimes/assets/asset-hub-pezkuwichain/src/lib.rs
+/home/mamostehp/polkadot-sdk-fresh/cumulus/teyrchains/runtimes/bridge-hubs/bridge-hub-pezkuwichain/src/lib.rs
+/home/mamostehp/polkadot-sdk-fresh/cumulus/teyrchains/runtimes/people/people-pezkuwichain/src/lib.rs
+/home/mamostehp/polkadot-sdk-fresh/cumulus/teyrchains/runtimes/coretime/coretime-pezkuwichain/src/lib.rs
+```
+
+**System Teyrchain Runtimes (Zagros):**
+```
+/home/mamostehp/polkadot-sdk-fresh/cumulus/teyrchains/runtimes/assets/asset-hub-zagros/src/lib.rs
+/home/mamostehp/polkadot-sdk-fresh/cumulus/teyrchains/runtimes/bridge-hubs/bridge-hub-zagros/src/lib.rs
+/home/mamostehp/polkadot-sdk-fresh/cumulus/teyrchains/runtimes/people/people-zagros/src/lib.rs
+/home/mamostehp/polkadot-sdk-fresh/cumulus/teyrchains/runtimes/coretime/coretime-zagros/src/lib.rs
+/home/mamostehp/polkadot-sdk-fresh/cumulus/teyrchains/runtimes/collectives/collectives-zagros/src/lib.rs
 ```
 
 ### Chain Specification Files (Must Update)
 
 **Relay Chain Specs:**
 ```
-/home/mamostehp/polkadot-sdk-fresh/polkadot/node/service/chain-specs/rococo.json
-/home/mamostehp/polkadot-sdk-fresh/polkadot/node/service/chain-specs/westend.json
+/home/mamostehp/polkadot-sdk-fresh/polkadot/node/service/chain-specs/pezkuwichain.json
+/home/mamostehp/polkadot-sdk-fresh/polkadot/node/service/chain-specs/zagros.json
 /home/mamostehp/polkadot-sdk-fresh/polkadot/node/service/src/chain_spec.rs
 ```
 
-**Parachain Specs (Rococo):**
+**Teyrchain Specs (Pezkuwichain):**
 ```
-/home/mamostehp/polkadot-sdk-fresh/cumulus/parachains/chain-specs/asset-hub-rococo.json
-/home/mamostehp/polkadot-sdk-fresh/cumulus/parachains/chain-specs/bridge-hub-rococo.json
-/home/mamostehp/polkadot-sdk-fresh/cumulus/parachains/chain-specs/people-rococo.json
-/home/mamostehp/polkadot-sdk-fresh/cumulus/parachains/chain-specs/coretime-rococo.json
+/home/mamostehp/polkadot-sdk-fresh/cumulus/teyrchains/chain-specs/asset-hub-pezkuwichain.json
+/home/mamostehp/polkadot-sdk-fresh/cumulus/teyrchains/chain-specs/bridge-hub-pezkuwichain.json
+/home/mamostehp/polkadot-sdk-fresh/cumulus/teyrchains/chain-specs/people-pezkuwichain.json
+/home/mamostehp/polkadot-sdk-fresh/cumulus/teyrchains/chain-specs/coretime-pezkuwichain.json
 ```
 
-**Parachain Specs (Westend):**
+**Teyrchain Specs (Zagros):**
 ```
-/home/mamostehp/polkadot-sdk-fresh/cumulus/parachains/chain-specs/asset-hub-westend.json
-/home/mamostehp/polkadot-sdk-fresh/cumulus/parachains/chain-specs/asset-hub-westend-genesis.json
-/home/mamostehp/polkadot-sdk-fresh/cumulus/parachains/chain-specs/asset-hub-westend-genesis-values.json
-/home/mamostehp/polkadot-sdk-fresh/cumulus/parachains/chain-specs/bridge-hub-westend.json
-/home/mamostehp/polkadot-sdk-fresh/cumulus/parachains/chain-specs/people-westend.json
-/home/mamostehp/polkadot-sdk-fresh/cumulus/parachains/chain-specs/coretime-westend.json
-/home/mamostehp/polkadot-sdk-fresh/cumulus/parachains/chain-specs/collectives-westend.json
+/home/mamostehp/polkadot-sdk-fresh/cumulus/teyrchains/chain-specs/asset-hub-zagros.json
+/home/mamostehp/polkadot-sdk-fresh/cumulus/teyrchains/chain-specs/asset-hub-zagros-genesis.json
+/home/mamostehp/polkadot-sdk-fresh/cumulus/teyrchains/chain-specs/asset-hub-zagros-genesis-values.json
+/home/mamostehp/polkadot-sdk-fresh/cumulus/teyrchains/chain-specs/bridge-hub-zagros.json
+/home/mamostehp/polkadot-sdk-fresh/cumulus/teyrchains/chain-specs/people-zagros.json
+/home/mamostehp/polkadot-sdk-fresh/cumulus/teyrchains/chain-specs/coretime-zagros.json
+/home/mamostehp/polkadot-sdk-fresh/cumulus/teyrchains/chain-specs/collectives-zagros.json
 ```
 
 ### Chain Spec Builders (Must Review)
 
 ```
-/home/mamostehp/polkadot-sdk-fresh/cumulus/polkadot-parachain/src/chain_spec/asset_hubs.rs
-/home/mamostehp/polkadot-sdk-fresh/cumulus/polkadot-parachain/src/chain_spec/bridge_hubs.rs
-/home/mamostehp/polkadot-sdk-fresh/cumulus/polkadot-parachain/src/chain_spec/collectives.rs
-/home/mamostehp/polkadot-sdk-fresh/cumulus/polkadot-parachain/src/chain_spec/coretime.rs
-/home/mamostehp/polkadot-sdk-fresh/cumulus/polkadot-parachain/src/chain_spec/people.rs
-/home/mamostehp/polkadot-sdk-fresh/cumulus/polkadot-parachain/src/chain_spec/mod.rs
+/home/mamostehp/polkadot-sdk-fresh/cumulus/polkadot-teyrchain/src/chain_spec/asset_hubs.rs
+/home/mamostehp/polkadot-sdk-fresh/cumulus/polkadot-teyrchain/src/chain_spec/bridge_hubs.rs
+/home/mamostehp/polkadot-sdk-fresh/cumulus/polkadot-teyrchain/src/chain_spec/collectives.rs
+/home/mamostehp/polkadot-sdk-fresh/cumulus/polkadot-teyrchain/src/chain_spec/coretime.rs
+/home/mamostehp/polkadot-sdk-fresh/cumulus/polkadot-teyrchain/src/chain_spec/people.rs
+/home/mamostehp/polkadot-sdk-fresh/cumulus/polkadot-teyrchain/src/chain_spec/mod.rs
 ```
 
 ### Genesis Configuration Files (Must Review)
 
-**Parachain Genesis Configs:**
+**Teyrchain Genesis Configs:**
 ```
-/home/mamostehp/polkadot-sdk-fresh/cumulus/parachains/runtimes/assets/asset-hub-rococo/src/genesis_config_presets.rs
-/home/mamostehp/polkadot-sdk-fresh/cumulus/parachains/runtimes/assets/asset-hub-westend/src/genesis_config_presets.rs
-/home/mamostehp/polkadot-sdk-fresh/cumulus/parachains/runtimes/bridge-hubs/bridge-hub-rococo/src/genesis_config_presets.rs
-/home/mamostehp/polkadot-sdk-fresh/cumulus/parachains/runtimes/bridge-hubs/bridge-hub-westend/src/genesis_config_presets.rs
-/home/mamostehp/polkadot-sdk-fresh/cumulus/parachains/runtimes/people/people-rococo/src/genesis_config_presets.rs
-/home/mamostehp/polkadot-sdk-fresh/cumulus/parachains/runtimes/people/people-westend/src/genesis_config_presets.rs
-/home/mamostehp/polkadot-sdk-fresh/cumulus/parachains/runtimes/coretime/coretime-rococo/src/genesis_config_presets.rs
-/home/mamostehp/polkadot-sdk-fresh/cumulus/parachains/runtimes/coretime/coretime-westend/src/genesis_config_presets.rs
+/home/mamostehp/polkadot-sdk-fresh/cumulus/teyrchains/runtimes/assets/asset-hub-pezkuwichain/src/genesis_config_presets.rs
+/home/mamostehp/polkadot-sdk-fresh/cumulus/teyrchains/runtimes/assets/asset-hub-zagros/src/genesis_config_presets.rs
+/home/mamostehp/polkadot-sdk-fresh/cumulus/teyrchains/runtimes/bridge-hubs/bridge-hub-pezkuwichain/src/genesis_config_presets.rs
+/home/mamostehp/polkadot-sdk-fresh/cumulus/teyrchains/runtimes/bridge-hubs/bridge-hub-zagros/src/genesis_config_presets.rs
+/home/mamostehp/polkadot-sdk-fresh/cumulus/teyrchains/runtimes/people/people-pezkuwichain/src/genesis_config_presets.rs
+/home/mamostehp/polkadot-sdk-fresh/cumulus/teyrchains/runtimes/people/people-zagros/src/genesis_config_presets.rs
+/home/mamostehp/polkadot-sdk-fresh/cumulus/teyrchains/runtimes/coretime/coretime-pezkuwichain/src/genesis_config_presets.rs
+/home/mamostehp/polkadot-sdk-fresh/cumulus/teyrchains/runtimes/coretime/coretime-zagros/src/genesis_config_presets.rs
 ```
 
 ### Network & Infrastructure Files (Must Update)
@@ -1228,7 +1228,7 @@ Breakdown:
 - SS58 Prefixes: 4 (need 2 new)
 - Token Symbols: 5 (need 2 new: HEZ, ZGR)
 - Token Decimals: 2 configurations (10 or 12)
-- System Parachain IDs: 7 per network
+- System Teyrchain IDs: 7 per network
 - Protocol IDs: 1 (need 2 new)
 - Development Keys: 6 well-known accounts
 - Bootnode Addresses: 50+ (need 12-16 new)
@@ -1276,7 +1276,7 @@ Breakdown:
 
 ## Conclusion
 
-This cryptographic audit has cataloged **147+ critical parameters** across the Polkadot SDK codebase that require careful consideration during the rebranding from Polkadot/Rococo/Westend to Pezkuwi/PezkuwiChain/Zagros.
+This cryptographic audit has cataloged **147+ critical parameters** across the Polkadot SDK codebase that require careful consideration during the rebranding from Polkadot/Pezkuwichain/Zagros to Pezkuwi/PezkuwiChain/Zagros.
 
 **Key Success Factors:**
 1. Early SS58 prefix registration (CRITICAL PATH)

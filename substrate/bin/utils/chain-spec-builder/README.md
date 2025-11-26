@@ -28,14 +28,14 @@ around by the `bash!(...)` macro calls.
 
 ### Note for `CreateCmd`'s `para-id` flag
 
-<!-- TODO: https://github.com/paritytech/polkadot-sdk/issues/8747 -->
+<!-- TODO: https://github.com/pezkuwichain/pezkuwi-sdk/issues/8747 -->
 Runtimes relying on generating the chain specification with this tool should
-implement `cumulus_primitives_core::GetParachainInfo` trait, a new runtime API
-designed to provide the parachain ID from the `parachain-info`
+implement `cumulus_primitives_core::GetTeyrchainInfo` trait, a new runtime API
+designed to provide the teyrchain ID from the `teyrchain-info`
 pallet. The `para-id` flag can be used though if the runtime does not implement
-the runtime API, and the parachain id will be fetched by the node from chain
+the runtime API, and the teyrchain id will be fetched by the node from chain
 specification. This can be especially useful when syncing a node from a state
-where the runtime does not implement `cumulus_primitives_core::GetParachainInfo`.
+where the runtime does not implement `cumulus_primitives_core::GetTeyrchainInfo`.
 
 For reference, generating a chain specification with a `para_id` field can be
 done like below:

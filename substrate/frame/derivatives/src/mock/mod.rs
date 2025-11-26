@@ -148,7 +148,7 @@ parameter_types! {
 	pub const DeliveryFees: u128 = 20; // Random value.
 	pub const ExistentialDeposit: u128 = 1; // Random value.
 	pub const BaseXcmWeight: Weight = Weight::from_parts(100, 10); // Random value.
-	pub UniversalLocation: InteriorLocation = [GlobalConsensus(NetworkId::ByGenesis([0; 32])), Parachain(2000)].into();
+	pub UniversalLocation: InteriorLocation = [GlobalConsensus(NetworkId::ByGenesis([0; 32])), Teyrchain(2000)].into();
 	pub const HereLocation: Location = Location::here();
 	pub const RelayLocation: Location = Location::parent();
 	pub const MaxAssetsIntoHolding: u32 = 64;
@@ -158,14 +158,14 @@ parameter_types! {
 }
 
 /// It is an `IsReserve` that returns true only if the given asset's location begins with a sibling
-/// parachain junction which equals the given origin.
+/// teyrchain junction which equals the given origin.
 pub struct TrustAssetsFromSiblings;
 impl ContainsPair<Asset, Location> for TrustAssetsFromSiblings {
 	fn contains(asset: &Asset, origin: &Location) -> bool {
 		let AssetId(asset_location) = &asset.id;
 
 		match (asset_location.unpack(), origin.unpack()) {
-			((1, [Parachain(asset_para_id), ..]), (1, [Parachain(origin_para_id)]))
+			((1, [Teyrchain(asset_para_id), ..]), (1, [Teyrchain(origin_para_id)]))
 				if asset_para_id == origin_para_id =>
 				true,
 			_ => false,
@@ -193,7 +193,7 @@ pub struct SiblingChainToIndex64;
 impl ConvertLocation<AccountId> for SiblingChainToIndex64 {
 	fn convert_location(location: &Location) -> Option<AccountId> {
 		let index = match location.unpack() {
-			(1, [Parachain(id)]) => id,
+			(1, [Teyrchain(id)]) => id,
 			_ => return None,
 		};
 		Some((*index).into())
@@ -203,13 +203,13 @@ impl ConvertLocation<AccountId> for SiblingChainToIndex64 {
 /// XCM executor's Location-to-AccountId converter.
 pub type LocationToAccountId = (AccountIndex64Aliases<AnyNetwork, u64>, SiblingChainToIndex64);
 
-/// Converts an asset's location to the corresponding sibling parachain sovereign account.
+/// Converts an asset's location to the corresponding sibling teyrchain sovereign account.
 pub struct SiblingAssetToReserveLocationConvert;
 impl ConvertLocation<AccountId> for SiblingAssetToReserveLocationConvert {
 	fn convert_location(location: &Location) -> Option<AccountId> {
 		match location.unpack() {
-			(1, [Parachain(para_id), ..]) =>
-				LocationToAccountId::convert_location(&Location::new(1, Parachain(*para_id))),
+			(1, [Teyrchain(para_id), ..]) =>
+				LocationToAccountId::convert_location(&Location::new(1, Teyrchain(*para_id))),
 			_ => None,
 		}
 	}

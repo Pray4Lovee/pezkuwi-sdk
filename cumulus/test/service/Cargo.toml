@@ -9,7 +9,7 @@ publish = false
 workspace = true
 
 [[bin]]
-name = "test-parachain"
+name = "test-teyrchain"
 path = "src/main.rs"
 
 [dependencies]
@@ -61,13 +61,13 @@ sp-timestamp = { workspace = true, default-features = true }
 sp-tracing = { workspace = true, default-features = true }
 substrate-test-client = { workspace = true }
 
-# Polkadot
-polkadot-cli = { workspace = true, default-features = true }
-polkadot-node-subsystem = { workspace = true, default-features = true }
-polkadot-overseer = { workspace = true, default-features = true }
-polkadot-primitives = { workspace = true, default-features = true }
-polkadot-service = { workspace = true, default-features = true }
-polkadot-test-service = { workspace = true }
+# Pezkuwi
+pezkuwi-cli = { workspace = true, default-features = true }
+pezkuwi-node-subsystem = { workspace = true, default-features = true }
+pezkuwi-overseer = { workspace = true, default-features = true }
+pezkuwi-primitives = { workspace = true, default-features = true }
+pezkuwi-service = { workspace = true, default-features = true }
+pezkuwi-test-service = { workspace = true }
 
 # Cumulus
 cumulus-client-cli = { workspace = true, default-features = true }
@@ -75,10 +75,10 @@ cumulus-client-collator = { workspace = true, default-features = true }
 cumulus-client-consensus-aura = { workspace = true, default-features = true }
 cumulus-client-consensus-common = { workspace = true, default-features = true }
 cumulus-client-consensus-proposer = { workspace = true, default-features = true }
-cumulus-client-parachain-inherent = { workspace = true, default-features = true }
+cumulus-client-teyrchain-inherent = { workspace = true, default-features = true }
 cumulus-client-pov-recovery = { workspace = true, default-features = true }
 cumulus-client-service = { workspace = true, default-features = true }
-cumulus-pallet-parachain-system = { workspace = true }
+cumulus-pallet-teyrchain-system = { workspace = true }
 cumulus-pallet-weight-reclaim = { workspace = true, default-features = true }
 cumulus-primitives-core = { workspace = true, default-features = true }
 cumulus-relay-chain-inprocess-interface = { workspace = true, default-features = true }
@@ -94,17 +94,17 @@ futures = { workspace = true }
 
 [features]
 runtime-benchmarks = [
-	"cumulus-pallet-parachain-system/runtime-benchmarks",
+	"cumulus-pallet-teyrchain-system/runtime-benchmarks",
 	"cumulus-pallet-weight-reclaim/runtime-benchmarks",
 	"cumulus-primitives-core/runtime-benchmarks",
 	"cumulus-test-client/runtime-benchmarks",
 	"frame-system/runtime-benchmarks",
 	"pallet-timestamp/runtime-benchmarks",
 	"pallet-transaction-payment/runtime-benchmarks",
-	"polkadot-cli/runtime-benchmarks",
-	"polkadot-primitives/runtime-benchmarks",
-	"polkadot-service/runtime-benchmarks",
-	"polkadot-test-service/runtime-benchmarks",
+	"pezkuwi-cli/runtime-benchmarks",
+	"pezkuwi-primitives/runtime-benchmarks",
+	"pezkuwi-service/runtime-benchmarks",
+	"pezkuwi-test-service/runtime-benchmarks",
 	"sc-service/runtime-benchmarks",
 	"sp-runtime/runtime-benchmarks",
 ]

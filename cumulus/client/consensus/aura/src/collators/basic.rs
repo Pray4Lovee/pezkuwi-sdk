@@ -27,14 +27,14 @@ use codec::{Codec, Decode};
 use cumulus_client_collator::{
 	relay_chain_driven::CollationRequest, service::ServiceInterface as CollatorServiceInterface,
 };
-use cumulus_client_consensus_common::ParachainBlockImportMarker;
+use cumulus_client_consensus_common::TeyrchainBlockImportMarker;
 use cumulus_client_consensus_proposer::ProposerInterface;
 use cumulus_primitives_core::{relay_chain::BlockId as RBlockId, CollectCollationInfo};
 use cumulus_relay_chain_interface::RelayChainInterface;
 
-use polkadot_node_primitives::CollationResult;
-use polkadot_overseer::Handle as OverseerHandle;
-use polkadot_primitives::{CollatorPair, Id as ParaId, ValidationCode};
+use pezkuwi_node_primitives::CollationResult;
+use pezkuwi_overseer::Handle as OverseerHandle;
+use pezkuwi_primitives::{CollatorPair, Id as ParaId, ValidationCode};
 
 use futures::{channel::mpsc::Receiver, prelude::*};
 use sc_client_api::{backend::AuxStore, BlockBackend, BlockOf};
@@ -108,7 +108,7 @@ where
 	RClient: RelayChainInterface + Send + Clone + 'static,
 	CIDP: CreateInherentDataProviders<Block, ()> + Send + 'static,
 	CIDP::InherentDataProviders: Send,
-	BI: BlockImport<Block> + ParachainBlockImportMarker + Send + Sync + 'static,
+	BI: BlockImport<Block> + TeyrchainBlockImportMarker + Send + Sync + 'static,
 	Proposer: ProposerInterface<Block> + Send + Sync + 'static,
 	CS: CollatorServiceInterface<Block> + Send + Sync + 'static,
 	P: Pair,
@@ -219,11 +219,11 @@ where
 
 			// With async backing this function will be called every relay chain block.
 			//
-			// Most parachains currently run with 12 seconds slots and thus, they would try to
+			// Most teyrchains currently run with 12 seconds slots and thus, they would try to
 			// produce multiple blocks per slot which very likely would fail on chain. Thus, we have
 			// this "hack" to only produce one block per slot per relay chain fork.
 			//
-			// With https://github.com/paritytech/polkadot-sdk/issues/3168 this implementation will be
+			// With https://github.com/pezkuwichain/pezkuwichain-sdk/issues/3168 this implementation will be
 			// obsolete and also the underlying issue will be fixed.
 			if last_processed_slot >= *claim.slot() &&
 				last_relay_chain_block < *relay_parent_header.number()
@@ -231,7 +231,7 @@ where
 				continue
 			}
 
-			let (parachain_inherent_data, other_inherent_data) = try_request!(
+			let (teyrchain_inherent_data, other_inherent_data) = try_request!(
 				collator
 					.create_inherent_data(
 						*request.relay_parent(),
@@ -251,7 +251,7 @@ where
 						&parent_header,
 						&claim,
 						None,
-						(parachain_inherent_data, other_inherent_data),
+						(teyrchain_inherent_data, other_inherent_data),
 						params.authoring_duration,
 						allowed_pov_size,
 					)

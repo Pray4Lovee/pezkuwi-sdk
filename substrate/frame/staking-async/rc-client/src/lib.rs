@@ -294,7 +294,7 @@ pub struct SessionReport<AccountId> {
 	pub end_index: SessionIndex,
 	/// All of the points that validators have accumulated.
 	///
-	/// This can be either from block authoring, or from parachain consensus, or anything else.
+	/// This can be either from block authoring, or from teyrchain consensus, or anything else.
 	pub validator_points: Vec<(AccountId, u32)>,
 	/// If none, it means no new validator set was activated as a part of this session.
 	///

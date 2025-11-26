@@ -36,7 +36,7 @@ pub use crate::{
 		AccountKeyPairOf, BlockWithJustification, CallOf, Chain, ChainWithBalances,
 		ChainWithGrandpa, ChainWithMessages, ChainWithRewards, ChainWithRuntimeVersion,
 		ChainWithTransactions, ChainWithUtilityPallet, FullRuntimeUtilityPallet,
-		MockedRuntimeUtilityPallet, Parachain, RelayChain, SignParam, SignedBlockOf,
+		MockedRuntimeUtilityPallet, Teyrchain, RelayChain, SignParam, SignedBlockOf,
 		TransactionStatusOf, UnsignedTransaction, UtilityPallet,
 	},
 	client::{
@@ -50,7 +50,7 @@ pub use crate::{
 };
 pub use bp_runtime::{
 	AccountIdOf, AccountPublicOf, BalanceOf, BlockNumberOf, Chain as ChainBase, HashOf, HeaderIdOf,
-	HeaderOf, NonceOf, Parachain as ParachainBase, SignatureOf, TransactionEra, TransactionEraOf,
+	HeaderOf, NonceOf, Teyrchain as TeyrchainBase, SignatureOf, TransactionEra, TransactionEraOf,
 	UnderlyingChainProvider,
 };
 

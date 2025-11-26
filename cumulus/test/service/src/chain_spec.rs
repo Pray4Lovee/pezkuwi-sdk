@@ -16,14 +16,14 @@
 
 #![allow(missing_docs)]
 
-use cumulus_client_service::ParachainHostFunctions;
+use cumulus_client_service::TeyrchainHostFunctions;
 use cumulus_primitives_core::ParaId;
 use cumulus_test_runtime::AccountId;
 use sc_chain_spec::GenesisConfigBuilderRuntimeCaller;
 use sc_service::{ChainType, GenericChainSpec};
 use serde_json::json;
 
-/// Get the chain spec for a specific parachain ID.
+/// Get the chain spec for a specific teyrchain ID.
 /// The given accounts are initialized with funds in addition
 /// to the default known accounts.
 pub fn get_chain_spec_with_extra_endowed(
@@ -31,7 +31,7 @@ pub fn get_chain_spec_with_extra_endowed(
 	extra_endowed_accounts: Vec<AccountId>,
 	code: &[u8],
 ) -> GenericChainSpec {
-	let runtime_caller = GenesisConfigBuilderRuntimeCaller::<ParachainHostFunctions>::new(code);
+	let runtime_caller = GenesisConfigBuilderRuntimeCaller::<TeyrchainHostFunctions>::new(code);
 	let mut development_preset = runtime_caller
 		.get_named_preset(Some(&sp_genesis_builder::LOCAL_TESTNET_RUNTIME_PRESET.to_string()))
 		.expect("development preset is available on test runtime; qed");
@@ -55,12 +55,12 @@ pub fn get_chain_spec_with_extra_endowed(
 	});
 
 	if let Some(id) = id {
-		// Merge parachain ID if given, otherwise use the one from the preset.
+		// Merge teyrchain ID if given, otherwise use the one from the preset.
 		sc_chain_spec::json_merge(
 			&mut patch_json,
 			json!({
-				"parachainInfo": {
-					"parachainId": id,
+				"teyrchainInfo": {
+					"teyrchainId": id,
 				},
 
 			}),
@@ -77,7 +77,7 @@ pub fn get_chain_spec_with_extra_endowed(
 		.build()
 }
 
-/// Get the chain spec for a specific parachain ID.
+/// Get the chain spec for a specific teyrchain ID.
 pub fn get_chain_spec(id: Option<ParaId>) -> GenericChainSpec {
 	get_chain_spec_with_extra_endowed(
 		id,
@@ -86,7 +86,7 @@ pub fn get_chain_spec(id: Option<ParaId>) -> GenericChainSpec {
 	)
 }
 
-/// Get the chain spec for a specific parachain ID.
+/// Get the chain spec for a specific teyrchain ID.
 pub fn get_elastic_scaling_chain_spec(id: Option<ParaId>) -> GenericChainSpec {
 	get_chain_spec_with_extra_endowed(
 		id,
@@ -105,7 +105,7 @@ pub fn get_relay_parent_offset_chain_spec(id: Option<ParaId>) -> GenericChainSpe
 	)
 }
 
-/// Get the chain spec for a specific parachain ID.
+/// Get the chain spec for a specific teyrchain ID.
 pub fn get_elastic_scaling_500ms_chain_spec(id: Option<ParaId>) -> GenericChainSpec {
 	get_chain_spec_with_extra_endowed(
 		id,
@@ -115,7 +115,7 @@ pub fn get_elastic_scaling_500ms_chain_spec(id: Option<ParaId>) -> GenericChainS
 	)
 }
 
-/// Get the chain spec for a specific parachain ID.
+/// Get the chain spec for a specific teyrchain ID.
 pub fn get_elastic_scaling_mvp_chain_spec(id: Option<ParaId>) -> GenericChainSpec {
 	get_chain_spec_with_extra_endowed(
 		id,

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-export PRODUCT=polkadot
+export PRODUCT=pezkuwi
 export VERSION=${VERSION:-stable2409}
 export ENGINE=${ENGINE:-podman}
 export REF1=${REF1:-'HEAD'}
@@ -69,31 +69,31 @@ echo "Changelog ready in $OUTPUT/relnote_commits.md"
 tree -s -h -c $OUTPUT/
 
 if [[ "$NO_RUNTIMES" == "false" && "$CRATES_ONLY" == "false" ]]; then
-  ASSET_HUB_WESTEND_DIGEST=${ASSET_HUB_WESTEND_DIGEST:-"$PROJECT_ROOT/scripts/release/digests/asset-hub-westend-srtool-digest.json"}
-  BRIDGE_HUB_WESTEND_DIGEST=${BRIDGE_HUB_WESTEND_DIGEST:-"$PROJECT_ROOT/scripts/release/digests/bridge-hub-westend-srtool-digest.json"}
-  COLLECTIVES_WESTEND_DIGEST=${COLLECTIVES_WESTEND_DIGEST:-"$PROJECT_ROOT/scripts/release/digests/collectives-westend-srtool-digest.json"}
-  CORETIME_WESTEND_DIGEST=${CORETIME_WESTEND_DIGEST:-"$PROJECT_ROOT/scripts/release/digests/coretime-westend-srtool-digest.json"}
-  GLUTTON_WESTEND_DIGEST=${GLUTTON_WESTEND_DIGEST:-"$PROJECT_ROOT/scripts/release/digests/glutton-westend-srtool-digest.json"}
-  PEOPLE_WESTEND_DIGEST=${PEOPLE_WESTEND_DIGEST:-"$PROJECT_ROOT/scripts/release/digests/people-westend-srtool-digest.json"}
-  WESTEND_DIGEST=${WESTEND_DIGEST:-"$PROJECT_ROOT/scripts/release/digests/westend-srtool-digest.json"}
+  ASSET_HUB_ZAGROS_DIGEST=${ASSET_HUB_ZAGROS_DIGEST:-"$PROJECT_ROOT/scripts/release/digests/asset-hub-zagros-srtool-digest.json"}
+  BRIDGE_HUB_ZAGROS_DIGEST=${BRIDGE_HUB_ZAGROS_DIGEST:-"$PROJECT_ROOT/scripts/release/digests/bridge-hub-zagros-srtool-digest.json"}
+  COLLECTIVES_ZAGROS_DIGEST=${COLLECTIVES_ZAGROS_DIGEST:-"$PROJECT_ROOT/scripts/release/digests/collectives-zagros-srtool-digest.json"}
+  CORETIME_ZAGROS_DIGEST=${CORETIME_ZAGROS_DIGEST:-"$PROJECT_ROOT/scripts/release/digests/coretime-zagros-srtool-digest.json"}
+  GLUTTON_ZAGROS_DIGEST=${GLUTTON_ZAGROS_DIGEST:-"$PROJECT_ROOT/scripts/release/digests/glutton-zagros-srtool-digest.json"}
+  PEOPLE_ZAGROS_DIGEST=${PEOPLE_ZAGROS_DIGEST:-"$PROJECT_ROOT/scripts/release/digests/people-zagros-srtool-digest.json"}
+  ZAGROS_DIGEST=${ZAGROS_DIGEST:-"$PROJECT_ROOT/scripts/release/digests/zagros-srtool-digest.json"}
 
   jq \
-        --slurpfile srtool_asset_hub_westend $ASSET_HUB_WESTEND_DIGEST \
-        --slurpfile srtool_bridge_hub_westend $BRIDGE_HUB_WESTEND_DIGEST \
-        --slurpfile srtool_collectives_westend $COLLECTIVES_WESTEND_DIGEST \
-        --slurpfile srtool_coretime_westend $CORETIME_WESTEND_DIGEST \
-        --slurpfile srtool_glutton_westend $GLUTTON_WESTEND_DIGEST \
-        --slurpfile srtool_people_westend $PEOPLE_WESTEND_DIGEST \
-        --slurpfile srtool_westend $WESTEND_DIGEST \
+        --slurpfile srtool_asset_hub_zagros $ASSET_HUB_ZAGROS_DIGEST \
+        --slurpfile srtool_bridge_hub_zagros $BRIDGE_HUB_ZAGROS_DIGEST \
+        --slurpfile srtool_collectives_zagros $COLLECTIVES_ZAGROS_DIGEST \
+        --slurpfile srtool_coretime_zagros $CORETIME_ZAGROS_DIGEST \
+        --slurpfile srtool_glutton_zagros $GLUTTON_ZAGROS_DIGEST \
+        --slurpfile srtool_people_zagros $PEOPLE_ZAGROS_DIGEST \
+        --slurpfile srtool_zagros $ZAGROS_DIGEST \
         -n '{
             srtool: [
-              { order: 10, name: "Westend", data: $srtool_westend[0] },
-              { order: 11, name: "Westend AssetHub", data: $srtool_asset_hub_westend[0] },
-              { order: 12, name: "Westend BridgeHub", data: $srtool_bridge_hub_westend[0] },
-              { order: 13, name: "Westend Collectives", data: $srtool_collectives_westend[0] },
-              { order: 14, name: "Westend Coretime", data: $srtool_coretime_westend[0] },
-              { order: 15, name: "Westend Glutton", data: $srtool_glutton_westend[0] },
-              { order: 16, name: "Westend People", data: $srtool_people_westend[0] }
+              { order: 10, name: "Zagros", data: $srtool_zagros[0] },
+              { order: 11, name: "Zagros AssetHub", data: $srtool_asset_hub_zagros[0] },
+              { order: 12, name: "Zagros BridgeHub", data: $srtool_bridge_hub_zagros[0] },
+              { order: 13, name: "Zagros Collectives", data: $srtool_collectives_zagros[0] },
+              { order: 14, name: "Zagros Coretime", data: $srtool_coretime_zagros[0] },
+              { order: 15, name: "Zagros Glutton", data: $srtool_glutton_zagros[0] },
+              { order: 16, name: "Zagros People", data: $srtool_people_zagros[0] }
         ] }' > "$PROJECT_ROOT/scripts/release/context.json"
 else
   echo '{}' > "$PROJECT_ROOT/scripts/release/context.json"

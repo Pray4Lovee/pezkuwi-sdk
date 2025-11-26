@@ -122,7 +122,7 @@ impl_opaque_keys! {
 }
 
 /// The para-id used in this runtime.
-pub const PARACHAIN_ID: u32 = 100;
+pub const TEYRCHAIN_ID: u32 = 100;
 
 #[cfg(feature = "elastic-scaling-500ms")]
 pub const BLOCK_PROCESSING_VELOCITY: u32 = 12;
@@ -151,7 +151,7 @@ const UNINCLUDED_SEGMENT_CAPACITY: u32 = 3;
 #[cfg(all(feature = "sync-backing", not(feature = "async-backing")))]
 const UNINCLUDED_SEGMENT_CAPACITY: u32 = 1;
 
-// The `+2` shouldn't be needed, https://github.com/paritytech/polkadot-sdk/issues/5260
+// The `+2` shouldn't be needed, https://github.com/pezkuwichain/pezkuwichain-sdk/issues/5260
 #[cfg(all(not(feature = "sync-backing"), not(feature = "async-backing")))]
 const UNINCLUDED_SEGMENT_CAPACITY: u32 = BLOCK_PROCESSING_VELOCITY * (2 + RELAY_PARENT_OFFSET) + 2;
 
@@ -176,8 +176,8 @@ const RELAY_CHAIN_SLOT_DURATION_MILLIS: u32 = 6000;
 #[cfg(all(not(feature = "increment-spec-version"), not(feature = "elastic-scaling")))]
 #[sp_version::runtime_version]
 pub const VERSION: RuntimeVersion = RuntimeVersion {
-	spec_name: alloc::borrow::Cow::Borrowed("cumulus-test-parachain"),
-	impl_name: alloc::borrow::Cow::Borrowed("cumulus-test-parachain"),
+	spec_name: alloc::borrow::Cow::Borrowed("cumulus-test-teyrchain"),
+	impl_name: alloc::borrow::Cow::Borrowed("cumulus-test-teyrchain"),
 	authoring_version: 1,
 	// Read the note above.
 	spec_version: 2,
@@ -190,8 +190,8 @@ pub const VERSION: RuntimeVersion = RuntimeVersion {
 #[cfg(any(feature = "increment-spec-version", feature = "elastic-scaling"))]
 #[sp_version::runtime_version]
 pub const VERSION: RuntimeVersion = RuntimeVersion {
-	spec_name: alloc::borrow::Cow::Borrowed("cumulus-test-parachain"),
-	impl_name: alloc::borrow::Cow::Borrowed("cumulus-test-parachain"),
+	spec_name: alloc::borrow::Cow::Borrowed("cumulus-test-teyrchain"),
+	impl_name: alloc::borrow::Cow::Borrowed("cumulus-test-teyrchain"),
 	authoring_version: 1,
 	// Read the note above.
 	spec_version: 3,
@@ -257,7 +257,7 @@ parameter_types! {
 	pub const SS58Prefix: u8 = 42;
 }
 
-#[derive_impl(frame_system::config_preludes::ParaChainDefaultConfig)]
+#[derive_impl(frame_system::config_preludes::TeyrchainDefaultConfig)]
 impl frame_system::Config for Runtime {
 	/// The identifier used to distinguish between accounts.
 	type AccountId = AccountId;
@@ -275,7 +275,7 @@ impl frame_system::Config for Runtime {
 	type BlockWeights = RuntimeBlockWeights;
 	type BlockLength = RuntimeBlockLength;
 	type SS58Prefix = SS58Prefix;
-	type OnSetCode = cumulus_pallet_parachain_system::ParachainSetCode<Self>;
+	type OnSetCode = cumulus_pallet_teyrchain_system::TeyrchainSetCode<Self>;
 	type MaxConsumers = frame_support::traits::ConstU32<16>;
 	type SingleBlockMigrations = SingleBlockMigrations;
 }
@@ -365,9 +365,9 @@ type ConsensusHook = cumulus_pallet_aura_ext::FixedVelocityConsensusHook<
 	BLOCK_PROCESSING_VELOCITY,
 	UNINCLUDED_SEGMENT_CAPACITY,
 >;
-impl cumulus_pallet_parachain_system::Config for Runtime {
+impl cumulus_pallet_teyrchain_system::Config for Runtime {
 	type WeightInfo = ();
-	type SelfParaId = parachain_info::Pallet<Runtime>;
+	type SelfParaId = teyrchain_info::Pallet<Runtime>;
 	type RuntimeEvent = RuntimeEvent;
 	type OnSystemEvent = ();
 	type OutboundXcmpMessageSource = ();
@@ -377,12 +377,12 @@ impl cumulus_pallet_parachain_system::Config for Runtime {
 	type XcmpMessageHandler = ();
 	type ReservedXcmpWeight = ();
 	type CheckAssociatedRelayNumber =
-		cumulus_pallet_parachain_system::RelayNumberMonotonicallyIncreases;
+		cumulus_pallet_teyrchain_system::RelayNumberMonotonicallyIncreases;
 	type ConsensusHook = ConsensusHook;
 	type RelayParentOffset = ConstU32<RELAY_PARENT_OFFSET>;
 }
 
-impl parachain_info::Config for Runtime {}
+impl teyrchain_info::Config for Runtime {}
 
 impl pallet_aura::Config for Runtime {
 	type AuthorityId = AuraId;
@@ -401,9 +401,9 @@ construct_runtime! {
 	pub enum Runtime
 	{
 		System: frame_system,
-		ParachainSystem: cumulus_pallet_parachain_system,
+		TeyrchainSystem: cumulus_pallet_teyrchain_system,
 		Timestamp: pallet_timestamp,
-		ParachainInfo: parachain_info,
+		TeyrchainInfo: teyrchain_info,
 		Balances: pallet_balances,
 		Sudo: pallet_sudo,
 		TransactionPayment: pallet_transaction_payment,
@@ -606,7 +606,7 @@ impl_runtime_apis! {
 
 	impl cumulus_primitives_core::CollectCollationInfo<Block> for Runtime {
 		fn collect_collation_info(header: &<Block as BlockT>::Header) -> cumulus_primitives_core::CollationInfo {
-			ParachainSystem::collect_collation_info(header)
+			TeyrchainSystem::collect_collation_info(header)
 		}
 	}
 
@@ -624,9 +624,9 @@ impl_runtime_apis! {
 		}
 	}
 
-	impl cumulus_primitives_core::GetParachainInfo<Block> for Runtime {
-		fn parachain_id() -> ParaId {
-			ParachainInfo::parachain_id()
+	impl cumulus_primitives_core::GetTeyrchainInfo<Block> for Runtime {
+		fn teyrchain_id() -> ParaId {
+			TeyrchainInfo::teyrchain_id()
 		}
 
 	}
@@ -638,7 +638,7 @@ impl_runtime_apis! {
 	}
 }
 
-cumulus_pallet_parachain_system::register_validate_block! {
+cumulus_pallet_teyrchain_system::register_validate_block! {
 	Runtime = Runtime,
 	BlockExecutor = cumulus_pallet_aura_ext::BlockExecutor::<Runtime, Executive>,
 }

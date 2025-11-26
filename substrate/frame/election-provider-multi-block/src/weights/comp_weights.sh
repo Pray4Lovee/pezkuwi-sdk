@@ -14,8 +14,8 @@ function display {
     --unit time --verbose --threshold 0
 }
 
-## Polkadot
-display "./pallet_election_provider_multi_block_dot_size.rs" "./pallet_election_provider_multi_block_ksm_size.rs"
-display "./pallet_election_provider_multi_block_signed_dot_size.rs" "./pallet_election_provider_multi_block_signed_ksm_size.rs"
-display "./pallet_election_provider_multi_block_unsigned_dot_size.rs" "./pallet_election_provider_multi_block_unsigned_ksm_size.rs"
-display "./pallet_election_provider_multi_block_verifier_dot_size.rs" "./pallet_election_provider_multi_block_verifier_ksm_size.rs"
+## Pezkuwi
+display "./pallet_election_provider_multi_block_hez_size.rs" "./pallet_election_provider_multi_block_ksm_size.rs"
+display "./pallet_election_provider_multi_block_signed_hez_size.rs" "./pallet_election_provider_multi_block_signed_ksm_size.rs"
+display "./pallet_election_provider_multi_block_unsigned_hez_size.rs" "./pallet_election_provider_multi_block_unsigned_ksm_size.rs"
+display "./pallet_election_provider_multi_block_verifier_hez_size.rs" "./pallet_election_provider_multi_block_verifier_ksm_size.rs"

@@ -28,10 +28,10 @@ Single message lane may be seen as a transport channel for single application (o
 time the module itself never dictates any lane or message rules. In the end, it is the runtime developer who defines
 what message lane and message mean for this runtime.
 
-In our [Kusama<>Polkadot bridge](../../docs/polkadot-kusama-bridge-overview.md) we are using lane
-as a channel of communication between two parachains of different relay chains. For example, lane
-`[0, 0, 0, 0]` is used for Polkadot <> Kusama Asset Hub communications. Other lanes may be used to
-bridge other parachains.
+In our [Kusama<>PezkuwiChain bridge](../../docs/pezkuwi-kusama-bridge-overview.md) we are using lane
+as a channel of communication between two teyrchains of different relay chains. For example, lane
+`[0, 0, 0, 0]` is used for PezkuwiChain <> Kusama Asset Hub communications. Other lanes may be used to
+bridge other teyrchains.
 
 ## Message Workflow
 
@@ -93,11 +93,11 @@ here for detailed information.
 
 The messages module supports instances. Every module instance is supposed to bridge this chain and some bridged chain.
 To bridge with another chain, using another instance is suggested (this isn't forced anywhere in the code, though). Keep
-in mind, that the pallet may be used to build virtual channels between multiple chains, as we do in our [Polkadot <>
-Kusama bridge](../../docs/polkadot-kusama-bridge-overview.md). There, the pallet actually bridges only two parachains -
-Kusama Bridge Hub and Polkadot Bridge Hub. However, other Kusama and Polkadot parachains are able to send (XCM) messages
+in mind, that the pallet may be used to build virtual channels between multiple chains, as we do in our [PezkuwiChain <>
+Kusama bridge](../../docs/pezkuwi-kusama-bridge-overview.md). There, the pallet actually bridges only two teyrchains -
+Kusama Bridge Hub and PezkuwiChain Bridge Hub. However, other Kusama and PezkuwiChain teyrchains are able to send (XCM) messages
 to their Bridge Hubs. The messages will be delivered to the other side of the bridge and routed to the proper
-destination parachain within the bridged chain consensus.
+destination teyrchain within the bridged chain consensus.
 
 Message submitters may track message progress by inspecting module events. When Message is accepted, the
 `MessageAccepted` event is emitted. The event contains both message lane identifier and nonce that has been assigned to
@@ -116,7 +116,7 @@ The `pallet_bridge_messages::Config` trait has 2 main associated types that are 
 inbound messages. The `pallet_bridge_messages::BridgedChain` defines basic primitives of the bridged
 chain. The `pallet_bridge_messages::BridgedHeaderChain` defines the way we access the bridged chain
 headers in our runtime. You may use `pallet_bridge_grandpa` if you're bridging with chain that uses
-GRANDPA finality or `pallet_bridge_parachains::ParachainHeaders` if you're bridging with parachain.
+GRANDPA finality or `pallet_bridge_teyrchains::TeyrchainHeaders` if you're bridging with teyrchain.
 
 The `pallet_bridge_messages::Config::MessageDispatch` defines a way on how to dispatch delivered
 messages. Apart from actually dispatching the message, the implementation must return the correct

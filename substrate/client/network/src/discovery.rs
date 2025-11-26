@@ -349,7 +349,7 @@ pub struct DiscoveryBehaviour {
 	/// The chain based kademlia protocol name (including genesis hash and fork id).
 	///
 	/// Remove when all nodes are upgraded to genesis hash and fork ID-based Kademlia:
-	/// <https://github.com/paritytech/polkadot-sdk/issues/504>.
+	/// <https://github.com/pezkuwichain/pezkuwichain-sdk/issues/504>.
 	kademlia_protocol: Option<StreamProtocol>,
 	/// Provider keys requested with `GET_PROVIDERS` queries.
 	provider_keys_requested: HashMap<QueryId, RecordKey>,
@@ -414,7 +414,7 @@ impl DiscoveryBehaviour {
 			//
 			// Extract the chain-based Kademlia protocol from `kademlia.protocol_name()`
 			// when all nodes are upgraded to genesis hash and fork ID-based Kademlia:
-			// https://github.com/paritytech/polkadot-sdk/issues/504.
+			// https://github.com/pezkuwichain/pezkuwichain-sdk/issues/504.
 			if !supported_protocols.iter().any(|p| {
 				p == self
 					.kademlia_protocol
@@ -1330,7 +1330,7 @@ mod tests {
 	use libp2p::{identity::Keypair, Multiaddr};
 	use sp_core::hash::H256;
 
-	#[cfg(ignore_flaky_test)] // https://github.com/paritytech/polkadot-sdk/issues/48
+	#[cfg(ignore_flaky_test)] // https://github.com/pezkuwichain/pezkuwichain-sdk/issues/48
 	#[tokio::test]
 	async fn discovery_working() {
 		use super::DiscoveryOut;
@@ -1349,7 +1349,7 @@ mod tests {
 
 		let genesis_hash = H256::from_low_u64_be(1);
 		let fork_id = Some("test-fork-id");
-		let protocol_id = ProtocolId::from("dot");
+		let protocol_id = ProtocolId::from("hez");
 
 		// Build swarms whose behaviour is `DiscoveryBehaviour`, each aware of
 		// the first swarm via `with_permanent_addresses`.

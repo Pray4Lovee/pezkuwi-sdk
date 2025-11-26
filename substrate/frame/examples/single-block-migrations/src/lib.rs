@@ -29,8 +29,8 @@
 //! ## Forewarning
 //!
 //! Single block migrations **MUST** execute in a single block, therefore when executed on a
-//! parachain are only appropriate when guaranteed to not exceed block weight limits. If a
-//! parachain submits a block that exceeds the block weight limit it will **brick the chain**!
+//! teyrchain are only appropriate when guaranteed to not exceed block weight limits. If a
+//! teyrchain submits a block that exceeds the block weight limit it will **brick the chain**!
 //!
 //! If weight is a concern or you are not sure which type of migration to use, you should probably
 //! use a multi-block migration.

@@ -467,7 +467,7 @@ pub mod pallet {
 			/// Using 256 as default.
 			type BlockHashCount = TestBlockHashCount<frame_support::traits::ConstU32<256>>;
 
-			/// The set code logic, just the default since we're not a parachain.
+			/// The set code logic, just the default since we're not a teyrchain.
 			type OnSetCode = ();
 			type SingleBlockMigrations = ();
 			type MultiBlockMigrator = ();
@@ -484,13 +484,13 @@ pub mod pallet {
 		#[frame_support::register_default_impl(RelayChainDefaultConfig)]
 		impl DefaultConfig for RelayChainDefaultConfig {}
 
-		/// Default configurations of this pallet in a parachain environment.
-		pub struct ParaChainDefaultConfig;
+		/// Default configurations of this pallet in a teyrchain environment.
+		pub struct TeyrchainDefaultConfig;
 
 		/// It currently uses the same configuration as `SolochainDefaultConfig`.
 		#[derive_impl(SolochainDefaultConfig as DefaultConfig, no_aggregated_types)]
-		#[frame_support::register_default_impl(ParaChainDefaultConfig)]
-		impl DefaultConfig for ParaChainDefaultConfig {}
+		#[frame_support::register_default_impl(TeyrchainDefaultConfig)]
+		impl DefaultConfig for TeyrchainDefaultConfig {}
 	}
 
 	/// System configuration trait. Implemented by runtime.
@@ -654,7 +654,7 @@ pub mod pallet {
 		/// The default (`()`) implementation is responsible for setting the correct storage
 		/// entry and emitting corresponding event and log item. (see
 		/// [`Pallet::update_code_in_storage`]).
-		/// It's unlikely that this needs to be customized, unless you are writing a parachain using
+		/// It's unlikely that this needs to be customized, unless you are writing a teyrchain using
 		/// `Cumulus`, where the actual code change is deferred.
 		#[pallet::no_default_bounds]
 		type OnSetCode: SetCode<Self>;
@@ -664,7 +664,7 @@ pub mod pallet {
 
 		/// All migrations that should run in the next runtime upgrade.
 		///
-		/// These used to be formerly configured in `Executive`. Parachains need to ensure that
+		/// These used to be formerly configured in `Executive`. Teyrchains need to ensure that
 		/// running all these migrations in one block will not overflow the weight limit of a block.
 		/// The migrations are run *before* the pallet `on_runtime_upgrade` hooks, just like the
 		/// `OnRuntimeUpgrade` migrations.
@@ -1589,7 +1589,7 @@ impl<T: Config> Pallet<T> {
 	///
 	/// Note this function almost never should be used directly. It is exposed
 	/// for `OnSetCode` implementations that defer actual code being written to
-	/// the storage (for instance in case of parachains).
+	/// the storage (for instance in case of teyrchains).
 	pub fn update_code_in_storage(code: &[u8]) {
 		storage::unhashed::put_raw(well_known_keys::CODE, code);
 		Self::deposit_log(generic::DigestItem::RuntimeEnvironmentUpdated);

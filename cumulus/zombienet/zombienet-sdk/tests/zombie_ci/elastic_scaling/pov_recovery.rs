@@ -9,18 +9,18 @@ use crate::utils::{initialize_network, BEST_BLOCK_METRIC};
 use cumulus_zombienet_sdk_helpers::{
 	assert_para_is_registered, assert_para_throughput, assign_cores,
 };
-use polkadot_primitives::Id as ParaId;
+use pezkuwi_primitives::Id as ParaId;
 use serde_json::json;
 use zombienet_orchestrator::network::node::LogLineCountOptions;
 use zombienet_sdk::{
-	subxt::{OnlineClient, PolkadotConfig},
+	subxt::{OnlineClient, PezkuwiConfig},
 	NetworkConfig, NetworkConfigBuilder, RegistrationStrategy,
 };
 
 const PARA_ID: u32 = 2100;
 
-/// This test checks if parachain node is importing blocks using PoV recovery even
-/// after more cores have been assigned for the parachain.
+/// This test checks if teyrchain node is importing blocks using PoV recovery even
+/// after more cores have been assigned for the teyrchain.
 #[tokio::test(flavor = "multi_thread")]
 async fn elastic_scaling_pov_recovery() -> Result<(), anyhow::Error> {
 	let _ = env_logger::try_init_from_env(
@@ -42,8 +42,8 @@ async fn elastic_scaling_pov_recovery() -> Result<(), anyhow::Error> {
 
 	assign_cores(alice, PARA_ID, vec![0, 1]).await?;
 
-	log::info!("Waiting 20 blocks to register parachain");
-	// Wait 20 blocks and register parachain. This part is important for pov-recovery.
+	log::info!("Waiting 20 blocks to register teyrchain");
+	// Wait 20 blocks and register teyrchain. This part is important for pov-recovery.
 	// We need to make sure that the recovering node is able to see all relay-chain
 	// notifications containing the candidates to recover.
 	assert!(alice
@@ -51,14 +51,14 @@ async fn elastic_scaling_pov_recovery() -> Result<(), anyhow::Error> {
 		.await
 		.is_ok());
 
-	log::info!("Registering parachain para_id = {PARA_ID}");
-	let relay_client: OnlineClient<PolkadotConfig> = alice.wait_client().await?;
-	network.register_parachain(PARA_ID).await?;
+	log::info!("Registering teyrchain para_id = {PARA_ID}");
+	let relay_client: OnlineClient<PezkuwiConfig> = alice.wait_client().await?;
+	network.register_teyrchain(PARA_ID).await?;
 
-	log::info!("Ensuring parachain is registered within 30 blocks");
+	log::info!("Ensuring teyrchain is registered within 30 blocks");
 	assert_para_is_registered(&relay_client, ParaId::from(PARA_ID), 30).await?;
 
-	log::info!("Ensuring parachain making progress");
+	log::info!("Ensuring teyrchain making progress");
 	assert_para_throughput(
 		&relay_client,
 		20,
@@ -123,7 +123,7 @@ async fn build_network_config() -> Result<NetworkConfig, anyhow::Error> {
 	// 	 - validator[0-3]
 	// 	   - validator
 	// 	   - synchronize only with alice
-	// - parachain nodes
+	// - teyrchain nodes
 	//   - recovery-target
 	//     - full node
 	//   - collator-elastic
@@ -131,9 +131,9 @@ async fn build_network_config() -> Result<NetworkConfig, anyhow::Error> {
 	NetworkConfigBuilder::new()
 		.with_relaychain(|r| {
 			let r = r
-				.with_chain("rococo-local")
-				.with_default_command("polkadot")
-				.with_default_image(images.polkadot.as_str())
+				.with_chain("pezkuwichain-local")
+				.with_default_command("pezkuwi")
+				.with_default_image(images.pezkuwi.as_str())
 				.with_default_resources(|resources| {
 					// These settings are applicable only for `k8s` provider.
 					// Leaving them in case we switch to `k8s` some day.
@@ -163,18 +163,18 @@ async fn build_network_config() -> Result<NetworkConfig, anyhow::Error> {
 			(0..4).fold(r, |acc, i| {
 				acc.with_node(|node| {
 					node.with_name(&format!("validator-{i}")).with_args(vec![
-						("-lruntime=debug,parachain=trace").into(),
+						("-lruntime=debug,teyrchain=trace").into(),
 						("--reserved-only").into(),
 						("--reserved-nodes", "{{ZOMBIE:alice:multiaddr}}").into(),
 					])
 				})
 			})
 		})
-		.with_parachain(|p| {
+		.with_teyrchain(|p| {
 			p.with_id(PARA_ID)
 				.with_chain("elastic-scaling")
 				.with_registration_strategy(RegistrationStrategy::Manual)
-				.with_default_command("test-parachain")
+				.with_default_command("test-teyrchain")
 				.with_default_image(images.cumulus.as_str())
 				.with_default_resources(|resources| {
 					// These settings are applicable only for `k8s` provider.
@@ -189,7 +189,7 @@ async fn build_network_config() -> Result<NetworkConfig, anyhow::Error> {
 					n.with_name("recovery-target")
 						.validator(false)
 						.with_args(vec![
-						("-lparachain::availability=trace,sync=debug,parachain=debug,cumulus-pov-recovery=debug,cumulus-consensus=debug").into(),
+						("-lteyrchain::availability=trace,sync=debug,teyrchain=debug,cumulus-pov-recovery=debug,cumulus-consensus=debug").into(),
 						("--disable-block-announcements").into(),
 						("--in-peers", "0").into(),
 						("--out-peers", "0").into(),
@@ -199,7 +199,7 @@ async fn build_network_config() -> Result<NetworkConfig, anyhow::Error> {
 					]))
 				.with_collator(|n| n.with_name("collator-elastic")
 					.with_args(vec![
-						("-laura=trace,runtime=info,cumulus-consensus=trace,consensus::common=trace,parachain::collation-generation=trace,parachain::collator-protocol=trace,parachain=debug").into(),
+						("-laura=trace,runtime=info,cumulus-consensus=trace,consensus::common=trace,teyrchain::collation-generation=trace,teyrchain::collator-protocol=trace,teyrchain=debug").into(),
 						("--disable-block-announcements").into(),
 						("--force-authoring").into(),
 						("--authoring", "slot-based").into()

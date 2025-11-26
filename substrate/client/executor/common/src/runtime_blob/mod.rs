@@ -35,8 +35,8 @@
 //!   instrumentation looks like a good solution.
 //!
 //!   Stack depth metering is needed to make a wasm blob
-//!   execution deterministic, which in turn is needed by the Parachain Validation Function in
-//! Polkadot.
+//!   execution deterministic, which in turn is needed by the Teyrchain Validation Function in
+//! Pezkuwi.
 //!
 //! ## Inspection
 //!

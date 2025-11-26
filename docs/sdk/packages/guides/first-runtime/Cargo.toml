@@ -1,6 +1,6 @@
 [package]
-name = "polkadot-sdk-docs-first-runtime"
-description = "A simple runtime created for the polkadot-sdk-docs guides"
+name = "pezkuwi-sdk-docs-first-runtime"
+description = "A simple runtime created for the pezkuwi-sdk-docs guides"
 version = "0.0.0"
 license = "MIT-0"
 authors.workspace = true
@@ -27,7 +27,7 @@ pallet-timestamp = { workspace = true }
 pallet-transaction-payment = { workspace = true }
 pallet-transaction-payment-rpc-runtime-api = { workspace = true }
 
-# other polkadot-sdk-deps
+# other pezkuwi-sdk-deps
 sp-keyring = { workspace = true }
 
 # local pallet templates

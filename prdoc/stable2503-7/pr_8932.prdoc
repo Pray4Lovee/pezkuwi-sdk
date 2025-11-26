@@ -5,7 +5,7 @@ doc:
     This particular benchmark is about benchmarking the account creation, so we should not create it before :)
 
 
-    Closes: https://github.com/paritytech/polkadot-sdk/issues/8927
+    Closes: https://github.com/pezkuwichain/pezkuwichain-sdk/issues/8927
 crates:
 - name: pallet-balances
   bump: patch

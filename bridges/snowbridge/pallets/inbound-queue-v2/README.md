@@ -1,6 +1,6 @@
 # Ethereum Inbound Queue V2
 
-Reads messages from Ethereum and sends them to intended destination on Polkadot, using XCM.
+Reads messages from Ethereum and sends them to intended destination on PezkuwiChain, using XCM.
 
 ## Architecture Overview
 
@@ -21,8 +21,8 @@ The verifier checks that the header containing the message is valid. If verifica
 **4. Message Conversion:** Once verified, the message data is translated into XCM via a MessageConverter implementation.
 This translation includes extracting payload details, XCM instructions, and bridging asset references.
 
-**5. XCM Dispatch:** The resulting XCM message is dispatched to the target AssetHub parachain for further processing. Depending
-on the `xcm` provided in the payload, more messages may be sent to parachains after AssetHub.
+**5. XCM Dispatch:** The resulting XCM message is dispatched to the target AssetHub teyrchain for further processing. Depending
+on the `xcm` provided in the payload, more messages may be sent to teyrchains after AssetHub.
 
 **6. Relayer Reward:** The relayer is rewarded with Ether (the relayer_fee portion), paid out by the configured RewardPayment
 handler, which accumulates rewards against a relayer account, which may be claimed.

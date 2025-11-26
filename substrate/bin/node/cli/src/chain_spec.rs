@@ -18,7 +18,7 @@
 
 //! Substrate chain configurations.
 
-use polkadot_sdk::*;
+use pezkuwi_sdk::*;
 
 use crate::chain_spec::sc_service::Properties;
 use kitchensink_runtime::{
@@ -41,7 +41,7 @@ use sp_mixnet::types::AuthorityId as MixnetId;
 pub use kitchensink_runtime::RuntimeGenesisConfig;
 pub use node_primitives::{AccountId, Balance, Signature};
 
-const STAGING_TELEMETRY_URL: &str = "wss://telemetry.polkadot.io/submit/";
+const STAGING_TELEMETRY_URL: &str = "wss://telemetry.pezkuwichain.io/submit/";
 
 /// Node `ChainSpec` extensions.
 ///

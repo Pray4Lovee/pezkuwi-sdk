@@ -20,7 +20,7 @@ pub mod weights;
 
 /// Money matters.
 pub mod currency {
-	use polkadot_primitives::Balance;
+	use pezkuwi_primitives::Balance;
 
 	/// The existential deposit.
 	pub const EXISTENTIAL_DEPOSIT: Balance = 1 * CENTS;
@@ -37,8 +37,8 @@ pub mod currency {
 
 /// Time and blocks.
 pub mod time {
-	use polkadot_primitives::{BlockNumber, Moment};
-	use polkadot_runtime_common::prod_or_fast;
+	use pezkuwi_primitives::{BlockNumber, Moment};
+	use pezkuwi_runtime_common::prod_or_fast;
 
 	pub const MILLISECS_PER_BLOCK: Moment = 6000;
 	pub const SLOT_DURATION: Moment = MILLISECS_PER_BLOCK;
@@ -62,7 +62,7 @@ pub mod fee {
 	use frame_support::weights::{
 		WeightToFeeCoefficient, WeightToFeeCoefficients, WeightToFeePolynomial,
 	};
-	use polkadot_primitives::Balance;
+	use pezkuwi_primitives::Balance;
 	use smallvec::smallvec;
 	pub use sp_runtime::Perbill;
 
@@ -83,7 +83,7 @@ pub mod fee {
 	impl WeightToFeePolynomial for WeightToFee {
 		type Balance = Balance;
 		fn polynomial() -> WeightToFeeCoefficients<Self::Balance> {
-			// in Westend, extrinsic base weight (smallest non-zero weight) is mapped to 1/10 CENT:
+			// in Zagros, extrinsic base weight (smallest non-zero weight) is mapped to 1/10 CENT:
 			let p = super::currency::CENTS;
 			let q = 10 * Balance::from(ExtrinsicBaseWeight::get().ref_time());
 			smallvec![WeightToFeeCoefficient {
@@ -96,26 +96,26 @@ pub mod fee {
 	}
 }
 
-/// System Parachains.
-pub mod system_parachain {
-	use polkadot_primitives::Id;
-	use xcm_builder::IsChildSystemParachain;
+/// System Teyrchains.
+pub mod system_teyrchain {
+	use pezkuwi_primitives::Id;
+	use xcm_builder::IsChildSystemTeyrchain;
 
-	/// Network's Asset Hub parachain ID.
+	/// Network's Asset Hub teyrchain ID.
 	pub const ASSET_HUB_ID: u32 = 1100;
-	/// Collectives parachain ID.
+	/// Collectives teyrchain ID.
 	pub const COLLECTIVES_ID: u32 = 1001;
-	/// BridgeHub parachain ID.
+	/// BridgeHub teyrchain ID.
 	pub const BRIDGE_HUB_ID: u32 = 1002;
-	/// Encointer parachain ID.
+	/// Encointer teyrchain ID.
 	pub const ENCOINTER_ID: u32 = 1003;
-	/// People Chain parachain ID.
+	/// People Chain teyrchain ID.
 	pub const PEOPLE_ID: u32 = 1004;
-	/// Brokerage parachain ID.
+	/// Brokerage teyrchain ID.
 	pub const BROKER_ID: u32 = 1005;
 
-	/// All system parachains of Westend.
-	pub type SystemParachains = IsChildSystemParachain<Id>;
+	/// All system teyrchains of Zagros.
+	pub type SystemTeyrchains = IsChildSystemTeyrchain<Id>;
 
 	/// Coretime constants
 	pub mod coretime {
@@ -129,7 +129,7 @@ pub mod system_parachain {
 	}
 }
 
-/// Westend Treasury pallet instance.
+/// Zagros Treasury pallet instance.
 pub const TREASURY_PALLET_ID: u8 = 37;
 
 /// XCM protocol related constants.
@@ -139,7 +139,7 @@ pub mod xcm {
 		// Preallocated for the Root body.
 		#[allow(dead_code)]
 		const ROOT_INDEX: u32 = 0;
-		// The bodies corresponding to the Polkadot OpenGov Origins.
+		// The bodies corresponding to the Pezkuwi OpenGov Origins.
 		pub const FELLOWSHIP_ADMIN_INDEX: u32 = 1;
 		#[deprecated = "Will be removed after August 2024; Use `xcm::latest::BodyId::Treasury` \
 			instead"]
@@ -155,7 +155,7 @@ mod tests {
 	};
 	use crate::weights::ExtrinsicBaseWeight;
 	use frame_support::weights::WeightToFee as WeightToFeeT;
-	use polkadot_runtime_common::MAXIMUM_BLOCK_WEIGHT;
+	use pezkuwi_runtime_common::MAXIMUM_BLOCK_WEIGHT;
 
 	#[test]
 	// Test that the fee for `MAXIMUM_BLOCK_WEIGHT` of weight has sane bounds.

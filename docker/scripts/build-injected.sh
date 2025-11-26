@@ -15,7 +15,7 @@ fi
 CONTEXT=$(mktemp -d)
 REGISTRY=${REGISTRY:-docker.io}
 
-POLKADOT_DEB=${POLKADOT_DEB:-false}
+PEZKUWI_DEB=${PEZKUWI_DEB:-false}
 
 # The following line ensure we know the project root
 PROJECT_ROOT=${PROJECT_ROOT:-$(git rev-parse --show-toplevel)}
@@ -26,7 +26,7 @@ VERSION_TOML=$(grep "^version " $PROJECT_ROOT/Cargo.toml | grep -oE "([0-9\.]+-?
 DOCKER_OWNER=${DOCKER_OWNER:-parity}
 
 # We may get 1..n binaries, comma separated
-BINARY=${BINARY:-polkadot}
+BINARY=${BINARY:-pezkuwi}
 IFS=',' read -r -a BINARIES <<< "$BINARY"
 
 VERSION=${VERSION:-$VERSION_TOML}
@@ -59,13 +59,13 @@ done
 
 echo "$TAG_ARGS"
 
-if [[ "$POLKADOT_DEB" == true ]]; then
-  echo "Building polkadot release  image based on the Debian package"
+if [[ "$PEZKUWI_DEB" == true ]]; then
+  echo "Building pezkuwi release  image based on the Debian package"
   $ENGINE build \
       ${PODMAN_FLAGS} \
       --build-arg VCS_REF="${VCS_REF}" \
       --build-arg BUILD_DATE=$(date -u '+%Y-%m-%dT%H:%M:%SZ') \
-      --build-arg POLKADOT_VERSION=${VERSION} \
+      --build-arg PEZKUWI_VERSION=${VERSION} \
       ${TAG_ARGS} \
       -f "${PROJECT_ROOT}/${DOCKERFILE}" \
     ${CONTEXT}
@@ -82,9 +82,9 @@ else
 
   cp "$PROJECT_ROOT/docker/scripts/entrypoint.sh" "$CONTEXT"
 
-  if [[ "$BINARY" == "polkadot-parachain" ]]; then
+  if [[ "$BINARY" == "pezkuwi-teyrchain" ]]; then
     mkdir -p "$CONTEXT/specs"
-    echo "Copying parachains chain-specs from $ARTIFACTS_FOLDER/specs to context: $CONTEXT/specs"
+    echo "Copying teyrchains chain-specs from $ARTIFACTS_FOLDER/specs to context: $CONTEXT/specs"
     ls -al "$ARTIFACTS_FOLDER/specs"
     cp -r "$ARTIFACTS_FOLDER/specs" "$CONTEXT/specs"
   fi

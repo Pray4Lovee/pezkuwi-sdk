@@ -17,10 +17,10 @@
 
 //! WeightInfo for the election provider multi-block pallet group.
 
-mod pallet_election_provider_multi_block_dot_size;
-mod pallet_election_provider_multi_block_signed_dot_size;
-mod pallet_election_provider_multi_block_unsigned_dot_size;
-mod pallet_election_provider_multi_block_verifier_dot_size;
+mod pallet_election_provider_multi_block_hez_size;
+mod pallet_election_provider_multi_block_signed_hez_size;
+mod pallet_election_provider_multi_block_unsigned_hez_size;
+mod pallet_election_provider_multi_block_verifier_hez_size;
 
 mod pallet_election_provider_multi_block_ksm_size;
 mod pallet_election_provider_multi_block_signed_ksm_size;
@@ -178,12 +178,12 @@ pub mod kusama {
 	};
 }
 
-/// Polkadot-esque weights only be used in testing runtimes.
-pub mod polkadot {
+/// Pezkuwi-esque weights only be used in testing runtimes.
+pub mod pezkuwi {
 	pub use super::{
-		pallet_election_provider_multi_block_dot_size::WeightInfo as MultiBlockWeightInfo,
-		pallet_election_provider_multi_block_signed_dot_size::WeightInfo as MultiBlockSignedWeightInfo,
-		pallet_election_provider_multi_block_unsigned_dot_size::WeightInfo as MultiBlockUnsignedWeightInfo,
-		pallet_election_provider_multi_block_verifier_dot_size::WeightInfo as MultiBlockVerifierWeightInfo,
+		pallet_election_provider_multi_block_hez_size::WeightInfo as MultiBlockWeightInfo,
+		pallet_election_provider_multi_block_signed_hez_size::WeightInfo as MultiBlockSignedWeightInfo,
+		pallet_election_provider_multi_block_unsigned_hez_size::WeightInfo as MultiBlockUnsignedWeightInfo,
+		pallet_election_provider_multi_block_verifier_hez_size::WeightInfo as MultiBlockVerifierWeightInfo,
 	};
 }

@@ -1,15 +1,15 @@
-//! # Upgrade Parachain for Asynchronous Backing Compatibility
+//! # Upgrade Teyrchain for Asynchronous Backing Compatibility
 //!
-//! This guide is relevant for cumulus based parachain projects started in 2023 or before, whose
+//! This guide is relevant for cumulus based teyrchain projects started in 2023 or before, whose
 //! backing process is synchronous where parablocks can only be built on the latest Relay Chain
 //! block. Async Backing allows collators to build parablocks on older Relay Chain blocks and create
 //! pipelines of multiple pending parablocks. This parallel block generation increases efficiency
 //! and throughput. For more information on Async backing and its terminology, refer to the document
-//! on [the Polkadot SDK docs.](https://paritytech.github.io/polkadot-sdk/master/polkadot_sdk_docs/guides/async_backing_guide/index.html)
+//! on [the Pezkuwi SDK docs.](https://docs.pezkuwichain.io/sdk/master/polkadot_sdk_docs/guides/async_backing_guide/index.html)
 //!
-//! > If starting a new parachain project, please use an async backing compatible template such as
+//! > If starting a new teyrchain project, please use an async backing compatible template such as
 //! > the
-//! > [parachain template](https://github.com/paritytech/polkadot-sdk/tree/master/templates/parachain).
+//! > [teyrchain template](https://github.com/pezkuwichain/pezkuwichain-sdk/tree/master/templates/parachain).
 //! The rollout process for Async Backing has three phases. Phases 1 and 2 below put new
 //! infrastructure in place. Then we can simply turn on async backing in phase 3.
 //!
@@ -27,12 +27,12 @@
 //! "scheduling_lookahead": 2
 //! ```
 //!
-//! <div class="warning"><code>scheduling_lookahead</code> must be set to 2, otherwise parachain
+//! <div class="warning"><code>scheduling_lookahead</code> must be set to 2, otherwise teyrchain
 //! block times will degrade to worse than with sync backing!</div>
 //!
-//! ## Phase 1 - Update Parachain Runtime
+//! ## Phase 1 - Update Teyrchain Runtime
 //!
-//! This phase involves configuring your parachain’s runtime `/runtime/src/lib.rs` to make use of
+//! This phase involves configuring your teyrchain’s runtime `/runtime/src/lib.rs` to make use of
 //! async backing system.
 //!
 //! 1. Establish and ensure constants for `capacity` and `velocity` are both set to 1 in the
@@ -43,7 +43,7 @@
 //! // Maximum number of blocks simultaneously accepted by the Runtime, not yet included into the
 //! // relay chain.
 //! pub const UNINCLUDED_SEGMENT_CAPACITY: u32 = 1;
-//! // How many parachain blocks are processed by the relay chain per parent. Limits the number of
+//! // How many teyrchain blocks are processed by the relay chain per parent. Limits the number of
 //! // blocks authored per slot.
 //! pub const BLOCK_PROCESSING_VELOCITY: u32 = 1;
 //! // Relay chain slot duration, in milliseconds.
@@ -61,22 +61,22 @@
 //! pub const SLOT_DURATION: u64 = MILLISECS_PER_BLOCK;
 //! ```
 //!
-//! 4. Configure `cumulus_pallet_parachain_system` in the runtime.
+//! 4. Configure `cumulus_pallet_teyrchain_system` in the runtime.
 //!
 //! - Define a `FixedVelocityConsensusHook` using our capacity, velocity, and relay slot duration
-//! constants. Use this to set the parachain system `ConsensusHook` property.
-#![doc = docify::embed!("../../templates/parachain/runtime/src/lib.rs", ConsensusHook)]
+//! constants. Use this to set the teyrchain system `ConsensusHook` property.
+#![doc = docify::embed!("../../templates/teyrchain/runtime/src/lib.rs", ConsensusHook)]
 //! ```ignore
-//! impl cumulus_pallet_parachain_system::Config for Runtime {
+//! impl cumulus_pallet_teyrchain_system::Config for Runtime {
 //!     ..
 //!     type ConsensusHook = ConsensusHook;
 //!     ..
 //! }
 //! ```
-//! - Set the parachain system property `CheckAssociatedRelayNumber` to
+//! - Set the teyrchain system property `CheckAssociatedRelayNumber` to
 //! `RelayNumberMonotonicallyIncreases`
 //! ```ignore
-//! impl cumulus_pallet_parachain_system::Config for Runtime {
+//! impl cumulus_pallet_teyrchain_system::Config for Runtime {
 //! 	..
 //! 	type CheckAssociatedRelayNumber = RelayNumberMonotonicallyIncreases;
 //! 	..
@@ -101,7 +101,7 @@
 //!
 //! 6. Update `sp_consensus_aura::AuraApi::slot_duration` in `sp_api::impl_runtime_apis` to match
 //!    the constant `SLOT_DURATION`
-#![doc = docify::embed!("../../templates/parachain/runtime/src/apis.rs", impl_slot_duration)]
+#![doc = docify::embed!("../../templates/teyrchain/runtime/src/apis.rs", impl_slot_duration)]
 //!
 //! 7. Implement the `AuraUnincludedSegmentApi`, which allows the collator client to query its
 //!    runtime to determine whether it should author a block.
@@ -118,26 +118,26 @@
 //!
 //! - Inside the `impl_runtime_apis!` block for your runtime, implement the
 //!   `cumulus_primitives_aura::AuraUnincludedSegmentApi` as shown below.
-#![doc = docify::embed!("../../templates/parachain/runtime/src/apis.rs", impl_can_build_upon)]
+#![doc = docify::embed!("../../templates/teyrchain/runtime/src/apis.rs", impl_can_build_upon)]
 //!
 //! **Note:** With a capacity of 1 we have an effective velocity of ½ even when velocity is
 //! configured to some larger value. This is because capacity will be filled after a single block is
 //! produced and will only be freed up after that block is included on the relay chain, which takes
 //! 2 relay blocks to accomplish. Thus with capacity 1 and velocity 1 we get the customary 12 second
-//! parachain block time.
+//! teyrchain block time.
 //!
 //! 8. If your `runtime/src/lib.rs` provides a `CheckInherents` type to `register_validate_block`,
 //!    remove it. `FixedVelocityConsensusHook` makes it unnecessary. The following example shows how
 //!    `register_validate_block` should look after removing `CheckInherents`.
-#![doc = docify::embed!("../../templates/parachain/runtime/src/lib.rs", register_validate_block)]
+#![doc = docify::embed!("../../templates/teyrchain/runtime/src/lib.rs", register_validate_block)]
 //!
 //!
-//! ## Phase 2 - Update Parachain Nodes
+//! ## Phase 2 - Update Teyrchain Nodes
 //!
 //! This phase consists of plugging in the new lookahead collator node.
 //!
 //! 1. Import `cumulus_primitives_core::ValidationCode` to `node/src/service.rs`.
-#![doc = docify::embed!("../../templates/parachain/node/src/service.rs", cumulus_primitives)]
+#![doc = docify::embed!("../../templates/teyrchain/node/src/service.rs", cumulus_primitives)]
 //!
 //! 2. In `node/src/service.rs`, modify `sc_service::spawn_tasks` to use a clone of `Backend` rather
 //!    than the original
@@ -153,7 +153,7 @@
 //! ```text
 //! fn start_consensus(
 //!     ..
-//!     backend: Arc<ParachainBackend>,
+//!     backend: Arc<TeyrchainBackend>,
 //!     ..
 //! ```
 //! ```ignore
@@ -167,7 +167,7 @@
 //! ```
 //!
 //! 4. In `node/src/service.rs` import the lookahead collator rather than the basic collator
-#![doc = docify::embed!("../../templates/parachain/node/src/service.rs", lookahead_collator)]
+#![doc = docify::embed!("../../templates/teyrchain/node/src/service.rs", lookahead_collator)]
 //!
 //! 5. In `start_consensus()` replace the `BasicAuraParams` struct with `AuraParams`
 //!    - Change the struct type from `BasicAuraParams` to `AuraParams`
@@ -205,24 +205,24 @@
 //!
 //! ## Phase 3 - Activate Async Backing
 //!
-//! This phase consists of changes to your parachain’s runtime that activate async backing feature.
+//! This phase consists of changes to your teyrchain’s runtime that activate async backing feature.
 //!
 //! 1. Configure `pallet_aura`, setting `AllowMultipleBlocksPerSlot` to true in
 //!    `runtime/src/lib.rs`.
-#![doc = docify::embed!("../../templates/parachain/runtime/src/configs/mod.rs", aura_config)]
+#![doc = docify::embed!("../../templates/teyrchain/runtime/src/configs/mod.rs", aura_config)]
 //!
 //! 2. Increase the maximum `UNINCLUDED_SEGMENT_CAPACITY` in `runtime/src/lib.rs`.
-#![doc = docify::embed!("../../templates/parachain/runtime/src/lib.rs", async_backing_params)]
+#![doc = docify::embed!("../../templates/teyrchain/runtime/src/lib.rs", async_backing_params)]
 //!
 //! 3. Decrease `MILLISECS_PER_BLOCK` to 6000.
 //!
-//! - Note: For a parachain which measures time in terms of its own block number rather than by
+//! - Note: For a teyrchain which measures time in terms of its own block number rather than by
 //!   relay block number it may be preferable to increase velocity. Changing block time may cause
 //!   complications, requiring additional changes. See the section “Timing by Block Number”.
-#![doc = docify::embed!("../../templates/parachain/runtime/src/lib.rs", block_times)]
+#![doc = docify::embed!("../../templates/teyrchain/runtime/src/lib.rs", block_times)]
 //!
 //! 4. Update `MAXIMUM_BLOCK_WEIGHT` to reflect the increased time available for block production.
-#![doc = docify::embed!("../../templates/parachain/runtime/src/lib.rs", max_block_weight)]
+#![doc = docify::embed!("../../templates/teyrchain/runtime/src/lib.rs", max_block_weight)]
 //!
 //! 5. Add a feature flagged alternative for `MinimumPeriod` in `pallet_timestamp`. The type should
 //!    be `ConstU64<0>` with the feature flag experimental, and `ConstU64<{SLOT_DURATION / 2}>`
@@ -240,13 +240,13 @@
 //!
 //! ## Timing by Block Number
 //!
-//! With asynchronous backing it will be possible for parachains to opt for a block time of 6
-//! seconds rather than 12 seconds. But modifying block duration isn’t so simple for a parachain
+//! With asynchronous backing it will be possible for teyrchains to opt for a block time of 6
+//! seconds rather than 12 seconds. But modifying block duration isn’t so simple for a teyrchain
 //! which was measuring time in terms of its own block number. It could result in expected and
-//! actual time not matching up, stalling the parachain.
+//! actual time not matching up, stalling the teyrchain.
 //!
 //! One strategy to deal with this issue is to instead rely on relay chain block numbers for timing.
-//! Relay block number is kept track of by each parachain in `pallet-parachain-system` with the
+//! Relay block number is kept track of by each teyrchain in `pallet-teyrchain-system` with the
 //! storage value `LastRelayChainBlockNumber`. This value can be obtained and used wherever timing
 //! based on block number is needed.
 

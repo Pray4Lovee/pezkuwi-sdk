@@ -2,7 +2,7 @@ title: move released primitives and APIs out of staging
 doc:
 - audience: [Node Dev, Runtime Dev]
   description: |-
-    Solves https://github.com/paritytech/polkadot-sdk/issues/9400
+    Solves https://github.com/pezkuwichain/pezkuwichain-sdk/issues/9400
 
     No logic change, only moves types from `polkadot/primitives/src/vstaging` into `polkadot/primitives/src/v9` (renamed from `v8` to `v9`).
 crates:

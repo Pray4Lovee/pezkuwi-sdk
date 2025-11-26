@@ -62,7 +62,7 @@ doc:
 
     * [x] My PR includes a detailed description as outlined in the "Description" and its two subsections above.
     * [x] My PR follows the [labeling requirements](
-    https://github.com/paritytech/polkadot-sdk/blob/master/docs/contributor/CONTRIBUTING.md#Process
+    https://github.com/pezkuwichain/pezkuwichain-sdk/blob/master/docs/contributor/CONTRIBUTING.md#Process
     ) of this project (at minimum one label for `T` required)
         * External contributors: ask maintainers to put the right label on your PR.
     * [x] I have made corresponding changes to the documentation (if applicable)

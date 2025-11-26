@@ -17,27 +17,27 @@
 
 //! Cumulus Collator implementation for Substrate.
 
-use polkadot_node_primitives::CollationGenerationConfig;
-use polkadot_node_subsystem::messages::{CollationGenerationMessage, CollatorProtocolMessage};
-use polkadot_overseer::Handle as OverseerHandle;
-use polkadot_primitives::{CollatorPair, Id as ParaId};
+use pezkuwi_node_primitives::CollationGenerationConfig;
+use pezkuwi_node_subsystem::messages::{CollationGenerationMessage, CollatorProtocolMessage};
+use pezkuwi_overseer::Handle as OverseerHandle;
+use pezkuwi_primitives::{CollatorPair, Id as ParaId};
 pub mod service;
 
 /// Relay-chain-driven collators are those whose block production is driven purely
-/// by new relay chain blocks and the most recently included parachain blocks
+/// by new relay chain blocks and the most recently included teyrchain blocks
 /// within them.
 ///
-/// This method of driving collators is not suited to anything but the most simple parachain
+/// This method of driving collators is not suited to anything but the most simple teyrchain
 /// consensus mechanisms, and this module may soon be deprecated.
 pub mod relay_chain_driven {
 	use futures::{
 		channel::{mpsc, oneshot},
 		prelude::*,
 	};
-	use polkadot_node_primitives::{CollationGenerationConfig, CollationResult};
-	use polkadot_node_subsystem::messages::{CollationGenerationMessage, CollatorProtocolMessage};
-	use polkadot_overseer::Handle as OverseerHandle;
-	use polkadot_primitives::{CollatorPair, Id as ParaId};
+	use pezkuwi_node_primitives::{CollationGenerationConfig, CollationResult};
+	use pezkuwi_node_subsystem::messages::{CollationGenerationMessage, CollatorProtocolMessage};
+	use pezkuwi_overseer::Handle as OverseerHandle;
+	use pezkuwi_primitives::{CollatorPair, Id as ParaId};
 
 	use cumulus_primitives_core::{relay_chain::Hash as PHash, PersistedValidationData};
 
@@ -67,7 +67,7 @@ pub mod relay_chain_driven {
 		}
 	}
 
-	/// Initialize the collator with Polkadot's collation-generation
+	/// Initialize the collator with Pezkuwi's collation-generation
 	/// subsystem, returning a stream of collation requests to handle.
 	pub async fn init(
 		key: CollatorPair,
@@ -83,7 +83,7 @@ pub mod relay_chain_driven {
 			collator: Some(Box::new(move |relay_parent, validation_data| {
 				// Cloning the channel on each usage effectively makes the channel
 				// unbounded. The channel is actually bounded by the block production
-				// and consensus systems of Polkadot, which limits the amount of possible
+				// and consensus systems of Pezkuwi, which limits the amount of possible
 				// blocks.
 				let mut stream_tx = stream_tx.clone();
 				let validation_data = validation_data.clone();

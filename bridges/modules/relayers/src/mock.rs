@@ -23,11 +23,11 @@ use bp_messages::{
 	target_chain::{DispatchMessage, MessageDispatch},
 	ChainWithMessages, HashedLaneId, LaneIdType, MessageNonce,
 };
-use bp_parachains::SingleParaStoredHeaderDataBuilder;
+use bp_teyrchains::SingleParaStoredHeaderDataBuilder;
 use bp_relayers::{
 	PayRewardFromAccount, PaymentProcedure, RewardsAccountOwner, RewardsAccountParams,
 };
-use bp_runtime::{messages::MessageDispatchResult, Chain, ChainId, Parachain};
+use bp_runtime::{messages::MessageDispatchResult, Chain, ChainId, Teyrchain};
 use codec::Encode;
 use frame_support::{
 	derive_impl, parameter_types,
@@ -118,9 +118,9 @@ impl ChainWithMessages for ThisUnderlyingChain {
 }
 
 /// Underlying chain of `BridgedChain`.
-pub struct BridgedUnderlyingParachain;
+pub struct BridgedUnderlyingTeyrchain;
 
-impl Chain for BridgedUnderlyingParachain {
+impl Chain for BridgedUnderlyingTeyrchain {
 	const ID: ChainId = TEST_BRIDGED_CHAIN_ID;
 
 	type BlockNumber = BridgedChainBlockNumber;
@@ -142,7 +142,7 @@ impl Chain for BridgedUnderlyingParachain {
 	}
 }
 
-impl ChainWithGrandpa for BridgedUnderlyingParachain {
+impl ChainWithGrandpa for BridgedUnderlyingTeyrchain {
 	const WITH_CHAIN_GRANDPA_PALLET_NAME: &'static str = "";
 	const MAX_AUTHORITIES_COUNT: u32 = 16;
 	const REASONABLE_HEADERS_IN_JUSTIFICATION_ANCESTRY: u32 = 8;
@@ -150,14 +150,14 @@ impl ChainWithGrandpa for BridgedUnderlyingParachain {
 	const AVERAGE_HEADER_SIZE: u32 = 64;
 }
 
-impl ChainWithMessages for BridgedUnderlyingParachain {
+impl ChainWithMessages for BridgedUnderlyingTeyrchain {
 	const WITH_CHAIN_MESSAGES_PALLET_NAME: &'static str = "";
 	const MAX_UNREWARDED_RELAYERS_IN_CONFIRMATION_TX: MessageNonce = 16;
 	const MAX_UNCONFIRMED_MESSAGES_IN_CONFIRMATION_TX: MessageNonce = 1000;
 }
 
-impl Parachain for BridgedUnderlyingParachain {
-	const PARACHAIN_ID: u32 = 42;
+impl Teyrchain for BridgedUnderlyingTeyrchain {
+	const TEYRCHAIN_ID: u32 = 42;
 	const MAX_HEADER_SIZE: u32 = 1_024;
 }
 
@@ -179,7 +179,7 @@ frame_support::construct_runtime! {
 		TransactionPayment: pallet_transaction_payment,
 		BridgeRelayers: pallet_bridge_relayers,
 		BridgeGrandpa: pallet_bridge_grandpa,
-		BridgeParachains: pallet_bridge_parachains,
+		BridgeTeyrchains: pallet_bridge_teyrchains,
 		BridgeMessages: pallet_bridge_messages,
 	}
 }
@@ -202,7 +202,7 @@ parameter_types! {
 #[derive_impl(frame_system::config_preludes::TestDefaultConfig)]
 impl frame_system::Config for TestRuntime {
 	type Block = ThisChainBlock;
-	// TODO: remove when https://github.com/paritytech/polkadot-sdk/pull/4543 merged
+	// TODO: remove when https://github.com/pezkuwichain/pezkuwichain-sdk/pull/4543 merged
 	type BlockHashCount = ConstU32<10>;
 	type AccountData = pallet_balances::AccountData<ThisChainBalance>;
 	type DbWeight = DbWeight;
@@ -239,22 +239,22 @@ impl pallet_transaction_payment::Config for TestRuntime {
 
 impl pallet_bridge_grandpa::Config for TestRuntime {
 	type RuntimeEvent = RuntimeEvent;
-	type BridgedChain = BridgedUnderlyingParachain;
+	type BridgedChain = BridgedUnderlyingTeyrchain;
 	type MaxFreeHeadersPerBlock = ConstU32<4>;
 	type FreeHeadersInterval = ConstU32<1_024>;
 	type HeadersToKeep = ConstU32<8>;
 	type WeightInfo = pallet_bridge_grandpa::weights::BridgeWeight<TestRuntime>;
 }
 
-impl pallet_bridge_parachains::Config for TestRuntime {
+impl pallet_bridge_teyrchains::Config for TestRuntime {
 	type RuntimeEvent = RuntimeEvent;
 	type BridgesGrandpaPalletInstance = ();
 	type ParasPalletName = BridgedParasPalletName;
 	type ParaStoredHeaderDataBuilder =
-		SingleParaStoredHeaderDataBuilder<BridgedUnderlyingParachain>;
+		SingleParaStoredHeaderDataBuilder<BridgedUnderlyingTeyrchain>;
 	type HeadsToKeep = ConstU32<8>;
 	type MaxParaHeadDataSize = ConstU32<1024>;
-	type WeightInfo = pallet_bridge_parachains::weights::BridgeWeight<TestRuntime>;
+	type WeightInfo = pallet_bridge_teyrchains::weights::BridgeWeight<TestRuntime>;
 	type OnNewHead = ();
 }
 
@@ -277,7 +277,7 @@ impl pallet_bridge_messages::Config for TestRuntime {
 
 	type MessageDispatch = DummyMessageDispatch;
 	type ThisChain = ThisUnderlyingChain;
-	type BridgedChain = BridgedUnderlyingParachain;
+	type BridgedChain = BridgedUnderlyingTeyrchain;
 	type BridgedHeaderChain = BridgeGrandpa;
 }
 

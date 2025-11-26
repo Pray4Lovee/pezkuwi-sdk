@@ -15,10 +15,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Cumulus. If not, see <https://www.gnu.org/licenses/>.
 
-//! The AuRa consensus algorithm for parachains.
+//! The AuRa consensus algorithm for teyrchains.
 //!
 //! This extends the Substrate provided AuRa consensus implementation to make it compatible for
-//! parachains.
+//! teyrchains.
 //!
 //! For more information about AuRa, the Substrate crate should be checked.
 
@@ -26,14 +26,14 @@ use codec::Encode;
 use cumulus_primitives_core::PersistedValidationData;
 
 use cumulus_primitives_core::relay_chain::HeadData;
-use polkadot_primitives::{BlockNumber as RBlockNumber, Hash as RHash};
+use pezkuwi_primitives::{BlockNumber as RBlockNumber, Hash as RHash};
 use sp_runtime::traits::{Block as BlockT, NumberFor};
 use std::{fs, fs::File, path::PathBuf};
 
 mod import_queue;
 
 pub use import_queue::{build_verifier, import_queue, BuildVerifierParams, ImportQueueParams};
-use polkadot_node_primitives::PoV;
+use pezkuwi_node_primitives::PoV;
 pub use sc_consensus_aura::{
 	slot_duration, standalone::slot_duration_at, AuraVerifier, BuildAuraWorkerParams,
 	SlotProportion,

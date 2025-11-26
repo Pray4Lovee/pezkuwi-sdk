@@ -15,10 +15,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Cumulus.  If not, see <http://www.gnu.org/licenses/>.
 
-//! Parachain bootnode discovery.
+//! Teyrchain bootnode discovery.
 //!
 //! The discovery works as follows:
-//!  1. We start parachain bootnode content provider discovery on the relay chain DHT in
+//!  1. We start teyrchain bootnode content provider discovery on the relay chain DHT in
 //!     [`BootnodeDiscovery::start_discovery`].
 //!  2. We handle every provider discovered in [`BootnodeDiscovery::handle_providers`] and try to
 //!     request the bootnodes from the provider over a `/paranode` request-response protocol.
@@ -27,7 +27,7 @@
 //!     the networking library (the case with libp2p). In this case we perform a `FIND_NODE` query
 //!     to get the provider addresses first and repeat the request once we know them.
 //!  4. When the request over the `/paranode` protocol succeeds, we add the bootnode addresses as
-//!     known addresses to the parachain networking.
+//!     known addresses to the teyrchain networking.
 //!  5. If the content provider discovery had completed, all `FIND_NODE` queries finished, and all
 //!     requests over the `/paranode` protocol succeded or failed, but we have not found any
 //!     bootnode addresses, we repeat the discovery process after a cooldown period.
@@ -62,16 +62,16 @@ const LOG_TARGET: &str = "bootnodes::discovery";
 /// especially in small testnets where a discovery attempt can be almost instant.
 const RETRY_DELAY: Duration = Duration::from_secs(30);
 
-/// Parachain bootnode discovery parameters.
+/// Teyrchain bootnode discovery parameters.
 pub struct BootnodeDiscoveryParams {
-	/// Parachain ID.
+	/// Teyrchain ID.
 	pub para_id: ParaId,
-	/// Parachain node network service.
-	pub parachain_network: Arc<dyn NetworkService>,
-	/// Parachain genesis hash.
-	pub parachain_genesis_hash: Vec<u8>,
-	/// Parachain fork ID.
-	pub parachain_fork_id: Option<String>,
+	/// Teyrchain node network service.
+	pub teyrchain_network: Arc<dyn NetworkService>,
+	/// Teyrchain genesis hash.
+	pub teyrchain_genesis_hash: Vec<u8>,
+	/// Teyrchain fork ID.
+	pub teyrchain_fork_id: Option<String>,
 	/// Relay chain interface.
 	pub relay_chain_interface: Arc<dyn RelayChainInterface>,
 	/// Relay chain network service.
@@ -80,12 +80,12 @@ pub struct BootnodeDiscoveryParams {
 	pub paranode_protocol_name: ProtocolName,
 }
 
-/// Parachain bootnode discovery service.
+/// Teyrchain bootnode discovery service.
 pub struct BootnodeDiscovery {
 	para_id_scale_compact: Vec<u8>,
-	parachain_network: Arc<dyn NetworkService>,
-	parachain_genesis_hash: Vec<u8>,
-	parachain_fork_id: Option<String>,
+	teyrchain_network: Arc<dyn NetworkService>,
+	teyrchain_genesis_hash: Vec<u8>,
+	teyrchain_fork_id: Option<String>,
 	relay_chain_interface: Arc<dyn RelayChainInterface>,
 	relay_chain_network: Arc<dyn NetworkService>,
 	latest_relay_chain_hash: Option<RelayHash>,
@@ -108,9 +108,9 @@ impl BootnodeDiscovery {
 	pub fn new(
 		BootnodeDiscoveryParams {
 			para_id,
-			parachain_network,
-			parachain_genesis_hash,
-			parachain_fork_id,
+			teyrchain_network,
+			teyrchain_genesis_hash,
+			teyrchain_fork_id,
 			relay_chain_interface,
 			relay_chain_network,
 			paranode_protocol_name,
@@ -118,9 +118,9 @@ impl BootnodeDiscovery {
 	) -> Self {
 		Self {
 			para_id_scale_compact: CompactRef(&para_id).encode(),
-			parachain_network,
-			parachain_genesis_hash,
-			parachain_fork_id,
+			teyrchain_network,
+			teyrchain_genesis_hash,
+			teyrchain_fork_id,
 			relay_chain_interface,
 			relay_chain_network,
 			latest_relay_chain_hash: None,
@@ -170,7 +170,7 @@ impl BootnodeDiscovery {
 
 		debug!(
 			target: LOG_TARGET,
-			"Started discovery of parachain bootnode providers for current epoch key {}",
+			"Started discovery of teyrchain bootnode providers for current epoch key {}",
 			hex::encode(current_epoch_key),
 		);
 
@@ -193,14 +193,14 @@ impl BootnodeDiscovery {
 				// No need to start discovery again if the previous attempt succeeded.
 				info!(
 					target: LOG_TARGET,
-					"Parachain bootnode discovery on the relay chain DHT succeeded",
+					"Teyrchain bootnode discovery on the relay chain DHT succeeded",
 				);
 
 				false
 			} else {
 				debug!(
 					target: LOG_TARGET,
-					"Retrying parachain bootnode discovery on the relay chain DHT in {RETRY_DELAY:?}",
+					"Retrying teyrchain bootnode discovery on the relay chain DHT in {RETRY_DELAY:?}",
 				);
 				self.pending_start_discovery = Box::pin(sleep(RETRY_DELAY).fuse());
 
@@ -212,7 +212,7 @@ impl BootnodeDiscovery {
 	fn request_bootnode(&mut self, peer_id: PeerId) {
 		trace!(
 			target: LOG_TARGET,
-			"Requesting parachain bootnode from the relay chain {peer_id:?}",
+			"Requesting teyrchain bootnode from the relay chain {peer_id:?}",
 		);
 
 		let (tx, rx) = oneshot::channel();
@@ -232,7 +232,7 @@ impl BootnodeDiscovery {
 	fn handle_providers(&mut self, providers: Vec<PeerId>) {
 		debug!(
 			target: LOG_TARGET,
-			"Found parachain bootnode providers on the relay chain: {providers:?}",
+			"Found teyrchain bootnode providers on the relay chain: {providers:?}",
 		);
 
 		for peer_id in providers {
@@ -270,7 +270,7 @@ impl BootnodeDiscovery {
 				Err(e) => {
 					warn!(
 						target: LOG_TARGET,
-						"Failed to decode parachain bootnode response from {peer_id:?}: {e}",
+						"Failed to decode teyrchain bootnode response from {peer_id:?}: {e}",
 					);
 					return;
 				},
@@ -284,7 +284,7 @@ impl BootnodeDiscovery {
 					// we always try to find the node on the DHT in case of the request failure.
 					debug!(
 						target: LOG_TARGET,
-						"Failed to directly query parachain bootnode from {peer_id:?}: {e}. \
+						"Failed to directly query teyrchain bootnode from {peer_id:?}: {e}. \
 						 Starting FIND_NODE query on the DHT",
 					);
 					self.find_node_queries.insert(peer_id);
@@ -292,7 +292,7 @@ impl BootnodeDiscovery {
 				} else {
 					debug!(
 						target: LOG_TARGET,
-						"Failed to query parachain bootnode from {peer_id:?} after finding
+						"Failed to query teyrchain bootnode from {peer_id:?} after finding
 						 the node addresses on the DHT: {e}",
 					);
 				}
@@ -301,7 +301,7 @@ impl BootnodeDiscovery {
 			Err(_) => {
 				debug!(
 					target: LOG_TARGET,
-					"Parachain bootnode request to {peer_id:?} canceled. \
+					"Teyrchain bootnode request to {peer_id:?} canceled. \
 					 The node is likely terminating.",
 				);
 				return;
@@ -310,17 +310,17 @@ impl BootnodeDiscovery {
 
 		match (response.genesis_hash, response.fork_id) {
 			(genesis_hash, fork_id)
-				if genesis_hash == self.parachain_genesis_hash &&
-					fork_id == self.parachain_fork_id => {},
+				if genesis_hash == self.teyrchain_genesis_hash &&
+					fork_id == self.teyrchain_fork_id => {},
 			(genesis_hash, fork_id) => {
 				warn!(
 					target: LOG_TARGET,
-					"Received invalid parachain bootnode response from {peer_id:?}: \
+					"Received invalid teyrchain bootnode response from {peer_id:?}: \
 					 genesis hash {}, fork ID {:?} don't match expected genesis hash {}, fork ID {:?}",
 					hex::encode(genesis_hash),
 					fork_id,
-					hex::encode(&self.parachain_genesis_hash),
-					self.parachain_fork_id,
+					hex::encode(&self.teyrchain_genesis_hash),
+					self.teyrchain_fork_id,
 				);
 				return;
 			},
@@ -331,17 +331,17 @@ impl BootnodeDiscovery {
 			Err(e) => {
 				warn!(
 					target: LOG_TARGET,
-					"Failed to decode parachain peer ID in response from {peer_id:?}: {e}",
+					"Failed to decode teyrchain peer ID in response from {peer_id:?}: {e}",
 				);
 				return;
 			},
 		};
 
-		if paranode_peer_id == self.parachain_network.local_peer_id() {
+		if paranode_peer_id == self.teyrchain_network.local_peer_id() {
 			warn!(
 				target: LOG_TARGET,
-				"Received own parachain node peer ID in bootnode response from {peer_id:?}. \
-				 This should not happen as we don't request parachain bootnodes from self.",
+				"Received own teyrchain node peer ID in bootnode response from {peer_id:?}. \
+				 This should not happen as we don't request teyrchain bootnodes from self.",
 			);
 			return;
 		}
@@ -357,7 +357,7 @@ impl BootnodeDiscovery {
 			Err(e) => {
 				warn!(
 					target: LOG_TARGET,
-					"Failed to decode parachain node addresses in response from {peer_id:?}: {e}",
+					"Failed to decode teyrchain node addresses in response from {peer_id:?}: {e}",
 				);
 				return;
 			},
@@ -365,11 +365,11 @@ impl BootnodeDiscovery {
 
 		debug!(
 			target: LOG_TARGET,
-			"Discovered parachain bootnode {paranode_peer_id:?} with addresses {paranode_addresses:?}",
+			"Discovered teyrchain bootnode {paranode_peer_id:?} with addresses {paranode_addresses:?}",
 		);
 
 		paranode_addresses.into_iter().for_each(|addr| {
-			self.parachain_network.add_known_address(paranode_peer_id, addr);
+			self.teyrchain_network.add_known_address(paranode_peer_id, addr);
 			self.succeeded = true;
 		});
 	}
@@ -383,7 +383,7 @@ impl BootnodeDiscovery {
 			DhtEvent::NoMoreProviders(key) if Some(key.clone()) == self.key_being_discovered => {
 				debug!(
 					target: LOG_TARGET,
-					"Parachain bootnode providers discovery finished for key {}",
+					"Teyrchain bootnode providers discovery finished for key {}",
 					hex::encode(key),
 				);
 				self.key_being_discovered = None;
@@ -391,7 +391,7 @@ impl BootnodeDiscovery {
 			DhtEvent::ProvidersNotFound(key) if Some(key.clone()) == self.key_being_discovered => {
 				debug!(
 					target: LOG_TARGET,
-					"Parachain bootnode providers not found for key {}",
+					"Teyrchain bootnode providers not found for key {}",
 					hex::encode(key),
 				);
 				self.key_being_discovered = None;
@@ -403,7 +403,7 @@ impl BootnodeDiscovery {
 				{
 					trace!(
 						target: LOG_TARGET,
-						"Found addresses on the DHT for parachain bootnode provider {peer_id:?}: {addrs:?}",
+						"Found addresses on the DHT for teyrchain bootnode provider {peer_id:?}: {addrs:?}",
 					);
 					for address in addrs {
 						self.relay_chain_network.add_known_address(peer_id, address);
@@ -412,14 +412,14 @@ impl BootnodeDiscovery {
 				} else {
 					debug!(
 						target: LOG_TARGET,
-						"Failed to find addresses on the DHT for parachain bootnode provider {peer_id:?}",
+						"Failed to find addresses on the DHT for teyrchain bootnode provider {peer_id:?}",
 					);
 				}
 			},
 			DhtEvent::ClosestPeersNotFound(peer_id) if self.find_node_queries.remove(&peer_id) => {
 				debug!(
 					target: LOG_TARGET,
-					"Failed to find addresses on the DHT for parachain bootnode provider {peer_id:?}",
+					"Failed to find addresses on the DHT for teyrchain bootnode provider {peer_id:?}",
 				);
 			},
 			_ => {},
@@ -432,7 +432,7 @@ impl BootnodeDiscovery {
 			self.relay_chain_interface.import_notification_stream().await?.fuse();
 		let dht_event_stream = self
 			.relay_chain_network
-			.event_stream("parachain-bootnode-discovery")
+			.event_stream("teyrchain-bootnode-discovery")
 			.filter_map(|e| async move {
 				match e {
 					Event::Dht(e) => Some(e),

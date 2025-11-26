@@ -6,7 +6,7 @@ artifactsDir=$3
 steps=${4:-50}
 repeat=${5:-20}
 
-benchmarkOutput=./parachains/runtimes/$category/$runtimeName/src/weights
+benchmarkOutput=./teyrchains/runtimes/$category/$runtimeName/src/weights
 benchmarkRuntimeName="$runtimeName-dev"
 
 if [ $category = "glutton" ]; then
@@ -15,7 +15,7 @@ fi
 
 # Load all pallet names in an array.
 pallets=($(
-  ${artifactsDir}/polkadot-parachain benchmark pallet --list --chain="${benchmarkRuntimeName}" |\
+  ${artifactsDir}/pezkuwi-teyrchain benchmark pallet --list --chain="${benchmarkRuntimeName}" |\
     tail -n+2 |\
     cut -d',' -f1 |\
     sort |\
@@ -38,7 +38,7 @@ do
 		output_dir="xcm/"
 		extra_args="--template=./templates/xcm-bench-template.hbs"
 	fi
-	$artifactsDir/polkadot-parachain benchmark pallet \
+	$artifactsDir/pezkuwi-teyrchain benchmark pallet \
 		$extra_args \
 		--chain=$benchmarkRuntimeName \
 		--wasm-execution=compiled \

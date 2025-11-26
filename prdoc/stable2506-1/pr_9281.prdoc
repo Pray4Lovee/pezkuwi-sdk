@@ -10,7 +10,7 @@ doc:
     \n2025-07-16 16:18:39.765  INFO tokio-runtime-worker sub-libp2p: \U0001F50D Discovered\
     \ new external address for our node: /ip4/127.0.0.1/tcp/30310/p2p/12D3KooWNw19ScMjzNGLnYYLQxWcM9EK9VYPbCq241araUGgbdLM\n\
     ```\n\nThis PR takes into account the network config for `allow_non_global_addresses`.\n\
-    \nCloses: https://github.com/paritytech/polkadot-sdk/issues/9261\n\ncc @paritytech/networking"
+    \nCloses: https://github.com/pezkuwichain/pezkuwichain-sdk/issues/9261\n\ncc @paritytech/networking"
 crates:
 - name: sc-network
   bump: patch

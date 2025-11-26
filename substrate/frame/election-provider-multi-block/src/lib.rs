@@ -31,8 +31,8 @@
 //! This pallet takes `EPM` system, keeps most of its ideas and core premises, and extends it to
 //! support paginated, multi-block operations. The final goal of this pallet is to scale linearly
 //! with the number of blocks allocated to the elections. Moreover, the amount of work that it does
-//! in one block should be bounded and measurable, making it suitable for a parachain. In principle,
-//! with large enough blocks (in a dedicated parachain), the number of voters included in the NPoS
+//! in one block should be bounded and measurable, making it suitable for a teyrchain. In principle,
+//! with large enough blocks (in a dedicated teyrchain), the number of voters included in the NPoS
 //! system can grow significantly (yet, obviously not indefinitely).
 //!
 //! Note that this pallet does not consider how the recipient is processing the results. To ensure
@@ -168,7 +168,7 @@
 //!
 //! ### Signed Phase
 //!
-//! Signed phase is when an offchain miner, aka, `polkadot-staking-miner` should operate upon. See
+//! Signed phase is when an offchain miner, aka, `pezkuwi-staking-miner` should operate upon. See
 //! [`signed`] for more information.
 //!
 //! ## Unsigned Phase

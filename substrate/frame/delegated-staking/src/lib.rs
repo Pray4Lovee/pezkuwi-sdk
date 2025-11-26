@@ -24,7 +24,7 @@
 //!
 //! Currently, it does not expose any dispatchable calls but is written with a vision to expose them
 //! in the future such that it can be utilised by any external account, off-chain entity or xcm
-//! `MultiLocation` such as a parachain or a smart contract.
+//! `MultiLocation` such as a teyrchain or a smart contract.
 //!
 //! ## Key Terminologies
 //! - **Agent**: An account who accepts delegations from other accounts and act as an agent on their

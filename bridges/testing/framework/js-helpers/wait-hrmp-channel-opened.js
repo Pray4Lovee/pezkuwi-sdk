@@ -5,8 +5,8 @@ async function run(nodeName, networkInfo, args) {
     const sibling = args[0];
 
     while (true) {
-        const messagingStateAsObj = await api.query.parachainSystem.relevantMessagingState();
-        const messagingState = api.createType("Option<CumulusPalletParachainSystemRelayStateSnapshotMessagingStateSnapshot>", messagingStateAsObj);
+        const messagingStateAsObj = await api.query.teyrchainSystem.relevantMessagingState();
+        const messagingState = api.createType("Option<CumulusPalletTeyrchainSystemRelayStateSnapshotMessagingStateSnapshot>", messagingStateAsObj);
         if (messagingState.isSome) {
             const egressChannels = messagingState.unwrap().egressChannels;
             if (egressChannels.find(x => x[0] == sibling)) {

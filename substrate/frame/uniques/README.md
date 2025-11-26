@@ -14,10 +14,10 @@ The Uniques module provides functionality for non-fungible tokens' management, i
 * Item Burning
 
 To use it in your runtime, you need to implement
-[`uniques::Config`](https://paritytech.github.io/substrate/master/pallet_uniques/pallet/trait.Config.html).
+[`uniques::Config`](https://docs.pezkuwichain.io/substrate/master/pallet_uniques/pallet/trait.Config.html).
 
 The supported dispatchable functions are documented in the
-[`uniques::Call`](https://paritytech.github.io/substrate/master/pallet_uniques/pallet/enum.Call.html) enum.
+[`uniques::Call`](https://docs.pezkuwichain.io/substrate/master/pallet_uniques/pallet/enum.Call.html) enum.
 
 ### Terminology
 
@@ -70,7 +70,7 @@ The Uniques pallet in Substrate is designed to make the following possible:
 * `force_create`: Create a new collection.
 * `force_asset_status`: Alter the underlying characteristics of a collection.
 
-Please refer to the [`Call`](https://paritytech.github.io/substrate/master/pallet_uniques/pallet/enum.Call.html) enum
+Please refer to the [`Call`](https://docs.pezkuwichain.io/substrate/master/pallet_uniques/pallet/enum.Call.html) enum
 and its associated variants for documentation on each function.
 
 ## Related Modules

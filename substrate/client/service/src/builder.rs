@@ -60,7 +60,7 @@ use sc_network_sync::{
 	service::network::{NetworkServiceHandle, NetworkServiceProvider},
 	state_request_handler::StateRequestHandler,
 	strategy::{
-		polkadot::{PolkadotSyncingStrategy, PolkadotSyncingStrategyConfig},
+		pezkuwi::{PezkuwiSyncingStrategy, PezkuwiSyncingStrategyConfig},
 		SyncingStrategy,
 	},
 	warp_request_handler::RequestHandler as WarpSyncRequestHandler,
@@ -1045,7 +1045,7 @@ where
 		),
 	};
 
-	let syncing_strategy = build_polkadot_syncing_strategy(
+	let syncing_strategy = build_pezkuwi_syncing_strategy(
 		protocol_id.clone(),
 		fork_id,
 		&mut net_config,
@@ -1326,7 +1326,7 @@ where
 }
 
 /// Build default syncing engine using [`build_default_block_downloader`] and
-/// [`build_polkadot_syncing_strategy`] internally.
+/// [`build_pezkuwi_syncing_strategy`] internally.
 pub fn build_default_syncing_engine<Block, Client, Net>(
 	config: DefaultSyncingEngineConfig<Block, Client, Net>,
 ) -> Result<(SyncingService<Block>, Net::NotificationProtocolConfig), Error>
@@ -1366,7 +1366,7 @@ where
 		num_peers_hint,
 		spawn_handle,
 	);
-	let syncing_strategy = build_polkadot_syncing_strategy(
+	let syncing_strategy = build_pezkuwi_syncing_strategy(
 		protocol_id.clone(),
 		fork_id,
 		net_config,
@@ -1432,8 +1432,8 @@ where
 	downloader
 }
 
-/// Build standard polkadot syncing strategy
-pub fn build_polkadot_syncing_strategy<Block, Client, Net>(
+/// Build standard pezkuwi syncing strategy
+pub fn build_pezkuwi_syncing_strategy<Block, Client, Net>(
 	protocol_id: ProtocolId,
 	fork_id: Option<&str>,
 	net_config: &mut FullNetworkConfiguration<Block, <Block as BlockT>::Hash, Net>,
@@ -1502,7 +1502,7 @@ where
 		net_config.add_request_response_protocol(config);
 	}
 
-	let syncing_config = PolkadotSyncingStrategyConfig {
+	let syncing_config = PezkuwiSyncingStrategyConfig {
 		mode: net_config.network_config.sync_mode,
 		max_parallel_downloads: net_config.network_config.max_parallel_downloads,
 		max_blocks_per_request: net_config.network_config.max_blocks_per_request,
@@ -1511,7 +1511,7 @@ where
 		state_request_protocol_name,
 		block_downloader,
 	};
-	Ok(Box::new(PolkadotSyncingStrategy::new(
+	Ok(Box::new(PezkuwiSyncingStrategy::new(
 		syncing_config,
 		client,
 		warp_sync_config,

@@ -18,7 +18,7 @@
 
 use crate::{BlockNumberOf, Chain, HashOf, SimpleRuntimeVersion};
 use bp_header_chain::SubmitFinalityProofCallExtras;
-use bp_polkadot_core::parachains::ParaId;
+use bp_pezkuwi_core::teyrchains::ParaId;
 use jsonrpsee::core::ClientError as RpcError;
 use relay_utils::MaybeConnectionError;
 use sc_rpc_api::system::Health;
@@ -47,9 +47,9 @@ pub enum Error {
 	/// It can be solved with reconnect.
 	#[error("Internal communication channel error: {0:?}.")]
 	ChannelError(String),
-	/// Required parachain head is not present at the relay chain.
-	#[error("Parachain {0:?} head {1} is missing from the relay chain storage.")]
-	MissingRequiredParachainHead(ParaId, u64),
+	/// Required teyrchain head is not present at the relay chain.
+	#[error("Teyrchain {0:?} head {1} is missing from the relay chain storage.")]
+	MissingRequiredTeyrchainHead(ParaId, u64),
 	/// Failed to find finality proof for the given header.
 	#[error("Failed to find finality proof for header {0}.")]
 	FinalityProofNotFound(u64),

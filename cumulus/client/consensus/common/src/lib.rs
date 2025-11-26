@@ -16,7 +16,7 @@
 // along with Cumulus. If not, see <https://www.gnu.org/licenses/>.
 
 use codec::Decode;
-use polkadot_primitives::{Block as PBlock, Hash as PHash, Header as PHeader, ValidationCodeHash};
+use pezkuwi_primitives::{Block as PBlock, Hash as PHash, Header as PHeader, ValidationCodeHash};
 
 use cumulus_primitives_core::{relay_chain, AbridgedHostConfiguration};
 use cumulus_relay_chain_interface::{RelayChainError, RelayChainInterface};
@@ -31,7 +31,7 @@ use sp_timestamp::Timestamp;
 use std::{sync::Arc, time::Duration};
 
 mod level_monitor;
-mod parachain_consensus;
+mod teyrchain_consensus;
 mod parent_search;
 #[cfg(test)]
 mod tests;
@@ -39,7 +39,7 @@ mod tests;
 pub use parent_search::*;
 
 pub use cumulus_relay_chain_streams::finalized_heads;
-pub use parachain_consensus::spawn_parachain_consensus_tasks;
+pub use teyrchain_consensus::spawn_teyrchain_consensus_tasks;
 
 use level_monitor::LevelMonitor;
 pub use level_monitor::{LevelLimit, MAX_LEAVES_PER_LEVEL_SENSIBLE_DEFAULT};
@@ -62,27 +62,27 @@ where
 }
 
 /// The result from building a collation.
-pub struct ParachainCandidate<B> {
+pub struct TeyrchainCandidate<B> {
 	/// The block that was built for this candidate.
 	pub block: B,
 	/// The proof that was recorded while building the block.
 	pub proof: sp_trie::StorageProof,
 }
 
-/// Parachain specific block import.
+/// Teyrchain specific block import.
 ///
-/// Specialized block import for parachains. It supports to delay setting the best block until the
+/// Specialized block import for teyrchains. It supports to delay setting the best block until the
 /// relay chain has included a candidate in its best block. By default the delayed best block
 /// setting is disabled. The block import also monitors the imported blocks and prunes by default if
 /// there are too many blocks at the same height. Too many blocks at the same height can for example
-/// happen if the relay chain is rejecting the parachain blocks in the validation.
-pub struct ParachainBlockImport<Block: BlockT, BI, BE> {
+/// happen if the relay chain is rejecting the teyrchain blocks in the validation.
+pub struct TeyrchainBlockImport<Block: BlockT, BI, BE> {
 	inner: BI,
 	monitor: Option<SharedData<LevelMonitor<Block, BE>>>,
 	delayed_best_block: bool,
 }
 
-impl<Block: BlockT, BI, BE: Backend<Block>> ParachainBlockImport<Block, BI, BE> {
+impl<Block: BlockT, BI, BE: Backend<Block>> TeyrchainBlockImport<Block, BI, BE> {
 	/// Create a new instance.
 	///
 	/// The number of leaves per level limit is set to `LevelLimit::Default`.
@@ -118,9 +118,9 @@ impl<Block: BlockT, BI, BE: Backend<Block>> ParachainBlockImport<Block, BI, BE> 
 	}
 }
 
-impl<Block: BlockT, I: Clone, BE> Clone for ParachainBlockImport<Block, I, BE> {
+impl<Block: BlockT, I: Clone, BE> Clone for TeyrchainBlockImport<Block, I, BE> {
 	fn clone(&self) -> Self {
-		ParachainBlockImport {
+		TeyrchainBlockImport {
 			inner: self.inner.clone(),
 			monitor: self.monitor.clone(),
 			delayed_best_block: self.delayed_best_block,
@@ -129,7 +129,7 @@ impl<Block: BlockT, I: Clone, BE> Clone for ParachainBlockImport<Block, I, BE> {
 }
 
 #[async_trait::async_trait]
-impl<Block, BI, BE> BlockImport<Block> for ParachainBlockImport<Block, BI, BE>
+impl<Block, BI, BE> BlockImport<Block> for TeyrchainBlockImport<Block, BI, BE>
 where
 	Block: BlockT,
 	BI: BlockImport<Block> + Send + Sync,
@@ -184,10 +184,10 @@ where
 	}
 }
 
-/// Marker trait denoting a block import type that fits the parachain requirements.
-pub trait ParachainBlockImportMarker {}
+/// Marker trait denoting a block import type that fits the teyrchain requirements.
+pub trait TeyrchainBlockImportMarker {}
 
-impl<B: BlockT, BI, BE> ParachainBlockImportMarker for ParachainBlockImport<B, BI, BE> {}
+impl<B: BlockT, BI, BE> TeyrchainBlockImportMarker for TeyrchainBlockImport<B, BI, BE> {}
 
 /// Get the relay-parent slot and timestamp from a header.
 pub fn relay_slot_and_timestamp(

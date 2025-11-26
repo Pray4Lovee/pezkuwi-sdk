@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Substrate.  If not, see <http://www.gnu.org/licenses/>.
 
-//! Genesis configs presets for the Westend runtime
+//! Genesis configs presets for the Zagros runtime
 
 use crate::{
 	BabeConfig, BalancesConfig, ConfigurationConfig, RegistrarConfig, RuntimeGenesisConfig,
@@ -25,8 +25,8 @@ use alloc::format;
 use alloc::{string::ToString, vec, vec::Vec};
 use core::panic;
 use frame_support::build_struct_json_patch;
-use pallet_staking_async_rc_runtime_constants::currency::UNITS as WND;
-use polkadot_primitives::{AccountId, AssignmentId, SchedulerParams, ValidatorId};
+use pallet_staking_async_rc_runtime_constants::currency::UNITS as ZGR;
+use pezkuwi_primitives::{AccountId, AssignmentId, SchedulerParams, ValidatorId};
 use sp_authority_discovery::AuthorityId as AuthorityDiscoveryId;
 use sp_consensus_babe::AuthorityId as BabeId;
 use sp_consensus_beefy::ecdsa_crypto::AuthorityId as BeefyId;
@@ -76,7 +76,7 @@ fn get_authority_keys_from_seed_no_beefy(
 	)
 }
 
-fn westend_session_keys(
+fn zagros_session_keys(
 	babe: BabeId,
 	grandpa: GrandpaId,
 	para_validator: ValidatorId,
@@ -87,16 +87,16 @@ fn westend_session_keys(
 	SessionKeys { babe, grandpa, para_validator, para_assignment, authority_discovery, beefy }
 }
 
-fn default_parachains_host_configuration(
-) -> polkadot_runtime_parachains::configuration::HostConfiguration<polkadot_primitives::BlockNumber>
+fn default_teyrchains_host_configuration(
+) -> pezkuwi_runtime_teyrchains::configuration::HostConfiguration<pezkuwi_primitives::BlockNumber>
 {
-	use polkadot_primitives::{
+	use pezkuwi_primitives::{
 		node_features::FeatureIndex, ApprovalVotingParams, AsyncBackingParams, MAX_CODE_SIZE,
 		MAX_POV_SIZE,
 	};
 
-	polkadot_runtime_parachains::configuration::HostConfiguration {
-		// Important configs are equal to what is on Polkadot. These configs can be tweaked to mimic
+	pezkuwi_runtime_teyrchains::configuration::HostConfiguration {
+		// Important configs are equal to what is on Pezkuwi. These configs can be tweaked to mimic
 		// different VMP congestion scenarios.
 		max_downward_message_size: 51200,
 		max_upward_message_size: 65531,
@@ -114,9 +114,9 @@ fn default_parachains_host_configuration(
 		hrmp_recipient_deposit: 0,
 		hrmp_channel_max_capacity: 8,
 		hrmp_channel_max_total_size: 8 * 1024,
-		hrmp_max_parachain_inbound_channels: 4,
+		hrmp_max_teyrchain_inbound_channels: 4,
 		hrmp_channel_max_message_size: 1024 * 1024,
-		hrmp_max_parachain_outbound_channels: 4,
+		hrmp_max_teyrchain_outbound_channels: 4,
 		hrmp_max_message_num_per_candidate: 5,
 		dispute_period: 6,
 		no_show_slots: 2,
@@ -146,12 +146,12 @@ fn default_parachains_host_configuration(
 }
 
 #[test]
-fn default_parachains_host_configuration_is_consistent() {
-	default_parachains_host_configuration().panic_if_not_consistent();
+fn default_teyrchains_host_configuration_is_consistent() {
+	default_teyrchains_host_configuration().panic_if_not_consistent();
 }
 
-/// Helper function to create westend runtime `GenesisConfig` patch for testing
-fn westend_testnet_genesis(
+/// Helper function to create zagros runtime `GenesisConfig` patch for testing
+fn zagros_testnet_genesis(
 	initial_authorities: Vec<(
 		AccountId,
 		AccountId,
@@ -168,7 +168,7 @@ fn westend_testnet_genesis(
 	let endowed_accounts =
 		Sr25519Keyring::well_known().map(|k| k.to_account_id()).collect::<Vec<_>>();
 
-	const ENDOWMENT: u128 = 1_000_000 * WND;
+	const ENDOWMENT: u128 = 1_000_000 * ZGR;
 
 	build_struct_json_patch!(RuntimeGenesisConfig {
 		balances: BalancesConfig {
@@ -181,7 +181,7 @@ fn westend_testnet_genesis(
 					(
 						x.0.clone(),
 						x.0.clone(),
-						westend_session_keys(
+						zagros_session_keys(
 							x.2.clone(),
 							x.3.clone(),
 							x.4.clone(),
@@ -195,8 +195,8 @@ fn westend_testnet_genesis(
 		},
 		babe: BabeConfig { epoch_config: BABE_GENESIS_EPOCH_CONFIG },
 		sudo: SudoConfig { key: Some(root_key) },
-		configuration: ConfigurationConfig { config: default_parachains_host_configuration() },
-		registrar: RegistrarConfig { next_free_para_id: polkadot_primitives::LOWEST_PUBLIC_ID },
+		configuration: ConfigurationConfig { config: default_teyrchains_host_configuration() },
+		registrar: RegistrarConfig { next_free_para_id: pezkuwi_primitives::LOWEST_PUBLIC_ID },
 		preset_store: crate::PresetStoreConfig { preset, ..Default::default() },
 		staking_ah_client: StakingAhClientConfig {
 			operating_mode: pallet_staking_async_ah_client::OperatingMode::Active,
@@ -208,7 +208,7 @@ fn westend_testnet_genesis(
 /// Provides the JSON representation of predefined genesis config for given `id`.
 pub fn get_preset(id: &PresetId) -> Option<Vec<u8>> {
 	let patch = match id.as_ref() {
-		"real-m" => westend_testnet_genesis(
+		"real-m" => zagros_testnet_genesis(
 			vec![
 				get_authority_keys_from_seed("Alice"),
 				get_authority_keys_from_seed("Bob"),
@@ -218,12 +218,12 @@ pub fn get_preset(id: &PresetId) -> Option<Vec<u8>> {
 			Sr25519Keyring::Alice.to_account_id(),
 			id.to_string(),
 		),
-		"real-s" => westend_testnet_genesis(
+		"real-s" => zagros_testnet_genesis(
 			vec![get_authority_keys_from_seed("Alice"), get_authority_keys_from_seed("Bob")],
 			Sr25519Keyring::Alice.to_account_id(),
 			id.to_string(),
 		),
-		"fake-s" => westend_testnet_genesis(
+		"fake-s" => zagros_testnet_genesis(
 			vec![get_authority_keys_from_seed("Alice"), get_authority_keys_from_seed("Bob")],
 			Sr25519Keyring::Alice.to_account_id(),
 			id.to_string(),

@@ -3,7 +3,7 @@ doc:
 - audience: Node Dev
   description: |-
     The implementation of Snowbridge V2, which is additive and does not affect the V1 protocol.
-    The original specification in https://github.com/paritytech/polkadot-sdk/blob/master/bridges/snowbridge/docs/v2.md FYI.
+    The original specification in https://github.com/pezkuwichain/pezkuwichain-sdk/blob/master/bridges/snowbridge/docs/v2.md FYI.
 
 crates:
 - name: snowbridge-core

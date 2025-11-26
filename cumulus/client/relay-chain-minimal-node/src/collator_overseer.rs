@@ -18,10 +18,10 @@
 use futures::{select, StreamExt};
 use std::sync::Arc;
 
-use polkadot_overseer::{
+use pezkuwi_overseer::{
 	BlockInfo, Handle, Overseer, OverseerConnector, OverseerHandle, SpawnGlue, UnpinHandle,
 };
-use polkadot_service::overseer::{collator_overseer_builder, OverseerGenArgs};
+use pezkuwi_service::overseer::{collator_overseer_builder, OverseerGenArgs};
 
 use sc_network::{request_responses::IncomingRequest, service::traits::NetworkService};
 use sc_service::TaskManager;
@@ -50,7 +50,7 @@ pub(crate) fn spawn_overseer(
 	overseer_args: OverseerGenArgs<sc_service::SpawnTaskHandle, BlockChainRpcClient>,
 	task_manager: &TaskManager,
 	relay_chain_rpc_client: Arc<BlockChainRpcClient>,
-) -> Result<polkadot_overseer::Handle, RelayChainError> {
+) -> Result<pezkuwi_overseer::Handle, RelayChainError> {
 	let (overseer, overseer_handle) = build_overseer(OverseerConnector::default(), overseer_args)
 		.map_err(|e| {
 		tracing::error!("Failed to initialize overseer: {}", e);
@@ -91,7 +91,7 @@ pub struct NewMinimalNode {
 	pub overseer_handle: Handle,
 	/// Network service
 	pub network_service: Arc<dyn NetworkService>,
-	/// Parachain bootnode request-response protocol receiver
+	/// Teyrchain bootnode request-response protocol receiver
 	pub paranode_rx: async_channel::Receiver<IncomingRequest>,
 }
 
@@ -114,7 +114,7 @@ async fn forward_collator_events(
 					Some(header) => {
 						let hash = header.hash();
 						tracing::info!(
-							target: "minimal-polkadot-node",
+							target: "minimal-pezkuwi-node",
 							"Received finalized block via RPC: #{} ({} -> {})",
 							header.number,
 							header.parent_hash,
@@ -132,7 +132,7 @@ async fn forward_collator_events(
 					Some(header) => {
 						let hash = header.hash();
 						tracing::info!(
-							target: "minimal-polkadot-node",
+							target: "minimal-pezkuwi-node",
 							"Received imported block via RPC: #{} ({} -> {})",
 							header.number,
 							header.parent_hash,

@@ -127,7 +127,7 @@ pub mod pallet {
 
 		/// The maximum amount of tokens which may be used for voting. May just be
 		/// `Currency::total_issuance`, but you might want to reduce this in order to account for
-		/// funds in the system which are unable to vote (e.g. parachain auction deposits).
+		/// funds in the system which are unable to vote (e.g. teyrchain auction deposits).
 		type MaxTurnout: Get<BalanceOf<Self, I>>;
 
 		/// The maximum number of concurrent votes an account may have.

@@ -16,7 +16,7 @@
 // limitations under the License.
 
 use crate::cli::Consensus;
-use polkadot_sdk::{
+use pezkuwi_sdk::{
 	sc_client_api::StorageProvider,
 	sc_executor::WasmExecutor,
 	sc_service::{error::Error as ServiceError, Configuration, TaskManager},
@@ -191,7 +191,7 @@ pub fn new_full<Network: sc_network::NetworkBackend<Block, <Block as BlockT>::Ha
 			let client = client.clone();
 			async move {
 				let key = sp_core::storage::StorageKey(
-					polkadot_sdk::pallet_timestamp::Now::<Runtime>::hashed_key().to_vec(),
+					pezkuwi_sdk::pallet_timestamp::Now::<Runtime>::hashed_key().to_vec(),
 				);
 				let current = sp_timestamp::Timestamp::current();
 				let next = client

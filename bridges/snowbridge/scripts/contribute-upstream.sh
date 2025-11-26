@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# A script to cleanup the Snowfork fork of the polkadot-sdk to contribute it upstream back to parity/polkadot-sdk
+# A script to cleanup the Snowfork fork of the pezkuwi-sdk to contribute it upstream back to parity/pezkuwi-sdk
 # ./bridges/snowbridge/scripts/contribute-upstream.sh <branchname>
 
 # show CLI help
@@ -66,7 +66,7 @@ cargo check -p snowbridge-pallet-system --features runtime-benchmarks
 cargo check -p snowbridge-pallet-system --features try-runtime
 
 # we're removing lock file after all checks are done. Otherwise we may use different
-# Substrate/Polkadot/Cumulus commits and our checks will fail
+# Substrate/Pezkuwi/Cumulus commits and our checks will fail
 rm -f $SNOWBRIDGE_FOLDER/Cargo.toml
 rm -f $SNOWBRIDGE_FOLDER/Cargo.lock
 
@@ -74,7 +74,7 @@ popd
 
 # Replace Parity's CI files, that we have overwritten in our fork, to run our own CI
 rm -rf .github
-git remote -v | grep -w parity || git remote add parity https://github.com/paritytech/polkadot-sdk
+git remote -v | grep -w parity || git remote add parity https://github.com/pezkuwichain/pezkuwichain-sdk
 git fetch parity master
 git checkout parity/master -- .github
 git add -- .github

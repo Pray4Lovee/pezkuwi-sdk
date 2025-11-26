@@ -162,8 +162,8 @@ pub struct UpdateCodeCmd {
 /// field instructs the node to use the provided runtime code at the given block height. This is
 /// useful when the chain can not progress on its own due to a bug that prevents block-building.
 ///
-/// Note: For parachains, the validation function on the relaychain needs to be adjusted too,
-/// otherwise blocks built using the substituted parachain runtime will be rejected.
+/// Note: For teyrchains, the validation function on the relaychain needs to be adjusted too,
+/// otherwise blocks built using the substituted teyrchain runtime will be rejected.
 #[derive(Parser, Debug, Clone)]
 pub struct AddCodeSubstituteCmd {
 	/// Chain spec to be updated.
@@ -213,10 +213,10 @@ pub struct VerifyCmd {
 }
 
 #[derive(Deserialize, Serialize, Clone)]
-pub struct ParachainExtension {
-	/// The relay chain of the Parachain.
+pub struct TeyrchainExtension {
+	/// The relay chain of the Teyrchain.
 	pub relay_chain: String,
-	/// The id of the Parachain.
+	/// The id of the Teyrchain.
 	pub para_id: Option<u32>,
 }
 
@@ -443,7 +443,7 @@ pub fn generate_chain_spec_for_runtime(cmd: &CreateCmd) -> Result<String, String
 		.with_chain_type(chain_type.clone());
 
 	let chain_spec_json_string = process_action(&cmd, &code[..], builder)?;
-	let parachain_properties = cmd.relay_chain.as_ref().map(|rc| {
+	let teyrchain_properties = cmd.relay_chain.as_ref().map(|rc| {
 		cmd.para_id
 			.map(|para_id| {
 				serde_json::json!({
@@ -456,7 +456,7 @@ pub fn generate_chain_spec_for_runtime(cmd: &CreateCmd) -> Result<String, String
 			}))
 	});
 
-	let chain_spec = parachain_properties
+	let chain_spec = teyrchain_properties
 		.map(|props| {
 			let chain_spec_json_blob = serde_json::from_str(chain_spec_json_string.as_str())
 				.map_err(|e| format!("deserialization a json failed {e}"));

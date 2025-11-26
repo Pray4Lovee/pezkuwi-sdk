@@ -16,11 +16,11 @@
 
 use crate::Client;
 use codec::Encode;
-use cumulus_primitives_core::{ParachainBlockData, PersistedValidationData};
-use cumulus_primitives_parachain_inherent::{ParachainInherentData, INHERENT_IDENTIFIER};
+use cumulus_primitives_core::{TeyrchainBlockData, PersistedValidationData};
+use cumulus_primitives_teyrchain_inherent::{TeyrchainInherentData, INHERENT_IDENTIFIER};
 use cumulus_test_relay_sproof_builder::RelayStateSproofBuilder;
 use cumulus_test_runtime::{Block, GetLastTimestamp, Hash, Header};
-use polkadot_primitives::{BlockNumber as PBlockNumber, Hash as PHash};
+use pezkuwi_primitives::{BlockNumber as PBlockNumber, Hash as PHash};
 use sc_block_builder::BlockBuilderBuilder;
 use sp_api::{ProofRecorder, ProofRecorderIgnoredNodes, ProvideRuntimeApi};
 use sp_consensus_aura::{AuraApi, Slot};
@@ -41,7 +41,7 @@ pub trait InitBlockBuilder {
 	///
 	/// You can use the relay chain state sproof builder to arrange required relay chain state or
 	/// just use a default one. The relay chain slot in the storage proof
-	/// will be adjusted to align with the parachain slot to pass validation.
+	/// will be adjusted to align with the teyrchain slot to pass validation.
 	///
 	/// Returns the block builder and validation data for further usage.
 	fn init_block_builder(
@@ -169,7 +169,7 @@ fn init_block_builder(
 	inherent_data
 		.put_data(
 			INHERENT_IDENTIFIER,
-			&ParachainInherentData {
+			&TeyrchainInherentData {
 				validation_data: validation_data.clone(),
 				relay_chain_state,
 				downward_messages: Default::default(),
@@ -265,15 +265,15 @@ impl InitBlockBuilder for Client {
 }
 
 /// Extension trait for the [`BlockBuilder`](sc_block_builder::BlockBuilder) to build directly a
-/// [`ParachainBlockData`].
-pub trait BuildParachainBlockData {
-	/// Directly build the [`ParachainBlockData`] from the block that comes out of the block
+/// [`TeyrchainBlockData`].
+pub trait BuildTeyrchainBlockData {
+	/// Directly build the [`TeyrchainBlockData`] from the block that comes out of the block
 	/// builder.
-	fn build_parachain_block(self, parent_state_root: Hash) -> ParachainBlockData<Block>;
+	fn build_teyrchain_block(self, parent_state_root: Hash) -> TeyrchainBlockData<Block>;
 }
 
-impl<'a> BuildParachainBlockData for sc_block_builder::BlockBuilder<'a, Block, Client> {
-	fn build_parachain_block(self, parent_state_root: Hash) -> ParachainBlockData<Block> {
+impl<'a> BuildTeyrchainBlockData for sc_block_builder::BlockBuilder<'a, Block, Client> {
+	fn build_teyrchain_block(self, parent_state_root: Hash) -> TeyrchainBlockData<Block> {
 		let built_block = self.build().expect("Builds the block");
 
 		let storage_proof = built_block
@@ -282,6 +282,6 @@ impl<'a> BuildParachainBlockData for sc_block_builder::BlockBuilder<'a, Block, C
 			.into_compact_proof::<<Header as HeaderT>::Hashing>(parent_state_root)
 			.expect("Creates the compact proof");
 
-		ParachainBlockData::new(vec![built_block.block], storage_proof)
+		TeyrchainBlockData::new(vec![built_block.block], storage_proof)
 	}
 }

@@ -251,7 +251,7 @@ impl core::fmt::Debug for PublicError {
 
 /// Key that can be encoded to/from SS58.
 ///
-/// See <https://docs.substrate.io/v3/advanced/ss58/>
+/// See <https://github.com/pezkuwichain/docs.pezkuwichain.io/v3/advanced/ss58/>
 /// for information on the codec.
 pub trait Ss58Codec: Sized + AsMut<[u8]> + AsRef<[u8]> + ByteArray {
 	/// A format filterer, can be used to ensure that `from_ss58check` family only decode for
@@ -1372,11 +1372,11 @@ mod tests {
 			})
 		);
 		assert_eq!(
-			TestPair::from_string("hello world/DOT", None),
+			TestPair::from_string("hello world/HEZ", None),
 			Ok(TestPair::Standard {
 				phrase: "hello world".to_owned(),
 				password: None,
-				path: vec![DeriveJunction::soft("DOT")]
+				path: vec![DeriveJunction::soft("HEZ")]
 			})
 		);
 		assert_eq!(
@@ -1396,11 +1396,11 @@ mod tests {
 			})
 		);
 		assert_eq!(
-			TestPair::from_string("hello world//DOT", None),
+			TestPair::from_string("hello world//HEZ", None),
 			Ok(TestPair::Standard {
 				phrase: "hello world".to_owned(),
 				password: None,
-				path: vec![DeriveJunction::hard("DOT")]
+				path: vec![DeriveJunction::hard("HEZ")]
 			})
 		);
 		assert_eq!(
@@ -1412,19 +1412,19 @@ mod tests {
 			})
 		);
 		assert_eq!(
-			TestPair::from_string("hello world//1/DOT", None),
+			TestPair::from_string("hello world//1/HEZ", None),
 			Ok(TestPair::Standard {
 				phrase: "hello world".to_owned(),
 				password: None,
-				path: vec![DeriveJunction::hard(1), DeriveJunction::soft("DOT")]
+				path: vec![DeriveJunction::hard(1), DeriveJunction::soft("HEZ")]
 			})
 		);
 		assert_eq!(
-			TestPair::from_string("hello world//DOT/1", None),
+			TestPair::from_string("hello world//HEZ/1", None),
 			Ok(TestPair::Standard {
 				phrase: "hello world".to_owned(),
 				password: None,
-				path: vec![DeriveJunction::hard("DOT"), DeriveJunction::soft(1)]
+				path: vec![DeriveJunction::hard("HEZ"), DeriveJunction::soft(1)]
 			})
 		);
 		assert_eq!(
@@ -1436,19 +1436,19 @@ mod tests {
 			})
 		);
 		assert_eq!(
-			TestPair::from_string("hello world//1/DOT///password", None),
+			TestPair::from_string("hello world//1/HEZ///password", None),
 			Ok(TestPair::Standard {
 				phrase: "hello world".to_owned(),
 				password: Some("password".to_owned()),
-				path: vec![DeriveJunction::hard(1), DeriveJunction::soft("DOT")]
+				path: vec![DeriveJunction::hard(1), DeriveJunction::soft("HEZ")]
 			})
 		);
 		assert_eq!(
-			TestPair::from_string("hello world/1//DOT///password", None),
+			TestPair::from_string("hello world/1//HEZ///password", None),
 			Ok(TestPair::Standard {
 				phrase: "hello world".to_owned(),
 				password: Some("password".to_owned()),
-				path: vec![DeriveJunction::soft(1), DeriveJunction::hard("DOT")]
+				path: vec![DeriveJunction::soft(1), DeriveJunction::hard("HEZ")]
 			})
 		);
 	}

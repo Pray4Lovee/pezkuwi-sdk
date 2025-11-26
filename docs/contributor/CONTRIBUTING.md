@@ -1,6 +1,6 @@
 # Contributing
 
-The `Polkadot SDK` project is an **OPENISH Open Source Project**
+The `Pezkuwi SDK` project is an **OPENISH Open Source Project**
 
 ## What?
 
@@ -12,7 +12,7 @@ via pull-requests and need to be approved by the maintainers.
 
 ## How?
 
-In order to build this project you need to install some dependencies, follow the instructions in [this guide](https://docs.polkadot.com/develop/parachains/install-polkadot-sdk).
+In order to build this project you need to install some dependencies, follow the instructions in [this guide](https://docs.pezkuwichain.io/develop/parachains/install-polkadot-sdk).
 
 ## Rules
 
@@ -37,7 +37,7 @@ merged faster.
 
 ### Labels
 
-The set of labels and their description can be found [here](https://paritytech.github.io/labels/doc_polkadot-sdk.html).
+The set of labels and their description can be found [here](https://docs.pezkuwichain.io/labels/doc_polkadot-sdk.html).
 
 ### Process
 
@@ -88,14 +88,14 @@ See more about `prdoc` [here](./prdoc.md)
 
 ## Crate Configuration `Cargo.toml`
 
-The Polkadot SDK uses many conventions when configuring a crate. Watch out for these things when you
+The Pezkuwi SDK uses many conventions when configuring a crate. Watch out for these things when you
 are creating a new crate.
 
 ### Is the Crate chain-specific?
 
 Chain-specific crates, for example
-[`bp-bridge-hub-rococo`](https://github.com/paritytech/polkadot-sdk/blob/4014b9bf2bf8f74862f63e7114e5c78009529be5/bridges/chains/chain-bridge-hub-rococo/Cargo.toml#L10-L11)
-, should not be released as part of the Polkadot-SDK umbrella crate. We have a custom metadata
+[`bp-bridge-hub-pezkuwichain`](https://github.com/pezkuwichain/pezkuwichain-sdk/blob/4014b9bf2bf8f74862f63e7114e5c78009529be5/bridges/chains/chain-bridge-hub-rococo/Cargo.toml#L10-L11)
+, should not be released as part of the Pezkuwi-SDK umbrella crate. We have a custom metadata
 attribute that is picked up by the [generate-umbrella.py](../../scripts/generate-umbrella.py)
 script, that should be applied to all chain-specific crates like such:
 
@@ -103,7 +103,7 @@ script, that should be applied to all chain-specific crates like such:
 [package]
 # Other stuff...
 
-[package.metadata.polkadot-sdk]
+[package.metadata.pezkuwi-sdk]
 exclude-from-umbrella = true
 
 # Other stuff...
@@ -112,7 +112,7 @@ exclude-from-umbrella = true
 ### Is the Crate a Test, Example or Fuzzer?
 
 Test or example crates, like
-[`pallet-example-task`](https://github.com/paritytech/polkadot-sdk/blob/9b4acf27b869d7cbb07b03f0857763b8c8cc7566/substrate/frame/examples/tasks/Cargo.toml#L9)
+[`pallet-example-task`](https://github.com/pezkuwichain/pezkuwichain-sdk/blob/9b4acf27b869d7cbb07b03f0857763b8c8cc7566/substrate/frame/examples/tasks/Cargo.toml#L9)
 , should not be released to crates.io. To ensure this, you must add `publish = false` to your
 crate's `package` section:
 
@@ -127,12 +127,12 @@ publish = false
 
 ## Helping out
 
-We use [labels](https://github.com/paritytech/polkadot-sdk/labels) to manage PRs and issues and communicate state of a
+We use [labels](https://github.com/pezkuwichain/pezkuwichain-sdk/labels) to manage PRs and issues and communicate state of a
 PR. Please familiarise yourself with them. Best way to get started is to a pick a ticket tagged
-[easy](https://github.com/paritytech/polkadot-sdk/issues?q=is%3Aopen+is%3Aissue+label%3AD0-easy) or
-[medium](https://github.com/paritytech/polkadot-sdk/issues?q=is%3Aopen+is%3Aissue+label%3AD1-medium) and get going.
+[easy](https://github.com/pezkuwichain/pezkuwichain-sdk/issues?q=is%3Aopen+is%3Aissue+label%3AD0-easy) or
+[medium](https://github.com/pezkuwichain/pezkuwichain-sdk/issues?q=is%3Aopen+is%3Aissue+label%3AD1-medium) and get going.
 Alternatively, look out for issues tagged
-[mentor](https://github.com/paritytech/polkadot-sdk/issues?q=is%3Aopen+is%3Aissue+label%3AC1-mentor) and get in contact
+[mentor](https://github.com/pezkuwichain/pezkuwichain-sdk/issues?q=is%3Aopen+is%3Aissue+label%3AC1-mentor) and get in contact
 with the mentor offering their support on that larger task.
 
 ****
@@ -140,7 +140,7 @@ with the mentor offering their support on that larger task.
 ### Issues
 
 If what you are looking for is an answer rather than proposing a new feature or fix, search
-[https://substrate.stackexchange.com](https://substrate.stackexchange.com/) to see if an post already exists, and ask if
+[https://exchange.pezkuwichain.app](https://exchange.pezkuwichain.app/) to see if an post already exists, and ask if
 not. Please do not file support issues here.
 
 Before opening a new issue search to see if a similar one already exists and leave a comment that you also experienced

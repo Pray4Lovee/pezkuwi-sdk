@@ -33,7 +33,7 @@ Subfunction of `bls_fast_aggregate_verify` which verify the prepared signature o
 ## hardware spec
 Run benchmark in a EC2 instance
 ```
-cargo run --release --bin polkadot-parachain --features runtime-benchmarks -- benchmark machine --base-path /mnt/scratch/benchmark
+cargo run --release --bin pezkuwi-teyrchain --features runtime-benchmarks -- benchmark machine --base-path /mnt/scratch/benchmark
 
 +----------+----------------+-------------+-------------+-------------------+
 | Category | Function       | Score       | Minimum     | Result            |
@@ -53,17 +53,17 @@ cargo run --release --bin polkadot-parachain --features runtime-benchmarks -- be
 ## benchmark
 
 ```
-cargo run --release --bin polkadot-parachain \
+cargo run --release --bin pezkuwi-teyrchain \
 --features runtime-benchmarks \
 -- \
 benchmark pallet \
 --base-path /mnt/scratch/benchmark \
---chain=bridge-hub-rococo-dev \
+--chain=bridge-hub-pezkuwichain-dev \
 --pallet=snowbridge_pallet_ethereum_client \
 --extrinsic="*" \
 --execution=wasm --wasm-execution=compiled \
 --steps 50 --repeat 20 \
---output ./parachains/runtimes/bridge-hubs/bridge-hub-rococo/src/weights/snowbridge_pallet_ethereum_client.rs
+--output ./teyrchains/runtimes/bridge-hubs/bridge-hub-pezkuwichain/src/weights/snowbridge_pallet_ethereum_client.rs
 ```
 
 ### [Weights](https://github.com/Snowfork/cumulus/blob/ron/benchmark-beacon-bridge/parachains/runtimes/bridge-hubs/bridge-hub-rococo/src/weights/snowbridge_pallet_ethereum_client.rs)

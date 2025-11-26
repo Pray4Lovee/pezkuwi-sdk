@@ -4,7 +4,7 @@ doc:
   description: |-
     polkadot/zombienet_tests/smoke/0004-coretime-smoke-test.zndsl still timeouts on CI from time to time. Bumping the timeout a bit more.
 
-    Related to https://github.com/paritytech/polkadot-sdk/issues/6226
+    Related to https://github.com/pezkuwichain/pezkuwichain-sdk/issues/6226
 crates:
 - name: polkadot
   bump: none

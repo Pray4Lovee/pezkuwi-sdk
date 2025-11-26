@@ -15,7 +15,7 @@
 // along with Cumulus.  If not, see <http://www.gnu.org/licenses/>.
 
 use super::{
-	AccountId, AuraConfig, AuraId, BalancesConfig, ParachainInfoConfig, RuntimeGenesisConfig,
+	AccountId, AuraConfig, AuraId, BalancesConfig, TeyrchainInfoConfig, RuntimeGenesisConfig,
 	SudoConfig,
 };
 use alloc::{vec, vec::Vec};
@@ -35,7 +35,7 @@ fn cumulus_test_runtime(
 			balances: endowed_accounts.iter().cloned().map(|k| (k, 1 << 60)).collect(),
 		},
 		sudo: SudoConfig { key: Some(Sr25519Keyring::Alice.public().into()) },
-		parachain_info: ParachainInfoConfig { parachain_id: id },
+		teyrchain_info: TeyrchainInfoConfig { teyrchain_id: id },
 		aura: AuraConfig { authorities: invulnerables },
 	})
 }

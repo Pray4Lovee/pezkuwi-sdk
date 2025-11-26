@@ -11,7 +11,7 @@ categories = ["cryptography::cryptocurrencies"]
 [lints]
 workspace = true
 
-[package.metadata.polkadot-sdk]
+[package.metadata.pezkuwi-sdk]
 exclude-from-umbrella = true
 
 [dependencies]
@@ -21,7 +21,7 @@ scale-info = { features = ["derive"], workspace = true }
 serde = { optional = true, features = ["alloc", "derive"], workspace = true }
 tracing = { workspace = true }
 
-polkadot-parachain-primitives = { workspace = true }
+pezkuwi-teyrchain-primitives = { workspace = true }
 xcm = { workspace = true }
 xcm-builder = { workspace = true }
 
@@ -43,7 +43,7 @@ std = [
 	"codec/std",
 	"frame-support/std",
 	"frame-system/std",
-	"polkadot-parachain-primitives/std",
+	"pezkuwi-teyrchain-primitives/std",
 	"scale-info/std",
 	"serde/std",
 	"sp-arithmetic/std",
@@ -60,7 +60,7 @@ serde = ["dep:serde", "scale-info/serde"]
 runtime-benchmarks = [
 	"frame-support/runtime-benchmarks",
 	"frame-system/runtime-benchmarks",
-	"polkadot-parachain-primitives/runtime-benchmarks",
+	"pezkuwi-teyrchain-primitives/runtime-benchmarks",
 	"sp-runtime/runtime-benchmarks",
 	"xcm-builder/runtime-benchmarks",
 	"xcm-executor/runtime-benchmarks",

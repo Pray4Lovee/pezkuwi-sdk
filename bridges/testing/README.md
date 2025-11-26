@@ -1,4 +1,4 @@
-# Bridges Tests for Local Rococo <> Westend Bridge
+# Bridges Tests for Local pezkuwichain <> zagros Bridge
 
 This folder contains [zombienet](https://github.com/paritytech/zombienet/) based integration tests for both
 onchain and offchain bridges code.
@@ -8,14 +8,14 @@ Prerequisites for running the tests locally:
 - download latest [zombienet release](https://github.com/paritytech/zombienet/releases) and place it at
 `~/local_bridge_testing/bin/zombienet`;
 
-- build Polkadot binary by running `cargo build -p polkadot --release  --features fast-runtime` command in the
-  [`polkadot-sdk`](https://github.com/paritytech/polkadot-sdk) repository clone;
+- build PezkuwiChain binary by running `cargo build -p pezkuwi --release  --features fast-runtime` command in the
+  [`pezkuwi-sdk`](https://github.com/pezkuwichain/pezkuwi-sdk) repository clone;
 
-- build Polkadot Parachain binary by running `cargo build -p polkadot-parachain-bin --release` command in the
-  [`polkadot-sdk`](https://github.com/paritytech/polkadot-sdk) repository clone;
+- build PezkuwiChain Teyrchain binary by running `cargo build -p pezkuwi-teyrchain-bin --release` command in the
+  [`pezkuwi-sdk`](https://github.com/pezkuwichain/pezkuwi-sdk) repository clone;
 
 - ensure that you have [`node`](https://nodejs.org/en) installed. Additionally, we'll need the globally installed
-  `polkadot/api-cli` package. Use `yarn global add @polkadot/api-cli` to install it.
+  `pezkuwi/api-cli` package. Use `yarn global add @pezkuwi/api-cli` to install it.
 
 - build Substrate relay by running `cargo build -p substrate-relay --release` command in the
   [`parity-bridges-common`](https://github.com/paritytech/parity-bridges-common) repository clone;
@@ -33,4 +33,4 @@ Example: `./run-test.sh 0001-asset-transfer`
 
 Hopefully, it'll show the
 "All tests have completed successfully" message in the end. Otherwise, it'll print paths to zombienet
-process logs, which, in turn, may be used to track locations of all spinned relay and parachain nodes.
+process logs, which, in turn, may be used to track locations of all spinned relay and teyrchain nodes.

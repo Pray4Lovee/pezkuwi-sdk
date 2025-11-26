@@ -29,10 +29,10 @@
 // benchmark
 // pallet
 // --extrinsic=*
-// --runtime=target/production/wbuild/westend-runtime/westend_runtime.wasm
+// --runtime=target/production/wbuild/zagros-runtime/zagros_runtime.wasm
 // --pallet=frame_system_extensions
-// --header=/__w/polkadot-sdk/polkadot-sdk/polkadot/file_header.txt
-// --output=./polkadot/runtime/westend/src/weights
+// --header=/__w/pezkuwi-sdk/pezkuwi-sdk/pezkuwi/file_header.txt
+// --output=./pezkuwi/runtime/zagros/src/weights
 // --wasm-execution=compiled
 // --steps=50
 // --repeat=20

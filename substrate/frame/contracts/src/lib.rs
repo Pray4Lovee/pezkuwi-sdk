@@ -477,7 +477,7 @@ pub mod pallet {
 		#[pallet::no_default_bounds]
 		type ApiVersion: Get<ApiVersion>;
 
-		/// A type that exposes XCM APIs, allowing contracts to interact with other parachains, and
+		/// A type that exposes XCM APIs, allowing contracts to interact with other teyrchains, and
 		/// execute XCM programs.
 		#[pallet::no_default_bounds]
 		type Xcm: xcm_builder::Controller<

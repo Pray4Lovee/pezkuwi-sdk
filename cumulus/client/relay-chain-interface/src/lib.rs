@@ -22,7 +22,7 @@ use std::{
 };
 
 use futures::Stream;
-use polkadot_overseer::prometheus::PrometheusError;
+use pezkuwi_overseer::prometheus::PrometheusError;
 use sc_client_api::StorageProof;
 use sp_version::RuntimeVersion;
 
@@ -40,7 +40,7 @@ pub use cumulus_primitives_core::{
 	},
 	InboundDownwardMessage, ParaId, PersistedValidationData,
 };
-pub use polkadot_overseer::Handle as OverseerHandle;
+pub use pezkuwi_overseer::Handle as OverseerHandle;
 pub use sp_state_machine::StorageValue;
 
 pub type RelayChainResult<T> = Result<T, RelayChainError>;
@@ -131,7 +131,7 @@ pub trait RelayChainInterface: Send + Sync {
 		payload: &[u8],
 	) -> RelayChainResult<Vec<u8>>;
 
-	/// Returns the whole contents of the downward message queue for the parachain we are collating
+	/// Returns the whole contents of the downward message queue for the teyrchain we are collating
 	/// for.
 	///
 	/// Returns `None` in case of an error.
@@ -141,7 +141,7 @@ pub trait RelayChainInterface: Send + Sync {
 		relay_parent: PHash,
 	) -> RelayChainResult<Vec<InboundDownwardMessage>>;
 
-	/// Returns channels contents for each inbound HRMP channel addressed to the parachain we are
+	/// Returns channels contents for each inbound HRMP channel addressed to the teyrchain we are
 	/// collating for.
 	///
 	/// Empty channels are also included.

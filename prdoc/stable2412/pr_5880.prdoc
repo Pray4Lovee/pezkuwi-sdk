@@ -4,7 +4,7 @@ doc:
   - audience: Node Dev
     description: |
         Fix prospective parachains test to use shuffled candidate list.
-        Resolves https://github.com/paritytech/polkadot-sdk/issues/5617.
+        Resolves https://github.com/pezkuwichain/pezkuwichain-sdk/issues/5617.
 
 crates:
   - name: polkadot-node-core-prospective-parachains

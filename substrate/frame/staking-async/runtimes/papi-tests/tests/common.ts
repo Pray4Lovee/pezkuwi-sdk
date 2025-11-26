@@ -17,7 +17,7 @@ export function commonUnsignedSteps(
 		// first relay session change at block 11
 		Observe.on(Chain.Relay, "Session", "NewSession").byBlock(11),
 		// by block 10 we will plan a new era
-		Observe.on(Chain.Parachain, "Staking", "SessionRotated")
+		Observe.on(Chain.Teyrchain, "Staking", "SessionRotated")
 			.withDataCheck((x: any) => x.active_era == 0 && x.planned_era == 1)
 			.onPass(() => {
 				if (doNullifySigned) {
@@ -28,21 +28,21 @@ export function commonUnsignedSteps(
 			}),
 		// eventually we will verify all pages
 		...Array.from({ length: minerPages }, (_, __) => {
-			return Observe.on(Chain.Parachain, "MultiBlockElectionVerifier", "Verified");
+			return Observe.on(Chain.Teyrchain, "MultiBlockElectionVerifier", "Verified");
 		}),
 		// eventually it will be queued
-		Observe.on(Chain.Parachain, "MultiBlockElectionVerifier", "Queued"),
+		Observe.on(Chain.Teyrchain, "MultiBlockElectionVerifier", "Queued"),
 		// eventually multiblock election will transition to `Done`
-		Observe.on(Chain.Parachain, "MultiBlockElection", "PhaseTransitioned").withDataCheck(
+		Observe.on(Chain.Teyrchain, "MultiBlockElection", "PhaseTransitioned").withDataCheck(
 			(x: any) => x.to.type === "Done"
 		),
 		// eventually we will export all 4 pages to staking
 		// export events.
 		...Array.from({ length: pages }, (_, __) => {
-			return Observe.on(Chain.Parachain, "Staking", "PagedElectionProceeded");
+			return Observe.on(Chain.Teyrchain, "Staking", "PagedElectionProceeded");
 		}),
 		// eventually multiblock goes back to `Off`
-		Observe.on(Chain.Parachain, "MultiBlockElection", "PhaseTransitioned").withDataCheck(
+		Observe.on(Chain.Teyrchain, "MultiBlockElection", "PhaseTransitioned").withDataCheck(
 			(x: any) => x.to.type === "Off"
 		),
 		// eventually we will send it back to RC
@@ -51,11 +51,11 @@ export function commonUnsignedSteps(
 		),
 		Observe.on(Chain.Relay, "Session", "NewQueued"),
 		// eventually we will receive a session report back in AH with activation timestamp
-		Observe.on(Chain.Parachain, "StakingRcClient", "SessionReportReceived").withDataCheck(
+		Observe.on(Chain.Teyrchain, "StakingRcClient", "SessionReportReceived").withDataCheck(
 			(x) => x.activation_timestamp !== undefined
 		),
 		// eventually we will have era paid (inflation)
-		Observe.on(Chain.Parachain, "Staking", "EraPaid"),
+		Observe.on(Chain.Teyrchain, "Staking", "EraPaid"),
 	].map((s) => s.build());
 }
 
@@ -72,7 +72,7 @@ export function commonSignedSteps(
 		// first relay session change at block 11
 		Observe.on(Chain.Relay, "Session", "NewSession").byBlock(11),
 		// by block 10 we will plan a new era
-		Observe.on(Chain.Parachain, "Staking", "SessionRotated")
+		Observe.on(Chain.Teyrchain, "Staking", "SessionRotated")
 			.withDataCheck((x: any) => x.active_era == 0 && x.planned_era == 1)
 			.onPass(() => {
 				nullifyUnsigned(apis.paraApi).then((ok) => {
@@ -81,30 +81,30 @@ export function commonSignedSteps(
 			}),
 
 		// Eventually a signed submission is registered...
-		Observe.on(Chain.Parachain, "MultiBlockElectionSigned", "Registered"),
+		Observe.on(Chain.Teyrchain, "MultiBlockElectionSigned", "Registered"),
 		// ... and exact number of pages are generated
 		...Array.from({ length: pages }, () =>
-			Observe.on(Chain.Parachain, "MultiBlockElectionSigned", "Stored")
+			Observe.on(Chain.Teyrchain, "MultiBlockElectionSigned", "Stored")
 		),
 		// ... and exact number of pages are verified
 		...Array.from({ length: pages }, () =>
-			Observe.on(Chain.Parachain, "MultiBlockElectionVerifier", "Verified")
+			Observe.on(Chain.Teyrchain, "MultiBlockElectionVerifier", "Verified")
 		),
 		// eventually it will be queued
-		Observe.on(Chain.Parachain, "MultiBlockElectionVerifier", "Queued"),
+		Observe.on(Chain.Teyrchain, "MultiBlockElectionVerifier", "Queued"),
 		// eventually the signed submitter is rewarded.
 		// TODO: check rewarded account is Bob
-		Observe.on(Chain.Parachain, "MultiBlockElectionSigned", "Rewarded"),
+		Observe.on(Chain.Teyrchain, "MultiBlockElectionSigned", "Rewarded"),
 		// eventually multiblock election will transition to `Done`
-		Observe.on(Chain.Parachain, "MultiBlockElection", "PhaseTransitioned").withDataCheck(
+		Observe.on(Chain.Teyrchain, "MultiBlockElection", "PhaseTransitioned").withDataCheck(
 			(x: any) => x.to.type === "Done"
 		),
 		// eventually we will export all pages.
 		...Array.from({ length: pages }, () =>
-			Observe.on(Chain.Parachain, "Staking", "PagedElectionProceeded")
+			Observe.on(Chain.Teyrchain, "Staking", "PagedElectionProceeded")
 		),
 		// eventually multiblock goes back to `Off`
-		Observe.on(Chain.Parachain, "MultiBlockElection", "PhaseTransitioned").withDataCheck(
+		Observe.on(Chain.Teyrchain, "MultiBlockElection", "PhaseTransitioned").withDataCheck(
 			(x: any) => x.to.type === "Off"
 		),
 		// eventually we will send it back to RC
@@ -113,10 +113,10 @@ export function commonSignedSteps(
 		),
 		Observe.on(Chain.Relay, "Session", "NewQueued"),
 		// eventually we will receive a session report back in AH with activation timestamp
-		Observe.on(Chain.Parachain, "StakingRcClient", "SessionReportReceived").withDataCheck(
+		Observe.on(Chain.Teyrchain, "StakingRcClient", "SessionReportReceived").withDataCheck(
 			(x) => x.activation_timestamp !== undefined
 		),
 		// eventually we will have era paid (inflation)
-		Observe.on(Chain.Parachain, "Staking", "EraPaid"),
+		Observe.on(Chain.Teyrchain, "Staking", "EraPaid"),
 	].map((s) => s.build());
 }

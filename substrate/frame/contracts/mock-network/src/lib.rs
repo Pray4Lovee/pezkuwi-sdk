@@ -15,7 +15,7 @@
 // along with Substrate.  If not, see <http://www.gnu.org/licenses/>.
 
 pub mod mocks;
-pub mod parachain;
+pub mod teyrchain;
 pub mod primitives;
 pub mod relay_chain;
 
@@ -28,7 +28,7 @@ use sp_runtime::BuildStorage;
 use xcm::latest::prelude::*;
 use xcm_executor::traits::ConvertLocation;
 pub use xcm_simulator::TestExt;
-use xcm_simulator::{decl_test_network, decl_test_parachain, decl_test_relay_chain};
+use xcm_simulator::{decl_test_network, decl_test_teyrchain, decl_test_relay_chain};
 
 // Accounts
 pub const ADMIN: sp_runtime::AccountId32 = sp_runtime::AccountId32::new([0u8; 32]);
@@ -36,11 +36,11 @@ pub const ADMIN: sp_runtime::AccountId32 = sp_runtime::AccountId32::new([0u8; 32
 // Balances
 pub const INITIAL_BALANCE: u128 = 1_000_000_000 * UNITS;
 
-decl_test_parachain! {
+decl_test_teyrchain! {
 	pub struct ParaA {
-		Runtime = parachain::Runtime,
-		XcmpMessageHandler = parachain::MsgQueue,
-		DmpMessageHandler = parachain::MsgQueue,
+		Runtime = teyrchain::Runtime,
+		XcmpMessageHandler = teyrchain::MsgQueue,
+		DmpMessageHandler = teyrchain::MsgQueue,
 		new_ext = para_ext(1),
 	}
 }
@@ -60,7 +60,7 @@ decl_test_relay_chain! {
 decl_test_network! {
 	pub struct MockNet {
 		relay_chain = Relay,
-		parachains = vec![
+		teyrchains = vec![
 			(1, ParaA),
 		],
 	}
@@ -68,20 +68,20 @@ decl_test_network! {
 
 pub fn relay_sovereign_account_id() -> AccountId {
 	let location: Location = (Parent,).into();
-	parachain::SovereignAccountOf::convert_location(&location).unwrap()
+	teyrchain::SovereignAccountOf::convert_location(&location).unwrap()
 }
 
-pub fn parachain_sovereign_account_id(para: u32) -> AccountId {
-	let location: Location = (Parachain(para),).into();
+pub fn teyrchain_sovereign_account_id(para: u32) -> AccountId {
+	let location: Location = (Teyrchain(para),).into();
 	relay_chain::SovereignAccountOf::convert_location(&location).unwrap()
 }
 
-pub fn parachain_account_sovereign_account_id(
+pub fn teyrchain_account_sovereign_account_id(
 	para: u32,
 	who: sp_runtime::AccountId32,
 ) -> AccountId {
 	let location: Location = (
-		Parachain(para),
+		Teyrchain(para),
 		AccountId32 { network: Some(relay_chain::RelayNetwork::get()), id: who.into() },
 	)
 		.into();
@@ -89,7 +89,7 @@ pub fn parachain_account_sovereign_account_id(
 }
 
 pub fn para_ext(para_id: u32) -> sp_io::TestExternalities {
-	use parachain::{MsgQueue, Runtime, System};
+	use teyrchain::{MsgQueue, Runtime, System};
 
 	let mut t = frame_system::GenesisConfig::<Runtime>::default().build_storage().unwrap();
 
@@ -136,8 +136,8 @@ pub fn relay_ext() -> sp_io::TestExternalities {
 	pallet_balances::GenesisConfig::<Runtime> {
 		balances: vec![
 			(ALICE, INITIAL_BALANCE),
-			(parachain_sovereign_account_id(1), INITIAL_BALANCE),
-			(parachain_account_sovereign_account_id(1, ALICE), INITIAL_BALANCE),
+			(teyrchain_sovereign_account_id(1), INITIAL_BALANCE),
+			(teyrchain_account_sovereign_account_id(1, ALICE), INITIAL_BALANCE),
 		],
 		..Default::default()
 	}
@@ -151,5 +151,5 @@ pub fn relay_ext() -> sp_io::TestExternalities {
 	ext
 }
 
-pub type ParachainPalletXcm = pallet_xcm::Pallet<parachain::Runtime>;
-pub type ParachainBalances = pallet_balances::Pallet<parachain::Runtime>;
+pub type TeyrchainPalletXcm = pallet_xcm::Pallet<teyrchain::Runtime>;
+pub type TeyrchainBalances = pallet_balances::Pallet<teyrchain::Runtime>;

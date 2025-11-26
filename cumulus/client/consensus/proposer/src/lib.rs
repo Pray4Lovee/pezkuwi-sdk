@@ -16,12 +16,12 @@
 // along with Cumulus. If not, see <https://www.gnu.org/licenses/>.
 
 //! The Cumulus [`ProposerInterface`] is an extension of the Substrate [`ProposerFactory`]
-//! for creating new parachain blocks.
+//! for creating new teyrchain blocks.
 //!
 //! This utility is designed to be composed within any collator consensus algorithm.
 
 use async_trait::async_trait;
-use cumulus_primitives_parachain_inherent::ParachainInherentData;
+use cumulus_primitives_teyrchain_inherent::TeyrchainInherentData;
 use sc_basic_authorship::{ProposeArgs, ProposerFactory};
 use sc_block_builder::BlockBuilderApi;
 use sc_transaction_pool_api::TransactionPool;
@@ -33,7 +33,7 @@ use sp_runtime::{traits::Block as BlockT, Digest};
 use sp_state_machine::StorageProof;
 use std::{fmt::Debug, time::Duration};
 
-/// Errors that can occur when proposing a parachain block.
+/// Errors that can occur when proposing a teyrchain block.
 #[derive(thiserror::Error, Debug)]
 #[error(transparent)]
 pub struct Error {
@@ -60,7 +60,7 @@ pub type ProposalOf<B> = Proposal<B, StorageProof>;
 #[async_trait]
 pub trait ProposerInterface<Block: BlockT> {
 	/// Propose a collation using the supplied `InherentData` and the provided
-	/// `ParachainInherentData`.
+	/// `TeyrchainInherentData`.
 	///
 	/// Also specify any required inherent digests, the maximum proposal duration,
 	/// and the block size limit in bytes. See the documentation on
@@ -68,14 +68,14 @@ pub trait ProposerInterface<Block: BlockT> {
 	///
 	/// The `InherentData` and `Digest` are left deliberately general in order to accommodate
 	/// all possible collator selection algorithms or inherent creation mechanisms,
-	/// while the `ParachainInherentData` is made explicit so it will be constructed appropriately.
+	/// while the `TeyrchainInherentData` is made explicit so it will be constructed appropriately.
 	///
-	/// If the `InherentData` passed into this function already has a `ParachainInherentData`,
+	/// If the `InherentData` passed into this function already has a `TeyrchainInherentData`,
 	/// this should throw an error.
 	async fn propose(
 		&mut self,
 		parent_header: &Block::Header,
-		paras_inherent_data: &ParachainInherentData,
+		paras_inherent_data: &TeyrchainInherentData,
 		other_inherent_data: InherentData,
 		inherent_digests: Digest,
 		max_duration: Duration,
@@ -94,7 +94,7 @@ where
 	async fn propose(
 		&mut self,
 		parent_header: &Block::Header,
-		paras_inherent_data: &ParachainInherentData,
+		paras_inherent_data: &TeyrchainInherentData,
 		other_inherent_data: InherentData,
 		inherent_digests: Digest,
 		max_duration: Duration,

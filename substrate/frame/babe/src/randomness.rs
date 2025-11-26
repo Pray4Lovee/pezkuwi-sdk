@@ -76,7 +76,7 @@ pub struct RandomnessFromTwoEpochsAgo<T>(core::marker::PhantomData<T>);
 /// Adversaries should not possess many block production slots towards the beginning or
 /// end of every epoch, but they possess some influence over when they possess more slots.
 ///
-/// As an example usage, we determine parachain auctions ending times in Polkadot using
+/// As an example usage, we determine teyrchain auctions ending times in Pezkuwi using
 /// `RandomnessFromOneEpochAgo` because it reduces bias from `ParentBlockRandomness` and
 /// does not require the extra finality delay of `RandomnessFromTwoEpochsAgo`.
 pub struct RandomnessFromOneEpochAgo<T>(core::marker::PhantomData<T>);
@@ -105,10 +105,10 @@ pub struct RandomnessFromOneEpochAgo<T>(core::marker::PhantomData<T>);
 /// remains constrained by declared staking, while a randomness source like block hash is
 /// only constrained by adversaries' unknowable computational power.
 ///
-/// As an example use, parachains could assign block production slots based upon the
+/// As an example use, teyrchains could assign block production slots based upon the
 /// `ParentBlockRandomness` of their relay parent or relay parent's parent, provided the
-/// parachain registers collators but avoids censorship sensitive functionality like
-/// slashing. Any parachain with slashing could operate BABE itself or perhaps better yet
+/// teyrchain registers collators but avoids censorship sensitive functionality like
+/// slashing. Any teyrchain with slashing could operate BABE itself or perhaps better yet
 /// a BABE-like approach that derives its `ParentBlockRandomness`, and authorizes block
 /// production, based upon the relay parent's `ParentBlockRandomness` or more likely the
 /// relay parent's `RandomnessFromTwoEpochsAgo`.

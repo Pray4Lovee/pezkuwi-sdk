@@ -22,7 +22,7 @@ chrono = { workspace = true }
 clap = { features = ["derive"], workspace = true }
 codec = { workspace = true, default-features = true }
 comfy-table = { workspace = true }
-cumulus-client-parachain-inherent = { workspace = true, default-features = true }
+cumulus-client-teyrchain-inherent = { workspace = true, default-features = true }
 cumulus-primitives-proof-size-hostfunction = { workspace = true, default-features = true }
 env_filter = { workspace = true }
 frame-benchmarking = { workspace = true, default-features = true }
@@ -34,8 +34,8 @@ handlebars = { workspace = true }
 itertools = { workspace = true }
 linked-hash-map = { workspace = true }
 log = { workspace = true, default-features = true }
-polkadot-parachain-primitives = { workspace = true, default-features = true }
-polkadot-primitives = { workspace = true, default-features = true }
+pezkuwi-teyrchain-primitives = { workspace = true, default-features = true }
+pezkuwi-primitives = { workspace = true, default-features = true }
 rand = { features = ["small_rng"], workspace = true, default-features = true }
 rand_pcg = { workspace = true }
 sc-block-builder = { workspace = true, default-features = true }
@@ -78,7 +78,7 @@ thousands = { workspace = true }
 [dev-dependencies]
 cumulus-test-runtime = { workspace = true, default-features = true }
 substrate-test-runtime = { workspace = true, default-features = true }
-westend-runtime = { workspace = true, default-features = true }
+zagros-runtime = { workspace = true, default-features = true }
 
 [features]
 default = []
@@ -87,11 +87,11 @@ runtime-benchmarks = [
 	"frame-storage-access-test-runtime/runtime-benchmarks",
 	"frame-support/runtime-benchmarks",
 	"frame-system/runtime-benchmarks",
-	"polkadot-parachain-primitives/runtime-benchmarks",
-	"polkadot-primitives/runtime-benchmarks",
+	"pezkuwi-teyrchain-primitives/runtime-benchmarks",
+	"pezkuwi-primitives/runtime-benchmarks",
 	"sc-client-db/runtime-benchmarks",
 	"sc-service/runtime-benchmarks",
 	"sp-runtime/runtime-benchmarks",
-	"westend-runtime/runtime-benchmarks",
+	"zagros-runtime/runtime-benchmarks",
 ]
 rocksdb = ["sc-cli/rocksdb", "sc-client-db/rocksdb"]

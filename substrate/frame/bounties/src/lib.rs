@@ -996,7 +996,7 @@ impl<T: Config<I>, I: 'static> Pallet<T, I> {
 impl<T: Config<I>, I: 'static> Pallet<T, I> {
 	/// Get the block number used in the treasury pallet.
 	///
-	/// It may be configured to use the relay chain block number on a parachain.
+	/// It may be configured to use the relay chain block number on a teyrchain.
 	pub fn treasury_block_number() -> BlockNumberFor<T, I> {
 		<T as pallet_treasury::Config<I>>::BlockNumberProvider::current_block_number()
 	}

@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//! External C API to communicate with Polkadot SDK's `pallet-revive` module.
+//! External C API to communicate with Pezkuwi SDK's `pallet-revive` module.
 //!
 //! Refer to the FRAME `pallet-revive` module for more documentation.
 

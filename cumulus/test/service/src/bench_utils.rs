@@ -19,8 +19,8 @@ use codec::Encode;
 use sc_block_builder::BlockBuilderBuilder;
 
 use crate::{construct_extrinsic, Client as TestClient};
-use cumulus_pallet_parachain_system::parachain_inherent::{
-	BasicParachainInherentData, InboundMessagesData,
+use cumulus_pallet_teyrchain_system::teyrchain_inherent::{
+	BasicTeyrchainInherentData, InboundMessagesData,
 };
 use cumulus_primitives_core::{relay_chain::AccountId, PersistedValidationData};
 use cumulus_test_relay_sproof_builder::RelayStateSproofBuilder;
@@ -28,7 +28,7 @@ use cumulus_test_runtime::{
 	BalancesCall, GluttonCall, NodeBlock, SudoCall, UncheckedExtrinsic, WASM_BINARY,
 };
 use frame_system_rpc_runtime_api::AccountNonceApi;
-use polkadot_primitives::HeadData;
+use pezkuwi_primitives::HeadData;
 use sc_client_api::UsageProvider;
 use sc_consensus::{
 	block_import::{BlockImportParams, ForkChoiceStrategy},
@@ -84,13 +84,13 @@ pub fn extrinsic_set_validation_data(
 ) -> OpaqueExtrinsic {
 	let parent_head = HeadData(parent_header.encode());
 	let sproof_builder = RelayStateSproofBuilder {
-		para_id: cumulus_test_runtime::PARACHAIN_ID.into(),
+		para_id: cumulus_test_runtime::TEYRCHAIN_ID.into(),
 		included_para_head: parent_head.clone().into(),
 		..Default::default()
 	};
 
 	let (relay_parent_storage_root, relay_chain_state) = sproof_builder.into_state_root_and_proof();
-	let data = BasicParachainInherentData {
+	let data = BasicTeyrchainInherentData {
 		validation_data: PersistedValidationData {
 			parent_head,
 			relay_parent_number: 10,
@@ -108,8 +108,8 @@ pub fn extrinsic_set_validation_data(
 	};
 
 	cumulus_test_runtime::UncheckedExtrinsic::new_bare(
-		cumulus_test_runtime::RuntimeCall::ParachainSystem(
-			cumulus_pallet_parachain_system::Call::set_validation_data {
+		cumulus_test_runtime::RuntimeCall::TeyrchainSystem(
+			cumulus_pallet_teyrchain_system::Call::set_validation_data {
 				data,
 				inbound_messages_data,
 			},

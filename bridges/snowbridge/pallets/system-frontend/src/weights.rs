@@ -5,22 +5,22 @@
 //! DATE: 2023-10-09, STEPS: `2`, REPEAT: `1`, LOW RANGE: `[]`, HIGH RANGE: `[]`
 //! WORST CASE MAP SIZE: `1000000`
 //! HOSTNAME: `crake.local`, CPU: `<UNKNOWN>`
-//! WASM-EXECUTION: `Compiled`, CHAIN: `Some("bridge-hub-rococo-dev")`, DB CACHE: `1024`
+//! WASM-EXECUTION: `Compiled`, CHAIN: `Some("bridge-hub-pezkuwichain-dev")`, DB CACHE: `1024`
 
 // Executed Command:
-// target/release/polkadot-parachain
+// target/release/pezkuwi-teyrchain
 // benchmark
 // pallet
 // --chain
-// bridge-hub-rococo-dev
+// bridge-hub-pezkuwichain-dev
 // --pallet=snowbridge_system
 // --extrinsic=*
 // --execution=wasm
 // --wasm-execution=compiled
 // --template
-// ../parachain/templates/module-weight-template.hbs
+// ../teyrchain/templates/module-weight-template.hbs
 // --output
-// ../parachain/pallets/control/src/weights.rs
+// ../teyrchain/pallets/control/src/weights.rs
 
 #![cfg_attr(rustfmt, rustfmt_skip)]
 #![allow(unused_parens)]

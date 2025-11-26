@@ -2,7 +2,7 @@
 name = "cumulus-client-pov-recovery"
 version = "0.7.0"
 authors.workspace = true
-description = "Parachain PoV recovery"
+description = "Teyrchain PoV recovery"
 edition.workspace = true
 license = "GPL-3.0-or-later WITH Classpath-exception-2.0"
 homepage.workspace = true
@@ -28,11 +28,11 @@ sp-maybe-compressed-blob = { workspace = true, default-features = true }
 sp-runtime = { workspace = true, default-features = true }
 sp-version = { workspace = true, default-features = true }
 
-# Polkadot
-polkadot-node-primitives = { workspace = true, default-features = true }
-polkadot-node-subsystem = { workspace = true, default-features = true }
-polkadot-overseer = { workspace = true, default-features = true }
-polkadot-primitives = { workspace = true, default-features = true }
+# Pezkuwi
+pezkuwi-node-primitives = { workspace = true, default-features = true }
+pezkuwi-node-subsystem = { workspace = true, default-features = true }
+pezkuwi-overseer = { workspace = true, default-features = true }
+pezkuwi-primitives = { workspace = true, default-features = true }
 
 # Cumulus
 async-trait = { workspace = true }

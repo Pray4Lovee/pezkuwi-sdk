@@ -5,11 +5,11 @@ import { Chain, EventOutcome, Observe, runTest, TestCase } from "../src/test-cas
 import { alice, aliceStash, deriveFrom, getApis, GlobalTimeout, logger, safeJsonStringify, ss58, type ApiDeclarations } from "../src/utils";
 import { DEV_PHRASE } from "@polkadot-labs/hdkd-helpers";
 import { FixedSizeBinary, type PolkadotSigner, type TxCall, type TxCallData, type TypedApi } from "polkadot-api";
-import { parachain, rc } from "@polkadot-api/descriptors";
+import { teyrchain, rc } from "@polkadot-api/descriptors";
 
 const PRESET: Presets = Presets.FakeDev;
 
-async function sendUp(api: TypedApi<typeof parachain>, count: number) {
+async function sendUp(api: TypedApi<typeof teyrchain>, count: number) {
 	const calls: TxCallData[] = [];
 	const ed = await api.constants.Balances.ExistentialDeposit();
 	for (let i = 0; i < count; i++) {
@@ -127,7 +127,7 @@ async function sendDown(api: TypedApi<typeof rc>, count: number) {
 					parents: 0,
 					interior: {
 						type: "X1",
-						value: { type: "Parachain", value: 1100 }
+						value: { type: "Teyrchain", value: 1100 }
 					}
 				}
 			},

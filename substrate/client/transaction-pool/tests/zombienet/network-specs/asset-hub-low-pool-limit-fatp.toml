@@ -2,9 +2,9 @@
 timeout = 1500
 
 [relaychain]
-default_image = "parity/polkadot:latest"
-default_command = "polkadot"
-chain = "rococo-local"
+default_image = "parity/pezkuwi:latest"
+default_command = "pezkuwi"
+chain = "pezkuwichain-local"
 
 [[relaychain.nodes]]
 name = "alice"
@@ -15,12 +15,12 @@ validator = true
 name = "bob"
 validator = true
 
-[[parachains]]
+[[teyrchains]]
 id = 2000
 cumulus_based = true
-chain = "asset-hub-rococo-local"
-default_image = "parity/polkadot-parachain:latest"
-default_command = "polkadot-parachain"
+chain = "asset-hub-pezkuwichain-local"
+default_image = "parity/pezkuwi-teyrchain:latest"
+default_command = "pezkuwi-teyrchain"
 default_args = [
 	"--force-authoring",
 	"--pool-kbytes 2048000",
@@ -38,30 +38,30 @@ default_args = [
 	"-ltxpool=debug",
 	"-ltxpoolstat=debug",
 ]
-[parachains.genesis.runtimeGenesis.patch.balances]
+[teyrchains.genesis.runtimeGenesis.patch.balances]
 devAccounts = [
 	80000,
 	1000000000000000000,
 	"//Sender//{}",
 ]
 
-# run charlie as parachain collator
-[[parachains.collators]]
+# run charlie as teyrchain collator
+[[teyrchains.collators]]
 name = "charlie"
 validator = false
 rpc_port = 9933
 
-[[parachains.collators]]
+[[teyrchains.collators]]
 name = "dave"
 validator = true
 rpc_port = 9934
 
-[[parachains.collators]]
+[[teyrchains.collators]]
 name = "eve"
 validator = true
 rpc_port = 9935
 
-[[parachains.collators]]
+[[teyrchains.collators]]
 name = "ferdie"
 validator = true
 rpc_port = 9936

@@ -101,20 +101,20 @@
 //! Collators are similar to validators on any other blockchain but, they do not need to provide
 //! security guarantees as the Relay Chain handles this.
 //!
-//! #### Parachain
+//! #### Teyrchain
 //!
-//! Short for "parallelized chain" a parachain is a specialized blockchain that runs in parallel to
-//! the Relay Chain (Polkadot, Kusama, etc.), benefiting from the shared security and
+//! Short for "parallelized chain" a teyrchain is a specialized blockchain that runs in parallel to
+//! the Relay Chain (Pezkuwi, Kusama, etc.), benefiting from the shared security and
 //! interoperability features of it.
 //!
 //! **Synonyms**: AppChain
 //!
 //! #### PVF
-//! The Parachain Validation Function (PVF) is the current runtime Wasm for a parachain that is
-//! stored on the Relay chain. It is an essential component in the Polkadot ecosystem, encapsulating
-//! the validation logic for each parachain. The PVF is executed by validators to verify the
-//! correctness of parachain blocks. This is critical for ensuring that each block follows the logic
-//! set by its respective parachain, thus maintaining the integrity and security of the entire
+//! The Teyrchain Validation Function (PVF) is the current runtime Wasm for a teyrchain that is
+//! stored on the Relay chain. It is an essential component in the Pezkuwi ecosystem, encapsulating
+//! the validation logic for each teyrchain. The PVF is executed by validators to verify the
+//! correctness of teyrchain blocks. This is critical for ensuring that each block follows the logic
+//! set by its respective teyrchain, thus maintaining the integrity and security of the entire
 //! network.
 //!
-//! **Synonyms**: Parachain Validation Function
+//! **Synonyms**: Teyrchain Validation Function

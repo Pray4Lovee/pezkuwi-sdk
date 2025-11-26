@@ -1,12 +1,12 @@
 {
-  "name": "Rococo Local Testnet",
-  "id": "rococo_local_testnet",
+  "name": "Pezkuwichain Local Testnet",
+  "id": "pezkuwichain_local_testnet",
   "chainType": "Local",
   "bootNodes": [
     "/ip4/127.0.0.1/tcp/30333/p2p/12D3KooWLYtaBHWV4AjKRFMeEp4zNRa3P7T1gKuseXssjr98sMge"
   ],
   "telemetryEndpoints": null,
-  "protocolId": "dot",
+  "protocolId": "hez",
   "properties": null,
   "forkBlocks": null,
   "badBlocks": null,
@@ -94,8 +94,8 @@
             "hrmp_channel_max_message_size": 1048576,
             "hrmp_channel_max_total_size": 8192,
             "hrmp_max_message_num_per_candidate": 5,
-            "hrmp_max_parachain_inbound_channels": 4,
-            "hrmp_max_parachain_outbound_channels": 4,
+            "hrmp_max_teyrchain_inbound_channels": 4,
+            "hrmp_max_teyrchain_outbound_channels": 4,
             "hrmp_recipient_deposit": 0,
             "hrmp_sender_deposit": 0,
             "max_code_size": 3145728,

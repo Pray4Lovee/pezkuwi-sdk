@@ -47,10 +47,10 @@ construct_runtime! {
 }
 
 parameter_types! {
-	pub ThisNetworkId: NetworkId = Polkadot;
+	pub ThisNetworkId: NetworkId = Pezkuwi;
 	pub BridgedNetworkId: NetworkId = Kusama;
-	pub UniversalLocation: InteriorLocation = [GlobalConsensus(ThisNetworkId::get()), Parachain(1000)].into();
-	pub SiblingBridgeHubLocation: Location = ParentThen([Parachain(1002)].into()).into();
+	pub UniversalLocation: InteriorLocation = [GlobalConsensus(ThisNetworkId::get()), Teyrchain(1000)].into();
+	pub SiblingBridgeHubLocation: Location = ParentThen([Teyrchain(1002)].into()).into();
 	pub BridgeFeeAsset: AssetId = Location::parent().into();
 	pub BridgeTable: Vec<NetworkExportTableItem>
 		= vec![
@@ -61,7 +61,7 @@ parameter_types! {
 				Some((BridgeFeeAsset::get(), BASE_FEE).into())
 			)
 		];
-	pub UnknownXcmVersionForRoutableLocation: Location = Location::new(2, [GlobalConsensus(BridgedNetworkId::get()), Parachain(9999)]);
+	pub UnknownXcmVersionForRoutableLocation: Location = Location::new(2, [GlobalConsensus(BridgedNetworkId::get()), Teyrchain(9999)]);
 }
 
 #[derive_impl(frame_system::config_preludes::TestDefaultConfig)]

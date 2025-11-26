@@ -23,7 +23,7 @@ mod benchmarks {
 
 		// So that the receiving account exists
 		assert_ok!(T::Token::mint_into(&caller, minimum_balance));
-		// Fund the sovereign account (parachain sovereign account) so it can transfer a reward
+		// Fund the sovereign account (teyrchain sovereign account) so it can transfer a reward
 		// fee to the caller account
 		assert_ok!(T::Token::mint_into(
 			&sovereign_account,

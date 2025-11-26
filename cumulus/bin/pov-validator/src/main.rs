@@ -18,9 +18,9 @@
 
 use clap::Parser;
 use codec::{Decode, Encode};
-use polkadot_node_primitives::{BlockData, PoV, POV_BOMB_LIMIT};
-use polkadot_parachain_primitives::primitives::ValidationParams;
-use polkadot_primitives::PersistedValidationData;
+use pezkuwi_node_primitives::{BlockData, PoV, POV_BOMB_LIMIT};
+use pezkuwi_teyrchain_primitives::primitives::ValidationParams;
+use pezkuwi_primitives::PersistedValidationData;
 use sc_executor::WasmExecutor;
 use sp_core::traits::{CallContext, CodeExecutor, RuntimeCode, WrappedRuntimeCode};
 use std::{fs, path::PathBuf, time::Instant};
@@ -35,14 +35,14 @@ const VALIDATION_CODE_BOMB_LIMIT: usize = 30 * 1024 * 1024;
 struct Cli {
 	/// The path to the validation code that should be used to validate the `PoV`.
 	///
-	/// The validation code can either be downloaded from the relay chain that the parachain is
+	/// The validation code can either be downloaded from the relay chain that the teyrchain is
 	/// connected to or by building the runtime manually to obtain the WASM binary.
 	#[arg(long)]
 	validation_code: PathBuf,
 
 	/// The path to the `PoV` to validate.
 	///
-	/// The `PoV`'s can be obtained by running `polkadot-parachains --collator --chain YOUR_CHAIN
+	/// The `PoV`'s can be obtained by running `pezkuwi-teyrchains --collator --chain YOUR_CHAIN
 	/// --export-pov-to-path PATH_TO_EXPORT` and then choose one of the exported `PoV`'s.
 	#[arg(long)]
 	pov: PathBuf,

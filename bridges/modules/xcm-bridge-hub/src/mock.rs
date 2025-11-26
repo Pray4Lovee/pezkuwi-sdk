@@ -30,7 +30,7 @@ use frame_support::{
 	traits::{EnsureOrigin, Equals, Everything, Get, OriginTrait},
 	weights::RuntimeDbWeight,
 };
-use polkadot_parachain_primitives::primitives::Sibling;
+use pezkuwi_teyrchain_primitives::primitives::Sibling;
 use sp_core::H256;
 use sp_runtime::{
 	testing::Header as SubstrateHeader,
@@ -38,11 +38,11 @@ use sp_runtime::{
 	AccountId32, BuildStorage, StateVersion,
 };
 use sp_std::cell::RefCell;
-use xcm::{latest::ROCOCO_GENESIS_HASH, prelude::*};
+use xcm::{latest::PEZKUWICHAIN_GENESIS_HASH, prelude::*};
 use xcm_builder::{
 	AllowUnpaidExecutionFrom, DispatchBlob, DispatchBlobError, FixedWeightBounds,
 	InspectMessageQueues, NetworkExportTable, NetworkExportTableItem, ParentIsPreset,
-	SiblingParachainConvertsVia,
+	SiblingTeyrchainConvertsVia,
 };
 use xcm_executor::{traits::ConvertOrigin, XcmExecutor};
 
@@ -151,16 +151,16 @@ parameter_types! {
 	pub const RelayNetwork: NetworkId = NetworkId::Kusama;
 	pub UniversalLocation: InteriorLocation = [
 		GlobalConsensus(RelayNetwork::get()),
-		Parachain(THIS_BRIDGE_HUB_ID),
+		Teyrchain(THIS_BRIDGE_HUB_ID),
 	].into();
-	pub SiblingLocation: Location = Location::new(1, [Parachain(SIBLING_ASSET_HUB_ID)]);
-	pub SiblingUniversalLocation: InteriorLocation = [GlobalConsensus(RelayNetwork::get()), Parachain(SIBLING_ASSET_HUB_ID)].into();
+	pub SiblingLocation: Location = Location::new(1, [Teyrchain(SIBLING_ASSET_HUB_ID)]);
+	pub SiblingUniversalLocation: InteriorLocation = [GlobalConsensus(RelayNetwork::get()), Teyrchain(SIBLING_ASSET_HUB_ID)].into();
 
 	pub const BridgedRelayNetwork: NetworkId = NetworkId::ByGenesis([1; 32]);
 	pub BridgedRelayNetworkLocation: Location = (Parent, GlobalConsensus(BridgedRelayNetwork::get())).into();
-	pub BridgedRelativeDestination: InteriorLocation = [Parachain(BRIDGED_ASSET_HUB_ID)].into();
-	pub BridgedUniversalDestination: InteriorLocation = [GlobalConsensus(BridgedRelayNetwork::get()), Parachain(BRIDGED_ASSET_HUB_ID)].into();
-	pub const NonBridgedRelayNetwork: NetworkId = NetworkId::ByGenesis(ROCOCO_GENESIS_HASH);
+	pub BridgedRelativeDestination: InteriorLocation = [Teyrchain(BRIDGED_ASSET_HUB_ID)].into();
+	pub BridgedUniversalDestination: InteriorLocation = [GlobalConsensus(BridgedRelayNetwork::get()), Teyrchain(BRIDGED_ASSET_HUB_ID)].into();
+	pub const NonBridgedRelayNetwork: NetworkId = NetworkId::ByGenesis(PEZKUWICHAIN_GENESIS_HASH);
 
 	pub const BridgeDeposit: Balance = 100_000;
 
@@ -369,8 +369,8 @@ impl<RuntimeOrigin: OriginTrait> ConvertOrigin<RuntimeOrigin>
 pub type LocationToAccountId = (
 	// The parent (Relay-chain) origin converts to the parent `AccountId`.
 	ParentIsPreset<AccountId>,
-	// Sibling parachain origins convert to AccountId via the `ParaId::into`.
-	SiblingParachainConvertsVia<Sibling, AccountId>,
+	// Sibling teyrchain origins convert to AccountId via the `ParaId::into`.
+	SiblingTeyrchainConvertsVia<Sibling, AccountId>,
 );
 
 parameter_types! {
@@ -387,13 +387,13 @@ impl OpenBridgeOrigin {
 		RuntimeOrigin::signed([1u8; 32].into())
 	}
 
-	pub fn sibling_parachain_origin() -> RuntimeOrigin {
+	pub fn sibling_teyrchain_origin() -> RuntimeOrigin {
 		let mut account = [0u8; 32];
 		account[..4].copy_from_slice(&SIBLING_ASSET_HUB_ID.encode()[..4]);
 		RuntimeOrigin::signed(account.into())
 	}
 
-	pub fn sibling_parachain_universal_origin() -> RuntimeOrigin {
+	pub fn sibling_teyrchain_universal_origin() -> RuntimeOrigin {
 		RuntimeOrigin::signed([2u8; 32].into())
 	}
 
@@ -418,23 +418,23 @@ impl EnsureOrigin<RuntimeOrigin> for OpenBridgeOrigin {
 				parents: 2,
 				interior: GlobalConsensus(RelayNetwork::get()).into(),
 			})
-		} else if signer == Self::sibling_parachain_universal_origin().into_signer() {
+		} else if signer == Self::sibling_teyrchain_universal_origin().into_signer() {
 			return Ok(Location {
 				parents: 2,
-				interior: [GlobalConsensus(RelayNetwork::get()), Parachain(SIBLING_ASSET_HUB_ID)]
+				interior: [GlobalConsensus(RelayNetwork::get()), Teyrchain(SIBLING_ASSET_HUB_ID)]
 					.into(),
 			})
 		} else if signer == Self::origin_without_sovereign_account().into_signer() {
 			return Ok(Location {
 				parents: 1,
-				interior: [Parachain(SIBLING_ASSET_HUB_ID), OnlyChild].into(),
+				interior: [Teyrchain(SIBLING_ASSET_HUB_ID), OnlyChild].into(),
 			})
 		}
 
 		let mut sibling_account = [0u8; 32];
 		sibling_account[..4].copy_from_slice(&SIBLING_ASSET_HUB_ID.encode()[..4]);
 		if signer == Some(sibling_account.into()) {
-			return Ok(Location { parents: 1, interior: Parachain(SIBLING_ASSET_HUB_ID).into() })
+			return Ok(Location { parents: 1, interior: Teyrchain(SIBLING_ASSET_HUB_ID).into() })
 		}
 
 		Err(o)

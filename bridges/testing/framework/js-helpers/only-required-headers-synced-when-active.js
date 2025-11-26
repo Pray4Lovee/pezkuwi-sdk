@@ -30,14 +30,14 @@ async function run(nodeName, networkInfo, args) {
 
         if (!hasMessageUpdates) {
             // if there are no any message update transactions, we only expect mandatory GRANDPA
-            // headers and initial parachain headers
+            // headers and initial teyrchain headers
             await utils.ensureOnlyMandatoryGrandpaHeadersImported(
                 bridgedChain,
                 apiAtParent,
                 apiAtCurrent,
                 currentEvents,
             );
-            await utils.ensureOnlyInitialParachainHeaderImported(
+            await utils.ensureOnlyInitialTeyrchainHeaderImported(
                 bridgedChain,
                 apiAtParent,
                 apiAtCurrent,
@@ -53,11 +53,11 @@ async function run(nodeName, networkInfo, args) {
                 throw new Error("Unexpected relay chain header import: " + newGrandpaHeaders + " / " + messageTransactions);
             }
 
-            // ...and at most one parachain header
-            const newParachainHeaders = utils.countParachainHeaderImports(bridgedChain, currentEvents);
-            if (newParachainHeaders > 1) {
+            // ...and at most one teyrchain header
+            const newTeyrchainHeaders = utils.countTeyrchainHeaderImports(bridgedChain, currentEvents);
+            if (newTeyrchainHeaders > 1) {
                 utils.logEvents(currentEvents);
-                throw new Error("Unexpected parachain header import: " + newParachainHeaders + " / " + messageTransactions);
+                throw new Error("Unexpected teyrchain header import: " + newTeyrchainHeaders + " / " + messageTransactions);
             }
         }
     });

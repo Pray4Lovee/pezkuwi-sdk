@@ -26,7 +26,7 @@ use sp_runtime::OpaqueExtrinsic;
 
 use cumulus_primitives_core::ParaId;
 use cumulus_test_service::{construct_extrinsic, fetch_nonce, Client, Keyring::*, TransactionPool};
-use polkadot_primitives::HeadData;
+use pezkuwi_primitives::HeadData;
 
 fn create_accounts(num: usize) -> Vec<sr25519::Pair> {
 	(0..num)
@@ -159,17 +159,17 @@ fn transaction_throughput_benchmarks(c: &mut Criterion) {
 		None,
 	);
 
-	// Run charlie as parachain collator
+	// Run charlie as teyrchain collator
 	let charlie = runtime.block_on(
 		cumulus_test_service::TestNodeBuilder::new(para_id, tokio_handle.clone(), Charlie)
 			.enable_collator()
 			.connect_to_relay_chain_nodes(vec![&alice, &bob])
 			.build(),
 	);
-	// Register parachain
+	// Register teyrchain
 	runtime
 		.block_on(
-			alice.register_parachain(
+			alice.register_teyrchain(
 				para_id,
 				cumulus_test_service::runtime::WASM_BINARY
 					.expect("You need to build the WASM binary to run this test!")
@@ -182,11 +182,11 @@ fn transaction_throughput_benchmarks(c: &mut Criterion) {
 		)
 		.unwrap();
 
-	// Run dave as parachain collator
+	// Run dave as teyrchain collator
 	let dave = runtime.block_on(
 		cumulus_test_service::TestNodeBuilder::new(para_id, tokio_handle.clone(), Dave)
 			.enable_collator()
-			.connect_to_parachain_node(&charlie)
+			.connect_to_teyrchain_node(&charlie)
 			.connect_to_relay_chain_nodes(vec![&alice, &bob])
 			.build(),
 	);

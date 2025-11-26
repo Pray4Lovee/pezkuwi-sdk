@@ -1,14 +1,14 @@
 //! # Enable storage weight reclaiming
 //!
-//! This guide will teach you how to enable storage weight reclaiming for a parachain. The
+//! This guide will teach you how to enable storage weight reclaiming for a teyrchain. The
 //! explanations in this guide assume a project structure similar to the one detailed in
-//! the [substrate documentation](crate::polkadot_sdk::substrate#anatomy-of-a-binary-crate). Full
-//! technical details are available in the original [pull request](https://github.com/paritytech/polkadot-sdk/pull/3002).
+//! the [substrate documentation](crate::pezkuwi_sdk::substrate#anatomy-of-a-binary-crate). Full
+//! technical details are available in the original [pull request](https://github.com/pezkuwichain/pezkuwichain-sdk/pull/3002).
 //!
 //! # What is PoV reclaim?
-//! When a parachain submits a block to a relay chain like Polkadot or Kusama, it sends the block
+//! When a teyrchain submits a block to a relay chain like Pezkuwi or Kusama, it sends the block
 //! itself and a storage proof. Together they form the Proof-of-Validity (PoV). The PoV allows the
-//! relay chain to validate the parachain block by re-executing it. Relay chain
+//! relay chain to validate the teyrchain block by re-executing it. Relay chain
 //! validators distribute this PoV among themselves over the network. This distribution is costly
 //! and limits the size of the storage proof. The storage weight dimension of FRAME weights reflects
 //! this cost and limits the size of the storage proof. However, the storage weight determined
@@ -21,19 +21,19 @@
 //! # How to enable PoV reclaim
 //! ## 1. Add the host function to your node
 //!
-//! To reclaim excess storage weight, a parachain runtime needs the
+//! To reclaim excess storage weight, a teyrchain runtime needs the
 //! ability to fetch the size of the storage proof from the node. The reclaim
 //! mechanism uses the
 //! [`storage_proof_size`](cumulus_primitives_proof_size_hostfunction::storage_proof_size)
 //! host function for this purpose. For convenience, cumulus provides
-//! [`ParachainHostFunctions`](cumulus_client_service::ParachainHostFunctions), a set of
-//! host functions typically used by cumulus-based parachains. In the binary crate of your
-//! parachain, find the instantiation of the [`WasmExecutor`](sc_executor::WasmExecutor) and set the
+//! [`TeyrchainHostFunctions`](cumulus_client_service::TeyrchainHostFunctions), a set of
+//! host functions typically used by cumulus-based teyrchains. In the binary crate of your
+//! teyrchain, find the instantiation of the [`WasmExecutor`](sc_executor::WasmExecutor) and set the
 //! correct generic type.
 //!
-//! This example from the parachain-template shows a type definition that includes the correct
+//! This example from the teyrchain-template shows a type definition that includes the correct
 //! host functions.
-#![doc = docify::embed!("../../templates/parachain/node/src/service.rs", wasm_executor)]
+#![doc = docify::embed!("../../templates/teyrchain/node/src/service.rs", wasm_executor)]
 //!
 //! > **Note:**
 //! >
@@ -45,12 +45,12 @@
 //!
 //! The reclaim mechanism reads the size of the currently recorded storage proof multiple times
 //! during block authoring and block import. Proof recording during authoring is already enabled on
-//! parachains. You must also ensure that storage proof recording is enabled during block import.
+//! teyrchains. You must also ensure that storage proof recording is enabled during block import.
 //! Find where your node builds the fundamental substrate components by calling
 //! [`new_full_parts`](sc_service::new_full_parts). Replace this
 //! with [`new_full_parts_record_import`](sc_service::new_full_parts_record_import) and
 //! pass `true` as the last parameter to enable import recording.
-#![doc = docify::embed!("../../templates/parachain/node/src/service.rs", component_instantiation)]
+#![doc = docify::embed!("../../templates/teyrchain/node/src/service.rs", component_instantiation)]
 //!
 //! > **Note:**
 //! >
@@ -68,7 +68,7 @@
 //! the whole PoV size of the transactions.
 //! The extension will check the size of the storage proof before and after an extrinsic execution.
 //! It reclaims the difference between the calculated size and the benchmarked size.
-#![doc = docify::embed!("../../templates/parachain/runtime/src/lib.rs", template_signed_extra)]
+#![doc = docify::embed!("../../templates/teyrchain/runtime/src/lib.rs", template_signed_extra)]
 //!
 //! ## Optional: Verify that reclaim works
 //!

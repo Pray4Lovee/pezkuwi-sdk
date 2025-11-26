@@ -30,9 +30,9 @@ use pallet_multi_asset_bounties::ArgumentsFactory as PalletMultiAssetBountiesArg
 #[cfg(feature = "runtime-benchmarks")]
 use pallet_treasury::ArgumentsFactory as PalletTreasuryArgumentsFactory;
 #[cfg(feature = "runtime-benchmarks")]
-use polkadot_sdk::sp_core::crypto::FromEntropy;
+use pezkuwi_sdk::sp_core::crypto::FromEntropy;
 
-use polkadot_sdk::*;
+use pezkuwi_sdk::*;
 
 use alloc::{vec, vec::Vec};
 use codec::{Decode, DecodeWithMemTracking, Encode, MaxEncodedLen};
@@ -2719,7 +2719,7 @@ mod runtime {
 	pub type Beefy = pallet_beefy::Pallet<Runtime>;
 
 	// MMR leaf construction must be after session in order to have a leaf's next_auth_set
-	// refer to block<N>. See issue polkadot-fellows/runtimes#160 for details.
+	// refer to block<N>. See issue pezkuwi-fellows/runtimes#160 for details.
 	#[runtime::pallet_index(42)]
 	pub type Mmr = pallet_mmr::Pallet<Runtime>;
 
@@ -3095,7 +3095,7 @@ impl
 
 #[cfg(feature = "runtime-benchmarks")]
 mod benches {
-	polkadot_sdk::frame_benchmarking::define_benchmarks!(
+	pezkuwi_sdk::frame_benchmarking::define_benchmarks!(
 		[frame_benchmarking, BaselineBench::<Runtime>]
 		[frame_benchmarking_pallet_pov, Pov]
 		[pallet_alliance, Alliance]
@@ -3404,7 +3404,7 @@ pallet_revive::impl_runtime_apis_plus_revive_traits!(
 		}
 	}
 
-	impl polkadot_sdk::pallet_oracle_runtime_api::OracleApi<Block, u32, u32, u128> for Runtime {
+	impl pezkuwi_sdk::pallet_oracle_runtime_api::OracleApi<Block, u32, u32, u128> for Runtime {
 		fn get_value(_provider_id: u32, key: u32) -> Option<u128> {
 			// ProviderId is unused as we only have 1 provider
 			pallet_oracle::Pallet::<Runtime>::get(&key).map(|v| v.value)

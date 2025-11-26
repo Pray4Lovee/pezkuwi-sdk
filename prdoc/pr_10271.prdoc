@@ -2,7 +2,7 @@ title: fix NextFeeMultiplier update before Revive::on_finalize
 doc:
 - audience: Runtime Dev
   description: |
-    Fix https://github.com/paritytech/polkadot-sdk/issues/10177
+    Fix https://github.com/pezkuwichain/pezkuwichain-sdk/issues/10177
 
     Store `base_fee_per_gas` and `block_gas_limit` in the  EthBlockBuilderIR, since these values are derived from the NextFeeMultiplier and we can't read it from Revive::on_finalize since this runs (in most Runtime) after TransactionPayment::on_finalize where the value is updated for the next block.
 

@@ -25,7 +25,7 @@ use std::{
 
 const LOG_TARGET: &str = "level-monitor";
 
-/// Value good enough to be used with parachains using the current backend implementation
+/// Value good enough to be used with teyrchains using the current backend implementation
 /// that ships with Substrate. This value may change in the future.
 pub const MAX_LEAVES_PER_LEVEL_SENSIBLE_DEFAULT: usize = 32;
 

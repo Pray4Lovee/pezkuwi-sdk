@@ -20,17 +20,17 @@
 //!
 //! SHORT-NAME: `block`, LONG-NAME: `BlockExecution`, RUNTIME: `Development`
 //! WARMUPS: `10`, REPEAT: `100`
-//! WEIGHT-PATH: `runtime/westend/constants/src/weights/`
+//! WEIGHT-PATH: `runtime/zagros/constants/src/weights/`
 //! WEIGHT-METRIC: `Average`, WEIGHT-MUL: `1.0`, WEIGHT-ADD: `0`
 
 // Executed Command:
-//   ./target/production/polkadot
+//   ./target/production/pezkuwi
 //   benchmark
 //   overhead
-//   --chain=westend-dev
+//   --chain=zagros-dev
 //   --execution=wasm
 //   --wasm-execution=compiled
-//   --weight-path=runtime/westend/constants/src/weights/
+//   --weight-path=runtime/zagros/constants/src/weights/
 //   --warmup=10
 //   --repeat=100
 //   --header=./file_header.txt

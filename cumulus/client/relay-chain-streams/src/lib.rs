@@ -21,8 +21,8 @@ use std::sync::Arc;
 
 use cumulus_relay_chain_interface::{RelayChainInterface, RelayChainResult};
 use futures::{Stream, StreamExt};
-use polkadot_node_subsystem::messages::RuntimeApiRequest;
-use polkadot_primitives::{
+use pezkuwi_node_subsystem::messages::RuntimeApiRequest;
+use pezkuwi_primitives::{
 	CommittedCandidateReceiptV2 as CommittedCandidateReceipt, Hash as PHash, Id as ParaId,
 	OccupiedCoreAssumption, SessionIndex,
 };
@@ -31,9 +31,9 @@ use sp_consensus::SyncOracle;
 
 const LOG_TARGET: &str = "cumulus-relay-chain-streams";
 
-pub type RelayHeader = polkadot_primitives::Header;
+pub type RelayHeader = pezkuwi_primitives::Header;
 
-/// Returns a stream over pending candidates for the parachain corresponding to `para_id`.
+/// Returns a stream over pending candidates for the teyrchain corresponding to `para_id`.
 pub async fn pending_candidates(
 	relay_chain_client: impl RelayChainInterface + Clone,
 	para_id: ParaId,
@@ -67,17 +67,17 @@ pub async fn pending_candidates(
 					)
 				})
 				.ok()?;
-			let parachain_host_runtime_api_version = runtime_api_version
+			let teyrchain_host_runtime_api_version = runtime_api_version
 				.api_version(
-					&<dyn polkadot_primitives::runtime_api::ParachainHost<
-						polkadot_primitives::Block,
+					&<dyn pezkuwi_primitives::runtime_api::TeyrchainHost<
+						pezkuwi_primitives::Block,
 					>>::ID,
 				)
 				.unwrap_or_default();
 
 			// If the relay chain runtime does not support the new runtime API, fallback to the
 			// deprecated one.
-			let pending_availability_result = if parachain_host_runtime_api_version <
+			let pending_availability_result = if teyrchain_host_runtime_api_version <
 				RuntimeApiRequest::CANDIDATES_PENDING_AVAILABILITY_RUNTIME_REQUIREMENT
 			{
 				#[allow(deprecated)]
@@ -128,7 +128,7 @@ pub async fn new_best_heads(
 	let new_best_notification_stream =
 		relay_chain.new_best_notification_stream().await?.filter_map(move |n| {
 			let relay_chain = relay_chain.clone();
-			async move { parachain_head_at(&relay_chain, n.hash(), para_id).await.ok().flatten() }
+			async move { teyrchain_head_at(&relay_chain, n.hash(), para_id).await.ok().flatten() }
 		});
 
 	Ok(new_best_notification_stream)
@@ -143,7 +143,7 @@ pub async fn finalized_heads(
 		relay_chain.finality_notification_stream().await?.filter_map(move |n| {
 			let relay_chain = relay_chain.clone();
 			async move {
-				parachain_head_at(&relay_chain, n.hash(), para_id)
+				teyrchain_head_at(&relay_chain, n.hash(), para_id)
 					.await
 					.ok()
 					.flatten()
@@ -154,8 +154,8 @@ pub async fn finalized_heads(
 	Ok(finality_notification_stream)
 }
 
-/// Returns head of the parachain at the given relay chain block.
-async fn parachain_head_at(
+/// Returns head of the teyrchain at the given relay chain block.
+async fn teyrchain_head_at(
 	relay_chain: &impl RelayChainInterface,
 	at: PHash,
 	para_id: ParaId,

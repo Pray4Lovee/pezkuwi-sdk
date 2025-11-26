@@ -27,7 +27,7 @@ use frame_support::{
 	traits::{BatchFootprint, Hooks},
 	StorageNoopGuard,
 };
-use mock::{new_test_ext, FirstPagePos, ParachainSystem, RuntimeOrigin as Origin, Test, XcmpQueue};
+use mock::{new_test_ext, FirstPagePos, TeyrchainSystem, RuntimeOrigin as Origin, Test, XcmpQueue};
 use sp_runtime::traits::{BadOrigin, Zero};
 use std::iter::{once, repeat};
 use xcm::{MAX_INSTRUCTIONS_TO_DECODE, MAX_XCM_DECODE_DEPTH};
@@ -491,7 +491,7 @@ fn suspend_xcm_execution_works() {
 		assert!(!XcmpQueue::is_paused(&2000.into()));
 		QueueSuspended::<Test>::put(true);
 		assert!(XcmpQueue::is_paused(&2000.into()));
-		// System parachains can bypass suspension:
+		// System teyrchains can bypass suspension:
 		assert!(!XcmpQueue::is_paused(&999.into()));
 	});
 }
@@ -660,7 +660,7 @@ fn xcmp_queue_consumes_dest_and_msg_on_ok_validate() {
 	let message = Xcm(vec![Trap(5)]);
 
 	// XcmpQueue - check dest/msg is valid
-	let dest: Location = (Parent, Parachain(5555)).into();
+	let dest: Location = (Parent, Teyrchain(5555)).into();
 	let mut dest_wrapper = Some(dest.clone());
 	let mut msg_wrapper = Some(message.clone());
 
@@ -684,7 +684,7 @@ fn xcmp_queue_consumes_dest_and_msg_on_ok_validate() {
 
 #[test]
 fn xcmp_queue_validate_nested_xcm_works() {
-	let dest = (Parent, Parachain(5555));
+	let dest = (Parent, Teyrchain(5555));
 	// Message that is not too deeply nested:
 	let mut good = Xcm(vec![ClearOrigin]);
 	for _ in 0..MAX_XCM_DECODE_DEPTH - 1 {
@@ -709,7 +709,7 @@ fn xcmp_queue_validate_nested_xcm_works() {
 
 #[test]
 fn send_xcm_nested_works() {
-	let dest = (Parent, Parachain(HRMP_PARA_ID));
+	let dest = (Parent, Teyrchain(HRMP_PARA_ID));
 	// Message that is not too deeply nested:
 	let mut good = Xcm(vec![ClearOrigin]);
 	for _ in 0..MAX_XCM_DECODE_DEPTH - 1 {
@@ -742,7 +742,7 @@ fn hrmp_signals_are_prioritized() {
 	let message = Xcm(vec![Trap(5)]);
 
 	let sibling_para_id = ParaId::from(12345);
-	let dest = (Parent, Parachain(sibling_para_id.into()));
+	let dest = (Parent, Teyrchain(sibling_para_id.into()));
 	let mut dest_wrapper = Some(dest.into());
 	let mut msg_wrapper = Some(message.clone());
 
@@ -754,7 +754,7 @@ fn hrmp_signals_are_prioritized() {
 		assert_eq!(None, dest_wrapper.take());
 		assert_eq!(None, msg_wrapper.take());
 
-		ParachainSystem::open_custom_outbound_hrmp_channel_for_benchmarks_or_tests(
+		TeyrchainSystem::open_custom_outbound_hrmp_channel_for_benchmarks_or_tests(
 			sibling_para_id,
 			cumulus_primitives_core::AbridgedHrmpChannel {
 				max_capacity: 128,
@@ -1017,7 +1017,7 @@ fn lazy_migration_noop_when_out_of_weight() {
 fn xcmp_queue_send_xcm_works() {
 	new_test_ext().execute_with(|| {
 		let sibling_para_id = ParaId::from(12345);
-		let dest: Location = (Parent, Parachain(sibling_para_id.into())).into();
+		let dest: Location = (Parent, Teyrchain(sibling_para_id.into())).into();
 		let msg = Xcm(vec![ClearOrigin]);
 
 		// try to send without opened HRMP channel to the sibling_para_id
@@ -1027,7 +1027,7 @@ fn xcmp_queue_send_xcm_works() {
 		);
 
 		// open HRMP channel to the sibling_para_id
-		ParachainSystem::open_outbound_hrmp_channel_for_benchmarks_or_tests(sibling_para_id);
+		TeyrchainSystem::open_outbound_hrmp_channel_for_benchmarks_or_tests(sibling_para_id);
 
 		// check empty outbound queue
 		assert!(XcmpQueue::take_outbound_messages(usize::MAX).is_empty());
@@ -1046,12 +1046,12 @@ fn xcmp_queue_send_xcm_works() {
 fn xcmp_queue_send_too_big_xcm_fails() {
 	new_test_ext().execute_with(|| {
 		let sibling_para_id = ParaId::from(12345);
-		let dest = (Parent, Parachain(sibling_para_id.into())).into();
+		let dest = (Parent, Teyrchain(sibling_para_id.into())).into();
 
 		let max_message_size = 100_u32;
 
 		// open HRMP channel to the sibling_para_id with a set `max_message_size`
-		ParachainSystem::open_custom_outbound_hrmp_channel_for_benchmarks_or_tests(
+		TeyrchainSystem::open_custom_outbound_hrmp_channel_for_benchmarks_or_tests(
 			sibling_para_id,
 			cumulus_primitives_core::AbridgedHrmpChannel {
 				max_message_size,
@@ -1092,7 +1092,7 @@ fn verify_fee_factor_increase_and_decrease() {
 	use sp_runtime::FixedU128;
 
 	let sibling_para_id = ParaId::from(12345);
-	let destination: Location = (Parent, Parachain(sibling_para_id.into())).into();
+	let destination: Location = (Parent, Teyrchain(sibling_para_id.into())).into();
 	let xcm = Xcm(vec![ClearOrigin; 100]);
 	let versioned_xcm = VersionedXcm::from(xcm.clone());
 	let mut xcmp_message = XcmpMessageFormat::ConcatenatedVersionedXcm.encode();
@@ -1103,7 +1103,7 @@ fn verify_fee_factor_increase_and_decrease() {
 		assert_eq!(Pallet::<Test>::get_fee_factor(sibling_para_id), initial);
 
 		// Open channel so messages can actually be sent
-		ParachainSystem::open_custom_outbound_hrmp_channel_for_benchmarks_or_tests(
+		TeyrchainSystem::open_custom_outbound_hrmp_channel_for_benchmarks_or_tests(
 			sibling_para_id,
 			AbridgedHrmpChannel {
 				max_capacity: 10,
@@ -1167,15 +1167,15 @@ fn verify_fee_factor_increase_and_decrease() {
 fn get_messages_works() {
 	new_test_ext().execute_with(|| {
 		let sibling_para_id = ParaId::from(2001);
-		ParachainSystem::open_outbound_hrmp_channel_for_benchmarks_or_tests(sibling_para_id);
-		let destination: Location = (Parent, Parachain(sibling_para_id.into())).into();
+		TeyrchainSystem::open_outbound_hrmp_channel_for_benchmarks_or_tests(sibling_para_id);
+		let destination: Location = (Parent, Teyrchain(sibling_para_id.into())).into();
 		let other_sibling_para_id = ParaId::from(2002);
-		let other_destination: Location = (Parent, Parachain(other_sibling_para_id.into())).into();
+		let other_destination: Location = (Parent, Teyrchain(other_sibling_para_id.into())).into();
 		let message = Xcm(vec![ClearOrigin]);
 		assert_ok!(send_xcm::<XcmpQueue>(destination.clone(), message.clone()));
 		assert_ok!(send_xcm::<XcmpQueue>(destination.clone(), message.clone()));
 		assert_ok!(send_xcm::<XcmpQueue>(destination.clone(), message.clone()));
-		ParachainSystem::open_outbound_hrmp_channel_for_benchmarks_or_tests(other_sibling_para_id);
+		TeyrchainSystem::open_outbound_hrmp_channel_for_benchmarks_or_tests(other_sibling_para_id);
 		assert_ok!(send_xcm::<XcmpQueue>(other_destination.clone(), message.clone()));
 		assert_ok!(send_xcm::<XcmpQueue>(other_destination.clone(), message));
 		let queued_messages = XcmpQueue::get_messages();
@@ -1208,9 +1208,9 @@ fn get_messages_works() {
 fn page_not_modified_when_fragment_does_not_fit() {
 	new_test_ext().execute_with(|| {
 		let sibling = ParaId::from(2001);
-		ParachainSystem::open_outbound_hrmp_channel_for_benchmarks_or_tests(sibling);
+		TeyrchainSystem::open_outbound_hrmp_channel_for_benchmarks_or_tests(sibling);
 
-		let destination: Location = (Parent, Parachain(sibling.into())).into();
+		let destination: Location = (Parent, Teyrchain(sibling.into())).into();
 		let message = Xcm(vec![ClearOrigin; MAX_INSTRUCTIONS_TO_DECODE as usize]);
 
 		loop {

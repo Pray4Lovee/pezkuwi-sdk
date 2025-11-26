@@ -65,10 +65,10 @@
             "5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty"
           ]
         },
-        "parachainInfo": {
-          "parachainId": 1000
+        "teyrchainInfo": {
+          "teyrchainId": 1000
         },
-        "polkadotXcm": {
+        "pezkuwiXcm": {
           "safeXcmVersion": 5
         },
         "session": {
@@ -102,6 +102,6 @@
     "tokenSymbol": "UNIT"
   },
   "protocolId": null,
-  "relay_chain": "rococo-local",
+  "relay_chain": "pezkuwichain-local",
   "telemetryEndpoints": null
 }

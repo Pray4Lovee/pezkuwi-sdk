@@ -15,7 +15,7 @@
 // See the License for the specific language governing permissions and
 
 //! Storage migrations for the Staking pallet. The changelog for this is maintained at
-//! [CHANGELOG.md](https://github.com/paritytech/polkadot-sdk/blob/master/substrate/frame/staking/CHANGELOG.md).
+//! [CHANGELOG.md](https://github.com/pezkuwichain/pezkuwichain-sdk/blob/master/substrate/frame/staking/CHANGELOG.md).
 
 use super::*;
 use frame_support::{

@@ -37,7 +37,7 @@ mod v1 {
 		pub end: Timeslice,
 		/// The owner of the Region.
 		pub owner: AccountId,
-		/// The amount paid to Polkadot for this Region, or `None` if renewal is not allowed.
+		/// The amount paid to Pezkuwi for this Region, or `None` if renewal is not allowed.
 		pub paid: Option<Balance>,
 	}
 
@@ -233,12 +233,12 @@ pub mod v4 {
 	type BlockNumberFor<T> = frame_system::pallet_prelude::BlockNumberFor<T>;
 
 	pub trait BlockToRelayHeightConversion<T: Config> {
-		/// Converts absolute value of parachain block number to relay chain block number
+		/// Converts absolute value of teyrchain block number to relay chain block number
 		fn convert_block_number_to_relay_height(
 			block_number: BlockNumberFor<T>,
 		) -> RelayBlockNumberOf<T>;
 
-		/// Converts parachain block length into equivalent relay chain block length
+		/// Converts teyrchain block length into equivalent relay chain block length
 		fn convert_block_length_to_relay_length(
 			block_number: BlockNumberFor<T>,
 		) -> RelayBlockNumberOf<T>;

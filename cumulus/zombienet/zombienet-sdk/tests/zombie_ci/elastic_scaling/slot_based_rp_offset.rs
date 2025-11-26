@@ -1,14 +1,14 @@
 // Copyright (C) Parity Technologies (UK) Ltd.
 // SPDX-License-Identifier: Apache-2.0
 
-// Test that parachains that use a single slot-based collator with elastic scaling MVP and with
+// Test that teyrchains that use a single slot-based collator with elastic scaling MVP and with
 // elastic scaling with RFC103 can achieve full throughput of 3 candidates per block.
 
 use anyhow::anyhow;
 use cumulus_zombienet_sdk_helpers::{assert_relay_parent_offset, assign_cores};
 use serde_json::json;
 use zombienet_sdk::{
-	subxt::{OnlineClient, PolkadotConfig},
+	subxt::{OnlineClient, PezkuwiConfig},
 	NetworkConfigBuilder,
 };
 
@@ -24,10 +24,10 @@ async fn elastic_scaling_slot_based_relay_parent_offset_test() -> Result<(), any
 	let config = NetworkConfigBuilder::new()
 		.with_relaychain(|r| {
 			let r = r
-				.with_chain("rococo-local")
-				.with_default_command("polkadot")
-				.with_default_image(images.polkadot.as_str())
-				.with_default_args(vec![("-lparachain=debug").into()])
+				.with_chain("pezkuwichain-local")
+				.with_default_command("pezkuwi")
+				.with_default_image(images.pezkuwi.as_str())
+				.with_default_args(vec![("-lteyrchain=debug").into()])
 				.with_genesis_overrides(json!({
 					"configuration": {
 						"config": {
@@ -46,14 +46,14 @@ async fn elastic_scaling_slot_based_relay_parent_offset_test() -> Result<(), any
 
 			(1..6).fold(r, |acc, i| acc.with_node(|node| node.with_name(&format!("validator-{i}"))))
 		})
-		.with_parachain(|p| {
+		.with_teyrchain(|p| {
 			p.with_id(2400)
-				.with_default_command("test-parachain")
+				.with_default_command("test-teyrchain")
 				.with_default_image(images.cumulus.as_str())
 				.with_chain("relay-parent-offset")
 				.with_default_args(vec![
 					"--authoring=slot-based".into(),
-					("-lparachain=debug,aura=debug,parachain::collator-protocol=debug").into(),
+					("-lteyrchain=debug,aura=debug,teyrchain::collator-protocol=debug").into(),
 				])
 				.with_collator(|n| n.with_name("collator-rp-offset"))
 		})
@@ -71,7 +71,7 @@ async fn elastic_scaling_slot_based_relay_parent_offset_test() -> Result<(), any
 	let network = spawn_fn(config).await?;
 
 	let relay_node = network.get_node("validator-0")?;
-	let relay_client: OnlineClient<PolkadotConfig> = relay_node.wait_client().await?;
+	let relay_client: OnlineClient<PezkuwiConfig> = relay_node.wait_client().await?;
 
 	let para_node_rp_offset = network.get_node("collator-rp-offset")?;
 

@@ -47,9 +47,9 @@ jobs:
         id: required
         run: |
           forklift cargo build --locked --profile testnet --features pyroscope,fast-runtime --bin polkadot --bin polkadot-prepare-worker --bin polkadot-execute-worker
-          ROCOCO_EPOCH_DURATION=10 ./polkadot/scripts/build-only-wasm.sh rococo-runtime $(pwd)/runtimes/rococo-runtime-10/
-          ROCOCO_EPOCH_DURATION=100 ./polkadot/scripts/build-only-wasm.sh rococo-runtime $(pwd)/runtimes/rococo-runtime-100/
-          ROCOCO_EPOCH_DURATION=600 ./polkadot/scripts/build-only-wasm.sh rococo-runtime $(pwd)/runtimes/rococo-runtime-600/
+          PEZKUWICHAIN_EPOCH_DURATION=10 ./polkadot/scripts/build-only-wasm.sh pezkuwichain-runtime $(pwd)/runtimes/pezkuwichain-runtime-10/
+          PEZKUWICHAIN_EPOCH_DURATION=100 ./polkadot/scripts/build-only-wasm.sh pezkuwichain-runtime $(pwd)/runtimes/pezkuwichain-runtime-100/
+          PEZKUWICHAIN_EPOCH_DURATION=600 ./polkadot/scripts/build-only-wasm.sh pezkuwichain-runtime $(pwd)/runtimes/pezkuwichain-runtime-600/
           pwd
           ls -alR runtimes
       - name: pack artifacts
@@ -106,10 +106,10 @@ jobs:
         id: required
         run: |
           echo "___Building a binary, please refrain from using it in production since it goes with the debug assertions.___"
-          forklift cargo build --release --locked -p polkadot-parachain-bin --bin polkadot-parachain
+          forklift cargo build --release --locked -p polkadot-teyrchain-bin --bin polkadot-teyrchain
           echo "___Packing the artifacts___"
           mkdir -p ./artifacts
-          mv ./target/release/polkadot-parachain ./artifacts/.
+          mv ./target/release/polkadot-teyrchain ./artifacts/.
           echo "___The VERSION is either a tag name or the curent branch if triggered not by a tag___"
           echo ${{ needs.preflight.outputs.SOURCE_REF_SLUG }} | tee ./artifacts/VERSION
 
@@ -131,7 +131,7 @@ jobs:
   #
   #
   #
-  build-test-parachain:
+  build-test-teyrchain:
     needs: [preflight]
     runs-on: ${{ needs.preflight.outputs.RUNNER }}
     timeout-minutes: 60
@@ -146,12 +146,12 @@ jobs:
         id: required
         run: |
           echo "___Building a binary, please refrain from using it in production since it goes with the debug assertions.___"
-          forklift cargo build --release --locked -p cumulus-test-service --bin test-parachain
+          forklift cargo build --release --locked -p cumulus-test-service --bin test-teyrchain
       - name: pack artifacts
         run: |
           echo "___Packing the artifacts___"
           mkdir -p ./artifacts
-          mv ./target/release/test-parachain ./artifacts/.
+          mv ./target/release/test-teyrchain ./artifacts/.
           mkdir -p ./artifacts/zombienet
           mv ./target/release/wbuild/cumulus-test-runtime/wasm_binary_spec_version_incremented.rs.compact.compressed.wasm ./artifacts/zombienet/.
           mv ./target/release/wbuild/cumulus-test-runtime/wasm_binary_elastic_scaling.rs.compact.compressed.wasm ./artifacts/zombienet/.
@@ -187,8 +187,8 @@ jobs:
       - name: build
         id: required
         run: |
-          forklift cargo build --locked --profile testnet -p test-parachain-adder-collator
-          forklift cargo build --locked --profile testnet -p test-parachain-undying-collator
+          forklift cargo build --locked --profile testnet -p test-teyrchain-adder-collator
+          forklift cargo build --locked --profile testnet -p test-teyrchain-undying-collator
       - name: pack artifacts
         run: |
           mkdir -p ./artifacts
@@ -319,13 +319,13 @@ jobs:
       - name: build
         id: required
         run: |
-          forklift cargo build --locked --package parachain-template-node --release
+          forklift cargo build --locked --package teyrchain-template-node --release
           forklift cargo build --locked --package minimal-template-node --release
           forklift cargo build --locked --package solochain-template-node --release
       - name: pack artifacts
         run: |
           mkdir -p ./artifacts
-          mv ./target/release/parachain-template-node ./artifacts/.
+          mv ./target/release/teyrchain-template-node ./artifacts/.
           mv ./target/release/minimal-template-node ./artifacts/.
           mv ./target/release/solochain-template-node ./artifacts/.
           echo -n "${{ needs.preflight.outputs.SOURCE_REF_SLUG }}" > ./artifacts/VERSION
@@ -441,7 +441,7 @@ jobs:
           path: artifacts.tar
           retention-days: 1
 
-  prepare-parachain-templates-zombienet-artifacts:
+  prepare-teyrchain-templates-zombienet-artifacts:
     needs: [preflight]
     runs-on: ${{ needs.preflight.outputs.RUNNER }}
     timeout-minutes: 60
@@ -452,11 +452,11 @@ jobs:
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
       - name: build
         run: |
-          forklift cargo nextest --manifest-path templates/zombienet/Cargo.toml archive --locked --features zombienet --archive-file parachain-templates-zombienet-tests.tar.zst
+          forklift cargo nextest --manifest-path templates/zombienet/Cargo.toml archive --locked --features zombienet --archive-file teyrchain-templates-zombienet-tests.tar.zst
       - name: pack artifacts
         run: |
           mkdir -p artifacts
-          cp parachain-templates-zombienet-tests.tar.zst ./artifacts
+          cp teyrchain-templates-zombienet-tests.tar.zst ./artifacts
 
       - name: tar
         run: tar -cvf artifacts.tar artifacts
@@ -473,8 +473,8 @@ jobs:
   #
   #
   #
-  build-push-image-test-parachain:
-    needs: [preflight, build-test-parachain]
+  build-push-image-test-teyrchain:
+    needs: [preflight, build-test-teyrchain]
     runs-on: ${{ needs.preflight.outputs.RUNNER_DEFAULT }}
     timeout-minutes: 60
     steps:
@@ -483,7 +483,7 @@ jobs:
 
       - uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6.0.0
         with:
-          name: build-test-parachain-${{ needs.preflight.outputs.SOURCE_REF_SLUG }}
+          name: build-test-teyrchain-${{ needs.preflight.outputs.SOURCE_REF_SLUG }}
 
       - name: tar
         run: tar -xvf artifacts.tar
@@ -491,8 +491,8 @@ jobs:
       - name: build and push image
         uses: ./.github/actions/build-push-image
         with:
-          image-name: "test-parachain"
-          dockerfile: "docker/dockerfiles/test-parachain_injected.Dockerfile"
+          image-name: "test-teyrchain"
+          dockerfile: "docker/dockerfiles/test-teyrchain_injected.Dockerfile"
           username: ${{ secrets.PARITYPR_DOCKERHUB_USERNAME }}
           password: ${{ secrets.PARITYPR_DOCKERHUB_PASSWORD }}
 
@@ -654,7 +654,7 @@ jobs:
   #
   #
   #
-  build-push-image-polkadot-parachain-debug:
+  build-push-image-polkadot-teyrchain-debug:
     needs: [preflight, build-linux-stable-cumulus]
     runs-on: ${{ needs.preflight.outputs.RUNNER_DEFAULT }}
     timeout-minutes: 60
@@ -672,8 +672,8 @@ jobs:
       - name: build and push image
         uses: ./.github/actions/build-push-image
         with:
-          image-name: "polkadot-parachain-debug"
-          dockerfile: "docker/dockerfiles/polkadot-parachain/polkadot-parachain-debug_unsigned_injected.Dockerfile"
+          image-name: "polkadot-teyrchain-debug"
+          dockerfile: "docker/dockerfiles/polkadot-teyrchain/polkadot-teyrchain-debug_unsigned_injected.Dockerfile"
           username: ${{ secrets.PARITYPR_DOCKERHUB_USERNAME }}
           password: ${{ secrets.PARITYPR_DOCKERHUB_PASSWORD }}
 
@@ -684,7 +684,7 @@ jobs:
     needs:
       - build-linux-stable
       - build-linux-stable-cumulus
-      - build-test-parachain
+      - build-test-teyrchain
       - build-test-collators
       - build-malus
       - build-linux-substrate
@@ -731,10 +731,10 @@ jobs:
       build_run_id: ${{ github.run_id }}
       ref_slug: ${{ needs.preflight.outputs.SOURCE_REF_SLUG }}
 
-  trigger-zombienet-parachain-template:
+  trigger-zombienet-teyrchain-template:
     needs: [preflight, confirm-required-build-jobs-passed]
     if: ${{ needs.confirm-required-build-jobs-passed.outputs.build_success == 'true' }}
-    uses: ./.github/workflows/zombienet_parachain-template.yml
+    uses: ./.github/workflows/zombienet_teyrchain-template.yml
     with:
       build_run_id: ${{ github.run_id }}
       ref_slug: ${{ needs.preflight.outputs.SOURCE_REF_SLUG }}
@@ -746,7 +746,7 @@ jobs:
       - trigger-zombienet-polkadot
       - trigger-zombienet-cumulus
       - trigger-zombienet-substrate
-      - trigger-zombienet-parachain-template
+      - trigger-zombienet-teyrchain-template
     if: always() && !cancelled()
     steps:
       - name: Check zombienet success

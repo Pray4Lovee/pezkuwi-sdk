@@ -248,7 +248,7 @@ pub trait FindEquivocations<FinalityProof, FinalityVerificationContext, Equivoca
 
 /// Substrate-based chain that is using direct GRANDPA finality.
 ///
-/// Keep in mind that parachains are relying on relay chain GRANDPA, so they should not implement
+/// Keep in mind that teyrchains are relying on relay chain GRANDPA, so they should not implement
 /// this trait.
 pub trait ChainWithGrandpa: Chain {
 	/// Name of the bridge GRANDPA pallet (used in `construct_runtime` macro call) that is deployed

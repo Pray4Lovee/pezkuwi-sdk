@@ -26,20 +26,20 @@ tracing = { workspace = true }
 
 # Bridge dependencies
 bp-header-chain = { workspace = true, default-features = true }
-bp-parachains = { workspace = true, default-features = true }
-bp-polkadot-core = { workspace = true, default-features = true }
+bp-teyrchains = { workspace = true, default-features = true }
+bp-pezkuwi-core = { workspace = true, default-features = true }
 bp-relayers = { workspace = true, default-features = true }
 
 equivocation-detector = { workspace = true }
 finality-relay = { workspace = true }
 messages-relay = { workspace = true }
-parachains-relay = { workspace = true }
+teyrchains-relay = { workspace = true }
 relay-substrate-client = { workspace = true }
 relay-utils = { workspace = true }
 
 pallet-bridge-grandpa = { workspace = true, default-features = true }
 pallet-bridge-messages = { workspace = true, default-features = true }
-pallet-bridge-parachains = { workspace = true, default-features = true }
+pallet-bridge-teyrchains = { workspace = true, default-features = true }
 
 bp-messages = { workspace = true, default-features = true }
 bp-runtime = { workspace = true, default-features = true }

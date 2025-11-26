@@ -1,5 +1,5 @@
 name: Binary Build
-# This workflow can be used to build a binary like polkadot + workers, omninode or polkadot-parachain
+# This workflow can be used to build a binary like polkadot + workers, omninode or polkadot-teyrchain
 # from any branch with release or profuction profile to be later used for testing.
 # ⚠️ IT should not be used for release purposes! 
 
@@ -11,7 +11,7 @@ on:
         default: "polkadot"
         description: "The binary to build"
       package:
-        description: Package to be built, can be polkadot, polkadot-parachain-bin, polkadot-omni-node etc.
+        description: Package to be built, can be polkadot, polkadot-teyrchain-bin, polkadot-omni-node etc.
         required: true
         type: string
       profile:
@@ -45,7 +45,7 @@ jobs:
         id: set_runner
         shell: bash
         run: |
-          if [[ "${{ inputs.binary }}" == "polkadot-parachain" ]]; then
+          if [[ "${{ inputs.binary }}" == "polkadot-teyrchain" ]]; then
             echo "RUNNER=parity-large" >> $GITHUB_OUTPUT
           else
             echo "RUNNER=ubuntu-latest" >> $GITHUB_OUTPUT

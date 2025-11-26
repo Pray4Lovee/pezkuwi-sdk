@@ -2,4 +2,4 @@
 
 cd ../ethereum
 
-truffle exec scripts/dumpParachainConfig.js | sed '/^Using/d;/^$/d'
+truffle exec scripts/dumpTeyrchainConfig.js | sed '/^Using/d;/^$/d'

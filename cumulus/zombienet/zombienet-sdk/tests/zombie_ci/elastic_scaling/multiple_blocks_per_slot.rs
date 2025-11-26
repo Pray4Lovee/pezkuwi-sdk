@@ -6,17 +6,17 @@ use anyhow::anyhow;
 use crate::utils::initialize_network;
 
 use cumulus_zombienet_sdk_helpers::{assert_finality_lag, assert_para_throughput, assign_cores};
-use polkadot_primitives::Id as ParaId;
+use pezkuwi_primitives::Id as ParaId;
 use serde_json::json;
 use zombienet_sdk::{
-	subxt::{OnlineClient, PolkadotConfig},
+	subxt::{OnlineClient, PezkuwiConfig},
 	NetworkConfig, NetworkConfigBuilder,
 };
 
 const PARA_ID: u32 = 2400;
 
-/// This test spawns a parachain network.
-/// Initially, one core is assigned. We expect the parachain to produce 1 block per relay.
+/// This test spawns a teyrchain network.
+/// Initially, one core is assigned. We expect the teyrchain to produce 1 block per relay.
 /// As we increase the number of cores via `assign_core`, we expect the block pace to increase too.
 /// **Note:** The runtime in use here has 6s slot duration, so multiple blocks will be produced per
 /// slot.
@@ -33,7 +33,7 @@ async fn elastic_scaling_multiple_blocks_per_slot() -> Result<(), anyhow::Error>
 	let relay_node = network.get_node("validator-0")?;
 	let para_node_elastic = network.get_node("collator-1")?;
 
-	let relay_client: OnlineClient<PolkadotConfig> = relay_node.wait_client().await?;
+	let relay_client: OnlineClient<PezkuwiConfig> = relay_node.wait_client().await?;
 	assert_para_throughput(
 		&relay_client,
 		10,
@@ -73,10 +73,10 @@ async fn build_network_config() -> Result<NetworkConfig, anyhow::Error> {
 	NetworkConfigBuilder::new()
 		.with_relaychain(|r| {
 			let r = r
-				.with_chain("rococo-local")
-				.with_default_command("polkadot")
-				.with_default_image(images.polkadot.as_str())
-				.with_default_args(vec![("-lparachain=trace").into()])
+				.with_chain("pezkuwichain-local")
+				.with_default_command("pezkuwi")
+				.with_default_image(images.pezkuwi.as_str())
+				.with_default_args(vec![("-lteyrchain=trace").into()])
 				.with_default_resources(|resources| {
 					// These settings are applicable only for `k8s` provider.
 					// Leaving them in case we switch to `k8s` some day.
@@ -97,15 +97,15 @@ async fn build_network_config() -> Result<NetworkConfig, anyhow::Error> {
 				.with_node(|node| node.with_name("validator-0"));
 			(1..9).fold(r, |acc, i| acc.with_node(|node| node.with_name(&format!("validator-{i}"))))
 		})
-		.with_parachain(|p| {
+		.with_teyrchain(|p| {
 			p.with_id(PARA_ID)
-				.with_default_command("test-parachain")
+				.with_default_command("test-teyrchain")
 				.with_default_image(images.cumulus.as_str())
 				.with_chain("elastic-scaling-multi-block-slot")
 				.with_default_args(vec![
 					("--authoring").into(),
 					("slot-based").into(),
-					("-lparachain=trace,aura=debug").into(),
+					("-lteyrchain=trace,aura=debug").into(),
 				])
 				.with_collator(|n| n.with_name("collator-0"))
 				.with_collator(|n| n.with_name("collator-1"))

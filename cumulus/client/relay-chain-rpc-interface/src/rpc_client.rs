@@ -229,32 +229,32 @@ impl RelayChainRpcClient {
 	}
 
 	/// Scrape dispute relevant from on-chain, backing votes and resolved disputes.
-	pub async fn parachain_host_on_chain_votes(
+	pub async fn teyrchain_host_on_chain_votes(
 		&self,
 		at: RelayHash,
 	) -> Result<Option<ScrapedOnChainVotes<RelayHash>>, RelayChainError> {
-		self.call_remote_runtime_function("ParachainHost_on_chain_votes", at, None::<()>)
+		self.call_remote_runtime_function("TeyrchainHost_on_chain_votes", at, None::<()>)
 			.await
 	}
 
 	/// Returns code hashes of PVFs that require pre-checking by validators in the active set.
-	pub async fn parachain_host_pvfs_require_precheck(
+	pub async fn teyrchain_host_pvfs_require_precheck(
 		&self,
 		at: RelayHash,
 	) -> Result<Vec<ValidationCodeHash>, RelayChainError> {
-		self.call_remote_runtime_function("ParachainHost_pvfs_require_precheck", at, None::<()>)
+		self.call_remote_runtime_function("TeyrchainHost_pvfs_require_precheck", at, None::<()>)
 			.await
 	}
 
 	/// Submits a PVF pre-checking statement into the transaction pool.
-	pub async fn parachain_host_submit_pvf_check_statement(
+	pub async fn teyrchain_host_submit_pvf_check_statement(
 		&self,
 		at: RelayHash,
 		stmt: PvfCheckStatement,
 		signature: ValidatorSignature,
 	) -> Result<(), RelayChainError> {
 		self.call_remote_runtime_function(
-			"ParachainHost_submit_pvf_check_statement",
+			"TeyrchainHost_submit_pvf_check_statement",
 			at,
 			Some((stmt, signature)),
 		)
@@ -297,32 +297,32 @@ impl RelayChainRpcClient {
 	/// Returns the validator groups and rotation info localized based on the hypothetical child
 	///  of a block whose state  this is invoked on. Note that `now` in the `GroupRotationInfo`
 	/// should be the successor of the number of the block.
-	pub async fn parachain_host_validator_groups(
+	pub async fn teyrchain_host_validator_groups(
 		&self,
 		at: RelayHash,
 	) -> Result<(Vec<Vec<ValidatorIndex>>, GroupRotationInfo), RelayChainError> {
-		self.call_remote_runtime_function("ParachainHost_validator_groups", at, None::<()>)
+		self.call_remote_runtime_function("TeyrchainHost_validator_groups", at, None::<()>)
 			.await
 	}
 
 	/// Get a vector of events concerning candidates that occurred within a block.
-	pub async fn parachain_host_candidate_events(
+	pub async fn teyrchain_host_candidate_events(
 		&self,
 		at: RelayHash,
 	) -> Result<Vec<CandidateEvent>, RelayChainError> {
-		self.call_remote_runtime_function("ParachainHost_candidate_events", at, None::<()>)
+		self.call_remote_runtime_function("TeyrchainHost_candidate_events", at, None::<()>)
 			.await
 	}
 
 	/// Checks if the given validation outputs pass the acceptance criteria.
-	pub async fn parachain_host_check_validation_outputs(
+	pub async fn teyrchain_host_check_validation_outputs(
 		&self,
 		at: RelayHash,
 		para_id: ParaId,
 		outputs: CandidateCommitments,
 	) -> Result<bool, RelayChainError> {
 		self.call_remote_runtime_function(
-			"ParachainHost_check_validation_outputs",
+			"TeyrchainHost_check_validation_outputs",
 			at,
 			Some((para_id, outputs)),
 		)
@@ -332,14 +332,14 @@ impl RelayChainRpcClient {
 	/// Returns the persisted validation data for the given `ParaId` along with the corresponding
 	/// validation code hash. Instead of accepting assumption about the para, matches the validation
 	/// data hash against an expected one and yields `None` if they're not equal.
-	pub async fn parachain_host_assumed_validation_data(
+	pub async fn teyrchain_host_assumed_validation_data(
 		&self,
 		at: RelayHash,
 		para_id: ParaId,
 		expected_hash: RelayHash,
 	) -> Result<Option<(PersistedValidationData, ValidationCodeHash)>, RelayChainError> {
 		self.call_remote_runtime_function(
-			"ParachainHost_persisted_assumed_validation_data",
+			"TeyrchainHost_persisted_assumed_validation_data",
 			at,
 			Some((para_id, expected_hash)),
 		)
@@ -365,14 +365,14 @@ impl RelayChainRpcClient {
 	///
 	/// Returns `None` if either the para is not registered or the assumption is `Freed`
 	/// and the para already occupies a core.
-	pub async fn parachain_host_persisted_validation_data(
+	pub async fn teyrchain_host_persisted_validation_data(
 		&self,
 		at: RelayHash,
 		para_id: ParaId,
 		occupied_core_assumption: OccupiedCoreAssumption,
 	) -> Result<Option<PersistedValidationData>, RelayChainError> {
 		self.call_remote_runtime_function(
-			"ParachainHost_persisted_validation_data",
+			"TeyrchainHost_persisted_validation_data",
 			at,
 			Some((para_id, occupied_core_assumption)),
 		)
@@ -380,13 +380,13 @@ impl RelayChainRpcClient {
 	}
 
 	/// Get the validation code from its hash.
-	pub async fn parachain_host_validation_code_by_hash(
+	pub async fn teyrchain_host_validation_code_by_hash(
 		&self,
 		at: RelayHash,
 		validation_code_hash: ValidationCodeHash,
 	) -> Result<Option<ValidationCode>, RelayChainError> {
 		self.call_remote_runtime_function(
-			"ParachainHost_validation_code_by_hash",
+			"TeyrchainHost_validation_code_by_hash",
 			at,
 			Some(validation_code_hash),
 		)
@@ -395,11 +395,11 @@ impl RelayChainRpcClient {
 
 	/// Yields information on all availability cores as relevant to the child block.
 	/// Cores are either free or occupied. Free cores can have paras assigned to them.
-	pub async fn parachain_host_availability_cores(
+	pub async fn teyrchain_host_availability_cores(
 		&self,
 		at: RelayHash,
 	) -> Result<Vec<CoreState<RelayHash, BlockNumber>>, RelayChainError> {
-		self.call_remote_runtime_function("ParachainHost_availability_cores", at, None::<()>)
+		self.call_remote_runtime_function("TeyrchainHost_availability_cores", at, None::<()>)
 			.await
 	}
 
@@ -410,45 +410,45 @@ impl RelayChainRpcClient {
 	}
 
 	/// Returns all onchain disputes.
-	pub async fn parachain_host_disputes(
+	pub async fn teyrchain_host_disputes(
 		&self,
 		at: RelayHash,
 	) -> Result<Vec<(SessionIndex, CandidateHash, DisputeState<BlockNumber>)>, RelayChainError> {
-		self.call_remote_runtime_function("ParachainHost_disputes", at, None::<()>)
+		self.call_remote_runtime_function("TeyrchainHost_disputes", at, None::<()>)
 			.await
 	}
 
 	/// Returns a list of validators that lost a past session dispute and need to be slashed.
 	///
 	/// This is a staging method! Do not use on production runtimes!
-	pub async fn parachain_host_unapplied_slashes(
+	pub async fn teyrchain_host_unapplied_slashes(
 		&self,
 		at: RelayHash,
 	) -> Result<Vec<(SessionIndex, CandidateHash, slashing::LegacyPendingSlashes)>, RelayChainError>
 	{
-		self.call_remote_runtime_function("ParachainHost_unapplied_slashes", at, None::<()>)
+		self.call_remote_runtime_function("TeyrchainHost_unapplied_slashes", at, None::<()>)
 			.await
 	}
 
 	/// Returns a list of validators that lost a past session dispute and need to be slashed.
-	pub async fn parachain_host_unapplied_slashes_v2(
+	pub async fn teyrchain_host_unapplied_slashes_v2(
 		&self,
 		at: RelayHash,
 	) -> Result<Vec<(SessionIndex, CandidateHash, slashing::PendingSlashes)>, RelayChainError> {
-		self.call_remote_runtime_function("ParachainHost_unapplied_slashes_v2", at, None::<()>)
+		self.call_remote_runtime_function("TeyrchainHost_unapplied_slashes_v2", at, None::<()>)
 			.await
 	}
 
 	/// Returns a merkle proof of a validator session key in a past session.
 	///
 	/// This is a staging method! Do not use on production runtimes!
-	pub async fn parachain_host_key_ownership_proof(
+	pub async fn teyrchain_host_key_ownership_proof(
 		&self,
 		at: RelayHash,
 		validator_id: ValidatorId,
 	) -> Result<Option<slashing::OpaqueKeyOwnershipProof>, RelayChainError> {
 		self.call_remote_runtime_function(
-			"ParachainHost_key_ownership_proof",
+			"TeyrchainHost_key_ownership_proof",
 			at,
 			Some(validator_id),
 		)
@@ -459,14 +459,14 @@ impl RelayChainRpcClient {
 	/// a candidate of a past session.
 	///
 	/// This is a staging method! Do not use on production runtimes!
-	pub async fn parachain_host_submit_report_dispute_lost(
+	pub async fn teyrchain_host_submit_report_dispute_lost(
 		&self,
 		at: RelayHash,
 		dispute_proof: slashing::DisputeProof,
 		key_ownership_proof: slashing::OpaqueKeyOwnershipProof,
 	) -> Result<Option<()>, RelayChainError> {
 		self.call_remote_runtime_function(
-			"ParachainHost_submit_report_dispute_lost",
+			"TeyrchainHost_submit_report_dispute_lost",
 			at,
 			Some((dispute_proof, key_ownership_proof)),
 		)
@@ -485,14 +485,14 @@ impl RelayChainRpcClient {
 	///
 	/// Returns `None` if either the para is not registered or the assumption is `Freed`
 	/// and the para already occupies a core.
-	pub async fn parachain_host_validation_code(
+	pub async fn teyrchain_host_validation_code(
 		&self,
 		at: RelayHash,
 		para_id: ParaId,
 		occupied_core_assumption: OccupiedCoreAssumption,
 	) -> Result<Option<ValidationCode>, RelayChainError> {
 		self.call_remote_runtime_function(
-			"ParachainHost_validation_code",
+			"TeyrchainHost_validation_code",
 			at,
 			Some((para_id, occupied_core_assumption)),
 		)
@@ -501,14 +501,14 @@ impl RelayChainRpcClient {
 
 	/// Fetch the hash of the validation code used by a para, making the given
 	/// `OccupiedCoreAssumption`.
-	pub async fn parachain_host_validation_code_hash(
+	pub async fn teyrchain_host_validation_code_hash(
 		&self,
 		at: RelayHash,
 		para_id: ParaId,
 		occupied_core_assumption: OccupiedCoreAssumption,
 	) -> Result<Option<ValidationCodeHash>, RelayChainError> {
 		self.call_remote_runtime_function(
-			"ParachainHost_validation_code_hash",
+			"TeyrchainHost_validation_code_hash",
 			at,
 			Some((para_id, occupied_core_assumption)),
 		)
@@ -516,23 +516,23 @@ impl RelayChainRpcClient {
 	}
 
 	/// Get the session info for the given session, if stored.
-	pub async fn parachain_host_session_info(
+	pub async fn teyrchain_host_session_info(
 		&self,
 		at: RelayHash,
 		index: SessionIndex,
 	) -> Result<Option<SessionInfo>, RelayChainError> {
-		self.call_remote_runtime_function("ParachainHost_session_info", at, Some(index))
+		self.call_remote_runtime_function("TeyrchainHost_session_info", at, Some(index))
 			.await
 	}
 
 	/// Get the executor parameters for the given session, if stored
-	pub async fn parachain_host_session_executor_params(
+	pub async fn teyrchain_host_session_executor_params(
 		&self,
 		at: RelayHash,
 		session_index: SessionIndex,
 	) -> Result<Option<ExecutorParams>, RelayChainError> {
 		self.call_remote_runtime_function(
-			"ParachainHost_session_executor_params",
+			"TeyrchainHost_session_executor_params",
 			at,
 			Some(session_index),
 		)
@@ -550,13 +550,13 @@ impl RelayChainRpcClient {
 
 	/// Get the receipt of a candidate pending availability. This returns `Some` for any paras
 	/// assigned to occupied cores in `availability_cores` and `None` otherwise.
-	pub async fn parachain_host_candidate_pending_availability(
+	pub async fn teyrchain_host_candidate_pending_availability(
 		&self,
 		at: RelayHash,
 		para_id: ParaId,
 	) -> Result<Option<CommittedCandidateReceipt>, RelayChainError> {
 		self.call_remote_runtime_function(
-			"ParachainHost_candidate_pending_availability",
+			"TeyrchainHost_candidate_pending_availability",
 			at,
 			Some(para_id),
 		)
@@ -566,32 +566,32 @@ impl RelayChainRpcClient {
 	/// Returns the session index expected at a child of the block.
 	///
 	/// This can be used to instantiate a `SigningContext`.
-	pub async fn parachain_host_session_index_for_child(
+	pub async fn teyrchain_host_session_index_for_child(
 		&self,
 		at: RelayHash,
 	) -> Result<SessionIndex, RelayChainError> {
-		self.call_remote_runtime_function("ParachainHost_session_index_for_child", at, None::<()>)
+		self.call_remote_runtime_function("TeyrchainHost_session_index_for_child", at, None::<()>)
 			.await
 	}
 
 	/// Get the current validators.
-	pub async fn parachain_host_validators(
+	pub async fn teyrchain_host_validators(
 		&self,
 		at: RelayHash,
 	) -> Result<Vec<ValidatorId>, RelayChainError> {
-		self.call_remote_runtime_function("ParachainHost_validators", at, None::<()>)
+		self.call_remote_runtime_function("TeyrchainHost_validators", at, None::<()>)
 			.await
 	}
 
 	/// Get the contents of all channels addressed to the given recipient. Channels that have no
 	/// messages in them are also included.
-	pub async fn parachain_host_inbound_hrmp_channels_contents(
+	pub async fn teyrchain_host_inbound_hrmp_channels_contents(
 		&self,
 		para_id: ParaId,
 		at: RelayHash,
 	) -> Result<BTreeMap<ParaId, Vec<InboundHrmpMessage>>, RelayChainError> {
 		self.call_remote_runtime_function(
-			"ParachainHost_inbound_hrmp_channels_contents",
+			"TeyrchainHost_inbound_hrmp_channels_contents",
 			at,
 			Some(para_id),
 		)
@@ -599,109 +599,109 @@ impl RelayChainRpcClient {
 	}
 
 	/// Get all the pending inbound messages in the downward message queue for a para.
-	pub async fn parachain_host_dmq_contents(
+	pub async fn teyrchain_host_dmq_contents(
 		&self,
 		para_id: ParaId,
 		at: RelayHash,
 	) -> Result<Vec<InboundDownwardMessage>, RelayChainError> {
-		self.call_remote_runtime_function("ParachainHost_dmq_contents", at, Some(para_id))
+		self.call_remote_runtime_function("TeyrchainHost_dmq_contents", at, Some(para_id))
 			.await
 	}
 
 	/// Get the minimum number of backing votes for a candidate.
-	pub async fn parachain_host_minimum_backing_votes(
+	pub async fn teyrchain_host_minimum_backing_votes(
 		&self,
 		at: RelayHash,
 		_session_index: SessionIndex,
 	) -> Result<u32, RelayChainError> {
-		self.call_remote_runtime_function("ParachainHost_minimum_backing_votes", at, None::<()>)
+		self.call_remote_runtime_function("TeyrchainHost_minimum_backing_votes", at, None::<()>)
 			.await
 	}
 
-	pub async fn parachain_host_node_features(
+	pub async fn teyrchain_host_node_features(
 		&self,
 		at: RelayHash,
 	) -> Result<NodeFeatures, RelayChainError> {
-		self.call_remote_runtime_function("ParachainHost_node_features", at, None::<()>)
+		self.call_remote_runtime_function("TeyrchainHost_node_features", at, None::<()>)
 			.await
 	}
 
-	pub async fn parachain_host_disabled_validators(
+	pub async fn teyrchain_host_disabled_validators(
 		&self,
 		at: RelayHash,
 	) -> Result<Vec<ValidatorIndex>, RelayChainError> {
-		self.call_remote_runtime_function("ParachainHost_disabled_validators", at, None::<()>)
+		self.call_remote_runtime_function("TeyrchainHost_disabled_validators", at, None::<()>)
 			.await
 	}
 
 	#[allow(missing_docs)]
-	pub async fn parachain_host_async_backing_params(
+	pub async fn teyrchain_host_async_backing_params(
 		&self,
 		at: RelayHash,
 	) -> Result<AsyncBackingParams, RelayChainError> {
-		self.call_remote_runtime_function("ParachainHost_async_backing_params", at, None::<()>)
+		self.call_remote_runtime_function("TeyrchainHost_async_backing_params", at, None::<()>)
 			.await
 	}
 
 	#[allow(missing_docs)]
-	pub async fn parachain_host_staging_approval_voting_params(
+	pub async fn teyrchain_host_staging_approval_voting_params(
 		&self,
 		at: RelayHash,
 		_session_index: SessionIndex,
 	) -> Result<ApprovalVotingParams, RelayChainError> {
 		self.call_remote_runtime_function(
-			"ParachainHost_staging_approval_voting_params",
+			"TeyrchainHost_staging_approval_voting_params",
 			at,
 			None::<()>,
 		)
 		.await
 	}
 
-	pub async fn parachain_host_para_backing_state(
+	pub async fn teyrchain_host_para_backing_state(
 		&self,
 		at: RelayHash,
 		para_id: ParaId,
 	) -> Result<Option<BackingState>, RelayChainError> {
-		self.call_remote_runtime_function("ParachainHost_para_backing_state", at, Some(para_id))
+		self.call_remote_runtime_function("TeyrchainHost_para_backing_state", at, Some(para_id))
 			.await
 	}
 
-	pub async fn parachain_host_claim_queue(
+	pub async fn teyrchain_host_claim_queue(
 		&self,
 		at: RelayHash,
 	) -> Result<BTreeMap<CoreIndex, VecDeque<ParaId>>, RelayChainError> {
-		self.call_remote_runtime_function("ParachainHost_claim_queue", at, None::<()>)
+		self.call_remote_runtime_function("TeyrchainHost_claim_queue", at, None::<()>)
 			.await
 	}
 
 	/// Get the receipt of all candidates pending availability.
-	pub async fn parachain_host_candidates_pending_availability(
+	pub async fn teyrchain_host_candidates_pending_availability(
 		&self,
 		at: RelayHash,
 		para_id: ParaId,
 	) -> Result<Vec<CommittedCandidateReceipt>, RelayChainError> {
 		self.call_remote_runtime_function(
-			"ParachainHost_candidates_pending_availability",
+			"TeyrchainHost_candidates_pending_availability",
 			at,
 			Some(para_id),
 		)
 		.await
 	}
 
-	pub async fn parachain_host_scheduling_lookahead(
+	pub async fn teyrchain_host_scheduling_lookahead(
 		&self,
 		at: RelayHash,
 	) -> Result<u32, RelayChainError> {
-		self.call_remote_runtime_function("ParachainHost_scheduling_lookahead", at, None::<()>)
+		self.call_remote_runtime_function("TeyrchainHost_scheduling_lookahead", at, None::<()>)
 			.await
 	}
 
-	pub async fn parachain_host_validation_code_bomb_limit(
+	pub async fn teyrchain_host_validation_code_bomb_limit(
 		&self,
 		at: RelayHash,
 	) -> Result<u32, RelayChainError> {
 		self.call_remote_runtime_function(
-			"ParachainHost_validation_code_bomb_limit",
+			"TeyrchainHost_validation_code_bomb_limit",
 			at,
 			None::<()>,
 		)
@@ -715,19 +715,19 @@ impl RelayChainRpcClient {
 		occupied_core_assumption: OccupiedCoreAssumption,
 	) -> Result<Option<ValidationCodeHash>, RelayChainError> {
 		self.call_remote_runtime_function(
-			"ParachainHost_validation_code_hash",
+			"TeyrchainHost_validation_code_hash",
 			at,
 			Some((para_id, occupied_core_assumption)),
 		)
 		.await
 	}
 
-	pub async fn parachain_host_backing_constraints(
+	pub async fn teyrchain_host_backing_constraints(
 		&self,
 		at: RelayHash,
 		para_id: ParaId,
 	) -> Result<Option<Constraints>, RelayChainError> {
-		self.call_remote_runtime_function("ParachainHost_backing_constraints", at, Some(para_id))
+		self.call_remote_runtime_function("TeyrchainHost_backing_constraints", at, Some(para_id))
 			.await
 	}
 
@@ -766,11 +766,11 @@ impl RelayChainRpcClient {
 		Ok(rx)
 	}
 
-	pub async fn parachain_host_para_ids(
+	pub async fn teyrchain_host_para_ids(
 		&self,
 		at: RelayHash,
 	) -> Result<Vec<ParaId>, RelayChainError> {
-		self.call_remote_runtime_function("ParachainHost_para_ids", at, None::<()>)
+		self.call_remote_runtime_function("TeyrchainHost_para_ids", at, None::<()>)
 			.await
 	}
 }

@@ -241,7 +241,7 @@ fn common_config(semantics: &Semantics) -> std::result::Result<wasmtime::Config,
 
 		// In `wasmtime` 0.35 the default stack size limit was changed from 1MB to 512KB.
 		//
-		// This broke at least one parachain which depended on the original 1MB limit,
+		// This broke at least one teyrchain which depended on the original 1MB limit,
 		// so here we restore it to what it was originally.
 		None => 1024 * 1024,
 	};
@@ -711,7 +711,7 @@ fn extract_output_data(
 	let ctx = instance.store();
 
 	// Do a length check before allocating. The returned output should not be bigger than the
-	// available WASM memory. Otherwise, a malicious parachain can trigger a large allocation,
+	// available WASM memory. Otherwise, a malicious teyrchain can trigger a large allocation,
 	// potentially causing memory exhaustion.
 	//
 	// Get the size of the WASM memory in bytes.

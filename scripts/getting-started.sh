@@ -29,12 +29,12 @@ prompt_default_yes() {
 }
 
 clone_and_enter_template() {
-    template="$1" # minimal, solochain, or parachain
+    template="$1" # minimal, solochain, or teyrchain
     if [ -d "${template}-template" ]; then
         printf "\n✅︎ ${template}-template directory already exists. -> Entering.\n"
     else
         printf "\n↓ Let's grab the ${template} template from github.\n"
-        git clone --quiet https://github.com/paritytech/polkadot-sdk-${template}-template.git ${template}-template
+        git clone --quiet https://github.com/pezkuwichain/pezkuwichain-sdk-${template}-template.git ${template}-template
     fi
     cd ${template}-template
 }
@@ -154,13 +154,13 @@ fi
 while true; do
     printf "\nWhich template would you like to start with?\n"
     printf "1) minimal template\n"
-    printf "2) parachain template\n"
+    printf "2) teyrchain template\n"
     printf "3) solochain template\n"
     printf "q) cancel\n"
     read -p "#? " template
     case $template in
         [1]* ) clone_and_enter_template minimal; break;;
-        [2]* ) clone_and_enter_template parachain; break;;
+        [2]* ) clone_and_enter_template teyrchain; break;;
         [3]* ) clone_and_enter_template solochain; break;;
         [qQ]* ) printf "Canceling, not using a template.\n"; exit 0;;
         * ) printf "Selection not recognized.\n";;

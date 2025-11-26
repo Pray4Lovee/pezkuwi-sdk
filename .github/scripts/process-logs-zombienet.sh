@@ -14,7 +14,7 @@ JQ_QUERY_RELAY_V1='.relay[].name'
 JQ_QUERY_RELAY_SDK='.relay.nodes[].name'
 
 JQ_QUERY_PARA_NODES_V1='.paras[$pid].nodes[].name'
-JQ_QUERY_PARA_NODES_SDK='.parachains[$pid][] .collators[].name'
+JQ_QUERY_PARA_NODES_SDK='.teyrchains[$pid][] .collators[].name'
 
 # current time in milliseconds + 60 secs to allow loki to ingest logs
 TO=$(($(date +%s%3N) + 60000))
@@ -147,8 +147,8 @@ process_logs_from_zombie_file() {
   done
   echo ""
 
-  # Handle parachains grouped by paraId
-  jq -r '.paras // .parachains | to_entries[] | "\(.key)"' "$ZOMBIE_JSON" | while read -r para_id; do
+  # Handle teyrchains grouped by paraId
+  jq -r '.paras // .teyrchains | to_entries[] | "\(.key)"' "$ZOMBIE_JSON" | while read -r para_id; do
     echo "ParaId: $para_id"
     jq -r --arg pid "$para_id" "$JQ_QUERY_PARA_NODES" "$ZOMBIE_JSON" | while read -r name; do
       [[ -z "$name" ]] && continue

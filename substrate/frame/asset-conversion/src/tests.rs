@@ -909,8 +909,8 @@ fn quote_price_exact_tokens_for_tokens_matches_execution() {
 		);
 
 		assert_ok!(Assets::mint(RuntimeOrigin::signed(user), 2, user2, amount));
-		let prior_dot_balance = 20000;
-		assert_eq!(prior_dot_balance, balance(user2, token_1.clone()));
+		let prior_hez_balance = 20000;
+		assert_eq!(prior_hez_balance, balance(user2, token_1.clone()));
 		assert_ok!(AssetConversion::swap_exact_tokens_for_tokens(
 			RuntimeOrigin::signed(user2),
 			bvec![token_2.clone(), token_1.clone()],
@@ -920,7 +920,7 @@ fn quote_price_exact_tokens_for_tokens_matches_execution() {
 			false,
 		));
 
-		assert_eq!(prior_dot_balance + quoted_price, balance(user2, token_1.clone()));
+		assert_eq!(prior_hez_balance + quoted_price, balance(user2, token_1.clone()));
 	});
 }
 
@@ -966,8 +966,8 @@ fn quote_price_tokens_for_exact_tokens_matches_execution() {
 		);
 
 		assert_ok!(Assets::mint(RuntimeOrigin::signed(user), 2, user2, amount));
-		let prior_dot_balance = 20000;
-		assert_eq!(prior_dot_balance, balance(user2, token_1.clone()));
+		let prior_hez_balance = 20000;
+		assert_eq!(prior_hez_balance, balance(user2, token_1.clone()));
 		let prior_asset_balance = 49;
 		assert_eq!(prior_asset_balance, balance(user2, token_2.clone()));
 		assert_ok!(AssetConversion::swap_tokens_for_exact_tokens(
@@ -979,7 +979,7 @@ fn quote_price_tokens_for_exact_tokens_matches_execution() {
 			false,
 		));
 
-		assert_eq!(prior_dot_balance + amount, balance(user2, token_1.clone()));
+		assert_eq!(prior_hez_balance + amount, balance(user2, token_1.clone()));
 		assert_eq!(prior_asset_balance - quoted_price, balance(user2, token_2.clone()));
 	});
 }

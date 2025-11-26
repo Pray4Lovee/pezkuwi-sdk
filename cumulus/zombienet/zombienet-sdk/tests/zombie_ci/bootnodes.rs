@@ -9,7 +9,7 @@ use crate::utils::initialize_network;
 use cumulus_zombienet_sdk_helpers::wait_for_nth_session_change;
 use zombienet_orchestrator::network::node::LogLineCountOptions;
 use zombienet_sdk::{
-	subxt::{OnlineClient, PolkadotConfig},
+	subxt::{OnlineClient, PezkuwiConfig},
 	NetworkConfig, NetworkConfigBuilder,
 };
 
@@ -21,22 +21,22 @@ async fn build_network_config() -> Result<NetworkConfig, anyhow::Error> {
 	NetworkConfigBuilder::new()
 		.with_relaychain(|r| {
 			let r = r
-				.with_chain("rococo-local")
-				.with_default_command("polkadot")
-				.with_default_image(images.polkadot.as_str())
+				.with_chain("pezkuwichain-local")
+				.with_default_command("pezkuwi")
+				.with_default_image(images.pezkuwi.as_str())
 				// Not strictly necessary for the test, but to keep it consistent
-				// with the parachain part we also pass `--no-mdns` to the relaychain.
-				.with_default_args(vec!["-lparachain=debug".into(), "--no-mdns".into()])
+				// with the teyrchain part we also pass `--no-mdns` to the relaychain.
+				.with_default_args(vec!["-lteyrchain=debug".into(), "--no-mdns".into()])
 				// Have to set a `with_node` outside of the loop below, so that `r` has the right
 				// type.
 				.with_node(|node| node.with_name("validator-0"));
 			(1..3).fold(r, |acc, i| acc.with_node(|node| node.with_name(&format!("validator-{i}"))))
 		})
-		.with_parachain(|p| {
+		.with_teyrchain(|p| {
 			p.with_id(1000)
-				.with_default_command("polkadot-parachain")
+				.with_default_command("pezkuwi-teyrchain")
 				.with_default_image(images.cumulus.as_str())
-				.with_chain("asset-hub-rococo-local")
+				.with_chain("asset-hub-pezkuwichain-local")
 				// Do not put bootnodes into the chain-spec nor command line arguments.
 				.without_default_bootnodes()
 				// Disable mdns to rely only on DHT bootnode discovery mechanism.
@@ -72,7 +72,7 @@ async fn dht_bootnodes_test() -> Result<(), anyhow::Error> {
 	let mut network = initialize_network(config).await?;
 
 	let relay_node = network.get_node("validator-0")?;
-	let relay_client: OnlineClient<PolkadotConfig> = relay_node.wait_client().await?;
+	let relay_client: OnlineClient<PezkuwiConfig> = relay_node.wait_client().await?;
 
 	let alpha = network.get_node("alpha")?;
 
@@ -88,7 +88,7 @@ async fn dht_bootnodes_test() -> Result<(), anyhow::Error> {
 	log::info!("Make sure the DHT bootnode discovery was successful");
 	let result = alpha
 		.wait_log_line_count_with_timeout(
-			".* Parachain bootnode discovery on the relay chain DHT succeeded",
+			".* Teyrchain bootnode discovery on the relay chain DHT succeeded",
 			false,
 			log_line_options.clone(),
 		)
@@ -119,7 +119,7 @@ async fn dht_bootnodes_test() -> Result<(), anyhow::Error> {
 	log::info!("Make sure the DHT bootnode discovery was successful");
 	let result = gamma
 		.wait_log_line_count_with_timeout(
-			".* Parachain bootnode discovery on the relay chain DHT succeeded",
+			".* Teyrchain bootnode discovery on the relay chain DHT succeeded",
 			false,
 			log_line_options,
 		)

@@ -21,10 +21,10 @@ use std::path::PathBuf;
 use cumulus_client_collator::service::ServiceInterface as CollatorServiceInterface;
 use cumulus_relay_chain_interface::RelayChainInterface;
 
-use polkadot_node_primitives::{MaybeCompressedPoV, SubmitCollationParams};
-use polkadot_node_subsystem::messages::CollationGenerationMessage;
-use polkadot_overseer::Handle as OverseerHandle;
-use polkadot_primitives::{CollatorPair, Id as ParaId};
+use pezkuwi_node_primitives::{MaybeCompressedPoV, SubmitCollationParams};
+use pezkuwi_node_subsystem::messages::CollationGenerationMessage;
+use pezkuwi_overseer::Handle as OverseerHandle;
+use pezkuwi_primitives::{CollatorPair, Id as ParaId};
 
 use cumulus_primitives_core::relay_chain::BlockId;
 use futures::prelude::*;
@@ -57,11 +57,11 @@ pub struct Params<Block: BlockT, RClient, CS> {
 	pub export_pov: Option<PathBuf>,
 }
 
-/// Asynchronously executes the collation task for a parachain.
+/// Asynchronously executes the collation task for a teyrchain.
 ///
 /// This function initializes the collator subsystems necessary for producing and submitting
 /// collations to the relay chain. It listens for new best relay chain block notifications and
-/// handles collator messages. If our parachain is scheduled on a core and we have a candidate,
+/// handles collator messages. If our teyrchain is scheduled on a core and we have a candidate,
 /// the task will build a collation and send it to the relay chain.
 pub async fn run_collation_task<Block, RClient, CS>(
 	Params {
@@ -103,7 +103,7 @@ pub async fn run_collation_task<Block, RClient, CS>(
 			},
 			block_import_msg = block_import_handle.next().fuse() => {
 				// TODO: Implement me.
-				// Issue: https://github.com/paritytech/polkadot-sdk/issues/6495
+				// Issue: https://github.com/pezkuwichain/pezkuwichain-sdk/issues/6495
 				let _ = block_import_msg;
 			}
 		}
@@ -122,17 +122,17 @@ async fn handle_collation_message<Block: BlockT, RClient: RelayChainInterface + 
 ) {
 	let CollatorMessage {
 		parent_header,
-		parachain_candidate,
+		teyrchain_candidate,
 		validation_code_hash,
 		relay_parent,
 		core_index,
 		max_pov_size,
 	} = message;
 
-	let hash = parachain_candidate.block.header().hash();
-	let number = *parachain_candidate.block.header().number();
+	let hash = teyrchain_candidate.block.header().hash();
+	let number = *teyrchain_candidate.block.header().number();
 	let (collation, block_data) =
-		match collator_service.build_collation(&parent_header, hash, parachain_candidate) {
+		match collator_service.build_collation(&parent_header, hash, teyrchain_candidate) {
 			Some(collation) => collation,
 			None => {
 				tracing::warn!(target: LOG_TARGET, %hash, ?number, ?core_index, "Unable to build collation.");

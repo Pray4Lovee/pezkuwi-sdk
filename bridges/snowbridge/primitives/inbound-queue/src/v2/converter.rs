@@ -63,7 +63,7 @@ where
 	AssetHubParaId: Get<ParaId>,
 {
 	fn get() -> InteriorLocation {
-		[GlobalConsensus(LocalNetwork::get()), Parachain(AssetHubParaId::get().into())].into()
+		[GlobalConsensus(LocalNetwork::get()), Teyrchain(AssetHubParaId::get().into())].into()
 	}
 }
 
@@ -179,7 +179,7 @@ where
 						1,
 						[
 							GlobalConsensus(LocalNetwork::get()),
-							Parachain(AssetHubParaId::get().into()),
+							Teyrchain(AssetHubParaId::get().into()),
 						],
 					);
 					let ethereum_universal: InteriorLocation =
@@ -223,7 +223,7 @@ where
 	}
 
 	/// Construct the remote XCM needed to create a new asset in the `ForeignAssets` pallet
-	/// on AssetHub. Polkadot is the only supported network at the moment.
+	/// on AssetHub. Pezkuwi is the only supported network at the moment.
 	fn make_create_asset_xcm(
 		token: &H160,
 		network: super::message::Network,
@@ -250,7 +250,7 @@ where
 		);
 
 		match network {
-			super::message::Network::Polkadot => Ok(Self::make_create_asset_xcm_for_polkadot(
+			super::message::Network::Pezkuwi => Ok(Self::make_create_asset_xcm_for_pezkuwi(
 				create_call_index,
 				set_reserves_call_index,
 				create_min_blance,
@@ -264,7 +264,7 @@ where
 	}
 
 	/// Construct the asset creation XCM for the Polkdot network.
-	fn make_create_asset_xcm_for_polkadot(
+	fn make_create_asset_xcm_for_pezkuwi(
 		create_call_index: [u8; 2],
 		set_reserves_call_index: [u8; 2],
 		create_min_blance: u128,
@@ -436,7 +436,7 @@ mod tests {
 
 	parameter_types! {
 		pub const EthereumNetwork: NetworkId = NetworkId::Ethereum { chain_id: 1 };
-		pub const LocalNetwork: NetworkId = NetworkId::Polkadot;
+		pub const LocalNetwork: NetworkId = NetworkId::Pezkuwi;
 		pub const GatewayAddress: H160 = H160(GATEWAY_ADDRESS);
 		pub InboundQueueLocation: InteriorLocation = [PalletInstance(84)].into();
 		pub EthereumUniversalLocation: InteriorLocation =
@@ -447,7 +447,7 @@ mod tests {
 		pub const CreateAssetDeposit: u128 = 10_000_000_000u128;
 		pub const CreateAssetMinBalance: u128 = 1;
 		pub EthereumLocation: Location = Location::new(2,EthereumUniversalLocation::get());
-		pub BridgeHubContext: InteriorLocation = [GlobalConsensus(Polkadot),Parachain(1002)].into();
+		pub BridgeHubContext: InteriorLocation = [GlobalConsensus(Pezkuwi),Teyrchain(1002)].into();
 		pub CreateAssetCall: CreateAssetCallInfo = CreateAssetCallInfo {
 			create_call: CreateAssetCallIndex::get(),
 			deposit: CreateAssetDeposit::get(),

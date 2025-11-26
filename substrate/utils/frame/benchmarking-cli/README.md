@@ -60,10 +60,10 @@ cargo install --locked --path substrate/utils/frame/omni-bencher --profile=produ
 The exposed pallet sub-command is identical as the node-integrated CLI. The only difference is that it needs to be prefixed
 with a `v1` to ensure drop-in compatibility.
 
-First we need to ensure that there is a runtime available. As example we will build the Westend runtime:
+First we need to ensure that there is a runtime available. As example we will build the zagros runtime:
 
 ```sh
-cargo build -p westend-runtime --profile production --features runtime-benchmarks
+cargo build -p zagros-runtime --profile production --features runtime-benchmarks
 ```
 
 Now the benchmarking can be started with:
@@ -71,7 +71,7 @@ Now the benchmarking can be started with:
 ```sh
 frame-omni-bencher v1 \
     benchmark pallet \
-    --runtime target/release/wbuild/westend-runtime/westend-runtime.compact.compressed.wasm \
+    --runtime target/release/wbuild/zagros-runtime/zagros-runtime.compact.compressed.wasm \
     --pallet "pallet_balances" --extrinsic ""
 ```
 

@@ -4,7 +4,7 @@ doc:
   description: |-
     Extracted from #7473.
 
-    Part of: https://github.com/paritytech/polkadot-sdk/issues/5704.
+    Part of: https://github.com/pezkuwichain/pezkuwichain-sdk/issues/5704.
 crates:
 - name: people-rococo-runtime
   bump: minor

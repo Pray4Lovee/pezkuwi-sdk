@@ -6,9 +6,9 @@ use anyhow::anyhow;
 use crate::utils::{initialize_network, BEST_BLOCK_METRIC};
 
 use cumulus_zombienet_sdk_helpers::assert_para_throughput;
-use polkadot_primitives::Id as ParaId;
+use pezkuwi_primitives::Id as ParaId;
 use zombienet_sdk::{
-	subxt::{OnlineClient, PolkadotConfig},
+	subxt::{OnlineClient, PezkuwiConfig},
 	NetworkConfig, NetworkConfigBuilder,
 };
 
@@ -25,9 +25,9 @@ async fn sync_blocks_from_tip_without_connected_collator() -> Result<(), anyhow:
 
 	let relay_alice = network.get_node("alice")?;
 
-	let relay_client: OnlineClient<PolkadotConfig> = relay_alice.wait_client().await?;
+	let relay_client: OnlineClient<PezkuwiConfig> = relay_alice.wait_client().await?;
 
-	log::info!("Ensuring parachain making progress");
+	log::info!("Ensuring teyrchain making progress");
 	assert_para_throughput(
 		&relay_client,
 		10,
@@ -67,17 +67,17 @@ async fn build_network_config() -> Result<NetworkConfig, anyhow::Error> {
 	// - relaychain Nodes:
 	// 	 - alice
 	// 	 - bob
-	// - parachain Nodes:
+	// - teyrchain Nodes:
 	//   - charlie - collator
 	//   - dave    - full node
 	//   - eve     - full node; connected only to dave,
 	//   - ferdie  - full node; connected only to dave; gets relay chain data only from alice
 	let config = NetworkConfigBuilder::new()
 		.with_relaychain(|r| {
-			r.with_chain("rococo-local")
-				.with_default_command("polkadot")
-				.with_default_image(images.polkadot.as_str())
-				.with_default_args(vec![("-lparachain=debug").into()])
+			r.with_chain("pezkuwichain-local")
+				.with_default_command("pezkuwi")
+				.with_default_image(images.pezkuwi.as_str())
+				.with_default_args(vec![("-lteyrchain=debug").into()])
 				.with_default_resources(|resources| {
 					// These settings are applicable only for `k8s` provider.
 					// Leaving them in case we switch to `k8s` some day.
@@ -86,11 +86,11 @@ async fn build_network_config() -> Result<NetworkConfig, anyhow::Error> {
 				.with_node(|node| node.with_name("alice"))
 				.with_node(|node| node.with_name("bob"))
 		})
-		.with_parachain(|p| {
+		.with_teyrchain(|p| {
 			p.with_id(PARA_ID)
-				.with_default_command("test-parachain")
+				.with_default_command("test-teyrchain")
 				.with_default_image(images.cumulus.as_str())
-				.with_default_args(vec![("-lparachain=debug").into()])
+				.with_default_args(vec![("-lteyrchain=debug").into()])
 				.with_collator(|n| n.with_name("dave").validator(false))
 				.with_collator(|n| n.with_name("charlie").validator(true))
 				.with_collator(|n| {

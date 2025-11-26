@@ -110,7 +110,7 @@
 //!
 //! - <https://github.com/paritytech/substrate/issues/13836>
 //! - [Substrate Seminar - Traits and Generic Types](https://www.youtube.com/watch?v=6cp10jVWNl4)
-//! - <https://substrate.stackexchange.com/questions/2228/type-casting-to-trait-t-as-config>
+//! - <https://exchange.pezkuwichain.app/questions/2228/type-casting-to-trait-t-as-config>
 #![allow(unused)]
 
 use frame::traits::Get;

@@ -100,11 +100,11 @@ reorder_prdocs() {
     commit_with_message "Reordering prdocs for the release $VERSION"
 }
 
-# Bump the binary version of the polkadot-parachain binary with the
+# Bump the binary version of the polkadot-teyrchain binary with the
 # new bumped version and commit changes.
 #
 # input: version e.g. 1.16.0
-set_polkadot_parachain_binary_version() {
+set_polkadot_teyrchain_binary_version() {
     bumped_version="$1"
     cargo_toml_file="$2"
 
@@ -174,8 +174,8 @@ function get_s3_url_base() {
         printf "releases.parity.io/polkadot"
         ;;
 
-      polkadot-parachain)
-        printf "releases.parity.io/polkadot-parachain"
+      polkadot-teyrchain)
+        printf "releases.parity.io/polkadot-teyrchain"
         ;;
 
       polkadot-omni-node)

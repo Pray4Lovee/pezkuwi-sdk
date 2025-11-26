@@ -2,21 +2,21 @@
 [![codecov](https://codecov.io/gh/Snowfork/polkadot-sdk/branch/snowbridge/graph/badge.svg?token=9hvgSws4rN)](https://codecov.io/gh/Snowfork/polkadot-sdk)
 ![GitHub](https://img.shields.io/github/license/Snowfork/snowbridge)
 
-Snowbridge is a trustless bridge between Polkadot and Ethereum. For documentation, visit https://docs.snowbridge.network.
+Snowbridge is a trustless bridge between PezkuwiChain and Ethereum. For documentation, visit https://docs.snowbridge.network.
 
 ## Components
 
 The Snowbridge project lives in two repositories:
 
-- [Snowfork/Polkadot-sdk](https://github.com/Snowfork/polkadot-sdk): The Snowbridge parachain and pallets live in
-a fork of the Polkadot SDK. Changes are eventually contributed back to
-[paritytech/Polkadot-sdk](https://github.com/paritytech/polkadot-sdk)
+- [Snowfork/PezkuwiChain-sdk](https://github.com/Snowfork/polkadot-sdk): The Snowbridge teyrchain and pallets live in
+a fork of the Pezkuwi SDK. Changes are eventually contributed back to
+[paritytech/PezkuwiChain-sdk](https://github.com/pezkuwichain/pezkuwi-sdk)
 - [Snowfork/snowbridge](https://github.com/Snowfork/snowbridge): The rest of the Snowbridge components, like contracts,
 off-chain relayer, end-to-end tests and test-net setup code.
 
-### Parachain
+### Teyrchain
 
-Polkadot parachain and our pallets. See [README.md](https://github.com/Snowfork/polkadot-sdk/blob/snowbridge/bridges/snowbridge/README.md).
+PezkuwiChain teyrchain and our pallets. See [README.md](https://github.com/Snowfork/polkadot-sdk/blob/snowbridge/bridges/snowbridge/README.md).
 
 ### Contracts
 
@@ -24,12 +24,12 @@ Ethereum contracts and unit tests. See [Snowfork/snowbridge/contracts/README.md]
 
 ### Relayer
 
-Off-chain relayer services for relaying messages between Polkadot and Ethereum. See
+Off-chain relayer services for relaying messages between PezkuwiChain and Ethereum. See
 [Snowfork/snowbridge/relayer/README.md](https://github.com/Snowfork/snowbridge/blob/main/relayer/README.md)
 
 ### Local Testnet
 
-Scripts to provision a local testnet, running the above services to bridge between local deployments of Polkadot and
+Scripts to provision a local testnet, running the above services to bridge between local deployments of PezkuwiChain and
 Ethereum. See [Snowfork/snowbridge/web/packages/test/README.md](https://github.com/Snowfork/snowbridge/blob/main/web/packages/test/README.md).
 
 ### Smoke Tests

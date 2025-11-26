@@ -119,7 +119,7 @@ pub mod v1 {
 	/// Migration to add usernames to Identity info.
 	///
 	/// `T` is the runtime and `KL` is the key limit to migrate. This is just a safety guard to
-	/// prevent stalling a parachain by accumulating too much weight in the migration. To have an
+	/// prevent stalling a teyrchain by accumulating too much weight in the migration. To have an
 	/// unlimited migration (e.g. in a chain without PoV limits), set this to `u64::MAX`.
 	pub struct VersionUncheckedMigrateV0ToV1<T, const KL: u64>(PhantomData<T>);
 	impl<T: Config, const KL: u64> UncheckedOnRuntimeUpgrade for VersionUncheckedMigrateV0ToV1<T, KL> {

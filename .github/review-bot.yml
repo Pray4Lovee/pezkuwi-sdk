@@ -28,7 +28,7 @@ rules:
         - .*
       # excluding files from 'Runtime files' and 'CI files' rules
       exclude:
-        - ^cumulus/parachains/common/src/[^/]+\.rs$
+        - ^cumulus/teyrchains/common/src/[^/]+\.rs$
         - ^\.gitlab-ci\.yml
         - ^docker/.*
         - ^\.github/.*

@@ -2,10 +2,10 @@
 
 The Contracts module provides functionality for the runtime to deploy and execute WebAssembly smart-contracts.
 
-- [`Call`](https://paritytech.github.io/substrate/master/pallet_contracts/pallet/enum.Call.html)
-- [`Config`](https://paritytech.github.io/substrate/master/pallet_contracts/pallet/trait.Config.html)
-- [`Error`](https://paritytech.github.io/substrate/master/pallet_contracts/pallet/enum.Error.html)
-- [`Event`](https://paritytech.github.io/substrate/master/pallet_contracts/pallet/enum.Event.html)
+- [`Call`](https://docs.pezkuwichain.io/substrate/master/pallet_contracts/pallet/enum.Call.html)
+- [`Config`](https://docs.pezkuwichain.io/substrate/master/pallet_contracts/pallet/trait.Config.html)
+- [`Error`](https://docs.pezkuwichain.io/substrate/master/pallet_contracts/pallet/enum.Error.html)
+- [`Event`](https://docs.pezkuwichain.io/substrate/master/pallet_contracts/pallet/enum.Event.html)
 
 ## Overview
 
@@ -24,7 +24,7 @@ Finally, when an account is reaped, its associated code and storage of the smart
 
 ### Weight
 
-Senders must specify a [`Weight`](https://paritytech.github.io/substrate/master/sp_weights/struct.Weight.html) limit
+Senders must specify a [`Weight`](https://docs.pezkuwichain.io/substrate/master/sp_weights/struct.Weight.html) limit
 with every call, as all instructions invoked by the smart-contract require weight. Unused weight is refunded after the
 call, regardless of the execution outcome.
 
@@ -52,17 +52,17 @@ constraints:
 1. No contract can ever be instantiated from an indeterministic code. The only way to execute the code is to use a
 delegate call from a deterministic contract.
 2. The code that wants to use this feature needs to depend on `pallet-contracts` and use
-[`bare_call()`](https://paritytech.github.io/substrate/master/pallet_contracts/pallet/struct.Pallet.html#method.bare_call)
+[`bare_call()`](https://docs.pezkuwichain.io/substrate/master/pallet_contracts/pallet/struct.Pallet.html#method.bare_call)
 directly. This makes sure that by default `pallet-contracts` does not expose any indeterminism.
 
 #### How to use
 
 An indeterministic code can be deployed on-chain by passing `Determinism::Relaxed` to
-[`upload_code()`](https://paritytech.github.io/substrate/master/pallet_contracts/pallet/struct.Pallet.html#method.upload_code).
+[`upload_code()`](https://docs.pezkuwichain.io/substrate/master/pallet_contracts/pallet/struct.Pallet.html#method.upload_code).
 A deterministic contract can then delegate call into it if and only if it is ran by using
-[`bare_call()`](https://paritytech.github.io/substrate/master/pallet_contracts/pallet/struct.Pallet.html#method.bare_call)
+[`bare_call()`](https://docs.pezkuwichain.io/substrate/master/pallet_contracts/pallet/struct.Pallet.html#method.bare_call)
 and passing
-[`Determinism::Relaxed`](https://paritytech.github.io/substrate/master/pallet_contracts/enum.Determinism.html#variant.Relaxed)
+[`Determinism::Relaxed`](https://docs.pezkuwichain.io/substrate/master/pallet_contracts/enum.Determinism.html#variant.Relaxed)
 to it. **Never use this argument when the contract is called from an on-chain transaction.**
 
 ## Interface
@@ -70,7 +70,7 @@ to it. **Never use this argument when the contract is called from an on-chain tr
 ### Dispatchable functions
 
 Those are documented in the [reference
-documentation](https://paritytech.github.io/substrate/master/pallet_contracts/index.html#dispatchable-functions).
+documentation](https://docs.pezkuwichain.io/substrate/master/pallet_contracts/index.html#dispatchable-functions).
 
 ### Interface exposed to contracts
 
@@ -97,7 +97,7 @@ Each contract is one WebAssembly module that looks like this:
 ```
 
 The documentation of all importable functions can be found
-[here](https://paritytech.github.io/substrate/master/pallet_contracts/api_doc/trait.Current.html).
+[here](https://docs.pezkuwichain.io/substrate/master/pallet_contracts/api_doc/trait.Current.html).
 
 ## Usage
 
@@ -108,7 +108,7 @@ is [`ink!`](https://use.ink). It enables writing WebAssembly-based smart-contrac
 ## Debugging
 
 Contracts can emit messages to the client when called as RPC through the
-[`debug_message`](https://paritytech.github.io/substrate/master/pallet_contracts/api_doc/trait.Current.html#tymethod.debug_message)
+[`debug_message`](https://docs.pezkuwichain.io/substrate/master/pallet_contracts/api_doc/trait.Current.html#tymethod.debug_message)
 API. This is exposed in [ink!](https://use.ink) via
 [`ink_env::debug_message()`](https://paritytech.github.io/ink/ink_env/fn.debug_message.html).
 

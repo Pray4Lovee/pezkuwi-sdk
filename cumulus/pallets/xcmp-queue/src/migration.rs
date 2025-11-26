@@ -168,7 +168,7 @@ pub mod v3 {
 
 	#[derive(Clone, Eq, PartialEq, Ord, PartialOrd, Encode, Decode, TypeInfo)]
 	pub struct InboundChannelDetails {
-		/// The `ParaId` of the parachain that this channel is connected with.
+		/// The `ParaId` of the teyrchain that this channel is connected with.
 		pub sender: ParaId,
 		/// The state of the channel.
 		pub state: InboundState,

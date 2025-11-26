@@ -13,22 +13,22 @@ This document catalogs all protocol-level constants, runtime parameters, and con
 
 ### Impact Assessment
 - **Critical Changes Required**: Runtime version constants (spec_name, impl_name)
-- **Network-Specific Adjustments**: Currency symbols, time constants, parachain IDs
+- **Network-Specific Adjustments**: Currency symbols, time constants, teyrchain IDs
 - **Risk Level**: LOW to MEDIUM (well-isolated changes)
 
 ---
 
 ## 1. Runtime Version Constants
 
-### 1.1 Rococo Relay Chain Runtime
-**File**: `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/rococo/src/lib.rs`
+### 1.1 Pezkuwichain Relay Chain Runtime
+**File**: `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/pezkuwichain/src/lib.rs`
 
 ```rust
 // Lines 179-190
 #[sp_version::runtime_version]
 pub const VERSION: RuntimeVersion = RuntimeVersion {
-    spec_name: alloc::borrow::Cow::Borrowed("rococo"),
-    impl_name: alloc::borrow::Cow::Borrowed("parity-rococo-v2.0"),
+    spec_name: alloc::borrow::Cow::Borrowed("pezkuwichain"),
+    impl_name: alloc::borrow::Cow::Borrowed("parity-pezkuwichain-v2.0"),
     authoring_version: 0,
     spec_version: 1_020_001,
     impl_version: 0,
@@ -44,15 +44,15 @@ pub const VERSION: RuntimeVersion = RuntimeVersion {
 
 ---
 
-### 1.2 Westend Relay Chain Runtime
-**File**: `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/westend/src/lib.rs`
+### 1.2 Zagros Relay Chain Runtime
+**File**: `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/zagros/src/lib.rs`
 
 ```rust
 // Lines 170-181
 #[sp_version::runtime_version]
 pub const VERSION: RuntimeVersion = RuntimeVersion {
-    spec_name: alloc::borrow::Cow::Borrowed("westend"),
-    impl_name: alloc::borrow::Cow::Borrowed("parity-westend"),
+    spec_name: alloc::borrow::Cow::Borrowed("zagros"),
+    impl_name: alloc::borrow::Cow::Borrowed("parity-zagros"),
     authoring_version: 2,
     spec_version: 1_020_001,
     impl_version: 0,
@@ -83,10 +83,10 @@ transaction_version: 1,
 
 ---
 
-### 1.4 Parachain Runtimes
+### 1.4 Teyrchain Runtimes
 
-#### Asset Hub Rococo
-**File**: `/home/mamostehp/polkadot-sdk-fresh/cumulus/parachains/runtimes/assets/asset-hub-rococo/src/lib.rs`
+#### Asset Hub Pezkuwichain
+**File**: `/home/mamostehp/polkadot-sdk-fresh/cumulus/teyrchains/runtimes/assets/asset-hub-pezkuwichain/src/lib.rs`
 
 ```rust
 // Lines 130-133
@@ -101,13 +101,13 @@ spec_version: 1_020_001,
 
 ---
 
-#### Asset Hub Westend
-**File**: `/home/mamostehp/polkadot-sdk-fresh/cumulus/parachains/runtimes/assets/asset-hub-westend/src/lib.rs`
+#### Asset Hub Zagros
+**File**: `/home/mamostehp/polkadot-sdk-fresh/cumulus/teyrchains/runtimes/assets/asset-hub-zagros/src/lib.rs`
 
 ```rust
 // Lines 145-148
 // Note: The spec_name is intentionally kept as "westmint" for compatibility with
-// "asset-hub-westend". Many wallets/tools depend on the `spec_name`, so it remains "westmint"
+// "asset-hub-zagros". Many wallets/tools depend on the `spec_name`, so it remains "westmint"
 spec_name: alloc::borrow::Cow::Borrowed("westmint"),
 impl_name: alloc::borrow::Cow::Borrowed("westmint"),
 ```
@@ -118,13 +118,13 @@ impl_name: alloc::borrow::Cow::Borrowed("westmint"),
 
 ---
 
-#### Coretime Rococo
-**File**: `/home/mamostehp/polkadot-sdk-fresh/cumulus/parachains/runtimes/coretime/coretime-rococo/src/lib.rs`
+#### Coretime Pezkuwichain
+**File**: `/home/mamostehp/polkadot-sdk-fresh/cumulus/teyrchains/runtimes/coretime/coretime-pezkuwichain/src/lib.rs`
 
 ```rust
 // Lines 159-162
-spec_name: alloc::borrow::Cow::Borrowed("coretime-rococo"),
-impl_name: alloc::borrow::Cow::Borrowed("coretime-rococo"),
+spec_name: alloc::borrow::Cow::Borrowed("coretime-pezkuwichain"),
+impl_name: alloc::borrow::Cow::Borrowed("coretime-pezkuwichain"),
 spec_version: 1_020_001,
 ```
 
@@ -133,21 +133,21 @@ spec_version: 1_020_001,
 
 ---
 
-#### Coretime Westend
-**File**: `/home/mamostehp/polkadot-sdk-fresh/cumulus/parachains/runtimes/coretime/coretime-westend/src/lib.rs`
+#### Coretime Zagros
+**File**: `/home/mamostehp/polkadot-sdk-fresh/cumulus/teyrchains/runtimes/coretime/coretime-zagros/src/lib.rs`
 
 **Rebranding Required**: YES
 **Priority**: MEDIUM
 
 ---
 
-#### Bridge Hub Rococo
-**File**: `/home/mamostehp/polkadot-sdk-fresh/cumulus/parachains/runtimes/bridge-hubs/bridge-hub-rococo/src/lib.rs`
+#### Bridge Hub Pezkuwichain
+**File**: `/home/mamostehp/polkadot-sdk-fresh/cumulus/teyrchains/runtimes/bridge-hubs/bridge-hub-pezkuwichain/src/lib.rs`
 
 ```rust
 // Lines 252-253
-spec_name: alloc::borrow::Cow::Borrowed("bridge-hub-rococo"),
-impl_name: alloc::borrow::Cow::Borrowed("bridge-hub-rococo"),
+spec_name: alloc::borrow::Cow::Borrowed("bridge-hub-pezkuwichain"),
+impl_name: alloc::borrow::Cow::Borrowed("bridge-hub-pezkuwichain"),
 ```
 
 **Rebranding Required**: YES
@@ -155,13 +155,13 @@ impl_name: alloc::borrow::Cow::Borrowed("bridge-hub-rococo"),
 
 ---
 
-#### People Rococo
-**File**: `/home/mamostehp/polkadot-sdk-fresh/cumulus/parachains/runtimes/people/people-rococo/src/lib.rs`
+#### People Pezkuwichain
+**File**: `/home/mamostehp/polkadot-sdk-fresh/cumulus/teyrchains/runtimes/people/people-pezkuwichain/src/lib.rs`
 
 ```rust
 // Lines 145-146
-spec_name: alloc::borrow::Cow::Borrowed("people-rococo"),
-impl_name: alloc::borrow::Cow::Borrowed("people-rococo"),
+spec_name: alloc::borrow::Cow::Borrowed("people-pezkuwichain"),
+impl_name: alloc::borrow::Cow::Borrowed("people-pezkuwichain"),
 ```
 
 **Rebranding Required**: YES
@@ -169,13 +169,13 @@ impl_name: alloc::borrow::Cow::Borrowed("people-rococo"),
 
 ---
 
-#### Collectives Westend
-**File**: `/home/mamostehp/polkadot-sdk-fresh/cumulus/parachains/runtimes/collectives/collectives-westend/src/lib.rs`
+#### Collectives Zagros
+**File**: `/home/mamostehp/polkadot-sdk-fresh/cumulus/teyrchains/runtimes/collectives/collectives-zagros/src/lib.rs`
 
 ```rust
 // Lines 130-133
-spec_name: alloc::borrow::Cow::Borrowed("collectives-westend"),
-impl_name: alloc::borrow::Cow::Borrowed("collectives-westend"),
+spec_name: alloc::borrow::Cow::Borrowed("collectives-zagros"),
+impl_name: alloc::borrow::Cow::Borrowed("collectives-zagros"),
 spec_version: 1_020_001,
 ```
 
@@ -184,17 +184,17 @@ spec_version: 1_020_001,
 
 ---
 
-#### Glutton Westend
-**File**: `/home/mamostehp/polkadot-sdk-fresh/cumulus/parachains/runtimes/glutton/glutton-westend/src/lib.rs`
+#### Glutton Zagros
+**File**: `/home/mamostehp/polkadot-sdk-fresh/cumulus/teyrchains/runtimes/glutton/glutton-zagros/src/lib.rs`
 
 ```rust
 // Lines 103-104
-spec_name: alloc::borrow::Cow::Borrowed("glutton-westend"),
-impl_name: alloc::borrow::Cow::Borrowed("glutton-westend"),
+spec_name: alloc::borrow::Cow::Borrowed("glutton-zagros"),
+impl_name: alloc::borrow::Cow::Borrowed("glutton-zagros"),
 ```
 
 **Rebranding Required**: YES
-**Priority**: LOW (test parachain)
+**Priority**: LOW (test teyrchain)
 
 ---
 
@@ -203,11 +203,11 @@ impl_name: alloc::borrow::Cow::Borrowed("glutton-westend"),
 ### 2.1 BABE (Block Authoring)
 
 #### Common Constants
-**File**: `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/rococo/constants/src/lib.rs`
-**File**: `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/westend/constants/src/lib.rs`
+**File**: `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/pezkuwichain/constants/src/lib.rs`
+**File**: `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/zagros/constants/src/lib.rs`
 
 ```rust
-// Lines 39-62 (rococo/constants)
+// Lines 39-62 (pezkuwichain/constants)
 pub mod time {
     pub const MILLISECS_PER_BLOCK: Moment = 6000;
     pub const SLOT_DURATION: Moment = MILLISECS_PER_BLOCK;
@@ -223,26 +223,26 @@ pub mod time {
 
 ---
 
-#### Epoch Duration (Rococo)
-**File**: `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/rococo/constants/src/lib.rs`
+#### Epoch Duration (Pezkuwichain)
+**File**: `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/pezkuwichain/constants/src/lib.rs`
 
 ```rust
 // Lines 46-49
 frame_support::parameter_types! {
     pub EpochDurationInBlocks: BlockNumber =
-        prod_or_fast!(1 * HOURS, 1 * MINUTES, "ROCOCO_EPOCH_DURATION");
+        prod_or_fast!(1 * HOURS, 1 * MINUTES, "PEZKUWICHAIN_EPOCH_DURATION");
 }
 ```
 
-**Network-Specific**: YES (Rococo-specific env variable)
+**Network-Specific**: YES (Pezkuwichain-specific env variable)
 **Rebranding Required**: YES (environment variable name)
 **Priority**: MEDIUM
 **File Location**: Line 48
 
 ---
 
-#### Epoch Duration (Westend)
-**File**: `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/westend/src/lib.rs`
+#### Epoch Duration (Zagros)
+**File**: `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/zagros/src/lib.rs`
 
 ```rust
 // Lines 349-355
@@ -250,7 +250,7 @@ parameter_types! {
     pub const EpochDuration: u64 = prod_or_fast!(
         EPOCH_DURATION_IN_SLOTS,
         2 * MINUTES,
-        "WESTEND_EPOCH_DURATION"
+        "ZAGROS_EPOCH_DURATION"
     );
     pub const ExpectedBlockTime: Moment = MILLISECS_PER_BLOCK;
     pub const ReportLongevity: u64 =
@@ -258,7 +258,7 @@ parameter_types! {
 }
 ```
 
-**Network-Specific**: YES (Westend-specific env variable)
+**Network-Specific**: YES (Zagros-specific env variable)
 **Rebranding Required**: YES (environment variable name)
 **Priority**: MEDIUM
 **File Location**: Lines 349-355
@@ -266,7 +266,7 @@ parameter_types! {
 ---
 
 #### BABE Genesis Config
-**File**: `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/rococo/src/lib.rs`
+**File**: `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/pezkuwichain/src/lib.rs`
 
 ```rust
 // Lines 192-197
@@ -285,8 +285,8 @@ pub const BABE_GENESIS_EPOCH_CONFIG: sp_consensus_babe::BabeEpochConfiguration =
 
 ### 2.2 GRANDPA (Finality)
 
-#### Session Configuration (Rococo)
-**File**: `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/rococo/src/lib.rs`
+#### Session Configuration (Pezkuwichain)
+**File**: `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/pezkuwichain/src/lib.rs`
 
 ```rust
 // Lines 504-505
@@ -300,8 +300,8 @@ pub const BondingDuration: sp_staking::EraIndex = 28;
 
 ---
 
-#### Session Configuration (Westend)
-**File**: `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/westend/src/lib.rs`
+#### Session Configuration (Zagros)
+**File**: `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/zagros/src/lib.rs`
 
 ```rust
 // Lines 733-737
@@ -320,7 +320,7 @@ parameter_types! {
 ---
 
 #### Authority Set ID Session Entries
-**File**: `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/westend/src/lib.rs`
+**File**: `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/zagros/src/lib.rs`
 
 ```rust
 // Line 999
@@ -336,8 +336,8 @@ pub const MaxSetIdSessionEntries: u32 = BondingDuration::get() * SessionsPerEra:
 ### 2.3 Session Keys & Validators
 
 #### Max Authorities
-**File**: `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/rococo/src/lib.rs` (Line 522)
-**File**: `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/westend/src/lib.rs` (Line 938)
+**File**: `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/pezkuwichain/src/lib.rs` (Line 522)
+**File**: `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/zagros/src/lib.rs` (Line 938)
 
 ```rust
 pub const MaxAuthorities: u32 = 100_000;
@@ -350,13 +350,13 @@ pub const MaxAuthorities: u32 = 100_000;
 ---
 
 #### Max Nominators
-**Rococo**: `ConstU32<0>` (Line 383)
-**Westend**: `64` (Line 742)
+**Pezkuwichain**: `ConstU32<0>` (Line 383)
+**Zagros**: `64` (Line 742)
 
 **Network-Specific**: YES
 **Rebranding Required**: NO
 **Priority**: N/A
-**Note**: Rococo disables nomination pools, Westend enables them
+**Note**: Pezkuwichain disables nomination pools, Zagros enables them
 
 ---
 
@@ -364,8 +364,8 @@ pub const MaxAuthorities: u32 = 100_000;
 
 ### 3.1 Currency Units & Existential Deposit
 
-#### Rococo Currency
-**File**: `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/rococo/constants/src/lib.rs`
+#### Pezkuwichain Currency
+**File**: `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/pezkuwichain/constants/src/lib.rs`
 
 ```rust
 // Lines 22-36
@@ -389,12 +389,12 @@ pub mod currency {
 **Network-Specific**: YES (CENTS calculation differs)
 **Rebranding Required**: NO (numeric values)
 **Priority**: N/A
-**Note**: Rococo uses `UNITS / 30_000` for CENTS
+**Note**: Pezkuwichain uses `UNITS / 30_000` for CENTS
 
 ---
 
-#### Westend Currency
-**File**: `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/westend/constants/src/lib.rs`
+#### Zagros Currency
+**File**: `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/zagros/constants/src/lib.rs`
 
 ```rust
 // Lines 22-36
@@ -418,14 +418,14 @@ pub mod currency {
 **Network-Specific**: YES (different CENTS and deposit calculations)
 **Rebranding Required**: NO
 **Priority**: N/A
-**Note**: Westend uses `UNITS / 100` for CENTS (standard decimal)
+**Note**: Zagros uses `UNITS / 100` for CENTS (standard decimal)
 
 ---
 
 ### 3.2 Transaction Fees
 
 #### Fee Configuration
-**File**: `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/rococo/src/lib.rs`
+**File**: `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/pezkuwichain/src/lib.rs`
 
 ```rust
 // Lines 424-429
@@ -444,7 +444,7 @@ parameter_types! {
 ---
 
 #### Weight to Fee Polynomial
-**File**: `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/rococo/constants/src/lib.rs`
+**File**: `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/pezkuwichain/constants/src/lib.rs`
 
 ```rust
 // Lines 87-101
@@ -452,7 +452,7 @@ pub struct WeightToFee;
 impl WeightToFeePolynomial for WeightToFee {
     type Balance = Balance;
     fn polynomial() -> WeightToFeeCoefficients<Self::Balance> {
-        // in Rococo, extrinsic base weight (smallest non-zero weight) is mapped to 1/10 CENT:
+        // in Pezkuwichain, extrinsic base weight (smallest non-zero weight) is mapped to 1/10 CENT:
         let p = super::currency::CENTS;
         let q = 10 * Balance::from(ExtrinsicBaseWeight::get().ref_time());
         smallvec![WeightToFeeCoefficient {
@@ -465,7 +465,7 @@ impl WeightToFeePolynomial for WeightToFee {
 }
 ```
 
-**Network-Specific**: YES (comments reference "Rococo")
+**Network-Specific**: YES (comments reference "Pezkuwichain")
 **Rebranding Required**: YES (comment text only)
 **Priority**: LOW
 **File Location**: Line 91
@@ -475,7 +475,7 @@ impl WeightToFeePolynomial for WeightToFee {
 ### 3.3 Treasury Configuration
 
 #### Treasury Parameters
-**File**: `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/rococo/src/lib.rs`
+**File**: `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/pezkuwichain/src/lib.rs`
 
 ```rust
 // Lines 509-512
@@ -492,13 +492,13 @@ pub const PayoutSpendPeriod: BlockNumber = 30 * DAYS;
 ---
 
 #### Treasury Pallet ID
-**Rococo**: `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/rococo/constants/src/lib.rs` (Line 144)
+**Pezkuwichain**: `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/pezkuwichain/constants/src/lib.rs` (Line 144)
 
 ```rust
 pub const TREASURY_PALLET_ID: u8 = 18;
 ```
 
-**Westend**: `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/westend/constants/src/lib.rs` (Line 141)
+**Zagros**: `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/zagros/constants/src/lib.rs` (Line 141)
 
 ```rust
 pub const TREASURY_PALLET_ID: u8 = 37;
@@ -510,9 +510,9 @@ pub const TREASURY_PALLET_ID: u8 = 37;
 
 ---
 
-### 3.4 Staking Parameters (Westend Only)
+### 3.4 Staking Parameters (Zagros Only)
 
-**File**: `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/westend/src/lib.rs`
+**File**: `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/zagros/src/lib.rs`
 
 ```rust
 // Lines 268-291 (dynamic_params)
@@ -539,10 +539,10 @@ pub mod inflation {
 }
 ```
 
-**Network-Specific**: YES (Westend has active staking)
+**Network-Specific**: YES (Zagros has active staking)
 **Rebranding Required**: NO
 **Priority**: N/A
-**Note**: Rococo does not have comparable staking configuration
+**Note**: Pezkuwichain does not have comparable staking configuration
 
 ---
 
@@ -568,8 +568,8 @@ pub const DAYS: BlockNumber = HOURS * 24;                                       
 
 ---
 
-#### Rococo Additional Time Constants
-**File**: `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/rococo/constants/src/lib.rs`
+#### Pezkuwichain Additional Time Constants
+**File**: `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/pezkuwichain/constants/src/lib.rs`
 
 ```rust
 // Line 55
@@ -585,7 +585,7 @@ pub const WEEKS: BlockNumber = DAYS * 7;  // = 100,800 blocks
 ### 4.2 Block Production Configuration
 
 #### Minimum Period (Timestamp)
-**File**: `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/rococo/src/lib.rs`
+**File**: `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/pezkuwichain/src/lib.rs`
 
 ```rust
 // Lines 441-442
@@ -682,7 +682,7 @@ pub BlockLength: limits::BlockLength =
 /// Maximum PoV size we support right now.
 ///
 /// Used for:
-/// * initial genesis for the Parachains configuration
+/// * initial genesis for the Teyrchains configuration
 /// * checking updates to this stored runtime configuration do not exceed this limit
 /// * when detecting a PoV decompression bomb in the client
 // NOTE: This value is used in the runtime so be careful when changing it.
@@ -703,7 +703,7 @@ pub const MAX_POV_SIZE: u32 = 10 * 1024 * 1024;  // 10 MB
 /// Maximum runtime code size we support right now.
 ///
 /// Used for:
-/// * initial genesis for the Parachains configuration
+/// * initial genesis for the Teyrchains configuration
 /// * checking updates to this stored runtime configuration do not exceed this limit
 /// * when detecting a code decompression bomb in the client
 // NOTE: This value is used in the runtime so be careful when changing it.
@@ -724,7 +724,7 @@ pub const MAX_CODE_SIZE: u32 = 3 * 1024 * 1024;  // 3 MB
 /// Maximum head data size we support right now.
 ///
 /// Used for:
-/// * initial genesis for the Parachains configuration
+/// * initial genesis for the Teyrchains configuration
 /// * checking updates to this stored runtime configuration do not exceed this limit
 // NOTE: This value is used in the runtime so be careful when changing it.
 pub const MAX_HEAD_DATA_SIZE: u32 = 1 * 1024 * 1024;  // 1 MB
@@ -738,8 +738,8 @@ pub const MAX_HEAD_DATA_SIZE: u32 = 1 * 1024 * 1024;  // 1 MB
 
 ### 5.4 Message Queue & Service Weights
 
-#### Rococo Message Queue
-**File**: `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/rococo/src/lib.rs`
+#### Pezkuwichain Message Queue
+**File**: `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/pezkuwichain/src/lib.rs`
 
 ```rust
 // Lines 1076
@@ -759,22 +759,22 @@ pub MaxIntakeWeight: Weight = MAXIMUM_BLOCK_WEIGHT / 10;
 
 ### 6.1 Fast Runtime Feature
 
-#### Rococo Cargo.toml
-**File**: `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/rococo/Cargo.toml`
+#### Pezkuwichain Cargo.toml
+**File**: `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/pezkuwichain/Cargo.toml`
 
 ```toml
 # Line 329
-fast-runtime = ["rococo-runtime-constants/fast-runtime"]
+fast-runtime = ["pezkuwichain-runtime-constants/fast-runtime"]
 ```
 
-**Network-Specific**: YES (references "rococo-runtime-constants")
+**Network-Specific**: YES (references "pezkuwichain-runtime-constants")
 **Rebranding Required**: YES (crate name)
 **Priority**: MEDIUM
 
 ---
 
-#### Westend Cargo.toml
-**File**: `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/westend/Cargo.toml`
+#### Zagros Cargo.toml
+**File**: `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/zagros/Cargo.toml`
 
 ```toml
 # Line 358
@@ -789,10 +789,10 @@ fast-runtime = []
 
 ### 6.2 Runtime Benchmarks Feature
 
-Both Rococo and Westend have extensive `runtime-benchmarks` feature flags that cascade to all included pallets.
+Both Pezkuwichain and Zagros have extensive `runtime-benchmarks` feature flags that cascade to all included pallets.
 
-**File**: `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/rococo/Cargo.toml` (Lines 217-270)
-**File**: `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/westend/Cargo.toml` (Lines 237-297)
+**File**: `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/pezkuwichain/Cargo.toml` (Lines 217-270)
+**File**: `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/zagros/Cargo.toml` (Lines 237-297)
 
 **Network-Specific**: NO (standard benchmarking infrastructure)
 **Rebranding Required**: NO
@@ -815,9 +815,9 @@ Both Rococo and Westend have extensive `runtime-benchmarks` feature flags that c
 ```
 
 This macro is used in:
-- **Rococo**: `EpochDurationInBlocks` with env variable `"ROCOCO_EPOCH_DURATION"`
-- **Westend**: `EpochDuration` with env variable `"WESTEND_EPOCH_DURATION"`
-- **Westend**: `SessionsPerEra` for fast vs. production builds
+- **Pezkuwichain**: `EpochDurationInBlocks` with env variable `"PEZKUWICHAIN_EPOCH_DURATION"`
+- **Zagros**: `EpochDuration` with env variable `"ZAGROS_EPOCH_DURATION"`
+- **Zagros**: `SessionsPerEra` for fast vs. production builds
 
 **Network-Specific**: YES (environment variable names)
 **Rebranding Required**: YES
@@ -829,7 +829,7 @@ This macro is used in:
 
 ### 7.1 Balances Pallet
 
-**File**: `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/rococo/src/lib.rs`
+**File**: `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/pezkuwichain/src/lib.rs`
 
 ```rust
 // Lines 401-405
@@ -848,7 +848,7 @@ parameter_types! {
 
 ### 7.2 Indices Pallet
 
-**File**: `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/rococo/src/lib.rs`
+**File**: `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/pezkuwichain/src/lib.rs`
 
 ```rust
 // Line 390
@@ -865,7 +865,7 @@ parameter_types! {
 
 ### 7.3 Scheduler Pallet
 
-**File**: `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/rococo/src/lib.rs`
+**File**: `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/pezkuwichain/src/lib.rs`
 
 ```rust
 // Lines 242-247
@@ -885,8 +885,8 @@ parameter_types! {
 
 ### 7.4 Democracy/Governance Pallet
 
-#### Conviction Voting (Rococo)
-**File**: `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/rococo/src/lib.rs`
+#### Conviction Voting (Pezkuwichain)
+**File**: `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/pezkuwichain/src/lib.rs`
 
 ```rust
 // Line 844
@@ -899,53 +899,53 @@ type VotingPeriod = ConstU32<{ 5 * DAYS }>;
 
 ---
 
-### 7.5 System Parachain Constants
+### 7.5 System Teyrchain Constants
 
-#### Rococo System Parachains
-**File**: `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/rococo/constants/src/lib.rs`
+#### Pezkuwichain System Teyrchains
+**File**: `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/pezkuwichain/constants/src/lib.rs`
 
 ```rust
 // Lines 110-127
-pub mod system_parachain {
-    /// Network's Asset Hub parachain ID.
+pub mod system_teyrchain {
+    /// Network's Asset Hub teyrchain ID.
     pub const ASSET_HUB_ID: u32 = 1000;
-    /// Contracts parachain ID.
+    /// Contracts teyrchain ID.
     pub const CONTRACTS_ID: u32 = 1002;
-    /// Encointer parachain ID.
+    /// Encointer teyrchain ID.
     pub const ENCOINTER_ID: u32 = 1003;
-    /// People parachain ID.
+    /// People teyrchain ID.
     pub const PEOPLE_ID: u32 = 1004;
-    /// BridgeHub parachain ID.
+    /// BridgeHub teyrchain ID.
     pub const BRIDGE_HUB_ID: u32 = 1013;
-    /// Brokerage parachain ID.
+    /// Brokerage teyrchain ID.
     pub const BROKER_ID: u32 = 1005;
 }
 ```
 
-**Network-Specific**: YES (parachain ID allocation)
+**Network-Specific**: YES (teyrchain ID allocation)
 **Rebranding Required**: NO (numeric IDs)
 **Priority**: N/A
-**Note**: Rococo and Westend share same system parachain IDs except BridgeHub (1013 vs 1002)
+**Note**: Pezkuwichain and Zagros share same system teyrchain IDs except BridgeHub (1013 vs 1002)
 
 ---
 
-#### Westend System Parachains
-**File**: `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/westend/constants/src/lib.rs`
+#### Zagros System Teyrchains
+**File**: `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/zagros/constants/src/lib.rs`
 
 ```rust
 // Lines 110-124
-pub mod system_parachain {
-    /// Network's Asset Hub parachain ID.
+pub mod system_teyrchain {
+    /// Network's Asset Hub teyrchain ID.
     pub const ASSET_HUB_ID: u32 = 1000;
-    /// Collectives parachain ID.
+    /// Collectives teyrchain ID.
     pub const COLLECTIVES_ID: u32 = 1001;
-    /// BridgeHub parachain ID.
+    /// BridgeHub teyrchain ID.
     pub const BRIDGE_HUB_ID: u32 = 1002;
-    /// Encointer parachain ID.
+    /// Encointer teyrchain ID.
     pub const ENCOINTER_ID: u32 = 1003;
-    /// People Chain parachain ID.
+    /// People Chain teyrchain ID.
     pub const PEOPLE_ID: u32 = 1004;
-    /// Brokerage parachain ID.
+    /// Brokerage teyrchain ID.
     pub const BROKER_ID: u32 = 1005;
     /// AH-next - temporary AH clone.
     pub const ASSET_HUB_NEXT_ID: u32 = 1100;
@@ -955,13 +955,13 @@ pub mod system_parachain {
 **Network-Specific**: YES
 **Rebranding Required**: NO
 **Priority**: N/A
-**Note**: Westend has COLLECTIVES_ID and ASSET_HUB_NEXT_ID not present in Rococo
+**Note**: Zagros has COLLECTIVES_ID and ASSET_HUB_NEXT_ID not present in Pezkuwichain
 
 ---
 
 #### Coretime Timeslice Period
-**File**: `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/rococo/constants/src/lib.rs` (Lines 136-139)
-**File**: `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/westend/constants/src/lib.rs` (Lines 133-136)
+**File**: `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/pezkuwichain/constants/src/lib.rs` (Lines 136-139)
+**File**: `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/zagros/constants/src/lib.rs` (Lines 133-136)
 
 ```rust
 pub mod coretime {
@@ -981,12 +981,12 @@ pub mod coretime {
 
 ---
 
-### 7.6 Parachain Host Configuration
+### 7.6 Teyrchain Host Configuration
 
-Both Rococo and Westend define default parachain host configurations in their genesis config presets.
+Both Pezkuwichain and Zagros define default teyrchain host configurations in their genesis config presets.
 
-**File**: `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/rococo/src/genesis_config_presets.rs` (Lines 93-144)
-**File**: `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/westend/src/genesis_config_presets.rs` (Lines 95-148)
+**File**: `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/pezkuwichain/src/genesis_config_presets.rs` (Lines 93-144)
+**File**: `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/zagros/src/genesis_config_presets.rs` (Lines 95-148)
 
 Key constants include:
 - `validation_upgrade_cooldown: 2`
@@ -1009,20 +1009,20 @@ Key constants include:
 
 | Constant Category | Example | Change Required | Priority | Risk | Files Affected |
 |-------------------|---------|----------------|----------|------|----------------|
-| **Runtime spec_name** | "rococo", "westend" | YES | HIGH | LOW | 13 runtime lib.rs files |
-| **Runtime impl_name** | "parity-rococo-v2.0" | YES | HIGH | LOW | 13 runtime lib.rs files |
-| **Parachain spec_name** | "statemine", "coretime-rococo" | YES | HIGH | MEDIUM | 10+ parachain runtime files |
-| **Epoch env variables** | "ROCOCO_EPOCH_DURATION" | YES | MEDIUM | LOW | 2 constants files |
-| **Comment references** | "in Rococo, extrinsic..." | YES | LOW | VERY LOW | 2 fee modules |
-| **Cargo feature deps** | `rococo-runtime-constants/fast-runtime` | YES | MEDIUM | LOW | 1 Cargo.toml |
-| **Currency symbols** | ROC, WND | YES | HIGH | LOW | Genesis configs |
+| **Runtime spec_name** | "pezkuwichain", "zagros" | YES | HIGH | LOW | 13 runtime lib.rs files |
+| **Runtime impl_name** | "parity-pezkuwichain-v2.0" | YES | HIGH | LOW | 13 runtime lib.rs files |
+| **Teyrchain spec_name** | "statemine", "coretime-pezkuwichain" | YES | HIGH | MEDIUM | 10+ teyrchain runtime files |
+| **Epoch env variables** | "PEZKUWICHAIN_EPOCH_DURATION" | YES | MEDIUM | LOW | 2 constants files |
+| **Comment references** | "in Pezkuwichain, extrinsic..." | YES | LOW | VERY LOW | 2 fee modules |
+| **Cargo feature deps** | `pezkuwichain-runtime-constants/fast-runtime` | YES | MEDIUM | LOW | 1 Cargo.toml |
+| **Currency symbols** | TYR, ZGR | YES | HIGH | LOW | Genesis configs |
 | **Block time constants** | MILLISECS_PER_BLOCK | NO | N/A | N/A | Shared constants |
 | **Economic parameters** | EXISTENTIAL_DEPOSIT | NO | N/A | N/A | Network-specific values |
 | **Weight limits** | MAXIMUM_BLOCK_WEIGHT | NO | N/A | N/A | Protocol constants |
 | **PoV size limits** | MAX_POV_SIZE | NO | N/A | N/A | Protocol constants |
 | **Session parameters** | SessionsPerEra | NO | N/A | N/A | Network configs |
 | **Treasury config** | SpendPeriod, Burn | NO | N/A | N/A | Economic parameters |
-| **Parachain IDs** | ASSET_HUB_ID: 1000 | NO | N/A | N/A | System parachain IDs |
+| **Teyrchain IDs** | ASSET_HUB_ID: 1000 | NO | N/A | N/A | System teyrchain IDs |
 | **Feature flags** | runtime-benchmarks | NO | N/A | N/A | Standard build features |
 
 ---
@@ -1032,44 +1032,44 @@ Key constants include:
 ### 9.1 HIGH Priority (Runtime Identity)
 
 #### Relay Chain Runtimes
-1. `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/rococo/src/lib.rs`
+1. `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/pezkuwichain/src/lib.rs`
    - Lines 182-183: `spec_name`, `impl_name`
 
-2. `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/westend/src/lib.rs`
+2. `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/zagros/src/lib.rs`
    - Lines 173-174: `spec_name`, `impl_name`
 
-#### Parachain Runtimes (Asset Hubs)
-3. `/home/mamostehp/polkadot-sdk-fresh/cumulus/parachains/runtimes/assets/asset-hub-rococo/src/lib.rs`
+#### Teyrchain Runtimes (Asset Hubs)
+3. `/home/mamostehp/polkadot-sdk-fresh/cumulus/teyrchains/runtimes/assets/asset-hub-pezkuwichain/src/lib.rs`
    - Lines 130-131: `spec_name: "statemine"`, `impl_name: "statemine"`
    - **CRITICAL**: Legacy naming with wallet compatibility concerns
 
-4. `/home/mamostehp/polkadot-sdk-fresh/cumulus/parachains/runtimes/assets/asset-hub-westend/src/lib.rs`
+4. `/home/mamostehp/polkadot-sdk-fresh/cumulus/teyrchains/runtimes/assets/asset-hub-zagros/src/lib.rs`
    - Lines 147-148: `spec_name: "westmint"`, `impl_name: "westmint"`
    - **CRITICAL**: Legacy naming with explicit compatibility comment
 
-#### Parachain Runtimes (System Chains)
-5. `/home/mamostehp/polkadot-sdk-fresh/cumulus/parachains/runtimes/coretime/coretime-rococo/src/lib.rs`
+#### Teyrchain Runtimes (System Chains)
+5. `/home/mamostehp/polkadot-sdk-fresh/cumulus/teyrchains/runtimes/coretime/coretime-pezkuwichain/src/lib.rs`
    - Lines 159-160: `spec_name`, `impl_name`
 
-6. `/home/mamostehp/polkadot-sdk-fresh/cumulus/parachains/runtimes/coretime/coretime-westend/src/lib.rs`
+6. `/home/mamostehp/polkadot-sdk-fresh/cumulus/teyrchains/runtimes/coretime/coretime-zagros/src/lib.rs`
    - spec_name, impl_name (location to be confirmed)
 
-7. `/home/mamostehp/polkadot-sdk-fresh/cumulus/parachains/runtimes/bridge-hubs/bridge-hub-rococo/src/lib.rs`
+7. `/home/mamostehp/polkadot-sdk-fresh/cumulus/teyrchains/runtimes/bridge-hubs/bridge-hub-pezkuwichain/src/lib.rs`
    - Lines 252-253: `spec_name`, `impl_name`
 
-8. `/home/mamostehp/polkadot-sdk-fresh/cumulus/parachains/runtimes/bridge-hubs/bridge-hub-westend/src/lib.rs`
+8. `/home/mamostehp/polkadot-sdk-fresh/cumulus/teyrchains/runtimes/bridge-hubs/bridge-hub-zagros/src/lib.rs`
    - spec_name, impl_name (location to be confirmed)
 
-9. `/home/mamostehp/polkadot-sdk-fresh/cumulus/parachains/runtimes/people/people-rococo/src/lib.rs`
+9. `/home/mamostehp/polkadot-sdk-fresh/cumulus/teyrchains/runtimes/people/people-pezkuwichain/src/lib.rs`
    - Lines 145-146: `spec_name`, `impl_name`
 
-10. `/home/mamostehp/polkadot-sdk-fresh/cumulus/parachains/runtimes/people/people-westend/src/lib.rs`
+10. `/home/mamostehp/polkadot-sdk-fresh/cumulus/teyrchains/runtimes/people/people-zagros/src/lib.rs`
     - spec_name, impl_name (location to be confirmed)
 
-11. `/home/mamostehp/polkadot-sdk-fresh/cumulus/parachains/runtimes/collectives/collectives-westend/src/lib.rs`
+11. `/home/mamostehp/polkadot-sdk-fresh/cumulus/teyrchains/runtimes/collectives/collectives-zagros/src/lib.rs`
     - Lines 130-131: `spec_name`, `impl_name`
 
-12. `/home/mamostehp/polkadot-sdk-fresh/cumulus/parachains/runtimes/glutton/glutton-westend/src/lib.rs`
+12. `/home/mamostehp/polkadot-sdk-fresh/cumulus/teyrchains/runtimes/glutton/glutton-zagros/src/lib.rs`
     - Lines 103-104: `spec_name`, `impl_name`
 
 ---
@@ -1077,21 +1077,21 @@ Key constants include:
 ### 9.2 MEDIUM Priority (Environment & Build)
 
 #### Constants Modules
-13. `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/rococo/constants/src/lib.rs`
-    - Line 48: `"ROCOCO_EPOCH_DURATION"` environment variable name
-    - Line 91: Comment "in Rococo, extrinsic base weight..."
+13. `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/pezkuwichain/constants/src/lib.rs`
+    - Line 48: `"PEZKUWICHAIN_EPOCH_DURATION"` environment variable name
+    - Line 91: Comment "in Pezkuwichain, extrinsic base weight..."
 
-14. `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/westend/constants/src/lib.rs`
-    - Line 86: Comment "in Westend, extrinsic base weight..."
-    - (Westend epoch duration in runtime lib.rs, not constants)
+14. `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/zagros/constants/src/lib.rs`
+    - Line 86: Comment "in Zagros, extrinsic base weight..."
+    - (Zagros epoch duration in runtime lib.rs, not constants)
 
 #### Build Configuration
-15. `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/rococo/Cargo.toml`
-    - Line 329: `fast-runtime = ["rococo-runtime-constants/fast-runtime"]`
-    - Dependency: `rococo-runtime-constants` crate name
+15. `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/pezkuwichain/Cargo.toml`
+    - Line 329: `fast-runtime = ["pezkuwichain-runtime-constants/fast-runtime"]`
+    - Dependency: `pezkuwichain-runtime-constants` crate name
 
-16. `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/westend/src/lib.rs`
-    - Line 352: `"WESTEND_EPOCH_DURATION"` environment variable name
+16. `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/zagros/src/lib.rs`
+    - Line 352: `"ZAGROS_EPOCH_DURATION"` environment variable name
 
 ---
 
@@ -1109,10 +1109,10 @@ Key constants include:
 **Approach**: Direct string replacement with careful testing
 
 **Steps**:
-1. Replace `spec_name: "rococo"` → `spec_name: "teyrchain-dev"`
-2. Replace `spec_name: "westend"` → `spec_name: "teyrchain-test"`
-3. Replace `impl_name: "parity-rococo-v2.0"` → `impl_name: "teyrchain-rococo-v2.0"`
-4. Replace `impl_name: "parity-westend"` → `impl_name: "teyrchain-westend"`
+1. Replace `spec_name: "pezkuwichain"` → `spec_name: "teyrchain-dev"`
+2. Replace `spec_name: "zagros"` → `spec_name: "teyrchain-test"`
+3. Replace `impl_name: "parity-pezkuwichain-v2.0"` → `impl_name: "teyrchain-pezkuwichain-v2.0"`
+4. Replace `impl_name: "parity-zagros"` → `impl_name: "teyrchain-zagros"`
 
 **Risk Mitigation**:
 - Keep `transaction_version` and `spec_version` unchanged
@@ -1121,13 +1121,13 @@ Key constants include:
 
 ---
 
-### 10.2 Parachain Runtime Names (HIGH Priority, HIGH Risk)
+### 10.2 Teyrchain Runtime Names (HIGH Priority, HIGH Risk)
 
 **Special Case: Asset Hubs**
 
 Current situation:
-- Asset Hub Rococo uses legacy name "statemine"
-- Asset Hub Westend uses legacy name "westmint"
+- Asset Hub Pezkuwichain uses legacy name "statemine"
+- Asset Hub Zagros uses legacy name "westmint"
 - Both have explicit comments about wallet compatibility
 
 **Recommended Approach**:
@@ -1135,7 +1135,7 @@ Current situation:
 2. **Phase 2**: Add migration path with dual spec_name support
 3. **Phase 3**: Coordinate with wallet providers before final change
 
-**Alternative**: Use TeyrChain branding for NEW system parachains only
+**Alternative**: Use TeyrChain branding for NEW system teyrchains only
 
 ---
 
@@ -1143,11 +1143,11 @@ Current situation:
 
 **Files to update**:
 ```bash
-# Rococo
-"ROCOCO_EPOCH_DURATION" → "TEYRCHAIN_DEV_EPOCH_DURATION"
+# Pezkuwichain
+"PEZKUWICHAIN_EPOCH_DURATION" → "TEYRCHAIN_DEV_EPOCH_DURATION"
 
-# Westend
-"WESTEND_EPOCH_DURATION" → "TEYRCHAIN_TEST_EPOCH_DURATION"
+# Zagros
+"ZAGROS_EPOCH_DURATION" → "TEYRCHAIN_TEST_EPOCH_DURATION"
 ```
 
 **Risk**: LOW (these are build-time configuration overrides)
@@ -1157,10 +1157,10 @@ Current situation:
 ### 10.4 Cargo Dependencies (MEDIUM Priority)
 
 **Crate renames required**:
-- `rococo-runtime-constants` → `teyrchain-rococo-runtime-constants`
-- `westend-runtime-constants` → `teyrchain-westend-runtime-constants`
-- `rococo-runtime` → `teyrchain-rococo-runtime`
-- `westend-runtime` → `teyrchain-westend-runtime`
+- `pezkuwichain-runtime-constants` → `teyrchain-pezkuwichain-runtime-constants`
+- `zagros-runtime-constants` → `teyrchain-zagros-runtime-constants`
+- `pezkuwichain-runtime` → `teyrchain-pezkuwichain-runtime`
+- `zagros-runtime` → `teyrchain-zagros-runtime`
 
 **Impact**: All downstream dependencies must be updated
 
@@ -1170,10 +1170,10 @@ Current situation:
 
 **Pattern-based search and replace**:
 ```
-"in Rococo," → "in TeyrChain Rococo,"
-"in Westend," → "in TeyrChain Westend,"
-"Rococo testnet" → "TeyrChain Rococo testnet"
-"Westend testnet" → "TeyrChain Westend testnet"
+"in Pezkuwichain," → "in TeyrChain Pezkuwichain,"
+"in Zagros," → "in TeyrChain Zagros,"
+"Pezkuwichain testnet" → "TeyrChain Pezkuwichain testnet"
+"Zagros testnet" → "TeyrChain Zagros testnet"
 ```
 
 ---
@@ -1197,7 +1197,7 @@ Current situation:
 - `SpendPeriod: 6 * DAYS`
 - `Burn: 0.2%`
 
-### Parachain System IDs
+### Teyrchain System IDs
 - `ASSET_HUB_ID: 1000`
 - `PEOPLE_ID: 1004`
 - `BROKER_ID: 1005`
@@ -1222,7 +1222,7 @@ Current situation:
 
 ### 12.3 Integration Testing
 1. Verify zombienet test networks start correctly
-2. Confirm parachain registration still works
+2. Confirm teyrchain registration still works
 3. Test XCM message routing between renamed chains
 4. Validate block explorer compatibility
 
@@ -1241,7 +1241,7 @@ Current situation:
 | Weight/PoV limits | 8 | 0 (0%) |
 | Feature flags | 2 | 1 (50%) |
 | Pallet-specific constants | 47+ | 3 (6%) |
-| System parachain IDs | 14 | 0 (0%) |
+| System teyrchain IDs | 14 | 0 (0%) |
 | Environment variables | 3 | 3 (100%) |
 | **TOTAL** | **154+** | **32 (21%)** |
 
@@ -1250,7 +1250,7 @@ Current situation:
 | Priority | File Type | Count |
 |----------|-----------|-------|
 | HIGH | Relay chain runtime lib.rs | 2 |
-| HIGH | Parachain runtime lib.rs | 10 |
+| HIGH | Teyrchain runtime lib.rs | 10 |
 | MEDIUM | Runtime constants modules | 2 |
 | MEDIUM | Cargo.toml files | 2 |
 | LOW | Documentation/comments | TBD |
@@ -1272,13 +1272,13 @@ Current situation:
 ## Appendix A: Complete File Reference List
 
 ### Relay Chain Runtimes
-- `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/rococo/src/lib.rs`
-- `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/westend/src/lib.rs`
+- `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/pezkuwichain/src/lib.rs`
+- `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/zagros/src/lib.rs`
 - `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/test-runtime/src/lib.rs`
 
 ### Runtime Constants Modules
-- `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/rococo/constants/src/lib.rs`
-- `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/westend/constants/src/lib.rs`
+- `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/pezkuwichain/constants/src/lib.rs`
+- `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/zagros/constants/src/lib.rs`
 - `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/test-runtime/constants/src/lib.rs`
 
 ### Common Runtime Configuration
@@ -1288,33 +1288,33 @@ Current situation:
 - `/home/mamostehp/polkadot-sdk-fresh/polkadot/primitives/src/v9/mod.rs`
 - `/home/mamostehp/polkadot-sdk-fresh/polkadot/primitives/src/lib.rs`
 
-### Parachain Runtimes (Asset Hubs)
-- `/home/mamostehp/polkadot-sdk-fresh/cumulus/parachains/runtimes/assets/asset-hub-rococo/src/lib.rs`
-- `/home/mamostehp/polkadot-sdk-fresh/cumulus/parachains/runtimes/assets/asset-hub-westend/src/lib.rs`
+### Teyrchain Runtimes (Asset Hubs)
+- `/home/mamostehp/polkadot-sdk-fresh/cumulus/teyrchains/runtimes/assets/asset-hub-pezkuwichain/src/lib.rs`
+- `/home/mamostehp/polkadot-sdk-fresh/cumulus/teyrchains/runtimes/assets/asset-hub-zagros/src/lib.rs`
 
-### Parachain Runtimes (Coretime)
-- `/home/mamostehp/polkadot-sdk-fresh/cumulus/parachains/runtimes/coretime/coretime-rococo/src/lib.rs`
-- `/home/mamostehp/polkadot-sdk-fresh/cumulus/parachains/runtimes/coretime/coretime-westend/src/lib.rs`
+### Teyrchain Runtimes (Coretime)
+- `/home/mamostehp/polkadot-sdk-fresh/cumulus/teyrchains/runtimes/coretime/coretime-pezkuwichain/src/lib.rs`
+- `/home/mamostehp/polkadot-sdk-fresh/cumulus/teyrchains/runtimes/coretime/coretime-zagros/src/lib.rs`
 
-### Parachain Runtimes (Bridge Hubs)
-- `/home/mamostehp/polkadot-sdk-fresh/cumulus/parachains/runtimes/bridge-hubs/bridge-hub-rococo/src/lib.rs`
-- `/home/mamostehp/polkadot-sdk-fresh/cumulus/parachains/runtimes/bridge-hubs/bridge-hub-westend/src/lib.rs`
+### Teyrchain Runtimes (Bridge Hubs)
+- `/home/mamostehp/polkadot-sdk-fresh/cumulus/teyrchains/runtimes/bridge-hubs/bridge-hub-pezkuwichain/src/lib.rs`
+- `/home/mamostehp/polkadot-sdk-fresh/cumulus/teyrchains/runtimes/bridge-hubs/bridge-hub-zagros/src/lib.rs`
 
-### Parachain Runtimes (People Chains)
-- `/home/mamostehp/polkadot-sdk-fresh/cumulus/parachains/runtimes/people/people-rococo/src/lib.rs`
-- `/home/mamostehp/polkadot-sdk-fresh/cumulus/parachains/runtimes/people/people-westend/src/lib.rs`
+### Teyrchain Runtimes (People Chains)
+- `/home/mamostehp/polkadot-sdk-fresh/cumulus/teyrchains/runtimes/people/people-pezkuwichain/src/lib.rs`
+- `/home/mamostehp/polkadot-sdk-fresh/cumulus/teyrchains/runtimes/people/people-zagros/src/lib.rs`
 
-### Parachain Runtimes (Other System Chains)
-- `/home/mamostehp/polkadot-sdk-fresh/cumulus/parachains/runtimes/collectives/collectives-westend/src/lib.rs`
-- `/home/mamostehp/polkadot-sdk-fresh/cumulus/parachains/runtimes/glutton/glutton-westend/src/lib.rs`
+### Teyrchain Runtimes (Other System Chains)
+- `/home/mamostehp/polkadot-sdk-fresh/cumulus/teyrchains/runtimes/collectives/collectives-zagros/src/lib.rs`
+- `/home/mamostehp/polkadot-sdk-fresh/cumulus/teyrchains/runtimes/glutton/glutton-zagros/src/lib.rs`
 
 ### Genesis Configuration Presets
-- `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/rococo/src/genesis_config_presets.rs`
-- `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/westend/src/genesis_config_presets.rs`
+- `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/pezkuwichain/src/genesis_config_presets.rs`
+- `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/zagros/src/genesis_config_presets.rs`
 
 ### Cargo Configuration
-- `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/rococo/Cargo.toml`
-- `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/westend/Cargo.toml`
+- `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/pezkuwichain/Cargo.toml`
+- `/home/mamostehp/polkadot-sdk-fresh/polkadot/runtime/zagros/Cargo.toml`
 
 ---
 

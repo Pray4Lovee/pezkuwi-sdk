@@ -28,7 +28,7 @@ sp-core = { workspace = true }
 sp-runtime = { workspace = true }
 sp-std = { workspace = true }
 
-# Polkadot Dependencies
+# Pezkuwi Dependencies
 xcm = { workspace = true }
 xcm-builder = { workspace = true }
 xcm-executor = { workspace = true }
@@ -38,7 +38,7 @@ bp-header-chain = { workspace = true }
 bp-xcm-bridge-hub-router = { workspace = true }
 pallet-balances = { workspace = true }
 pallet-xcm-bridge-hub-router = { workspace = true }
-polkadot-parachain-primitives = { workspace = true }
+pezkuwi-teyrchain-primitives = { workspace = true }
 sp-io = { workspace = true }
 
 [features]
@@ -55,7 +55,7 @@ std = [
 	"pallet-balances/std",
 	"pallet-bridge-messages/std",
 	"pallet-xcm-bridge-hub-router/std",
-	"polkadot-parachain-primitives/std",
+	"pezkuwi-teyrchain-primitives/std",
 	"scale-info/std",
 	"sp-core/std",
 	"sp-io/std",
@@ -72,7 +72,7 @@ runtime-benchmarks = [
 	"pallet-balances/runtime-benchmarks",
 	"pallet-bridge-messages/runtime-benchmarks",
 	"pallet-xcm-bridge-hub-router/runtime-benchmarks",
-	"polkadot-parachain-primitives/runtime-benchmarks",
+	"pezkuwi-teyrchain-primitives/runtime-benchmarks",
 	"sp-runtime/runtime-benchmarks",
 	"xcm-builder/runtime-benchmarks",
 	"xcm-executor/runtime-benchmarks",

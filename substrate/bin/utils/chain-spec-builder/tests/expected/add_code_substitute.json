@@ -36,6 +36,6 @@
     "tokenSymbol": "UNIT"
   },
   "protocolId": null,
-  "relay_chain": "rococo-local",
+  "relay_chain": "pezkuwichain-local",
   "telemetryEndpoints": null
 }

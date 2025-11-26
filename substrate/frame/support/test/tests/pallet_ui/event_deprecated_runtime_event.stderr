@@ -14,7 +14,7 @@ error: use of deprecated constant `pallet::RuntimeEvent::_w`:
                pub trait Config: frame_system::Config<RuntimeEvent: From<Event<Self>>> { }.
 
                For more info see:
-                   <https://github.com/paritytech/polkadot-sdk/pull/7229>
+                   <https://github.com/pezkuwichain/pezkuwichain-sdk/pull/7229>
   --> tests/pallet_ui/event_deprecated_runtime_event.rs:26:8
    |
 26 |         type RuntimeEvent: IsType<<Self as frame_system::Config>::RuntimeEvent> + From<Event<Self>>;

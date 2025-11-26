@@ -831,7 +831,7 @@ pub mod pallet {
 impl<T: Config> Pallet<T> {
 	/// Get the block number used in the treasury pallet.
 	///
-	/// It may be configured to use the relay chain block number on a parachain.
+	/// It may be configured to use the relay chain block number on a teyrchain.
 	pub fn treasury_block_number() -> BlockNumberFor<T> {
 		<T as pallet_treasury::Config>::BlockNumberProvider::current_block_number()
 	}

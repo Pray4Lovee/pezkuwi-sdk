@@ -8,7 +8,7 @@ on:
   pull_request:
     types: [opened, synchronize, reopened, ready_for_review]
     paths:
-      - "cumulus/parachains/runtimes/*"
+      - "cumulus/teyrchains/runtimes/*"
 
 # Jobs in this workflow depend on each other, only for limiting peak amount of spawned workers
 
@@ -31,7 +31,7 @@ jobs:
       - name: Run cargo check
         uses: ./.github/actions/cargo-check-runtimes
         with:
-          root: cumulus/parachains/runtimes/assets
+          root: cumulus/teyrchains/runtimes/assets
 
   check-runtime-collectives:
     runs-on: ${{ needs.preflight.outputs.RUNNER }}
@@ -45,7 +45,7 @@ jobs:
       - name: Run cargo check
         uses: ./.github/actions/cargo-check-runtimes
         with:
-          root: cumulus/parachains/runtimes/collectives
+          root: cumulus/teyrchains/runtimes/collectives
 
   check-runtime-coretime:
     runs-on: ${{ needs.preflight.outputs.RUNNER }}
@@ -59,7 +59,7 @@ jobs:
       - name: Run cargo check
         uses: ./.github/actions/cargo-check-runtimes
         with:
-          root: cumulus/parachains/runtimes/coretime
+          root: cumulus/teyrchains/runtimes/coretime
 
   check-runtime-bridge-hubs:
     runs-on: ${{ needs.preflight.outputs.RUNNER }}
@@ -73,7 +73,7 @@ jobs:
       - name: Run cargo check
         uses: ./.github/actions/cargo-check-runtimes
         with:
-          root: cumulus/parachains/runtimes/bridge-hubs
+          root: cumulus/teyrchains/runtimes/bridge-hubs
 
   check-runtime-contracts:
     runs-on: ${{ needs.preflight.outputs.RUNNER }}
@@ -87,7 +87,7 @@ jobs:
       - name: Run cargo check
         uses: ./.github/actions/cargo-check-runtimes
         with:
-          root: cumulus/parachains/runtimes/contracts
+          root: cumulus/teyrchains/runtimes/contracts
 
   check-runtime-testing:
     runs-on: ${{ needs.preflight.outputs.RUNNER }}
@@ -101,7 +101,7 @@ jobs:
       - name: Run cargo check
         uses: ./.github/actions/cargo-check-runtimes
         with:
-          root: cumulus/parachains/runtimes/testing
+          root: cumulus/teyrchains/runtimes/testing
 
   confirm-required-jobs-passed:
     runs-on: ubuntu-latest

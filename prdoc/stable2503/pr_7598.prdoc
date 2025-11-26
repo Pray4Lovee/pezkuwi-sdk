@@ -2,7 +2,7 @@ title: implement `DecodeWithMemTracking` for frame pallets
 doc:
 - audience: Runtime Dev
   description: |-
-    Related to https://github.com/paritytech/polkadot-sdk/issues/7360
+    Related to https://github.com/pezkuwichain/pezkuwichain-sdk/issues/7360
 
     This PR implements `DecodeWithMemTracking` for the types in the frame pallets
 

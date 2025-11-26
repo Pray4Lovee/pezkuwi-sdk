@@ -4,7 +4,7 @@ doc:
   - Node Dev
   - Runtime Dev
   description: |-
-    Resolves https://github.com/paritytech/polkadot-sdk/issues/7749
+    Resolves https://github.com/pezkuwichain/pezkuwichain-sdk/issues/7749
 
     This PR propagates the network `PeerId` of the collator to the parachain inherent.
     Then the parachain runtime emits a UMP signal containing the collator `PeerId`.

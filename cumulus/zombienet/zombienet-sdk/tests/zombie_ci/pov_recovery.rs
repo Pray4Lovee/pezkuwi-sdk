@@ -6,14 +6,14 @@ use anyhow::anyhow;
 use crate::utils::{initialize_network, BEST_BLOCK_METRIC};
 
 use cumulus_zombienet_sdk_helpers::{assert_para_is_registered, assert_para_throughput};
-use polkadot_primitives::Id as ParaId;
+use pezkuwi_primitives::Id as ParaId;
 use serde_json::json;
 use std::{sync::Arc, time::Duration};
 use zombienet_configuration::types::Arg;
 use zombienet_orchestrator::network::node::LogLineCountOptions;
 use zombienet_sdk::{
 	environment::Provider,
-	subxt::{OnlineClient, PolkadotConfig},
+	subxt::{OnlineClient, PezkuwiConfig},
 	NetworkConfig, NetworkConfigBuilder, RegistrationStrategy,
 };
 
@@ -37,23 +37,23 @@ async fn pov_recovery() -> Result<(), anyhow::Error> {
 
 	let validator_3 = network.get_node("validator-3")?;
 
-	log::info!("Waiting 20 blocks to register parachain");
-	// Wait 20 blocks and register parachain. This part is important for pov-recovery.
+	log::info!("Waiting 20 blocks to register teyrchain");
+	// Wait 20 blocks and register teyrchain. This part is important for pov-recovery.
 	assert!(validator_3
 		.wait_metric_with_timeout(BEST_BLOCK_METRIC, |b| b >= 20.0, 250u64)
 		.await
 		.is_ok());
 
-	log::info!("Registering parachain para_id = {PARA_ID}");
-	network.register_parachain(PARA_ID).await?;
+	log::info!("Registering teyrchain para_id = {PARA_ID}");
+	network.register_teyrchain(PARA_ID).await?;
 
 	let validator = network.get_node("validator-0")?;
-	let validator_client: OnlineClient<PolkadotConfig> = validator.wait_client().await?;
+	let validator_client: OnlineClient<PezkuwiConfig> = validator.wait_client().await?;
 
-	log::info!("Ensuring parachain is registered within 30 blocks");
+	log::info!("Ensuring teyrchain is registered within 30 blocks");
 	assert_para_is_registered(&validator_client, ParaId::from(PARA_ID), 30).await?;
 
-	log::info!("Ensuring parachain making progress");
+	log::info!("Ensuring teyrchain making progress");
 	assert_para_throughput(
 		&validator_client,
 		20,
@@ -122,7 +122,7 @@ async fn build_network_config() -> Result<NetworkConfig, anyhow::Error> {
 	// 	 - validator[0-validator_cnt]
 	// 	   - validator
 	// 	   - synchronize only with validator-0
-	// - parachain nodes
+	// - teyrchain nodes
 	//   - bob
 	//     - collator which produces blocks, but doesn't announce them
 	//   - alice
@@ -143,9 +143,9 @@ async fn build_network_config() -> Result<NetworkConfig, anyhow::Error> {
 	let config = NetworkConfigBuilder::new()
 		.with_relaychain(|r| {
 			let r = r
-				.with_chain("rococo-local")
-				.with_default_command("polkadot")
-				.with_default_image(images.polkadot.as_str())
+				.with_chain("pezkuwichain-local")
+				.with_default_command("pezkuwi")
+				.with_default_image(images.pezkuwi.as_str())
 				.with_genesis_overrides(json!({
 						"configuration": {
 							"config": {
@@ -158,31 +158,31 @@ async fn build_network_config() -> Result<NetworkConfig, anyhow::Error> {
 				}))
 				.with_node(|node| {
 					node.with_name("validator-0").validator(true).with_args(vec![
-						("-lparachain::availability=trace,sync=info,parachain=debug,libp2p_mdns=debug,info").into(),
+						("-lteyrchain::availability=trace,sync=info,teyrchain=debug,libp2p_mdns=debug,info").into(),
 					])
 				});
 
 			(1..validator_cnt).fold(r, |acc, i| {
 				acc.with_node(|node| {
 					node.with_name(&format!("validator-{i}")).with_args(vec![
-						("-lparachain::availability=trace,sync=debug,parachain=debug,libp2p_mdns=debug").into(),
+						("-lteyrchain::availability=trace,sync=debug,teyrchain=debug,libp2p_mdns=debug").into(),
 						("--reserved-only").into(),
 						("--reserved-nodes", "{{ZOMBIE:validator-0:multiaddr}}").into(),
 					])
 				})
 			})
 		})
-		.with_parachain(|p| {
+		.with_teyrchain(|p| {
 			p.with_id(PARA_ID)
 				.with_registration_strategy(RegistrationStrategy::Manual)
-				.with_default_command("test-parachain")
+				.with_default_command("test-teyrchain")
 				.with_default_image(images.cumulus.as_str())
 				.with_collator(|c| {
 					c.with_name("bob")
 						.validator(true)
 						.with_args(vec![
 							("--disable-block-announcements").into(),
-							("-lparachain::availability=trace,sync=debug,parachain=debug,cumulus-pov-recovery=debug,cumulus-consensus=debug,libp2p_mdns=debug,info").into(),
+							("-lteyrchain::availability=trace,sync=debug,teyrchain=debug,cumulus-pov-recovery=debug,cumulus-consensus=debug,libp2p_mdns=debug,info").into(),
 						])
 				})
 				.with_collator(|c| {
@@ -224,7 +224,7 @@ async fn build_network_config() -> Result<NetworkConfig, anyhow::Error> {
 
 fn build_collator_args(in_args: Vec<Arg>) -> Vec<Arg> {
 	let start_args: Vec<Arg> = vec![
-		("-lparachain::availability=trace,sync=debug,parachain=debug,cumulus-pov-recovery=debug,cumulus-consensus=debug,libp2p_mdns=debug,info").into(),
+		("-lteyrchain::availability=trace,sync=debug,teyrchain=debug,cumulus-pov-recovery=debug,cumulus-consensus=debug,libp2p_mdns=debug,info").into(),
 		("--disable-block-announcements").into(),
 		("--in-peers=0").into(),
 		("--out-peers=0").into(),

@@ -150,7 +150,7 @@ fn test_create_with_params() {
 }
 
 #[test]
-fn test_create_parachain() {
+fn test_create_teyrchain() {
 	const SUFFIX: &str = "05";
 	let mut builder = get_builder(
 		SUFFIX,
@@ -165,13 +165,13 @@ fn test_create_parachain() {
 			"-t",
 			"live",
 			"--relay-chain",
-			"rococo-local",
+			"pezkuwichain-local",
 			"default",
 		],
 	);
 	builder.set_create_cmd_runtime_code(substrate_test_runtime::WASM_BINARY.unwrap().into());
 	builder.run().unwrap();
-	assert_output_eq_expected(true, SUFFIX, "tests/expected/create_parachain.json");
+	assert_output_eq_expected(true, SUFFIX, "tests/expected/create_teyrchain.json");
 }
 
 #[test]

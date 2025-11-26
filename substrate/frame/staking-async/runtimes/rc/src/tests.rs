@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Substrate. If not, see <http://www.gnu.org/licenses/>.
 
-//! Tests for the Westend Runtime Configuration
+//! Tests for the Zagros Runtime Configuration
 
 use std::collections::HashSet;
 
@@ -26,7 +26,7 @@ use xcm_runtime_apis::conversions::LocationToAccountHelper;
 
 #[test]
 fn remove_keys_weight_is_sensible() {
-	use polkadot_runtime_common::crowdloan::WeightInfo;
+	use pezkuwi_runtime_common::crowdloan::WeightInfo;
 	let max_weight = <Runtime as crowdloan::Config>::WeightInfo::refund(RemoveKeysLimit::get());
 	// Max remove keys limit should be no more than half the total block weight.
 	assert!((max_weight * 2).all_lt(BlockWeights::get().max_block));
@@ -34,7 +34,7 @@ fn remove_keys_weight_is_sensible() {
 
 #[test]
 fn sample_size_is_sensible() {
-	use polkadot_runtime_common::auctions::WeightInfo;
+	use pezkuwi_runtime_common::auctions::WeightInfo;
 	// Need to clean up all samples at the end of an auction.
 	let samples: BlockNumber = EndingPeriod::get() / SampleLength::get();
 	let max_weight: frame_support::weights::Weight =
@@ -119,7 +119,7 @@ mod remote_tests {
 
 		sp_tracing::try_init_simple();
 		let transport: Transport =
-			var("WS").unwrap_or("wss://westend-rpc.polkadot.io:443".to_string()).into();
+			var("WS").unwrap_or("wss://zagros-rpc.pezkuwichain.io:443".to_string()).into();
 		let maybe_state_snapshot: Option<SnapshotConfig> = var("SNAP").map(|s| s.into()).ok();
 		let mut ext = Builder::<Block>::default()
 			.mode(if let Some(state_snapshot) = maybe_state_snapshot {
@@ -154,13 +154,13 @@ fn location_conversion_works() {
 		// DescribeTerminus
 		TestCase {
 			description: "DescribeTerminus Child",
-			location: Location::new(0, [Parachain(1111)]),
+			location: Location::new(0, [Teyrchain(1111)]),
 			expected_account_id_str: "5Ec4AhP4h37t7TFsAZ4HhFq6k92usAAJDUC3ADSZ4H4Acru3",
 		},
 		// DescribePalletTerminal
 		TestCase {
 			description: "DescribePalletTerminal Child",
-			location: Location::new(0, [Parachain(1111), PalletInstance(50)]),
+			location: Location::new(0, [Teyrchain(1111), PalletInstance(50)]),
 			expected_account_id_str: "5FjEBrKn3STAFsZpQF4jzwxUYHNGnNgzdZqSQfTzeJ82XKp6",
 		},
 		// DescribeAccountId32Terminal
@@ -168,7 +168,7 @@ fn location_conversion_works() {
 			description: "DescribeAccountId32Terminal Child",
 			location: Location::new(
 				0,
-				[Parachain(1111), AccountId32 { network: None, id: AccountId::from(Alice).into() }],
+				[Teyrchain(1111), AccountId32 { network: None, id: AccountId::from(Alice).into() }],
 			),
 			expected_account_id_str: "5EEMro9RRDpne4jn9TuD7cTB6Amv1raVZ3xspSkqb2BF3FJH",
 		},
@@ -177,7 +177,7 @@ fn location_conversion_works() {
 			description: "DescribeAccountKey20Terminal Child",
 			location: Location::new(
 				0,
-				[Parachain(1111), AccountKey20 { network: None, key: [0u8; 20] }],
+				[Teyrchain(1111), AccountKey20 { network: None, key: [0u8; 20] }],
 			),
 			expected_account_id_str: "5HohjXdjs6afcYcgHHSstkrtGfxgfGKsnZ1jtewBpFiGu4DL",
 		},
@@ -186,7 +186,7 @@ fn location_conversion_works() {
 			description: "DescribeTreasuryVoiceTerminal Child",
 			location: Location::new(
 				0,
-				[Parachain(1111), Plurality { id: BodyId::Treasury, part: BodyPart::Voice }],
+				[Teyrchain(1111), Plurality { id: BodyId::Treasury, part: BodyPart::Voice }],
 			),
 			expected_account_id_str: "5GenE4vJgHvwYVcD6b4nBvH5HNY4pzpVHWoqwFpNMFT7a2oX",
 		},
@@ -195,7 +195,7 @@ fn location_conversion_works() {
 			description: "DescribeBodyTerminal Child",
 			location: Location::new(
 				0,
-				[Parachain(1111), Plurality { id: BodyId::Unit, part: BodyPart::Voice }],
+				[Teyrchain(1111), Plurality { id: BodyId::Unit, part: BodyPart::Voice }],
 			),
 			expected_account_id_str: "5DPgGBFTTYm1dGbtB1VWHJ3T3ScvdrskGGx6vSJZNP1WNStV",
 		},

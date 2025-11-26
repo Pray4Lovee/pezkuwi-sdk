@@ -2,7 +2,7 @@ title: Derive `DecodeWithMemTracking` for cumulus pallets and for `polkadot-sdk`
 doc:
 - audience: Runtime Dev
   description: |-
-    Related to https://github.com/paritytech/polkadot-sdk/issues/7360
+    Related to https://github.com/pezkuwichain/pezkuwichain-sdk/issues/7360
 
     Derive `DecodeWithMemTracking` for the structures in the cumulus pallets and for the structures in the `polkadot-sdk` runtimes.
 

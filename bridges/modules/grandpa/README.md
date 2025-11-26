@@ -4,8 +4,8 @@ The bridge GRANDPA pallet is a light client for the GRANDPA finality gadget, run
 It may import headers and their GRANDPA finality proofs (justifications) of the bridged chain. Imported
 headers then may be used to verify storage proofs by other pallets. This makes the bridge GRANDPA pallet
 a basic pallet of all bridges with Substrate-based chains. It is used by all bridge types (bridge between
-standalone chains, between parachains and any combination of those) and is used by other bridge pallets.
-It is used by the parachains light client (bridge parachains pallet) and by messages pallet.
+standalone chains, between teyrchains and any combination of those) and is used by other bridge pallets.
+It is used by the teyrchains light client (bridge teyrchains pallet) and by messages pallet.
 
 ## A Brief Introduction into GRANDPA Finality
 

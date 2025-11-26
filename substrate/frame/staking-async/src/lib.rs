@@ -27,7 +27,7 @@
 //!   `pallet-election-provider-multi-block`.
 //!
 //! While `pallet-staking` was somewhat general-purpose, this pallet is absolutely NOT right from
-//! the get-go: It is designed to be used ONLY in Polkadot/Kusama AssetHub system parachains.
+//! the get-go: It is designed to be used ONLY in Pezkuwi/Kusama AssetHub system teyrchains.
 //!
 //! The workings of this pallet can be divided into a number of subsystems, as follows.
 //!
@@ -59,7 +59,7 @@
 //!
 //! ### Phase 1: Offence Reporting
 //!
-//! Offences are reported from the relay chain (e.g., from BABE, GRANDPA, BEEFY, or parachain
+//! Offences are reported from the relay chain (e.g., from BABE, GRANDPA, BEEFY, or teyrchain
 //! modules) through the `on_new_offences` function:
 //!
 //! ```text

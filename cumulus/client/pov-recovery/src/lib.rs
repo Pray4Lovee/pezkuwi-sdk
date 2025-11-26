@@ -15,12 +15,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Cumulus. If not, see <https://www.gnu.org/licenses/>.
 
-//! Parachain PoV recovery
+//! Teyrchain PoV recovery
 //!
-//! A parachain needs to build PoVs that are send to the relay chain to progress. These PoVs are
+//! A teyrchain needs to build PoVs that are send to the relay chain to progress. These PoVs are
 //! erasure encoded and one piece of it is stored by each relay chain validator. As the relay chain
-//! decides on which PoV per parachain to include and thus, to progress the parachain it can happen
-//! that the block corresponding to this PoV isn't propagated in the parachain network. This can
+//! decides on which PoV per teyrchain to include and thus, to progress the teyrchain it can happen
+//! that the block corresponding to this PoV isn't propagated in the teyrchain network. This can
 //! have several reasons, either a malicious collator that managed to include its own PoV and
 //! doesn't want to share it with the rest of the network or maybe a collator went down before it
 //! could distribute the block in the network. When something like this happens we can use the PoV
@@ -29,7 +29,7 @@
 //!
 //! It works in the following way:
 //!
-//! 1. For every included relay chain block we note the backed candidate of our parachain. If the
+//! 1. For every included relay chain block we note the backed candidate of our teyrchain. If the
 //!    block belonging to the PoV is already known, we do nothing. Otherwise we start a timer that
 //!    waits for a randomized time inside a specified interval before starting to
 //! recover    the PoV.
@@ -52,15 +52,15 @@ use sc_consensus::import_queue::{ImportQueueService, IncomingBlock};
 use sp_consensus::{BlockOrigin, BlockStatus, SyncOracle};
 use sp_runtime::traits::{Block as BlockT, Header as HeaderT, NumberFor};
 
-use polkadot_node_primitives::{PoV, POV_BOMB_LIMIT};
-use polkadot_node_subsystem::messages::AvailabilityRecoveryMessage;
-use polkadot_overseer::Handle as OverseerHandle;
-use polkadot_primitives::{
+use pezkuwi_node_primitives::{PoV, POV_BOMB_LIMIT};
+use pezkuwi_node_subsystem::messages::AvailabilityRecoveryMessage;
+use pezkuwi_overseer::Handle as OverseerHandle;
+use pezkuwi_primitives::{
 	CandidateReceiptV2 as CandidateReceipt,
 	CommittedCandidateReceiptV2 as CommittedCandidateReceipt, Id as ParaId, SessionIndex,
 };
 
-use cumulus_primitives_core::ParachainBlockData;
+use cumulus_primitives_core::TeyrchainBlockData;
 use cumulus_relay_chain_interface::RelayChainInterface;
 use cumulus_relay_chain_streams::pending_candidates;
 
@@ -227,15 +227,15 @@ pub struct PoVRecovery<Block: BlockT, PC, RC> {
 	///
 	/// Uses parent -> blocks mapping.
 	waiting_for_parent: HashMap<Block::Hash, Vec<Block>>,
-	parachain_client: Arc<PC>,
-	parachain_import_queue: Box<dyn ImportQueueService<Block>>,
+	teyrchain_client: Arc<PC>,
+	teyrchain_import_queue: Box<dyn ImportQueueService<Block>>,
 	relay_chain_interface: RC,
 	para_id: ParaId,
 	/// Explicit block recovery requests channel.
 	recovery_chan_rx: Receiver<RecoveryRequest<Block>>,
 	/// Blocks that we are retrying currently
 	candidates_in_retry: HashSet<Block::Hash>,
-	parachain_sync_service: Arc<dyn SyncOracle + Sync + Send>,
+	teyrchain_sync_service: Arc<dyn SyncOracle + Sync + Send>,
 }
 
 impl<Block: BlockT, PC, RCInterface> PoVRecovery<Block, PC, RCInterface>
@@ -247,25 +247,25 @@ where
 	pub fn new(
 		recovery_handle: Box<dyn RecoveryHandle>,
 		recovery_delay_range: RecoveryDelayRange,
-		parachain_client: Arc<PC>,
-		parachain_import_queue: Box<dyn ImportQueueService<Block>>,
+		teyrchain_client: Arc<PC>,
+		teyrchain_import_queue: Box<dyn ImportQueueService<Block>>,
 		relay_chain_interface: RCInterface,
 		para_id: ParaId,
 		recovery_chan_rx: Receiver<RecoveryRequest<Block>>,
-		parachain_sync_service: Arc<dyn SyncOracle + Sync + Send>,
+		teyrchain_sync_service: Arc<dyn SyncOracle + Sync + Send>,
 	) -> Self {
 		Self {
 			candidates: HashMap::new(),
 			candidate_recovery_queue: RecoveryQueue::new(recovery_delay_range),
 			active_candidate_recovery: ActiveCandidateRecovery::new(recovery_handle),
 			waiting_for_parent: HashMap::new(),
-			parachain_client,
-			parachain_import_queue,
+			teyrchain_client,
+			teyrchain_import_queue,
 			relay_chain_interface,
 			para_id,
 			candidates_in_retry: HashSet::new(),
 			recovery_chan_rx,
-			parachain_sync_service,
+			teyrchain_sync_service,
 		}
 	}
 
@@ -281,13 +281,13 @@ where
 				tracing::warn!(
 					target: LOG_TARGET,
 					error = ?e,
-					"Failed to decode parachain header from pending candidate",
+					"Failed to decode teyrchain header from pending candidate",
 				);
 				return
 			},
 		};
 
-		if *header.number() <= self.parachain_client.usage_info().chain.finalized_number {
+		if *header.number() <= self.teyrchain_client.usage_info().chain.finalized_number {
 			return
 		}
 
@@ -351,14 +351,14 @@ where
 		self.clear_waiting_recovery(&hash);
 	}
 
-	/// Try to decode [`ParachainBlockData`] from `data`.
+	/// Try to decode [`TeyrchainBlockData`] from `data`.
 	///
 	/// Internally it will handle the decoding of the different versions.
-	fn decode_parachain_block_data(
+	fn decode_teyrchain_block_data(
 		data: &[u8],
 		expected_block_hash: Block::Hash,
-	) -> Option<ParachainBlockData<Block>> {
-		match ParachainBlockData::<Block>::decode_all(&mut &data[..]) {
+	) -> Option<TeyrchainBlockData<Block>> {
+		match TeyrchainBlockData::<Block>::decode_all(&mut &data[..]) {
 			Ok(block_data) => {
 				if block_data.blocks().last().map_or(false, |b| b.hash() == expected_block_hash) {
 					return Some(block_data)
@@ -367,7 +367,7 @@ where
 				tracing::debug!(
 					target: LOG_TARGET,
 					?expected_block_hash,
-					"Could not find the expected block hash as latest block in `ParachainBlockData`"
+					"Could not find the expected block hash as latest block in `TeyrchainBlockData`"
 				);
 			},
 			Err(error) => {
@@ -375,7 +375,7 @@ where
 					target: LOG_TARGET,
 					?expected_block_hash,
 					?error,
-					"Could not decode `ParachainBlockData` from recovered PoV",
+					"Could not decode `TeyrchainBlockData` from recovered PoV",
 				);
 			},
 		}
@@ -418,7 +418,7 @@ where
 				},
 			};
 
-		let Some(block_data) = Self::decode_parachain_block_data(&raw_block_data, block_hash)
+		let Some(block_data) = Self::decode_teyrchain_block_data(&raw_block_data, block_hash)
 		else {
 			self.reset_candidate(block_hash);
 			return
@@ -437,7 +437,7 @@ where
 			return;
 		};
 
-		match self.parachain_client.block_status(parent) {
+		match self.teyrchain_client.block_status(parent) {
 			Ok(BlockStatus::Unknown) => {
 				// If the parent block is currently being recovered or is scheduled to be recovered,
 				// we want to wait for the parent.
@@ -526,7 +526,7 @@ where
 			}
 		}
 
-		self.parachain_import_queue
+		self.teyrchain_import_queue
 			// Use `ConsensusBroadcast` to inform the import pipeline that this blocks needs to be
 			// imported.
 			.import_blocks(BlockOrigin::ConsensusBroadcast, incoming_blocks);
@@ -550,7 +550,7 @@ where
 				},
 			};
 
-			match self.parachain_client.block_status(hash) {
+			match self.teyrchain_client.block_status(hash) {
 				Ok(BlockStatus::Unknown) if !candidate.waiting_recovery => {
 					candidate.waiting_recovery = true;
 					to_recover.push(hash);
@@ -584,12 +584,12 @@ where
 
 	/// Run the pov-recovery.
 	pub async fn run(mut self) {
-		let mut imported_blocks = self.parachain_client.import_notification_stream().fuse();
-		let mut finalized_blocks = self.parachain_client.finality_notification_stream().fuse();
+		let mut imported_blocks = self.teyrchain_client.import_notification_stream().fuse();
+		let mut finalized_blocks = self.teyrchain_client.finality_notification_stream().fuse();
 		let pending_candidates = match pending_candidates(
 			self.relay_chain_interface.clone(),
 			self.para_id,
-			self.parachain_sync_service.clone(),
+			self.teyrchain_sync_service.clone(),
 		)
 		.await
 		{

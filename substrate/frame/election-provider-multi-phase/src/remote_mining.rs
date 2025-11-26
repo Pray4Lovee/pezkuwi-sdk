@@ -15,7 +15,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//! Remote mining tests for Kusama and Polkadot.
+//! Remote mining tests for Kusama and Pezkuwi.
 //!
 //! Run like this:
 //!
@@ -38,7 +38,7 @@ use sp_core::{ConstU32, H256};
 use sp_npos_elections::BalancingConfig;
 use sp_runtime::{Perbill, Weight};
 
-pub mod polkadot {
+pub mod pezkuwi {
 	use super::*;
 
 	pub struct MinerConfig;
@@ -55,7 +55,7 @@ pub mod polkadot {
 
 	generate_solution_type!(
 		#[compact]
-		pub struct PolkadotSolution::<
+		pub struct PezkuwiSolution::<
 			VoterIndex = u32,
 			TargetIndex = u16,
 			Accuracy = sp_runtime::PerU16,
@@ -71,7 +71,7 @@ pub mod polkadot {
 		type MaxVotesPerVoter = ConstU32<16>;
 		type MaxWeight = MaxWeight;
 		type MaxWinners = ConstU32<1000>;
-		type Solution = PolkadotSolution;
+		type Solution = PezkuwiSolution;
 
 		fn solution_weight(
 			_voters: u32,
@@ -100,7 +100,7 @@ pub mod kusama {
 
 	generate_solution_type!(
 		#[compact]
-		pub struct PolkadotSolution::<
+		pub struct PezkuwiSolution::<
 			VoterIndex = u32,
 			TargetIndex = u16,
 			Accuracy = sp_runtime::PerU16,
@@ -116,7 +116,7 @@ pub mod kusama {
 		type MaxVotesPerVoter = ConstU32<24>;
 		type MaxWeight = MaxWeight;
 		type MaxWinners = ConstU32<1000>;
-		type Solution = PolkadotSolution;
+		type Solution = PezkuwiSolution;
 
 		fn solution_weight(
 			_voters: u32,
@@ -205,13 +205,13 @@ where
 }
 
 #[tokio::test]
-async fn mine_for_polkadot() {
+async fn mine_for_pezkuwi() {
 	sp_tracing::try_init_simple();
 
 	// good way to find good block hashes: https://polkadot.subscan.io/event?page=1&time_dimension=date&module=electionprovidermultiphase&event_id=solutionstored
 	// we are just looking for blocks with snapshot present, that's all.
 	let block_hash_str = std::option_env!("BLOCK_HASH")
-		// known good polkadot hash
+		// known good pezkuwi hash
 		.unwrap_or("047f1f5b1081fdaa72c9224d0ea302553738556758dc53269b1bfe6a069986bb")
 		.to_string();
 	let block_hash = H256::from_slice(hex::decode(block_hash_str).unwrap().as_ref());
@@ -219,7 +219,7 @@ async fn mine_for_polkadot() {
 		at: Some(block_hash),
 		pallets: vec!["ElectionProviderMultiPhase".to_string()],
 		transport: Transport::from(
-			std::option_env!("WS").unwrap_or("wss://rpc.ibp.network/polkadot").to_string(),
+			std::option_env!("WS").unwrap_or("wss://rpc.pezkuwichain.io").to_string(),
 		),
 		..Default::default()
 	};
@@ -230,7 +230,7 @@ async fn mine_for_polkadot() {
 		.await
 		.unwrap()
 		.execute_with(|| {
-			test_for_network::<polkadot::MinerConfig>();
+			test_for_network::<pezkuwi::MinerConfig>();
 		});
 }
 
@@ -249,7 +249,7 @@ async fn mine_for_kusama() {
 		at: Some(block_hash),
 		pallets: vec!["ElectionProviderMultiPhase".to_string()],
 		transport: Transport::from(
-			std::option_env!("WS").unwrap_or("wss://rpc.ibp.network/kusama").to_string(),
+			std::option_env!("WS").unwrap_or("wss://rpc.zagros.pezkuwichain.io").to_string(),
 		),
 		..Default::default()
 	};

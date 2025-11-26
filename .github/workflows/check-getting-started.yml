@@ -49,7 +49,7 @@ jobs:
             shell: bash
           - name: debian
             container: debian
-            template: parachain
+            template: teyrchain
             shell: sh
           - name: arch
             container: archlinux
@@ -57,7 +57,7 @@ jobs:
             shell: sh
           - name: fedora
             container: fedora
-            template: parachain
+            template: teyrchain
             shell: sh
           - name: opensuse
             container: opensuse/tumbleweed
@@ -187,7 +187,7 @@ jobs:
       fail-fast: true
       matrix:
         include:
-          - template: parachain
+          - template: teyrchain
             shell: sh
           - template: solochain
             shell: bash

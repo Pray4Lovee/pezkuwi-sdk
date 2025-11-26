@@ -3,23 +3,23 @@
 The outputs of a stable release are:
 
 - The binaries:
-   - `polkadot`
-   - `polkadot-execute-worker`
-   - `polkadot-prepare-worker`
-   - `polkadot-parachain`
-   - `polkadot-omni-node`
+   - `pezkuwi`
+   - `pezkuwi-execute-worker`
+   - `pezkuwi-prepare-worker`
+   - `pezkuwi-teyrchain`
+   - `pezkuwi-omni-node`
    - `chain-spec-builder`
    - `frame-omni-bencher`
 
    built for the `x86_64-unknown-linux-gnu` and `aarch64-apple-darwin` targets. The gpg signatures and sha256 checksums.
 
-- The runtimes for Westend and its system parachains.
+- The runtimes for Zagros and its system teyrchains.
 - The new crate versions published to `crates.io`.
-- Debian package for the Polkadot binary.
+- Debian package for the Pezkuwi binary.
 - Docker images for:
-   - `polkadot` (includes `polkadot-execute-worker` & `polkadot-prepare-worker`)
-   - `polkadot-parachain`
-   - `polkadot-omni-node`
+   - `pezkuwi` (includes `pezkuwi-execute-worker` & `pezkuwi-prepare-worker`)
+   - `pezkuwi-teyrchain`
+   - `pezkuwi-omni-node`
    - `chain-spec-builder`
 
 
@@ -29,7 +29,7 @@ The outputs of a stable release are:
  subscribe to a [calendar link](https://raw.githubusercontent.com/paritytech/release-registry/main/releases-v1.ics)
  to have it in your personal calendar.
 
-Each stable release is supported for a period of one year from its first release. For example, `Polkadot stable2412`
+Each stable release is supported for a period of one year from its first release. For example, `Pezkuwi stable2412`
 was released on `2024-12-17` and its end of life is set to `2025-12-16`.
 
 During this period, each stable release is updated with patch releases, which are scheduled on a monthly basis
@@ -56,11 +56,11 @@ audited. Merging to it is restricted to [Backports](#backports).
 # Versioning
 
 We are releasing multiple different things from this repository in one release, but we don't want to use the same
-version for everything. Thus, in the following we explain the versioning story for the crates, node and Westend.
+version for everything. Thus, in the following we explain the versioning story for the crates, node and Zagros.
 
-To easily refer to a release, it shall be named by its date in the form `Polkadot stableYYMM`. Patches to stable releases
-are tagged in the form of `Polkadot stableYYMM-PATCH`, with `PATCH` ranging from 1 to 99. For example, the fourth patch
-to `Polkadot stable2409` would be `Polkadot stable2409-4`.
+To easily refer to a release, it shall be named by its date in the form `Pezkuwi stableYYMM`. Patches to stable releases
+are tagged in the form of `Pezkuwi stableYYMM-PATCH`, with `PATCH` ranging from 1 to 99. For example, the fourth patch
+to `Pezkuwi stable2409` would be `Pezkuwi stable2409-4`.
 
 ## Crate
 
@@ -72,7 +72,7 @@ Quoting [rust-lang.org](https://doc.rust-lang.org/cargo/reference/semver.html):
 release. "0.0.z" releases are always major changes. This is because Cargo uses the convention that only changes in the
 left-most non-zero component are considered incompatible.
 
-SemVer requires a piece of software to first declare a public API. The public API of the Polkadot SDK
+SemVer requires a piece of software to first declare a public API. The public API of the Pezkuwi SDK
 is hereby declared as the sum of all crates' public APIs.
 
 Inductively, the public API of our library crates is declared as all public items that are neither:
@@ -82,14 +82,14 @@ Inductively, the public API of our library crates is declared as all public item
 
 ## Node
 
-The versioning of the Polkadot node is done most of the time by only incrementing the `minor` version. The `major`
+The versioning of the Pezkuwi node is done most of the time by only incrementing the `minor` version. The `major`
 version is only bumped for special releases and the `patch` is used for a patch release that happens every month and
 fixes found issues. The node version is not following SemVer. This means that the version doesn't express if there are
 any breaking changes in the CLI interface or similar. The node version is declared
-in the [`NODE_VERSION`](https://paritytech.github.io/polkadot-sdk/master/polkadot_node_primitives/constant.NODE_VERSION.html)
+in the [`NODE_VERSION`](https://docs.pezkuwichain.io/sdk/master/polkadot_node_primitives/constant.NODE_VERSION.html)
 variable.
 
-## Westend
+## Zagros
 
 For the Westene testnet, in addition to incrementing the `Cargo.toml` version we also increment the `spec_version` and
 sometimes the `transaction_version`. The spec version is also following the node version. Its schema is: `M_mmm_ppp` and
@@ -116,7 +116,7 @@ This is done by the release team to keep things organized. Developers need not t
 # Processes
 
 The following processes are necessary to actualize our releases. Each process has a *Cadence* on which it must execute
-and a *Responsible* that is responsible for autonomously doing so and reporting back any error in the *RelEng: Polkadot
+and a *Responsible* that is responsible for autonomously doing so and reporting back any error in the *RelEng: Pezkuwi
 Release Coordination* Matrix channel. All processes should be automated as much as possible.
 
 ## Crate Bumping
@@ -143,7 +143,7 @@ Cadence: every 3 months for new `stable` releases and monthly for existing `stab
 
 ### Steps to execute a new stable binary release
 
-From the main Polkadot-sdk repository in the paritytech org:
+From the main Pezkuwi-sdk repository in the paritytech org:
 
 1. On the cut-off date, create a new branch with the name `satbleYYMM`
   using combined [Branch-off stable/tag rc flow](/.github/workflows/release-10_branchoff-stable.yml)
@@ -156,7 +156,7 @@ In case of a crates release: when it is done, the changes done by the Parity-Pub
 merged back to the stable branch via a PR as the direct pushes are restricted. When this is done,
 the new RC tag can be created using the flow from above.
 
-From the forked Polkadot-sdk repository in the [paritytech-release org](https://github.com/paritytech-release/polkadot-sdk/actions):
+From the forked Pezkuwi-sdk repository in the [paritytech-release org](https://github.com/paritytech-release/polkadot-sdk/actions):
 
 1. Sync the forks before continuing with the release using
 [Sync the forked repo with the upstream](https://github.com/paritytech-release/polkadot-sdk/actions/workflows/fork-sync-action.yml)
@@ -167,12 +167,12 @@ trigger [Release - Combined Builds Flow](/.github/workflows/release-22_combined-
 to the release branch
 5. Trigger [Release - Promote RC to final candidate on S3](/.github/workflows/release-31_promote-rc-to-final.yml)
 to have it as a final rc on the S3
-6. Publish deb package for the `polkadot` binary using
-[Release - Publish Polkadot deb package](/.github/workflows/release-40_publish-deb-package.yml)
+6. Publish deb package for the `pezkuwi` binary using
+[Release - Publish Pezkuwi deb package](/.github/workflows/release-40_publish-deb-package.yml)
 7. Adjust the release draft and publish release on GitHub.
 8. Publish docker images using [Release - Publish Docker Image](/.github/workflows/release-50_publish-docker.yml)
 
-From the main Polkadot-sdk repository in the paritytech org:
+From the main Pezkuwi-sdk repository in the paritytech org:
 
 1. Synchronize templates using [Synchronize templates](/.github/workflows/misc-sync-templates.yml)
 2. Update the [Release Registry](https://github.com/paritytech/release-registry/)

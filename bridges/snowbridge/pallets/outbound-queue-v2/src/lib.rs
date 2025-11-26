@@ -4,7 +4,7 @@
 //!
 //! # Overview
 //!
-//! Messages come either from sibling parachains via XCM, or BridgeHub itself
+//! Messages come either from sibling teyrchains via XCM, or BridgeHub itself
 //! via the `snowbridge-pallet-system-v2`:
 //!
 //! 1. `snowbridge_outbound_queue_primitives::v2::EthereumBlobExporter::deliver`
@@ -27,7 +27,7 @@
 //! 6. At the end of the block, a merkle root is constructed from all the leaves in `MessageLeaves`.
 //!    At the beginning of the next block, both `Messages` and `MessageLeaves` are dropped so that
 //!    state at each block only holds the messages processed in that block.
-//! 7. This merkle root is inserted into the parachain header as a digest item
+//! 7. This merkle root is inserted into the teyrchain header as a digest item
 //! 8. Offchain relayers are able to relay the message to Ethereum after:
 //! 	a. Generating a merkle proof for the committed message using the `prove_message` runtime API
 //! 	b. Reading the actual message content from the `Messages` vector in storage

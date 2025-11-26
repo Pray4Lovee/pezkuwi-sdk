@@ -17,7 +17,7 @@ export function znConfigFor(paraPreset: Presets): string {
 	return paraPreset == Presets.RealM ? "../zn-m.toml" : "../zn-s.toml";
 }
 
-/// Returns the parachain log file.
+/// Returns the teyrchain log file.
 export async function runPreset(paraPreset: Presets): Promise<void> {
 	prepPreset(paraPreset);
 	const znConfig = znConfigFor(paraPreset);
@@ -48,7 +48,7 @@ export async function runPresetUntilLaunched(
 					});
 			}
 			// our hacky way to know ZN is done.
-			if (raw.includes("Parachain ID : 1100")) {
+			if (raw.includes("Teyrchain ID : 1100")) {
 				for (const cmd of logCmds) {
 					logger.info(`${cmd}`);
 				}
@@ -118,12 +118,12 @@ function prepPreset(paraPreset: Presets): void {
 		`-p`,
 		`pallet-staking-async-rc-runtime`,
 		`-p`,
-		`pallet-staking-async-parachain-runtime`,
+		`pallet-staking-async-teyrchain-runtime`,
 		`-p`,
 		`staging-chain-spec-builder`,
 	]);
 
-	cmd("rm", ["./parachain.json"]);
+	cmd("rm", ["./teyrchain.json"]);
 	cmd("rm", ["./rc.json"]);
 
 	cmd(join(targetDir, "/release/chain-spec-builder"), [
@@ -133,16 +133,16 @@ function prepPreset(paraPreset: Presets): void {
 		"--runtime",
 		join(
 			targetDir,
-			"/release/wbuild/pallet-staking-async-parachain-runtime/pallet_staking_async_parachain_runtime.compact.compressed.wasm"
+			"/release/wbuild/pallet-staking-async-teyrchain-runtime/pallet_staking_async_teyrchain_runtime.compact.compressed.wasm"
 		),
 		"--relay-chain",
-		"rococo-local",
+		"pezkuwichain-local",
 		"--para-id",
 		"1100",
 		"named-preset",
 		paraPreset,
 	]);
-	cmd("mv", ["chain_spec.json", "parachain.json"]);
+	cmd("mv", ["chain_spec.json", "teyrchain.json"]);
 
 	cmd(join(targetDir, "/release/chain-spec-builder"), [
 		"create",

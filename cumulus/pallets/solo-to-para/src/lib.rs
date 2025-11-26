@@ -19,11 +19,11 @@
 extern crate alloc;
 
 use alloc::vec::Vec;
-use cumulus_pallet_parachain_system as parachain_system;
+use cumulus_pallet_teyrchain_system as teyrchain_system;
 use frame_support::pallet_prelude::*;
 use frame_system::pallet_prelude::*;
 pub use pallet::*;
-use polkadot_primitives::PersistedValidationData;
+use pezkuwi_primitives::PersistedValidationData;
 
 #[frame_support::pallet]
 pub mod pallet {
@@ -31,7 +31,7 @@ pub mod pallet {
 
 	#[pallet::config]
 	pub trait Config:
-		frame_system::Config + parachain_system::Config + pallet_sudo::Config
+		frame_system::Config + teyrchain_system::Config + pallet_sudo::Config
 	{
 		#[allow(deprecated)]
 		type RuntimeEvent: From<Event> + IsType<<Self as frame_system::Config>::RuntimeEvent>;
@@ -74,7 +74,7 @@ pub mod pallet {
 		) -> DispatchResult {
 			ensure_root(origin)?;
 
-			parachain_system::Pallet::<T>::schedule_code_upgrade(code)?;
+			teyrchain_system::Pallet::<T>::schedule_code_upgrade(code)?;
 			Self::store_pending_custom_validation_head_data(head_data);
 			Ok(())
 		}
@@ -92,13 +92,13 @@ pub mod pallet {
 		/// the relay chain.
 		fn set_pending_custom_validation_head_data() {
 			if let Some(head_data) = <PendingCustomValidationHeadData<T>>::take() {
-				parachain_system::Pallet::<T>::set_custom_validation_head_data(head_data);
+				teyrchain_system::Pallet::<T>::set_custom_validation_head_data(head_data);
 				Self::deposit_event(Event::CustomValidationHeadDataApplied);
 			}
 		}
 	}
 
-	impl<T: Config> parachain_system::OnSystemEvent for Pallet<T> {
+	impl<T: Config> teyrchain_system::OnSystemEvent for Pallet<T> {
 		fn on_validation_data(_data: &PersistedValidationData) {}
 		fn on_validation_code_applied() {
 			crate::Pallet::<T>::set_pending_custom_validation_head_data();

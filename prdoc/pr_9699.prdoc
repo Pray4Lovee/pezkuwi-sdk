@@ -2,7 +2,7 @@ title: Rve/revm selfdestruct2
 doc:
 - audience: Runtime Dev
   description: |-
-    fixes https://github.com/paritytech/polkadot-sdk/issues/9621
+    fixes https://github.com/pezkuwichain/pezkuwichain-sdk/issues/9621
 
     Behavior of `terminate` is changed in accordance with EIP-6780 (and EVM in general):
     - `terminate` only deletes the code from storage if it is called in the same transaction the contract was created.

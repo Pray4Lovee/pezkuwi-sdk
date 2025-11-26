@@ -11,20 +11,20 @@ function ensure_relayer() {
     if [[ ! -f "$path" ]]; then
         echo "  Required substrate-relay binary '$path' does not exist!"
         echo "  You need to build it and copy to this location!"
-        echo "  Please, check ./parachains/runtimes/bridge-hubs/README.md (Prepare/Build/Deploy)"
+        echo "  Please, check ./teyrchains/runtimes/bridge-hubs/README.md (Prepare/Build/Deploy)"
         exit 1
     fi
 
     echo $path
 }
 
-function ensure_polkadot_js_api() {
-    if ! which polkadot-js-api &> /dev/null; then
+function ensure_pezkuwi_js_api() {
+    if ! which pezkuwi-js-api &> /dev/null; then
         echo ''
-        echo 'Required command `polkadot-js-api` not in PATH, please, install, e.g.:'
-        echo "npm install -g @polkadot/api-cli@beta"
+        echo 'Required command `pezkuwi-js-api` not in PATH, please, install, e.g.:'
+        echo "npm install -g @pezkuwi/api-cli@beta"
         echo "      or"
-        echo "yarn global add @polkadot/api-cli"
+        echo "yarn global add @pezkuwi/api-cli"
         echo ''
         exit 1
     fi
@@ -48,12 +48,12 @@ function ensure_polkadot_js_api() {
     fi
 }
 
-function call_polkadot_js_api() {
-    # --noWait: without that argument `polkadot-js-api` waits until transaction is included into the block.
+function call_pezkuwi_js_api() {
+    # --noWait: without that argument `pezkuwi-js-api` waits until transaction is included into the block.
     #           With it, it just submits it to the tx pool and exits.
     # --nonce -1: means to compute transaction nonce using `system_accountNextIndex` RPC, which includes all
     #             transaction that are in the tx pool.
-    polkadot-js-api --nonce -1 "$@" || true
+    pezkuwi-js-api --nonce -1 "$@" || true
 }
 
 function generate_hex_encoded_call_data() {
@@ -88,7 +88,7 @@ function transfer_balance() {
     echo "      amount: ${amount}"
     echo "--------------------------------------------------"
 
-    call_polkadot_js_api \
+    call_pezkuwi_js_api \
         --ws "${runtime_para_endpoint}" \
         --seed "${seed?}" \
         tx.balances.transferAllowDeath \
@@ -114,7 +114,7 @@ function send_governance_transact() {
 
     local dest=$(jq --null-input \
                     --arg para_id "$para_id" \
-                    '{ "V4": { "parents": 0, "interior": { "X1": [{ "Parachain": $para_id }] } } }')
+                    '{ "V4": { "parents": 0, "interior": { "X1": [{ "Teyrchain": $para_id }] } } }')
 
     local message=$(jq --null-input \
                        --argjson hex_encoded_data $hex_encoded_data \
@@ -153,7 +153,7 @@ function send_governance_transact() {
     echo ""
     echo "--------------------------------------------------"
 
-    call_polkadot_js_api \
+    call_pezkuwi_js_api \
         --ws "${relay_url?}" \
         --seed "${relay_chain_seed?}" \
         --sudo \
@@ -178,7 +178,7 @@ function open_hrmp_channels() {
     echo "      max_message_size: ${max_message_size}"
     echo "      params:"
     echo "--------------------------------------------------"
-    call_polkadot_js_api \
+    call_pezkuwi_js_api \
         --ws "${relay_url?}" \
         --seed "${relay_chain_seed?}" \
         --sudo \
@@ -205,7 +205,7 @@ function force_xcm_version() {
     echo "      xcm_version: ${xcm_version}"
     echo "      params:"
 
-    # 1. generate data for Transact (PolkadotXcm::force_xcm_version)
+    # 1. generate data for Transact (PezkuwiXcm::force_xcm_version)
     local tmp_output_file=$(mktemp)
     generate_hex_encoded_call_data "force-xcm-version" "${runtime_para_endpoint}" "${tmp_output_file}" "$dest" "$xcm_version"
     local hex_encoded_data=$(cat $tmp_output_file)
@@ -249,7 +249,7 @@ function create_pool() {
     local native_asset_id=$3
     local foreign_asset_id=$4
     
-    call_polkadot_js_api \
+    call_pezkuwi_js_api \
         --ws "${runtime_para_endpoint?}" \
         --seed "${seed?}" \
         tx.assetConversion.createPool \
@@ -266,7 +266,7 @@ function add_liquidity() {
     local foreign_asset_amount=$6
     local pool_owner_account_id=$7
     
-    call_polkadot_js_api \
+    call_pezkuwi_js_api \
         --ws "${runtime_para_endpoint?}" \
         --seed "${seed?}" \
         tx.assetConversion.addLiquidity \
@@ -297,10 +297,10 @@ function limited_reserve_transfer_assets() {
     echo ""
     echo "--------------------------------------------------"
 
-    call_polkadot_js_api \
+    call_pezkuwi_js_api \
         --ws "${url?}" \
         --seed "${seed?}" \
-        tx.polkadotXcm.limitedReserveTransferAssets \
+        tx.pezkuwiXcm.limitedReserveTransferAssets \
             "${destination}" \
             "${beneficiary}" \
             "${assets}" \
@@ -336,7 +336,7 @@ function claim_rewards() {
     echo "${rewards_account_params}"
     echo "--------------------------------------------------"
 
-    call_polkadot_js_api \
+    call_pezkuwi_js_api \
         --ws "${runtime_para_endpoint}" \
         --seed "${seed?}" \
         tx.bridgeRelayers.claimRewards \

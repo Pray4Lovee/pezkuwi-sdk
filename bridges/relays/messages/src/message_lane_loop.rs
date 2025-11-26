@@ -250,7 +250,7 @@ pub struct ClientState<SelfHeaderId, PeerHeaderId> {
 	/// Best finalized header id of the peer chain read at the best block of this chain (at
 	/// `best_finalized_self`).
 	///
-	/// It may be `None` e,g. if peer is a parachain and we haven't yet relayed any parachain
+	/// It may be `None` e,g. if peer is a teyrchain and we haven't yet relayed any teyrchain
 	/// heads.
 	pub best_finalized_peer_at_best_self: Option<PeerHeaderId>,
 	/// Header id of the peer chain with the number, matching the

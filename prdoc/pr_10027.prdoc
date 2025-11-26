@@ -1,7 +1,7 @@
 title: 'pallet_revive: Lower the deposit costs for child trie items'
 doc:
 - audience: Runtime User
-  description: Fixes https://github.com/paritytech/polkadot-sdk/issues/9246
+  description: Fixes https://github.com/pezkuwichain/pezkuwichain-sdk/issues/9246
 crates:
 - name: asset-hub-westend-runtime
   bump: major

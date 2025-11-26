@@ -4031,7 +4031,7 @@ async fn follow_report_best_block_of_a_known_block() {
 	//
 	// This happened because the chainHead was using the `client.info()` without verifying
 	// if the block was announced or not. This was fixed by using the latest finalized
-	// block instead as fallback. For more info see: https://github.com/paritytech/polkadot-sdk/issues/5512.
+	// block instead as fallback. For more info see: https://github.com/pezkuwichain/pezkuwichain-sdk/issues/5512.
 	client_mock.set_best_block(block_3_hash, 3);
 
 	// Finalize the block 2 from the fork.

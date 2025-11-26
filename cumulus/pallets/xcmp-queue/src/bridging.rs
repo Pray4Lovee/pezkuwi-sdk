@@ -25,9 +25,9 @@ impl<Runtime: crate::Config> bp_xcm_bridge_hub_router::XcmChannelStatusProvider
 	for InAndOutXcmpChannelStatusProvider<Runtime>
 {
 	fn is_congested(with: &Location) -> bool {
-		// handle congestion only for a sibling parachain locations.
+		// handle congestion only for a sibling teyrchain locations.
 		let sibling_para_id: ParaId = match with.unpack() {
-			(_, [Parachain(para_id)]) => (*para_id).into(),
+			(_, [Teyrchain(para_id)]) => (*para_id).into(),
 			_ => return false,
 		};
 
@@ -51,13 +51,13 @@ impl<Runtime: crate::Config> bp_xcm_bridge_hub_router::XcmChannelStatusProvider
 pub struct OutXcmpChannelStatusProvider<Runtime>(core::marker::PhantomData<Runtime>);
 impl<Runtime: crate::Config> OutXcmpChannelStatusProvider<Runtime> {
 	fn is_congested(with: &Location) -> bool {
-		// handle congestion only for a sibling parachain locations.
+		// handle congestion only for a sibling teyrchain locations.
 		let sibling_para_id: ParaId = match with.unpack() {
-			(_, [Parachain(para_id)]) => (*para_id).into(),
+			(_, [Teyrchain(para_id)]) => (*para_id).into(),
 			_ => return false,
 		};
 
-		// let's find the channel's state with the sibling parachain,
+		// let's find the channel's state with the sibling teyrchain,
 		let Some((outbound_state, queued_pages)) =
 			pallet::Pallet::<Runtime>::outbound_channel_state(sibling_para_id)
 		else {
@@ -68,10 +68,10 @@ impl<Runtime: crate::Config> OutXcmpChannelStatusProvider<Runtime> {
 			return true
 		}
 
-		// It takes some time for target parachain to suspend inbound channel with the target BH and
+		// It takes some time for target teyrchain to suspend inbound channel with the target BH and
 		// during that we will keep accepting new message delivery transactions. Let's also reject
 		// new deliveries if there are too many "pages" (concatenated XCM messages) in the target BH
-		// -> target parachain queue.
+		// -> target teyrchain queue.
 
 		// If the outbound channel has at least `N` pages enqueued, let's assume it is congested.
 		// Normally, the chain with a few opened HRMP channels, will "send" pages at every block.

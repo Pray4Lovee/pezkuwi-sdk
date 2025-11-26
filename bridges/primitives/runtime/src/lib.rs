@@ -35,7 +35,7 @@ use sp_std::{fmt::Debug, ops::RangeInclusive, vec, vec::Vec};
 
 pub use chain::{
 	AccountIdOf, AccountPublicOf, BalanceOf, BlockNumberOf, Chain, EncodedOrDecodedCall, HashOf,
-	HasherOf, HeaderOf, NonceOf, Parachain, ParachainIdOf, SignatureOf, TransactionEraOf,
+	HasherOf, HeaderOf, NonceOf, Teyrchain, TeyrchainIdOf, SignatureOf, TransactionEraOf,
 	UnderlyingChainOf, UnderlyingChainProvider, __private,
 };
 pub use frame_support::storage::storage_prefix as storage_value_final_key;

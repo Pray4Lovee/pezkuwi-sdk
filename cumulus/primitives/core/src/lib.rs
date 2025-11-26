@@ -22,7 +22,7 @@ extern crate alloc;
 
 use alloc::vec::Vec;
 use codec::{Compact, Decode, DecodeAll, DecodeWithMemTracking, Encode, MaxEncodedLen};
-use polkadot_parachain_primitives::primitives::HeadData;
+use pezkuwi_teyrchain_primitives::primitives::HeadData;
 use scale_info::TypeInfo;
 use sp_runtime::RuntimeDebug;
 
@@ -31,15 +31,15 @@ use sp_runtime::RuntimeDebug;
 /// This is the execution time each PoV gets on a core on the relay chain.
 pub const REF_TIME_PER_CORE_IN_SECS: u64 = 2;
 
-pub mod parachain_block_data;
+pub mod teyrchain_block_data;
 
-pub use parachain_block_data::ParachainBlockData;
-pub use polkadot_core_primitives::InboundDownwardMessage;
-pub use polkadot_parachain_primitives::primitives::{
+pub use teyrchain_block_data::TeyrchainBlockData;
+pub use pezkuwi_core_primitives::InboundDownwardMessage;
+pub use pezkuwi_teyrchain_primitives::primitives::{
 	DmpMessageHandler, Id as ParaId, IsSystem, UpwardMessage, ValidationParams, XcmpMessageFormat,
 	XcmpMessageHandler,
 };
-pub use polkadot_primitives::{
+pub use pezkuwi_primitives::{
 	AbridgedHostConfiguration, AbridgedHrmpChannel, ClaimQueueOffset, CoreSelector,
 	PersistedValidationData,
 };
@@ -52,15 +52,15 @@ pub use xcm::latest::prelude::*;
 
 /// A module that re-exports relevant relay chain definitions.
 pub mod relay_chain {
-	pub use polkadot_core_primitives::*;
-	pub use polkadot_primitives::*;
+	pub use pezkuwi_core_primitives::*;
+	pub use pezkuwi_primitives::*;
 }
 
 /// An inbound HRMP message.
-pub type InboundHrmpMessage = polkadot_primitives::InboundHrmpMessage<relay_chain::BlockNumber>;
+pub type InboundHrmpMessage = pezkuwi_primitives::InboundHrmpMessage<relay_chain::BlockNumber>;
 
 /// And outbound HRMP message
-pub type OutboundHrmpMessage = polkadot_primitives::OutboundHrmpMessage<ParaId>;
+pub type OutboundHrmpMessage = pezkuwi_primitives::OutboundHrmpMessage<ParaId>;
 
 /// Error description of a message send failure.
 #[derive(Eq, PartialEq, Copy, Clone, RuntimeDebug, Encode, Decode)]
@@ -112,7 +112,7 @@ impl From<AggregateMessageOrigin> for Location {
 		match origin {
 			AggregateMessageOrigin::Here => Location::here(),
 			AggregateMessageOrigin::Parent => Location::parent(),
-			AggregateMessageOrigin::Sibling(id) => Location::new(1, Junction::Parachain(id.into())),
+			AggregateMessageOrigin::Sibling(id) => Location::new(1, Junction::Teyrchain(id.into())),
 		}
 	}
 }
@@ -216,7 +216,7 @@ pub enum ServiceQuality {
 	Fast,
 }
 
-/// A consensus engine ID indicating that this is a Cumulus Parachain.
+/// A consensus engine ID indicating that this is a Cumulus Teyrchain.
 pub const CUMULUS_CONSENSUS_ID: ConsensusEngineId = *b"CMLS";
 
 /// Information about the core on the relay chain this block will be validated on.
@@ -226,7 +226,7 @@ pub struct CoreInfo {
 	pub selector: CoreSelector,
 	/// The claim queue offset that determines how far "into the future" the core is selected.
 	pub claim_queue_offset: ClaimQueueOffset,
-	/// The number of cores assigned to the parachain at `claim_queue_offset`.
+	/// The number of cores assigned to the teyrchain at `claim_queue_offset`.
 	pub number_of_cores: Compact<u16>,
 }
 
@@ -250,10 +250,10 @@ pub enum RelayBlockIdentifier {
 	ByStorageRoot { storage_root: relay_chain::Hash, block_number: relay_chain::BlockNumber },
 }
 
-/// Consensus header digests for Cumulus parachains.
+/// Consensus header digests for Cumulus teyrchains.
 #[derive(Clone, Debug, Decode, Encode, PartialEq)]
 pub enum CumulusDigestItem {
-	/// A digest item indicating the relay-parent a parachain block was built against.
+	/// A digest item indicating the relay-parent a teyrchain block was built against.
 	#[codec(index = 0)]
 	RelayParent(relay_chain::Hash),
 	/// A digest item providing information about the core selected on the relay chain for this
@@ -319,7 +319,7 @@ impl CumulusDigestItem {
 
 	/// Returns the [`RelayBlockIdentifier`] from the given `digest`.
 	///
-	/// The identifier corresponds to the relay parent used to build the parachain block.
+	/// The identifier corresponds to the relay parent used to build the teyrchain block.
 	pub fn find_relay_block_identifier(digest: &Digest) -> Option<RelayBlockIdentifier> {
 		digest.convert_first(|d| match d {
 			DigestItem::Consensus(id, val) if id == &CUMULUS_CONSENSUS_ID => {
@@ -368,7 +368,7 @@ pub fn extract_relay_parent(digest: &Digest) -> Option<relay_chain::Hash> {
 /// <https://github.com/paritytech/cumulus/issues/303> via
 /// <https://github.com/paritytech/polkadot/issues/7191>.
 ///
-/// Runtimes using the parachain-system pallet are expected to produce this digest item,
+/// Runtimes using the teyrchain-system pallet are expected to produce this digest item,
 /// but will stop as soon as they are able to provide the relay-parent hash directly.
 ///
 /// The relay-chain storage root is, in practice, a unique identifier of a block
@@ -423,7 +423,7 @@ pub mod rpsr_digest {
 pub struct CollationInfoV1 {
 	/// Messages destined to be interpreted by the Relay chain itself.
 	pub upward_messages: Vec<UpwardMessage>,
-	/// The horizontal messages sent by the parachain.
+	/// The horizontal messages sent by the teyrchain.
 	pub horizontal_messages: Vec<OutboundHrmpMessage>,
 	/// New validation code.
 	pub new_validation_code: Option<relay_chain::ValidationCode>,
@@ -453,7 +453,7 @@ impl CollationInfoV1 {
 pub struct CollationInfo {
 	/// Messages destined to be interpreted by the Relay chain itself.
 	pub upward_messages: Vec<UpwardMessage>,
-	/// The horizontal messages sent by the parachain.
+	/// The horizontal messages sent by the teyrchain.
 	pub horizontal_messages: Vec<OutboundHrmpMessage>,
 	/// New validation code.
 	pub new_validation_code: Option<relay_chain::ValidationCode>,
@@ -471,7 +471,7 @@ sp_api::decl_runtime_apis! {
 	///
 	/// Version history:
 	/// - Version 2: Changed [`Self::collect_collation_info`] signature
-	/// - Version 3: Signals to the node to use version 1 of [`ParachainBlockData`].
+	/// - Version 3: Signals to the node to use version 1 of [`TeyrchainBlockData`].
 	#[api_version(3)]
 	pub trait CollectCollationInfo {
 		/// Collect information about a collation.
@@ -484,10 +484,10 @@ sp_api::decl_runtime_apis! {
 		fn collect_collation_info(header: &Block::Header) -> CollationInfo;
 	}
 
-	/// Runtime api used to access general info about a parachain runtime.
-	pub trait GetParachainInfo {
-		/// Retrieve the parachain id used for runtime.
-		fn parachain_id() -> ParaId;
+	/// Runtime api used to access general info about a teyrchain runtime.
+	pub trait GetTeyrchainInfo {
+		/// Retrieve the teyrchain id used for runtime.
+		fn teyrchain_id() -> ParaId;
   }
 
 	/// API to tell the node side how the relay parent should be chosen.
@@ -499,16 +499,16 @@ sp_api::decl_runtime_apis! {
 		fn relay_parent_offset() -> u32;
 	}
 
-	/// API for parachain target block rate.
+	/// API for teyrchain target block rate.
 	///
-	/// This runtime API allows the parachain runtime to communicate the target block rate
+	/// This runtime API allows the teyrchain runtime to communicate the target block rate
 	/// to the node side. The target block rate is always valid for the next relay chain slot.
 	///
 	/// The runtime can not enforce this target block rate. It only acts as a maximum, but not more.
 	/// In the end it depends on the collator how many blocks will be produced. If there are no cores
 	/// available or the collator is offline, no blocks at all will be produced.
 	pub trait TargetBlockRate {
-		/// Get the target block rate for this parachain.
+		/// Get the target block rate for this teyrchain.
 		///
 		/// Returns the target number of blocks per relay chain slot.
 		fn target_block_rate() -> u32;

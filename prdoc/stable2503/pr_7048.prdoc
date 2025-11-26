@@ -8,7 +8,7 @@ doc:
     description: >
       This PR migrates the `pallet-salary` to use the FRAME umbrella crate.  
       This is part of the ongoing effort to migrate all pallets to use the FRAME umbrella crate.  
-      The effort is tracked [here](https://github.com/paritytech/polkadot-sdk/issues/6504).
+      The effort is tracked [here](https://github.com/pezkuwichain/pezkuwichain-sdk/issues/6504).
 
 crates:
   - name: pallet-salary

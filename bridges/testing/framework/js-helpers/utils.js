@@ -21,11 +21,11 @@ module.exports = {
             0,
         );
     },
-    countParachainHeaderImports: function(bridgedChain, events) {
+    countTeyrchainHeaderImports: function(bridgedChain, events) {
         return events.reduce(
             (count, record) => {
                 const { event } = record;
-                if (event.section == bridgedChain.parachainsPalletName && event.method == "UpdatedParachainHead") {
+                if (event.section == bridgedChain.teyrchainsPalletName && event.method == "UpdatedTeyrchainHead") {
                     count += 1;
                 }
                 return count;
@@ -78,26 +78,26 @@ module.exports = {
 
         return newGrandpaHeaders;
     },
-    ensureOnlyInitialParachainHeaderImported: async function(
+    ensureOnlyInitialTeyrchainHeaderImported: async function(
         bridgedChain,
         apiAtParent,
         apiAtCurrent,
         currentEvents,
     ) {
-        // remember whether we already know bridged parachain header at a parent block
-        const bestBridgedParachainHeader = await apiAtParent.query[bridgedChain.parachainsPalletName].parasInfo(bridgedChain.bridgedBridgeHubParaId);;
-        const hasBestBridgedParachainHeader = bestBridgedParachainHeader.isSome;
+        // remember whether we already know bridged teyrchain header at a parent block
+        const bestBridgedTeyrchainHeader = await apiAtParent.query[bridgedChain.teyrchainsPalletName].parasInfo(bridgedChain.bridgedBridgeHubParaId);;
+        const hasBestBridgedTeyrchainHeader = bestBridgedTeyrchainHeader.isSome;
 
-        // we expect to see: no more than `1` bridged parachain header if there were no parachain header before.
-        const maxNewParachainHeaders = hasBestBridgedParachainHeader ? 0 : 1;
-        const newParachainHeaders = module.exports.countParachainHeaderImports(bridgedChain, currentEvents);
+        // we expect to see: no more than `1` bridged teyrchain header if there were no teyrchain header before.
+        const maxNewTeyrchainHeaders = hasBestBridgedTeyrchainHeader ? 0 : 1;
+        const newTeyrchainHeaders = module.exports.countTeyrchainHeaderImports(bridgedChain, currentEvents);
 
         // check that our assumptions are correct
-        if (newParachainHeaders > maxNewParachainHeaders) {
+        if (newTeyrchainHeaders > maxNewTeyrchainHeaders) {
             module.exports.logEvents(currentEvents);
-            throw new Error("Unexpected parachain header import: " + newParachainHeaders + " / " + maxNewParachainHeaders);
+            throw new Error("Unexpected teyrchain header import: " + newTeyrchainHeaders + " / " + maxNewTeyrchainHeaders);
         }
 
-        return hasBestBridgedParachainHeader;
+        return hasBestBridgedTeyrchainHeader;
     },
 }

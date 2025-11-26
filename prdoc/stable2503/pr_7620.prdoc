@@ -2,7 +2,7 @@ title: Derive `DecodeWithMemTracking` for bridge and xcm pallets
 doc:
 - audience: Runtime Dev
   description: |-
-    Related to https://github.com/paritytech/polkadot-sdk/issues/7360
+    Related to https://github.com/pezkuwichain/pezkuwichain-sdk/issues/7360
 
     Just deriving `DecodeWithMemTracking` for the types used by the bridge, snowbridge and xcm pallets
 crates:

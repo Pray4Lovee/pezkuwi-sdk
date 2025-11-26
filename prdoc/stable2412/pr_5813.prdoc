@@ -7,7 +7,7 @@ doc:
       containing only provided fields, while performing the validation of the
       entire struct.
 
-      Related issue: https://github.com/paritytech/polkadot-sdk/issues/5700
+      Related issue: https://github.com/pezkuwichain/pezkuwichain-sdk/issues/5700
 
 crates:
   - name: frame-support

@@ -37,7 +37,7 @@ use sp_runtime::{
 };
 
 #[doc(hidden)]
-pub const DEFENSIVE_OP_PUBLIC_ERROR: &str = "a defensive failure has been triggered; please report the block number at https://github.com/paritytech/polkadot-sdk/issues";
+pub const DEFENSIVE_OP_PUBLIC_ERROR: &str = "a defensive failure has been triggered; please report the block number at https://github.com/pezkuwichain/pezkuwichain-sdk/issues";
 #[doc(hidden)]
 pub const DEFENSIVE_OP_INTERNAL_ERROR: &str = "Defensive failure has been triggered!";
 
@@ -1077,7 +1077,7 @@ impl<T: MaxEncodedLen> MaxEncodedLen for WrapperOpaque<T> {
 	fn max_encoded_len() -> usize {
 		let t_max_len = T::max_encoded_len();
 
-		// See scale encoding: https://docs.substrate.io/reference/scale-codec/
+		// See scale encoding: https://github.com/pezkuwichain/docs.pezkuwichain.io/reference/scale-codec/
 		if t_max_len < 64 {
 			t_max_len + 1
 		} else if t_max_len < 2usize.pow(14) {

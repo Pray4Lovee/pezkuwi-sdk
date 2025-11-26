@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Cumulus.  If not, see <http://www.gnu.org/licenses/>.
 
-//! Parachain bootnode request-response protocol configuration.
+//! Teyrchain bootnode request-response protocol configuration.
 
 use sc_network::{
 	request_responses::IncomingRequest, service::traits::NetworkBackend, ProtocolName,
@@ -42,7 +42,7 @@ pub fn paranode_protocol_name<Hash: AsRef<[u8]>>(
 ) -> ProtocolName {
 	let genesis_hash = genesis_hash.as_ref();
 	if let Some(fork_id) = fork_id {
-		// This is not stated in RFC-0008, but other polkadot protocol names are based on `fork_id`
+		// This is not stated in RFC-0008, but other pezkuwi protocol names are based on `fork_id`
 		// if it is present, so we also use it here.
 		format!("/{}/{}/paranode", array_bytes::bytes2hex("", genesis_hash), fork_id)
 	} else {

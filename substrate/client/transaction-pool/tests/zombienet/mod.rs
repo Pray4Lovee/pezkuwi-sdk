@@ -28,18 +28,18 @@ use zombienet_sdk::{
 	NetworkConfigBuilder, NetworkConfigExt, WithRelaychain,
 };
 
-/// Gathers TOML files paths for relaychains and for parachains' (that use rococo-local based
+/// Gathers TOML files paths for relaychains and for teyrchains' (that use pezkuwichain-local based
 /// relaychains) zombienet network specs for testing in relation to fork aware transaction pool.
-pub mod relaychain_rococo_local_network_spec {
+pub mod relaychain_pezkuwichain_local_network_spec {
 	pub const HIGH_POOL_LIMIT_FATP: &'static str =
-		"tests/zombienet/network-specs/rococo-local-high-pool-limit-fatp.toml";
+		"tests/zombienet/network-specs/pezkuwichain-local-high-pool-limit-fatp.toml";
 	pub const LOW_POOL_LIMIT_FATP: &'static str =
-		"tests/zombienet/network-specs/rococo-local-low-pool-limit-fatp.toml";
+		"tests/zombienet/network-specs/pezkuwichain-local-low-pool-limit-fatp.toml";
 	pub const HIGH_POOL_LIMIT_FATP_TRACE: &'static str =
-		"tests/zombienet/network-specs/rococo-local-gossiping.toml";
+		"tests/zombienet/network-specs/pezkuwichain-local-gossiping.toml";
 
-	/// Network specs used for fork-aware tx pool testing of parachains.
-	pub mod parachain_asset_hub_network_spec {
+	/// Network specs used for fork-aware tx pool testing of teyrchains.
+	pub mod teyrchain_asset_hub_network_spec {
 		pub const LOW_POOL_LIMIT_FATP: &'static str =
 			"tests/zombienet/network-specs/asset-hub-low-pool-limit-fatp.toml";
 		pub const HIGH_POOL_LIMIT_FATP: &'static str =
@@ -50,7 +50,7 @@ pub mod relaychain_rococo_local_network_spec {
 mod yap_test;
 
 /// Default time that we expect to need for a full run of current tests that send future and ready
-/// txs to parachain or relaychain networks.
+/// txs to teyrchain or relaychain networks.
 pub const DEFAULT_SEND_FUTURE_AND_READY_TXS_TESTS_TIMEOUT_IN_SECS: u64 = 1500;
 
 #[derive(thiserror::Error, Debug)]

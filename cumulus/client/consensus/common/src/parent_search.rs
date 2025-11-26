@@ -16,7 +16,7 @@
 // along with Cumulus. If not, see <https://www.gnu.org/licenses/>.
 
 use codec::Decode;
-use polkadot_primitives::Hash as RelayHash;
+use pezkuwi_primitives::Hash as RelayHash;
 
 use cumulus_primitives_core::{
 	relay_chain::{BlockId as RBlockId, OccupiedCoreAssumption},
@@ -37,12 +37,12 @@ const PARENT_SEARCH_LOG_TARGET: &str = "consensus::common::find_potential_parent
 pub struct ParentSearchParams {
 	/// The relay-parent that is intended to be used.
 	pub relay_parent: RelayHash,
-	/// The ID of the parachain.
+	/// The ID of the teyrchain.
 	pub para_id: ParaId,
-	/// A limitation on the age of relay parents for parachain blocks that are being
+	/// A limitation on the age of relay parents for teyrchain blocks that are being
 	/// considered. This is relative to the `relay_parent` number.
 	pub ancestry_lookback: usize,
-	/// How "deep" parents can be relative to the included parachain block at the relay-parent.
+	/// How "deep" parents can be relative to the included teyrchain block at the relay-parent.
 	/// The included block has depth 0.
 	pub max_depth: usize,
 	/// Whether to only ignore "alternative" branches, i.e. branches of the chain
@@ -79,13 +79,13 @@ impl<B: BlockT> std::fmt::Debug for PotentialParent<B> {
 /// parent blocks for a new block.
 ///
 /// This accepts a relay-chain block to be used as an anchor and a maximum search depth,
-/// along with some arguments for filtering parachain blocks and performs a recursive search
-/// for parachain blocks. The search begins at the last included parachain block and returns
+/// along with some arguments for filtering teyrchain blocks and performs a recursive search
+/// for teyrchain blocks. The search begins at the last included teyrchain block and returns
 /// a set of [`PotentialParent`]s which could be potential parents of a new block with this
 /// relay-parent according to the search parameters.
 ///
-/// A parachain block is a potential parent if it is either the last included parachain block, the
-/// pending parachain block (when `max_depth` >= 1), or all of the following hold:
+/// A teyrchain block is a potential parent if it is either the last included teyrchain block, the
+/// pending teyrchain block (when `max_depth` >= 1), or all of the following hold:
 ///   * its parent is a potential parent
 ///   * its relay-parent is within `ancestry_lookback` of the targeted relay-parent.
 ///   * its relay-parent is within the same session as the targeted relay-parent.
@@ -282,9 +282,9 @@ async fn fetch_included_from_relay_chain<B: BlockT>(
 /// Build an ancestry of relay parents that are acceptable.
 ///
 /// An acceptable relay parent is one that is no more than `ancestry_lookback` + 1 blocks below the
-/// relay parent we want to build on. Parachain blocks anchored on relay parents older than that can
+/// relay parent we want to build on. Teyrchain blocks anchored on relay parents older than that can
 /// not be considered potential parents for block building. They have no chance of still getting
-/// included, so our newly build parachain block would also not get included.
+/// included, so our newly build teyrchain block would also not get included.
 ///
 /// On success, returns a vector of `(header_hash, state_root)` of the relevant relay chain
 /// ancestry blocks.

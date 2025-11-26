@@ -27,12 +27,12 @@
 //!
 //! **This pallet serves as an example and is not meant to be used in production.**
 //!
-//! > Made with *Substrate*, for *Polkadot*.
+//! > Made with *Substrate*, for *Pezkuwi*.
 //!
-//! [![github]](https://github.com/paritytech/polkadot-sdk/tree/master/substrate/frame/examples/basic)
-//! [![polkadot]](https://polkadot.com)
+//! [![github]](https://github.com/pezkuwichain/pezkuwichain-sdk/tree/master/substrate/frame/examples/basic)
+//! [![pezkuwi]](https://pezkuwichain.io)
 //!
-//! [polkadot]: https://img.shields.io/badge/polkadot-E6007A?style=for-the-badge&logo=polkadot&logoColor=white
+//! [pezkuwi]: https://img.shields.io/badge/polkadot-E6007A?style=for-the-badge&logo=polkadot&logoColor=white
 //! [github]: https://img.shields.io/badge/github-8da0cb?style=for-the-badge&labelColor=555555&logo=github
 //!
 //! ## Pallet API
@@ -113,7 +113,7 @@ const MILLICENTS: u32 = 1_000_000_000;
 // - assigns a dispatch class `operational` if the argument of the call is more than 1000.
 //
 // More information can be read at:
-//   - https://docs.substrate.io/main-docs/build/tx-weights-fees/
+//   - https://github.com/pezkuwichain/docs.pezkuwichain.io/main-docs/build/tx-weights-fees/
 //
 // Manually configuring weight is an advanced operation and what you really need may well be
 //   fulfilled by running the benchmarking toolchain. Refer to `benchmarking.rs` file.
@@ -339,8 +339,8 @@ pub mod pallet {
 
 			// Print out log or debug message in the console via log::{error, warn, info, debug,
 			// trace}, accepting format strings similar to `println!`.
-			// https://paritytech.github.io/substrate/master/sp_io/logging/fn.log.html
-			// https://paritytech.github.io/substrate/master/frame_support/constant.LOG_TARGET.html
+			// https://docs.pezkuwichain.io/substrate/master/sp_io/logging/fn.log.html
+			// https://docs.pezkuwichain.io/substrate/master/frame_support/constant.LOG_TARGET.html
 			info!("New value is now: {:?}", new_value);
 
 			// Put the new value into storage.
@@ -460,7 +460,7 @@ impl<T: Config> Pallet<T> {
 // Note that a transaction extension can also indicate that a particular data must be present in the
 // _signing payload_ of a transaction by providing an implementation for the `implicit` method. This
 // example will not cover this type of extension. See `CheckSpecVersion` in [FRAME
-// System](https://github.com/paritytech/polkadot-sdk/tree/master/substrate/frame/system#signed-extensions)
+// System](https://github.com/pezkuwichain/pezkuwichain-sdk/tree/master/substrate/frame/system#signed-extensions)
 // for an example.
 //
 // Using the extension, you can add some hooks to the life cycle of each transaction. Note that by

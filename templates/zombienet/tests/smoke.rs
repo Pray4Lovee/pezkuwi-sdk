@@ -1,14 +1,14 @@
 //! This test is setup to run with the `native` provider and needs these binaries in your PATH
-//! `polkadot`, `polkadot-prepare-worker`, `polkadot-execute-worker`, `parachain-template-node`.
+//! `pezkuwi`, `pezkuwi-prepare-worker`, `pezkuwi-execute-worker`, `teyrchain-template-node`.
 //! You can follow these steps to compile and export the binaries:
-//! `cargo build --release -features fast-runtime --bin polkadot --bin polkadot-execute-worker --bin
-//! polkadot-prepare-worker`
-//! `cargo build --package parachain-template-node --release`
-//! `export PATH=<path-to-polkadot-sdk-repo>/target/release:$PATH
+//! `cargo build --release -features fast-runtime --bin pezkuwi --bin pezkuwi-execute-worker --bin
+//! pezkuwi-prepare-worker`
+//! `cargo build --package teyrchain-template-node --release`
+//! `export PATH=<path-to-pezkuwi-sdk-repo>/target/release:$PATH
 //!
 //! There are also some tests related to omni node which run basaed on pre-generated chain specs,
 //! so to be able to run them you would need to generate the right chain spec (just minimal and
-//! parachain tests supported for now).
+//! teyrchain tests supported for now).
 //!
 //! You can run the following command to generate a minimal chainspec, once the runtime wasm file is
 //! compiled:
@@ -18,7 +18,7 @@
 //! Once the files are generated, you must export an environment variable called
 //! `CHAIN_SPECS_DIR` which should point to the absolute path of the directory
 //! that holds the generated chain spec. The chain specs file names should be
-//! `parachain_chain_spec.json` for parachain
+//! `teyrchain_chain_spec.json` for teyrchain
 //! templates.
 //!
 //! To start all tests here we should run:
@@ -32,7 +32,7 @@ mod smoke {
 	use zombienet_sdk::{NetworkConfig, NetworkConfigBuilder, NetworkConfigExt};
 
 	const CHAIN_SPECS_DIR_PATH: &str = "CHAIN_SPECS_DIR";
-	const PARACHAIN_ID: u32 = 1000;
+	const TEYRCHAIN_ID: u32 = 1000;
 
 	#[inline]
 	fn expect_env_var(var_name: &str) -> String {
@@ -53,7 +53,7 @@ mod smoke {
 	}
 
 	fn get_config(network_spec: NetworkSpec) -> Result<NetworkConfig, anyhow::Error> {
-		let chain = if network_spec.relaychain_cmd == "polkadot" { "rococo-local" } else { "dev" };
+		let chain = if network_spec.relaychain_cmd == "pezkuwi" { "pezkuwichain-local" } else { "dev" };
 		let config = NetworkConfigBuilder::new().with_relaychain(|r| {
 			let mut r = r.with_chain(chain).with_default_command(network_spec.relaychain_cmd);
 			if let Some(path) = network_spec.relaychain_spec_path {
@@ -69,8 +69,8 @@ mod smoke {
 		});
 
 		let config = if let Some(para_cmd) = network_spec.para_cmd {
-			config.with_parachain(|p| {
-				let mut p = p.with_id(PARACHAIN_ID).with_default_command(para_cmd);
+			config.with_teyrchain(|p| {
+				let mut p = p.with_id(TEYRCHAIN_ID).with_default_command(para_cmd);
 				if let Some(args) = network_spec.para_cmd_args {
 					p = p.with_default_args(args.into_iter().map(|arg| arg.into()).collect());
 				}
@@ -90,14 +90,14 @@ mod smoke {
 	}
 
 	#[tokio::test(flavor = "multi_thread")]
-	async fn parachain_template_block_production_test() -> Result<(), anyhow::Error> {
+	async fn teyrchain_template_block_production_test() -> Result<(), anyhow::Error> {
 		let _ = env_logger::try_init_from_env(
 			env_logger::Env::default().filter_or(env_logger::DEFAULT_FILTER_ENV, "info"),
 		);
 
 		let config = get_config(NetworkSpec {
-			relaychain_cmd: "polkadot",
-			para_cmd: Some("parachain-template-node"),
+			relaychain_cmd: "pezkuwi",
+			para_cmd: Some("teyrchain-template-node"),
 			..Default::default()
 		})?;
 
@@ -160,15 +160,15 @@ mod smoke {
 	}
 
 	#[tokio::test(flavor = "multi_thread")]
-	async fn omni_node_with_parachain_runtime_block_production_test() -> Result<(), anyhow::Error> {
+	async fn omni_node_with_teyrchain_runtime_block_production_test() -> Result<(), anyhow::Error> {
 		let _ = env_logger::try_init_from_env(
 			env_logger::Env::default().filter_or(env_logger::DEFAULT_FILTER_ENV, "info"),
 		);
 
-		let chain_spec_path = expect_env_var(CHAIN_SPECS_DIR_PATH) + "/parachain_chain_spec.json";
+		let chain_spec_path = expect_env_var(CHAIN_SPECS_DIR_PATH) + "/teyrchain_chain_spec.json";
 		let config = get_config(NetworkSpec {
-			relaychain_cmd: "polkadot",
-			para_cmd: Some("polkadot-omni-node"),
+			relaychain_cmd: "pezkuwi",
+			para_cmd: Some("pezkuwi-omni-node"),
 			para_chain_spec_path: Some(PathBuf::from(chain_spec_path)),
 			..Default::default()
 		})?;

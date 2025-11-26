@@ -92,9 +92,9 @@ where
 		}
 
 		let para_id = match local_sub.as_slice() {
-			[Parachain(para_id)] => *para_id,
+			[Teyrchain(para_id)] => *para_id,
 			_ => {
-				tracing::error!(target: "xcm::ethereum_blob_exporter", universal_source=?local_sub, "could not get parachain id.");
+				tracing::error!(target: "xcm::ethereum_blob_exporter", universal_source=?local_sub, "could not get teyrchain id.");
 				return Err(SendError::NotApplicable)
 			},
 		};
@@ -330,8 +330,8 @@ where
 		}
 	}
 
-	/// Convert the xcm for Polkadot-native token from AH into the Command
-	/// To match transfers of Polkadot-native tokens, we expect an input of the form:
+	/// Convert the xcm for Pezkuwi-native token from AH into the Command
+	/// To match transfers of Pezkuwi-native tokens, we expect an input of the form:
 	/// # ReserveAssetDeposited
 	/// # ClearOrigin
 	/// # BuyExecution

@@ -1,6 +1,6 @@
 [package]
 name = "cumulus-client-consensus-proposer"
-description = "A Substrate `Proposer` for building parachain blocks"
+description = "A Substrate `Proposer` for building teyrchain blocks"
 version = "0.7.0"
 authors.workspace = true
 edition.workspace = true
@@ -28,4 +28,4 @@ sp-runtime = { workspace = true, default-features = true }
 sp-state-machine = { workspace = true, default-features = true }
 
 # Cumulus
-cumulus-primitives-parachain-inherent = { workspace = true, default-features = true }
+cumulus-primitives-teyrchain-inherent = { workspace = true, default-features = true }

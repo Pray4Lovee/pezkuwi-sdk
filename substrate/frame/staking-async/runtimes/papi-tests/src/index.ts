@@ -23,7 +23,7 @@ if (require.main === module) {
 		.description("Run a given preset. This just sets up the ZN env and runs it")
 		.option(
 			"-p, --para-preset <preset>",
-			"run the given parachain preset. The right relay preset, and zn-toml file are auto-chosen.",
+			"run the given teyrchain preset. The right relay preset, and zn-toml file are auto-chosen.",
 			Presets.FakeDev
 		)
 		.action(async (options) => {
@@ -41,7 +41,7 @@ if (require.main === module) {
 		)
 		.option(
 			"--para-port <port>",
-			"Parachain WebSocket port (optional)",
+			"Teyrchain WebSocket port (optional)",
 			"9946"
 		)
 		.option(
@@ -51,7 +51,7 @@ if (require.main === module) {
 		)
 		.option(
 			"--para-id <id>",
-			"Specific parachain ID to monitor (default: all)"
+			"Specific teyrchain ID to monitor (default: all)"
 		)
 		.action(async (options) => {
 			const { relayPort, paraPort, refresh, paraId } = options;

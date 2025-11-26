@@ -286,7 +286,7 @@ pub mod pallet {
 		#[pallet::no_default_bounds]
 		type InstantiateOrigin: EnsureOrigin<OriginFor<Self>, Success = Self::AccountId>;
 
-		/// The amount of memory in bytes that parachain nodes a lot to the runtime.
+		/// The amount of memory in bytes that teyrchain nodes a lot to the runtime.
 		///
 		/// This is used in [`Pallet::integrity_test`] to make sure that the runtime has enough
 		/// memory to support this pallet if set to the correct value.

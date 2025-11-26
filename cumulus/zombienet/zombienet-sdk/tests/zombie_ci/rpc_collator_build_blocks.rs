@@ -7,10 +7,10 @@ use std::time::Duration;
 use crate::utils::{initialize_network, BEST_BLOCK_METRIC};
 
 use cumulus_zombienet_sdk_helpers::assert_para_throughput;
-use polkadot_primitives::Id as ParaId;
+use pezkuwi_primitives::Id as ParaId;
 use zombienet_orchestrator::network::node::LogLineCountOptions;
 use zombienet_sdk::{
-	subxt::{OnlineClient, PolkadotConfig},
+	subxt::{OnlineClient, PezkuwiConfig},
 	NetworkConfig, NetworkConfigBuilder,
 };
 
@@ -28,9 +28,9 @@ async fn rpc_collator_builds_blocks() -> Result<(), anyhow::Error> {
 	let network = initialize_network(config).await?;
 
 	let alice = network.get_node("alice")?;
-	let alice_client: OnlineClient<PolkadotConfig> = alice.wait_client().await?;
+	let alice_client: OnlineClient<PezkuwiConfig> = alice.wait_client().await?;
 
-	log::info!("Ensuring parachain making progress");
+	log::info!("Ensuring teyrchain making progress");
 	assert_para_throughput(
 		&alice_client,
 		20,
@@ -104,15 +104,15 @@ async fn build_network_config() -> Result<NetworkConfig, anyhow::Error> {
 	// 	 - one     - full node
 	// 	 - two     - full node
 	// 	 - three   - full node
-	// - parachain nodes
+	// - teyrchain nodes
 	//   - dave    - validator; gets relay chain data only from full nodes (which are bootnodes too)
 	//   - eve     - validator; gets relay chain data only from full nodes (which are bootnodes too)
 	let config = NetworkConfigBuilder::new()
 		.with_relaychain(|r| {
-			r.with_chain("rococo-local")
-				.with_default_command("polkadot")
-				.with_default_image(images.polkadot.as_str())
-				.with_default_args(vec![("-lparachain=debug").into()])
+			r.with_chain("pezkuwichain-local")
+				.with_default_command("pezkuwi")
+				.with_default_image(images.pezkuwi.as_str())
+				.with_default_args(vec![("-lteyrchain=debug").into()])
 				.with_node(|node| node.with_name("alice"))
 				.with_node(|node| node.with_name("bob"))
 				.with_node(|node| node.with_name("charlie"))
@@ -120,12 +120,12 @@ async fn build_network_config() -> Result<NetworkConfig, anyhow::Error> {
 				.with_node(|node| node.with_name("two").validator(false))
 				.with_node(|node| node.with_name("three").validator(false))
 		})
-		.with_parachain(|p| {
+		.with_teyrchain(|p| {
 			p.with_id(PARA_ID)
-				.with_default_command("test-parachain")
+				.with_default_command("test-teyrchain")
 				.with_default_image(images.cumulus.as_str())
 				.with_default_args(vec![
-					("-lparachain=trace,blockchain-rpc-client=debug").into(),
+					("-lteyrchain=trace,blockchain-rpc-client=debug").into(),
 					(
 						"--bootnodes",
 						vec![

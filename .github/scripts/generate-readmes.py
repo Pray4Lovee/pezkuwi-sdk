@@ -31,7 +31,7 @@ README_TEMPLATE = """<div align="center">
 
 # {name}
 
-This crate is part of the [Polkadot SDK](https://github.com/paritytech/polkadot-sdk/).
+This crate is part of the [Polkadot SDK](https://github.com/pezkuwichain/pezkuwichain-sdk/).
 
 </div>
 
@@ -43,7 +43,7 @@ This crate is part of the [Polkadot SDK](https://github.com/paritytech/polkadot-
 
 In order to learn about Polkadot SDK, head over to the [Polkadot SDK Developer Documentation](https://paritytech.github.io/polkadot-sdk/master/polkadot_sdk_docs/index.html).
 
-To learn about Polkadot, visit [polkadot.com](https://polkadot.com/).
+To learn about Polkadot, visit [polkadot.com](https://pezkuwichain.io/).
 
 ## License
 

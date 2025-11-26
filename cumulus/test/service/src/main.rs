@@ -67,17 +67,17 @@ fn main() -> Result<(), sc_cli::Error> {
 			let collator_options = cli.run.collator_options();
 			let tokio_runtime = sc_cli::build_runtime()?;
 			let tokio_handle = tokio_runtime.handle();
-			let parachain_config = cli
+			let teyrchain_config = cli
 				.run
 				.normalize()
 				.create_configuration(&cli, tokio_handle.clone())
 				.expect("Should be able to generate config");
 
 			let relay_chain_cli = RelayChainCli::new(
-				&parachain_config,
+				&teyrchain_config,
 				[RelayChainCli::executable_name()].iter().chain(cli.relaychain_args.iter()),
 			);
-			let tokio_handle = parachain_config.tokio_handle.clone();
+			let tokio_handle = teyrchain_config.tokio_handle.clone();
 			let relay_chain_config = SubstrateCli::create_configuration(
 				&relay_chain_cli,
 				&relay_chain_cli,
@@ -87,14 +87,14 @@ fn main() -> Result<(), sc_cli::Error> {
 
 			tracing::info!(
 				"Is collating: {}",
-				if parachain_config.role.is_authority() { "yes" } else { "no" }
+				if teyrchain_config.role.is_authority() { "yes" } else { "no" }
 			);
 			if cli.fail_pov_recovery {
 				tracing::info!("PoV recovery failure enabled");
 			}
 
 			let collator_key =
-				parachain_config.role.is_authority().then(|| CollatorPair::generate().0);
+				teyrchain_config.role.is_authority().then(|| CollatorPair::generate().0);
 
 			let use_slot_based_collator = cli.authoring == AuthoringPolicy::SlotBased;
 			let (mut task_manager, _, _, _, _, _) = tokio_runtime
@@ -105,7 +105,7 @@ fn main() -> Result<(), sc_cli::Error> {
 								_,
 								sc_network::NetworkWorker<_, _>,
 							>(
-								parachain_config,
+								teyrchain_config,
 								collator_key,
 								relay_chain_config,
 								cli.disable_block_announcements.then(wrap_announce_block),
@@ -121,7 +121,7 @@ fn main() -> Result<(), sc_cli::Error> {
 								_,
 								sc_network::Litep2pNetworkBackend,
 							>(
-								parachain_config,
+								teyrchain_config,
 								collator_key,
 								relay_chain_config,
 								cli.disable_block_announcements.then(wrap_announce_block),

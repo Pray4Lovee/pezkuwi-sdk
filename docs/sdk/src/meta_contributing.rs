@@ -5,7 +5,7 @@
 //!
 //! ## Why Rust Docs?
 //!
-//! We acknowledge that blockchain based systems, particularly a cutting-edge one like Polkadot SDK
+//! We acknowledge that blockchain based systems, particularly a cutting-edge one like Pezkuwi SDK
 //! is a software artifact that is complex, and rapidly evolving. This makes the task of documenting
 //! it externally extremely difficult, especially with regards to making sure it is up-to-date.
 //!
@@ -23,13 +23,13 @@
 //! and correct at every single revision of the entire repository.
 //!
 //! > This also allows us to have a clear versioning on the entire content of this crate. For every
-//! commit of the Polkadot SDK, there would be one version of this crate that is guaranteed to be
+//! commit of the Pezkuwi SDK, there would be one version of this crate that is guaranteed to be
 //! correct.
 //!
 //! > To achieve this, we often use [`docify`](https://github.com/sam0x17/docify), a nifty invention
 //! > of `@sam0x17`.
 //!
-//! Also see: <https://github.com/paritytech/polkadot-sdk/issues/991>.
+//! Also see: <https://github.com/pezkuwichain/pezkuwichain-sdk/issues/991>.
 //!
 //! ## Scope
 //!
@@ -70,7 +70,7 @@
 //! > that they already pose, rather than repeating yourself**.
 //!
 //! For more details see the [latest documenting
-//! guidelines](https://github.com/paritytech/polkadot-sdk/blob/master/docs/contributor/DOCUMENTATION_GUIDELINES.md).
+//! guidelines](https://github.com/pezkuwichain/pezkuwichain-sdk/blob/master/docs/contributor/DOCUMENTATION_GUIDELINES.md).
 //!
 //! #### Example: Explaining `#[pallet::call]`
 //!
@@ -130,9 +130,9 @@
 //! ## Versioning
 //!
 //! So long as not deployed in `crates.io`, please notice that all of the information in this crate,
-//! namely in [`crate::guides`] and such are compatible with the master branch of `polkadot-sdk`. A
+//! namely in [`crate::guides`] and such are compatible with the master branch of `pezkuwi-sdk`. A
 //! few solutions have been proposed to improve this, please see
-//! [here](https://github.com/paritytech/polkadot-sdk/issues/6191).
+//! [here](https://github.com/pezkuwichain/pezkuwichain-sdk/issues/6191).
 //!
 //! ## How to Develop Locally
 //!
@@ -142,7 +142,7 @@
 //! ```sh
 //! SKIP_WASM_BUILD=1 \
 //! RUSTDOCFLAGS="--html-in-header $(pwd)/docs/sdk/assets/header.html --extend-css $(pwd)/docs/sdk/assets/theme.css --default-theme=ayu" \
-//! cargo doc -p polkadot-sdk-docs --no-deps --open
+//! cargo doc -p pezkuwi-sdk-docs --no-deps --open
 //! ```
 //!
 //! If even faster build time for docs is needed, you can temporarily remove most of the

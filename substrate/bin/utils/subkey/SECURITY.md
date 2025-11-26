@@ -1,8 +1,8 @@
 # Keys and Security
 
 The following information is not exhaustive but meant to prevent the most common mistakes. You can read more about
-security and risks in the [Polkadot Wiki](https://wiki.polkadot.network/docs/learn-account-generation). The Polkadot
-network has a few **test networks**, e.g. **Westend**. Test networks are a great way to experiment and learn safely as
+security and risks in the [Pezkuwi Wiki](https://wiki.network.pezkuwichain.io/docs/learn-account-generation). The Pezkuwi
+network has a few **test networks**, e.g. **Zagros**. Test networks are a great way to experiment and learn safely as
 you can lose tokens on those networks without any financial consequences.
 
 `subkey` generates and provides 2 pieces of **secret** information:

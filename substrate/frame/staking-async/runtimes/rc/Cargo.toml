@@ -105,10 +105,10 @@ pallet-election-provider-support-benchmarking = { optional = true, workspace = t
 pallet-offences-benchmarking = { optional = true, workspace = true }
 pallet-session-benchmarking = { optional = true, workspace = true }
 
-polkadot-parachain-primitives = { workspace = true }
-polkadot-primitives = { workspace = true }
-polkadot-runtime-common = { workspace = true }
-polkadot-runtime-parachains = { workspace = true }
+pezkuwi-teyrchain-primitives = { workspace = true }
+pezkuwi-primitives = { workspace = true }
+pezkuwi-runtime-common = { workspace = true }
+pezkuwi-runtime-teyrchains = { workspace = true }
 
 xcm = { workspace = true }
 xcm-builder = { workspace = true }
@@ -190,10 +190,10 @@ std = [
 	"pallet-whitelist/std",
 	"pallet-xcm-benchmarks?/std",
 	"pallet-xcm/std",
-	"polkadot-parachain-primitives/std",
-	"polkadot-primitives/std",
-	"polkadot-runtime-common/std",
-	"polkadot-runtime-parachains/std",
+	"pezkuwi-teyrchain-primitives/std",
+	"pezkuwi-primitives/std",
+	"pezkuwi-runtime-common/std",
+	"pezkuwi-runtime-teyrchains/std",
 	"scale-info/std",
 	"serde/std",
 	"serde_derive",
@@ -270,10 +270,10 @@ runtime-benchmarks = [
 	"pallet-whitelist/runtime-benchmarks",
 	"pallet-xcm-benchmarks/runtime-benchmarks",
 	"pallet-xcm/runtime-benchmarks",
-	"polkadot-parachain-primitives/runtime-benchmarks",
-	"polkadot-primitives/runtime-benchmarks",
-	"polkadot-runtime-common/runtime-benchmarks",
-	"polkadot-runtime-parachains/runtime-benchmarks",
+	"pezkuwi-teyrchain-primitives/runtime-benchmarks",
+	"pezkuwi-primitives/runtime-benchmarks",
+	"pezkuwi-runtime-common/runtime-benchmarks",
+	"pezkuwi-runtime-teyrchains/runtime-benchmarks",
 	"sp-runtime/runtime-benchmarks",
 	"sp-staking/runtime-benchmarks",
 	"xcm-builder/runtime-benchmarks",
@@ -327,8 +327,8 @@ try-runtime = [
 	"pallet-vesting/try-runtime",
 	"pallet-whitelist/try-runtime",
 	"pallet-xcm/try-runtime",
-	"polkadot-runtime-common/try-runtime",
-	"polkadot-runtime-parachains/try-runtime",
+	"pezkuwi-runtime-common/try-runtime",
+	"pezkuwi-runtime-teyrchains/try-runtime",
 	"sp-runtime/try-runtime",
 ]
 
@@ -339,7 +339,7 @@ metadata-hash = ["substrate-wasm-builder/metadata-hash"]
 fast-runtime = []
 
 runtime-metrics = [
-	"polkadot-runtime-parachains/runtime-metrics",
+	"pezkuwi-runtime-teyrchains/runtime-metrics",
 	"sp-io/with-tracing",
 ]
 

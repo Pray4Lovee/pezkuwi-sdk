@@ -25,7 +25,7 @@
 //!
 //! **A note on terminology**: when we mention the bridge hub here, we mean the chain that
 //! has the messages pallet deployed (`pallet-bridge-grandpa`, `pallet-bridge-messages`,
-//! `pallet-xcm-bridge-hub`, ...). It may be the system bridge hub parachain or any other
+//! `pallet-xcm-bridge-hub`, ...). It may be the system bridge hub teyrchain or any other
 //! chain.
 
 #![cfg_attr(not(feature = "std"), no_std)]
@@ -34,7 +34,7 @@ use bp_xcm_bridge_hub_router::MINIMAL_DELIVERY_FEE_FACTOR;
 pub use bp_xcm_bridge_hub_router::{BridgeState, XcmChannelStatusProvider};
 use codec::Encode;
 use frame_support::traits::Get;
-use polkadot_runtime_parachains::FeeTracker;
+use pezkuwi_runtime_teyrchains::FeeTracker;
 use sp_core::H256;
 use sp_runtime::{FixedPointNumber, FixedU128};
 use sp_std::vec::Vec;
@@ -60,7 +60,7 @@ pub const HARD_MESSAGE_SIZE_LIMIT: u32 = 32 * 1024;
 /// This doesn't match the pattern used by other bridge pallets (`runtime::bridge-*`). But this
 /// pallet has significant differences with those pallets. The main one is that is intended to
 /// be deployed at sending chains. Other bridge pallets are likely to be deployed at the separate
-/// bridge hub parachain.
+/// bridge hub teyrchain.
 pub const LOG_TARGET: &str = "xcm::bridge-hub-router";
 
 #[frame_support::pallet]
@@ -536,7 +536,7 @@ mod tests {
 	fn not_applicable_if_destination_is_within_other_network() {
 		run_test(|| {
 			// unroutable dest
-			let dest = Location::new(2, [GlobalConsensus(ByGenesis([0; 32])), Parachain(1000)]);
+			let dest = Location::new(2, [GlobalConsensus(ByGenesis([0; 32])), Teyrchain(1000)]);
 			let xcm: Xcm<()> = vec![ClearOrigin].into();
 
 			// check that router does not consume when `NotApplicable`
@@ -558,7 +558,7 @@ mod tests {
 		run_test(|| {
 			// routable dest with XCM version
 			let dest =
-				Location::new(2, [GlobalConsensus(BridgedNetworkId::get()), Parachain(1000)]);
+				Location::new(2, [GlobalConsensus(BridgedNetworkId::get()), Teyrchain(1000)]);
 			// oversized XCM
 			let xcm: Xcm<()> = vec![ClearOrigin; HARD_MESSAGE_SIZE_LIMIT as usize].into();
 
@@ -654,7 +654,7 @@ mod tests {
 			let old_bridge = XcmBridgeHubRouter::bridge();
 			assert_eq!(
 				send_xcm::<XcmBridgeHubRouter>(
-					Location::new(2, [GlobalConsensus(BridgedNetworkId::get()), Parachain(1000)]),
+					Location::new(2, [GlobalConsensus(BridgedNetworkId::get()), Teyrchain(1000)]),
 					vec![ClearOrigin].into(),
 				)
 				.map(drop),
@@ -675,7 +675,7 @@ mod tests {
 
 			let old_bridge = XcmBridgeHubRouter::bridge();
 			assert_ok!(send_xcm::<XcmBridgeHubRouter>(
-				Location::new(2, [GlobalConsensus(BridgedNetworkId::get()), Parachain(1000)]),
+				Location::new(2, [GlobalConsensus(BridgedNetworkId::get()), Teyrchain(1000)]),
 				vec![ClearOrigin].into(),
 			)
 			.map(drop));
@@ -709,7 +709,7 @@ mod tests {
 
 			let old_bridge = XcmBridgeHubRouter::bridge();
 			assert_ok!(send_xcm::<XcmBridgeHubRouter>(
-				Location::new(2, [GlobalConsensus(BridgedNetworkId::get()), Parachain(1000)]),
+				Location::new(2, [GlobalConsensus(BridgedNetworkId::get()), Teyrchain(1000)]),
 				vec![ClearOrigin].into(),
 			)
 			.map(drop));
@@ -738,7 +738,7 @@ mod tests {
 	fn get_messages_does_not_return_anything() {
 		run_test(|| {
 			assert_ok!(send_xcm::<XcmBridgeHubRouter>(
-				(Parent, Parent, GlobalConsensus(BridgedNetworkId::get()), Parachain(1000)).into(),
+				(Parent, Parent, GlobalConsensus(BridgedNetworkId::get()), Teyrchain(1000)).into(),
 				vec![ClearOrigin].into()
 			));
 			assert_eq!(XcmBridgeHubRouter::get_messages(), vec![]);

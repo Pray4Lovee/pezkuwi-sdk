@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Cumulus. If not, see <https://www.gnu.org/licenses/>.
 
-use polkadot_core_primitives::{Block, Hash, Header};
+use pezkuwi_core_primitives::{Block, Hash, Header};
 use sp_runtime::traits::NumberFor;
 
 use sc_network::{
@@ -95,7 +95,7 @@ pub(crate) fn build_collator_network<Network: NetworkBackend<Block, Hash>>(
 		// requests under the hood. It has been noted that without the notification
 		// service of the `/block-announces/1` protocol, collators are not advertised
 		// and their produced blocks do not propagate:
-		// https://github.com/paritytech/polkadot-sdk/issues/8474
+		// https://github.com/pezkuwichain/pezkuwichain-sdk/issues/8474
 		//
 		// This is because the full nodes on the relay chain will attempt to establish
 		// a connection to the minimal relay chain. By dropping the notification service,

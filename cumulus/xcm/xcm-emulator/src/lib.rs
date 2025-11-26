@@ -66,28 +66,28 @@ pub use sp_runtime::BoundedSlice;
 pub use sp_tracing;
 
 // Cumulus
-pub use cumulus_pallet_parachain_system::{
-	parachain_inherent::{deconstruct_parachain_inherent_data, InboundMessagesData},
-	Call as ParachainSystemCall, Pallet as ParachainSystemPallet,
+pub use cumulus_pallet_teyrchain_system::{
+	teyrchain_inherent::{deconstruct_teyrchain_inherent_data, InboundMessagesData},
+	Call as TeyrchainSystemCall, Pallet as TeyrchainSystemPallet,
 };
 pub use cumulus_primitives_core::{
 	relay_chain::{BlockNumber as RelayBlockNumber, HeadData, HrmpChannelId},
 	AbridgedHrmpChannel, DmpMessageHandler, ParaId, PersistedValidationData, XcmpMessageHandler,
 };
-pub use cumulus_primitives_parachain_inherent::ParachainInherentData;
+pub use cumulus_primitives_teyrchain_inherent::TeyrchainInherentData;
 pub use cumulus_test_relay_sproof_builder::RelayStateSproofBuilder;
 pub use pallet_aura;
 pub use pallet_message_queue::{Config as MessageQueueConfig, Pallet as MessageQueuePallet};
-pub use parachains_common::{AccountId, Balance};
-pub use polkadot_primitives;
-pub use polkadot_runtime_parachains::inclusion::{AggregateMessageOrigin, UmpQueueId};
+pub use teyrchains_common::{AccountId, Balance};
+pub use pezkuwi_primitives;
+pub use pezkuwi_runtime_teyrchains::inclusion::{AggregateMessageOrigin, UmpQueueId};
 
-// Polkadot
-pub use polkadot_parachain_primitives::primitives::RelayChainBlockNumber;
+// Pezkuwi
+pub use pezkuwi_teyrchain_primitives::primitives::RelayChainBlockNumber;
 use sp_core::{crypto::AccountId32, H256};
 pub use xcm::latest::prelude::{
 	AccountId32 as AccountId32Junction, Ancestor, AssetId, Assets, Here, Location,
-	Parachain as ParachainJunction, Parent, WeightLimit, XcmHash,
+	Teyrchain as TeyrchainJunction, Parent, WeightLimit, XcmHash,
 };
 pub use xcm_executor::traits::ConvertLocation;
 use xcm_simulator::helpers::TopicIdTracker;
@@ -99,7 +99,7 @@ thread_local! {
 	#[allow(clippy::type_complexity)]
 	pub static DOWNWARD_MESSAGES: RefCell<HashMap<String, VecDeque<(u32, Vec<(RelayBlockNumber, Vec<u8>)>)>>>
 		= RefCell::new(HashMap::new());
-	/// Downward messages that already processed by parachains, each message is: `(to_para_id, relay_block_number, Vec<u8>)`
+	/// Downward messages that already processed by teyrchains, each message is: `(to_para_id, relay_block_number, Vec<u8>)`
 	#[allow(clippy::type_complexity)]
 	pub static DMP_DONE: RefCell<HashMap<String, VecDeque<(u32, RelayBlockNumber, Vec<u8>)>>>
 		= RefCell::new(HashMap::new());
@@ -111,11 +111,11 @@ thread_local! {
 	pub static UPWARD_MESSAGES: RefCell<HashMap<String, VecDeque<(u32, Vec<u8>)>>> = RefCell::new(HashMap::new());
 	/// Bridged messages, each message is: `BridgeMessage`
 	pub static BRIDGED_MESSAGES: RefCell<HashMap<String, VecDeque<BridgeMessage>>> = RefCell::new(HashMap::new());
-	/// Parachains Ids a the Network
+	/// Teyrchains Ids a the Network
 	pub static PARA_IDS: RefCell<HashMap<String, Vec<u32>>> = RefCell::new(HashMap::new());
 	/// Flag indicating if global variables have been initialized for a certain Network
 	pub static INITIALIZED: RefCell<HashMap<String, bool>> = RefCell::new(HashMap::new());
-	/// Most recent `HeadData` of each parachain, encoded.
+	/// Most recent `HeadData` of each teyrchain, encoded.
 	pub static LAST_HEAD: RefCell<HashMap<String, HashMap<u32, HeadData>>> = RefCell::new(HashMap::new());
 }
 pub trait CheckAssertion<Origin, Destination, Hops, Args>
@@ -201,11 +201,11 @@ pub trait Network {
 	fn process_horizontal_messages();
 	fn process_upward_messages();
 	fn process_bridged_messages();
-	fn hrmp_channel_parachain_inherent_data(
+	fn hrmp_channel_teyrchain_inherent_data(
 		para_id: u32,
 		relay_parent_number: u32,
 		parent_head_data: HeadData,
-	) -> ParachainInherentData;
+	) -> TeyrchainInherentData;
 	fn send_horizontal_messages<I: Iterator<Item = (ParaId, RelayBlockNumber, Vec<u8>)>>(
 		to_para_id: u32,
 		iter: I,
@@ -265,7 +265,7 @@ pub trait RelayChain: Chain {
 	fn init();
 
 	fn child_location_of(id: ParaId) -> Location {
-		(Ancestor(0), ParachainJunction(id.into())).into()
+		(Ancestor(0), TeyrchainJunction(id.into())).into()
 	}
 
 	fn sovereign_account_id_of(location: Location) -> AccountIdOf<Self::Runtime> {
@@ -277,11 +277,11 @@ pub trait RelayChain: Chain {
 	}
 }
 
-pub trait Parachain: Chain {
+pub trait Teyrchain: Chain {
 	type XcmpMessageHandler: XcmpMessageHandler;
 	type LocationToAccountId: ConvertLocation<AccountIdOf<Self::Runtime>>;
-	type ParachainInfo: Get<ParaId>;
-	type ParachainSystem;
+	type TeyrchainInfo: Get<ParaId>;
+	type TeyrchainSystem;
 	type MessageProcessor: ProcessMessage + ServiceQueues;
 	type DigestProvider: Convert<
 		(BlockNumberFor<Self::Runtime>, BlockNumberFor<Self::Runtime>),
@@ -298,7 +298,7 @@ pub trait Parachain: Chain {
 	fn set_last_head();
 
 	fn para_id() -> ParaId {
-		Self::ext_wrapper(|| Self::ParachainInfo::get())
+		Self::ext_wrapper(|| Self::TeyrchainInfo::get())
 	}
 
 	fn parent_location() -> Location {
@@ -306,7 +306,7 @@ pub trait Parachain: Chain {
 	}
 
 	fn sibling_location_of(para_id: ParaId) -> Location {
-		(Parent, ParachainJunction(para_id.into())).into()
+		(Parent, TeyrchainJunction(para_id.into())).into()
 	}
 
 	fn sovereign_account_id_of(location: Location) -> AccountIdOf<Self::Runtime> {
@@ -463,7 +463,7 @@ macro_rules! __impl_test_ext_for_relay_chain {
 				$network,
 				$genesis,
 				$on_init,
-				[<ParachainHostV $api_version>],
+				[<TeyrchainHostV $api_version>],
 				[<LOCAL_EXT_ $name:upper>],
 				[<GLOBAL_EXT_ $name:upper>]
 			);
@@ -566,7 +566,7 @@ macro_rules! __impl_test_ext_for_relay_chain {
 				// Send messages if needed
 				$local_ext.with(|v| {
 					v.borrow_mut().execute_with(|| {
-						use $crate::polkadot_primitives::runtime_api::runtime_decl_for_parachain_host::$api_version;
+						use $crate::pezkuwi_primitives::runtime_api::runtime_decl_for_teyrchain_host::$api_version;
 
 						//TODO: mark sent count & filter out sent msg
 						for para_id in <$network>::para_ids() {
@@ -609,9 +609,9 @@ macro_rules! __impl_test_ext_for_relay_chain {
 	};
 }
 
-// Parachain Implementation
+// Teyrchain Implementation
 #[macro_export]
-macro_rules! decl_test_parachains {
+macro_rules! decl_test_teyrchains {
 	(
 		$(
 			pub struct $name:ident {
@@ -621,7 +621,7 @@ macro_rules! decl_test_parachains {
 				core = {
 					XcmpMessageHandler: $xcmp_message_handler:path,
 					LocationToAccountId: $location_to_account:path,
-					ParachainInfo: $parachain_info:path,
+					TeyrchainInfo: $teyrchain_info:path,
 					MessageOrigin: $message_origin:path,
 					$( DigestProvider: $digest_provider:ty,)?
 					$( AdditionalInherentCode: $additional_inherent_code:ty,)?
@@ -659,14 +659,14 @@ macro_rules! decl_test_parachains {
 				}
 			}
 
-			impl<N: $crate::Network> $crate::Parachain for $name<N> {
+			impl<N: $crate::Network> $crate::Teyrchain for $name<N> {
 				type XcmpMessageHandler = $xcmp_message_handler;
 				type LocationToAccountId = $location_to_account;
-				type ParachainSystem = $crate::ParachainSystemPallet<<Self as $crate::Chain>::Runtime>;
-				type ParachainInfo = $parachain_info;
+				type TeyrchainSystem = $crate::TeyrchainSystemPallet<<Self as $crate::Chain>::Runtime>;
+				type TeyrchainInfo = $teyrchain_info;
 				type MessageProcessor = $crate::DefaultParaMessageProcessor<$name<N>, $message_origin>;
-				$crate::decl_test_parachains!(@inner_digest_provider $($digest_provider)?);
-				$crate::decl_test_parachains!(@inner_additional_inherent_code $($additional_inherent_code)?);
+				$crate::decl_test_teyrchains!(@inner_digest_provider $($digest_provider)?);
+				$crate::decl_test_teyrchains!(@inner_additional_inherent_code $($additional_inherent_code)?);
 
 				// We run an empty block during initialisation to open HRMP channels
 				// and have them ready for the next block
@@ -698,7 +698,7 @@ macro_rules! decl_test_parachains {
 						relay_block_number += 1;
 						N::set_relay_block_number(relay_block_number);
 
-						// Initialize a new Parachain block
+						// Initialize a new Teyrchain block
 						let mut block_number = <Self as Chain>::System::block_number();
 						block_number += 1;
 						let parent_head_data = $crate::LAST_HEAD.with(|b| b.borrow_mut()
@@ -710,7 +710,7 @@ macro_rules! decl_test_parachains {
 						);
 
 						// Initialze `System`.
-						let digest = <Self as Parachain>::DigestProvider::convert((block_number, relay_block_number));
+						let digest = <Self as Teyrchain>::DigestProvider::convert((block_number, relay_block_number));
 						let slot_duration = $crate::pallet_aura::Pallet::<$runtime::Runtime>::slot_duration();
 						<Self as Chain>::System::initialize(&block_number, &parent_head_data.hash(), &digest);
 
@@ -719,9 +719,9 @@ macro_rules! decl_test_parachains {
 					// checks that the timestamp slot matches CurrentSlot, and CurrentSlot is updated in on_initialize.
 					let _ = $runtime::AllPalletsWithoutSystem::on_initialize(block_number);
 
-					// Process parachain inherents:
+					// Process teyrchain inherents:
 
-					// 1. inherent: pallet_timestamp::Call::set (we expect the parachain has `pallet_timestamp`)
+					// 1. inherent: pallet_timestamp::Call::set (we expect the teyrchain has `pallet_timestamp`)
 					let timestamp_set: <Self as Chain>::RuntimeCall = $crate::TimestampCall::set {
 						// We need to satisfy `pallet_timestamp::on_finalize`.
 						// The timestamp must match the relay chain slot since Aura uses the relay chain slot from the digest.
@@ -731,15 +731,15 @@ macro_rules! decl_test_parachains {
 						timestamp_set.dispatch(<Self as Chain>::RuntimeOrigin::none())
 					);
 
-					// 2. inherent: cumulus_pallet_parachain_system::Call::set_validation_data
-						let data = N::hrmp_channel_parachain_inherent_data(para_id, relay_block_number, parent_head_data);
+					// 2. inherent: cumulus_pallet_teyrchain_system::Call::set_validation_data
+						let data = N::hrmp_channel_teyrchain_inherent_data(para_id, relay_block_number, parent_head_data);
 						let (data, mut downward_messages, mut horizontal_messages) =
-							$crate::deconstruct_parachain_inherent_data(data);
+							$crate::deconstruct_teyrchain_inherent_data(data);
 						let inbound_messages_data = $crate::InboundMessagesData::new(
 							downward_messages.into_abridged(&mut usize::MAX.clone()),
 							horizontal_messages.into_abridged(&mut usize::MAX.clone()),
 						);
-						let set_validation_data: <Self as Chain>::RuntimeCall = $crate::ParachainSystemCall::set_validation_data {
+						let set_validation_data: <Self as Chain>::RuntimeCall = $crate::TeyrchainSystemCall::set_validation_data {
 							data,
 							inbound_messages_data
 						}.into();
@@ -748,7 +748,7 @@ macro_rules! decl_test_parachains {
 						);
 
 						$crate::assert_ok!(
-							<Self as Parachain>::AdditionalInherentCode::on_new_block()
+							<Self as Teyrchain>::AdditionalInherentCode::on_new_block()
 						);
 					});
 				}
@@ -806,7 +806,7 @@ macro_rules! decl_test_parachains {
 				}
 			}
 
-			$crate::__impl_test_ext_for_parachain!($name, N, $genesis, $on_init);
+			$crate::__impl_test_ext_for_teyrchain!($name, N, $genesis, $on_init);
 			$crate::__impl_check_assertion!($name, N);
 		)+
 	};
@@ -817,11 +817,11 @@ macro_rules! decl_test_parachains {
 }
 
 #[macro_export]
-macro_rules! __impl_test_ext_for_parachain {
+macro_rules! __impl_test_ext_for_teyrchain {
 	// entry point: generate ext name
 	($name:ident, $network:ident, $genesis:expr, $on_init:expr) => {
 		$crate::paste::paste! {
-			$crate::__impl_test_ext_for_parachain!(@impl $name, $network, $genesis, $on_init, [<LOCAL_EXT_ $name:upper>], [<GLOBAL_EXT_ $name:upper>]);
+			$crate::__impl_test_ext_for_teyrchain!(@impl $name, $network, $genesis, $on_init, [<LOCAL_EXT_ $name:upper>], [<GLOBAL_EXT_ $name:upper>]);
 		}
 	};
 	// impl
@@ -906,7 +906,7 @@ macro_rules! __impl_test_ext_for_parachain {
 			}
 
 			fn execute_with<R>(execute: impl FnOnce() -> R) -> R {
-				use $crate::{Chain, Get, Hooks, Network, Parachain, Encode};
+				use $crate::{Chain, Get, Hooks, Network, Teyrchain, Encode};
 
 				// Make sure the Network is initialized
 				<$network>::init();
@@ -936,7 +936,7 @@ macro_rules! __impl_test_ext_for_parachain {
 							Default::default(),
 						);
 
-						let collation_info = <Self as Parachain>::ParachainSystem::collect_collation_info(&mock_header);
+						let collation_info = <Self as Teyrchain>::TeyrchainSystem::collect_collation_info(&mock_header);
 
 						// send upward messages
 						let relay_block_number = <$network>::relay_block_number();
@@ -998,7 +998,7 @@ macro_rules! decl_test_networks {
 		$(
 			pub struct $name:ident {
 				relay_chain = $relay_chain:ident,
-				parachains = vec![ $( $parachain:ident, )* ],
+				teyrchains = vec![ $( $teyrchain:ident, )* ],
 				bridge = $bridge:ty
 			}
 		),
@@ -1029,7 +1029,7 @@ macro_rules! decl_test_networks {
 					$crate::LAST_HEAD.with(|b| b.borrow_mut().remove(Self::name()));
 
 					<$relay_chain<Self>>::reset_ext();
-					$( <$parachain<Self>>::reset_ext(); )*
+					$( <$teyrchain<Self>>::reset_ext(); )*
 				}
 
 				fn init() {
@@ -1045,13 +1045,13 @@ macro_rules! decl_test_networks {
 						$crate::LAST_HEAD.with(|b| b.borrow_mut().insert(Self::name().to_string(), $crate::HashMap::new()));
 
 						<$relay_chain<Self> as $crate::RelayChain>::init();
-						$( <$parachain<Self> as $crate::Parachain>::init(); )*
+						$( <$teyrchain<Self> as $crate::Teyrchain>::init(); )*
 					}
 				}
 
 				fn para_ids() -> Vec<u32> {
 					vec![$(
-						<$parachain<Self> as $crate::Parachain>::para_id().into(),
+						<$teyrchain<Self> as $crate::Teyrchain>::para_id().into(),
 					)*]
 				}
 
@@ -1084,12 +1084,12 @@ macro_rules! decl_test_networks {
 				}
 
 				fn process_downward_messages() {
-					use $crate::{DmpMessageHandler, Bounded, Parachain, RelayChainBlockNumber, TestExt, Encode};
+					use $crate::{DmpMessageHandler, Bounded, Teyrchain, RelayChainBlockNumber, TestExt, Encode};
 
 					while let Some((to_para_id, messages))
 						= $crate::DOWNWARD_MESSAGES.with(|b| b.borrow_mut().get_mut(Self::name()).unwrap().pop_front()) {
 						$(
-							let para_id: u32 = <$parachain<Self>>::para_id().into();
+							let para_id: u32 = <$teyrchain<Self>>::para_id().into();
 
 							if $crate::PARA_IDS.with(|b| b.borrow_mut().get_mut(Self::name()).unwrap().contains(&to_para_id)) && para_id == to_para_id {
 								let mut msg_dedup: Vec<(RelayChainBlockNumber, Vec<u8>)> = Vec::new();
@@ -1108,8 +1108,8 @@ macro_rules! decl_test_networks {
 								use $crate::{ProcessMessage, CumulusAggregateMessageOrigin, BoundedSlice, WeightMeter};
 								for (block, msg) in msgs.clone().into_iter() {
 									let mut weight_meter = WeightMeter::new();
-									<$parachain<Self>>::ext_wrapper(|| {
-										let _ =  <$parachain<Self> as Parachain>::MessageProcessor::process_message(
+									<$teyrchain<Self>>::ext_wrapper(|| {
+										let _ =  <$teyrchain<Self> as Teyrchain>::MessageProcessor::process_message(
 											&msg[..],
 											$crate::CumulusAggregateMessageOrigin::Parent.into(),
 											&mut weight_meter,
@@ -1128,19 +1128,19 @@ macro_rules! decl_test_networks {
 				}
 
 				fn process_horizontal_messages() {
-					use $crate::{XcmpMessageHandler, ServiceQueues, Bounded, Parachain, TestExt};
+					use $crate::{XcmpMessageHandler, ServiceQueues, Bounded, Teyrchain, TestExt};
 
 					while let Some((to_para_id, messages))
 						= $crate::HORIZONTAL_MESSAGES.with(|b| b.borrow_mut().get_mut(Self::name()).unwrap().pop_front()) {
 						let iter = messages.iter().map(|(para_id, relay_block_number, message)| (*para_id, *relay_block_number, &message[..])).collect::<Vec<_>>().into_iter();
 						$(
-							let para_id: u32 = <$parachain<Self>>::para_id().into();
+							let para_id: u32 = <$teyrchain<Self>>::para_id().into();
 
 							if $crate::PARA_IDS.with(|b| b.borrow_mut().get_mut(Self::name()).unwrap().contains(&to_para_id)) && para_id == to_para_id {
-								<$parachain<Self>>::ext_wrapper(|| {
-									<$parachain<Self> as Parachain>::XcmpMessageHandler::handle_xcmp_messages(iter.clone(), $crate::Weight::MAX);
+								<$teyrchain<Self>>::ext_wrapper(|| {
+									<$teyrchain<Self> as Teyrchain>::XcmpMessageHandler::handle_xcmp_messages(iter.clone(), $crate::Weight::MAX);
 									// Nudge the MQ pallet to process immediately instead of in the next block.
-									let _ =  <$parachain<Self> as Parachain>::MessageProcessor::service_queues($crate::Weight::MAX);
+									let _ =  <$teyrchain<Self> as Teyrchain>::MessageProcessor::service_queues($crate::Weight::MAX);
 								});
 								let messages = messages.clone().iter().map(|(para_id, relay_block_number, message)| {
 									(*para_id, *relay_block_number, $crate::array_bytes::bytes2hex("0x", message))
@@ -1191,14 +1191,14 @@ macro_rules! decl_test_networks {
 					}
 				}
 
-				fn hrmp_channel_parachain_inherent_data(
+				fn hrmp_channel_teyrchain_inherent_data(
 					para_id: u32,
 					relay_parent_number: u32,
 					parent_head_data: $crate::HeadData,
-				) -> $crate::ParachainInherentData {
+				) -> $crate::TeyrchainInherentData {
 					let mut sproof = $crate::RelayStateSproofBuilder::default();
 					sproof.para_id = para_id.into();
-					sproof.current_slot = $crate::polkadot_primitives::Slot::from(relay_parent_number as u64);
+					sproof.current_slot = $crate::pezkuwi_primitives::Slot::from(relay_parent_number as u64);
 					sproof.host_config.max_upward_message_size = 1024 * 1024;
 
 					// egress channel
@@ -1229,7 +1229,7 @@ macro_rules! decl_test_networks {
 
 					let (relay_storage_root, proof) = sproof.into_state_root_and_proof();
 
-					$crate::ParachainInherentData {
+					$crate::TeyrchainInherentData {
 						validation_data: $crate::PersistedValidationData {
 							parent_head: parent_head_data.clone(),
 							relay_parent_number,
@@ -1251,7 +1251,7 @@ macro_rules! decl_test_networks {
 
 			$(
 				$crate::paste::paste! {
-					pub type [<$parachain Para>] = $parachain<$name>;
+					pub type [<$teyrchain Para>] = $teyrchain<$name>;
 				}
 			)*
 		)+
@@ -1281,7 +1281,7 @@ macro_rules! decl_test_bridges {
 				type Handler = $handler;
 
 				fn init() {
-					use $crate::{Network, Parachain};
+					use $crate::{Network, Teyrchain};
 					// Make sure source and target `Network` have been initialized
 					<$source as Chain>::Network::init();
 					<$target as Chain>::Network::init();
@@ -1446,7 +1446,7 @@ where
 		+ PartialEq
 		+ frame_support::pallet_prelude::TypeInfo
 		+ Debug,
-	T: Parachain,
+	T: Teyrchain,
 	T::Runtime: MessageQueueConfig,
 	<<T::Runtime as MessageQueueConfig>::MessageProcessor as ProcessMessage>::Origin: PartialEq<M>,
 	MessageQueuePallet<T::Runtime>: EnqueueMessage<M> + ServiceQueues,
@@ -1471,7 +1471,7 @@ where
 impl<T, M> ServiceQueues for DefaultParaMessageProcessor<T, M>
 where
 	M: MaxEncodedLen,
-	T: Parachain,
+	T: Teyrchain,
 	T::Runtime: MessageQueueConfig,
 	<<T::Runtime as MessageQueueConfig>::MessageProcessor as ProcessMessage>::Origin: PartialEq<M>,
 	MessageQueuePallet<T::Runtime>: EnqueueMessage<M> + ServiceQueues,
@@ -1574,7 +1574,7 @@ impl TestArgs {
 		}
 	}
 
-	/// Returns a [`TestArgs`] instance to be used for parachains across integration tests.
+	/// Returns a [`TestArgs`] instance to be used for teyrchains across integration tests.
 	pub fn new_para(
 		dest: Location,
 		beneficiary_id: AccountId32,

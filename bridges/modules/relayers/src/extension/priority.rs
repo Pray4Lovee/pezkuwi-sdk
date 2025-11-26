@@ -227,12 +227,12 @@ mod integrity_tests {
 		}
 	}
 
-	/// Computations, specific to bridge parachains transactions.
-	pub mod per_parachain_header {
+	/// Computations, specific to bridge teyrchains transactions.
+	pub mod per_teyrchain_header {
 		use super::*;
 
-		use bp_runtime::Parachain;
-		use pallet_bridge_parachains::WeightInfoExt;
+		use bp_runtime::Teyrchain;
+		use pallet_bridge_teyrchains::WeightInfoExt;
 
 		/// Ensures that the value of `PriorityBoostPerHeader` matches the value of
 		/// `tip_boost_per_header`.
@@ -243,16 +243,16 @@ mod integrity_tests {
 		/// will be close to `TX2` as well.
 		pub fn ensure_priority_boost_is_sane<
 			Runtime,
-			ParachainsInstance,
+			TeyrchainsInstance,
 			Para,
 			PriorityBoostPerHeader,
 		>(
 			tip_boost_per_header: BalanceOf<Runtime>,
 		) where
 			Runtime: pallet_transaction_payment::Config
-				+ pallet_bridge_parachains::Config<ParachainsInstance>,
-			ParachainsInstance: 'static,
-			Para: Parachain,
+				+ pallet_bridge_teyrchains::Config<TeyrchainsInstance>,
+			TeyrchainsInstance: 'static,
+			Para: Teyrchain,
 			PriorityBoostPerHeader: Get<TransactionPriority>,
 			Runtime::RuntimeCall: Dispatchable<Info = DispatchInfo, PostInfo = PostDispatchInfo>,
 			BalanceOf<Runtime>: Send + Sync + FixedPointOperand,
@@ -265,33 +265,33 @@ mod integrity_tests {
 			// value - it SHALL NOT affect any value, it just adds more tests for the value.
 			let maximal_improved_by = 4_096;
 			super::ensure_priority_boost_is_sane::<PriorityBoostPerHeader, BalanceOf<Runtime>>(
-				"PriorityBoostPerParachainHeader",
+				"PriorityBoostPerTeyrchainHeader",
 				maximal_improved_by,
 				tip_boost_per_header,
 				|_n_headers, tip| {
-					estimate_parachain_header_submit_transaction_priority::<
+					estimate_teyrchain_header_submit_transaction_priority::<
 						Runtime,
-						ParachainsInstance,
+						TeyrchainsInstance,
 						Para,
 					>(tip)
 				},
 			);
 		}
 
-		/// Estimate parachain header delivery transaction priority.
+		/// Estimate teyrchain header delivery transaction priority.
 		#[cfg(feature = "integrity-test")]
-		fn estimate_parachain_header_submit_transaction_priority<
+		fn estimate_teyrchain_header_submit_transaction_priority<
 			Runtime,
-			ParachainsInstance,
+			TeyrchainsInstance,
 			Para,
 		>(
 			tip: BalanceOf<Runtime>,
 		) -> TransactionPriority
 		where
 			Runtime: pallet_transaction_payment::Config
-				+ pallet_bridge_parachains::Config<ParachainsInstance>,
-			ParachainsInstance: 'static,
-			Para: Parachain,
+				+ pallet_bridge_teyrchains::Config<TeyrchainsInstance>,
+			TeyrchainsInstance: 'static,
+			Para: Teyrchain,
 			Runtime::RuntimeCall: Dispatchable<Info = DispatchInfo, PostInfo = PostDispatchInfo>,
 			BalanceOf<Runtime>: Send + Sync + FixedPointOperand,
 		{
@@ -299,20 +299,20 @@ mod integrity_tests {
 			// (including signature, signed extensions extra and etc + in our case it includes
 			// all call arguments except the proof itself)
 			let base_tx_size = 512;
-			// let's say we are relaying largest parachain headers and proof takes some more bytes
-			let tx_call_size = <Runtime as pallet_bridge_parachains::Config<
-				ParachainsInstance,
+			// let's say we are relaying largest teyrchain headers and proof takes some more bytes
+			let tx_call_size = <Runtime as pallet_bridge_teyrchains::Config<
+				TeyrchainsInstance,
 			>>::WeightInfo::expected_extra_storage_proof_size()
 			.saturating_add(Para::MAX_HEADER_SIZE);
 
 			// finally we are able to estimate transaction size and weight
 			let transaction_size = base_tx_size.saturating_add(tx_call_size);
-			let transaction_weight = <Runtime as pallet_bridge_parachains::Config<
-				ParachainsInstance,
-			>>::WeightInfo::submit_parachain_heads_weight(
+			let transaction_weight = <Runtime as pallet_bridge_teyrchains::Config<
+				TeyrchainsInstance,
+			>>::WeightInfo::submit_teyrchain_heads_weight(
 				Runtime::DbWeight::get(),
 				&PreComputedSize(transaction_size as _),
-				// just one parachain - all other submissions won't receive any boost
+				// just one teyrchain - all other submissions won't receive any boost
 				1,
 			);
 

@@ -29,7 +29,7 @@ use cumulus_relay_chain_interface::{
 	BlockNumber, CoreState, PHeader, RelayChainError, RelayChainInterface, RelayChainResult,
 };
 use futures::{FutureExt, Stream, StreamExt};
-use polkadot_overseer::Handle;
+use pezkuwi_overseer::Handle;
 
 use sc_client_api::StorageProof;
 use sp_state_machine::StorageValue;
@@ -69,7 +69,7 @@ impl RelayChainInterface for RelayChainRpcInterface {
 		para_id: ParaId,
 		relay_parent: RelayHash,
 	) -> RelayChainResult<Vec<InboundDownwardMessage>> {
-		self.rpc_client.parachain_host_dmq_contents(para_id, relay_parent).await
+		self.rpc_client.teyrchain_host_dmq_contents(para_id, relay_parent).await
 	}
 
 	async fn retrieve_all_inbound_hrmp_channel_contents(
@@ -78,7 +78,7 @@ impl RelayChainInterface for RelayChainRpcInterface {
 		relay_parent: RelayHash,
 	) -> RelayChainResult<BTreeMap<ParaId, Vec<InboundHrmpMessage>>> {
 		self.rpc_client
-			.parachain_host_inbound_hrmp_channels_contents(para_id, relay_parent)
+			.teyrchain_host_inbound_hrmp_channels_contents(para_id, relay_parent)
 			.await
 	}
 
@@ -105,7 +105,7 @@ impl RelayChainInterface for RelayChainRpcInterface {
 		occupied_core_assumption: OccupiedCoreAssumption,
 	) -> RelayChainResult<Option<PersistedValidationData>> {
 		self.rpc_client
-			.parachain_host_persisted_validation_data(hash, para_id, occupied_core_assumption)
+			.teyrchain_host_persisted_validation_data(hash, para_id, occupied_core_assumption)
 			.await
 	}
 
@@ -126,16 +126,16 @@ impl RelayChainInterface for RelayChainRpcInterface {
 		para_id: ParaId,
 	) -> RelayChainResult<Option<CommittedCandidateReceipt>> {
 		self.rpc_client
-			.parachain_host_candidate_pending_availability(hash, para_id)
+			.teyrchain_host_candidate_pending_availability(hash, para_id)
 			.await
 	}
 
 	async fn session_index_for_child(&self, hash: RelayHash) -> RelayChainResult<SessionIndex> {
-		self.rpc_client.parachain_host_session_index_for_child(hash).await
+		self.rpc_client.teyrchain_host_session_index_for_child(hash).await
 	}
 
 	async fn validators(&self, block_id: RelayHash) -> RelayChainResult<Vec<ValidatorId>> {
-		self.rpc_client.parachain_host_validators(block_id).await
+		self.rpc_client.teyrchain_host_validators(block_id).await
 	}
 
 	async fn import_notification_stream(
@@ -255,7 +255,7 @@ impl RelayChainInterface for RelayChainRpcInterface {
 		para_id: ParaId,
 	) -> RelayChainResult<Vec<CommittedCandidateReceipt>> {
 		self.rpc_client
-			.parachain_host_candidates_pending_availability(hash, para_id)
+			.teyrchain_host_candidates_pending_availability(hash, para_id)
 			.await
 	}
 
@@ -267,7 +267,7 @@ impl RelayChainInterface for RelayChainRpcInterface {
 		&self,
 		relay_parent: RelayHash,
 	) -> RelayChainResult<Vec<CoreState<RelayHash, BlockNumber>>> {
-		self.rpc_client.parachain_host_availability_cores(relay_parent).await
+		self.rpc_client.teyrchain_host_availability_cores(relay_parent).await
 	}
 
 	async fn claim_queue(
@@ -276,17 +276,17 @@ impl RelayChainInterface for RelayChainRpcInterface {
 	) -> RelayChainResult<
 		BTreeMap<cumulus_relay_chain_interface::CoreIndex, std::collections::VecDeque<ParaId>>,
 	> {
-		self.rpc_client.parachain_host_claim_queue(relay_parent).await
+		self.rpc_client.teyrchain_host_claim_queue(relay_parent).await
 	}
 
 	async fn scheduling_lookahead(&self, relay_parent: RelayHash) -> RelayChainResult<u32> {
-		self.rpc_client.parachain_host_scheduling_lookahead(relay_parent).await
+		self.rpc_client.teyrchain_host_scheduling_lookahead(relay_parent).await
 	}
 
 	async fn candidate_events(
 		&self,
 		relay_parent: RelayHash,
 	) -> RelayChainResult<Vec<CandidateEvent>> {
-		self.rpc_client.parachain_host_candidate_events(relay_parent).await
+		self.rpc_client.teyrchain_host_candidate_events(relay_parent).await
 	}
 }

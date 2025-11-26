@@ -9,16 +9,16 @@ use sp_keyring::sr25519::Keyring;
 use xcm::{
 	latest::{Assets, Error as XcmError, Location},
 	opaque::latest::{Asset, AssetId, AssetInstance, Fungibility},
-	prelude::{GeneralIndex, Parachain, SendError},
+	prelude::{GeneralIndex, Teyrchain, SendError},
 	VersionedLocation,
 };
 
 #[test]
 fn register_token() {
 	new_test_ext().execute_with(|| {
-		let origin_location = Location::new(1, [Parachain(2000)]);
+		let origin_location = Location::new(1, [Teyrchain(2000)]);
 		let origin = make_xcm_origin(origin_location.clone());
-		let asset_location: Location = Location::new(1, [Parachain(2000), GeneralIndex(1)]);
+		let asset_location: Location = Location::new(1, [Teyrchain(2000), GeneralIndex(1)]);
 		let asset_id = Box::new(VersionedLocation::from(asset_location));
 		let asset_metadata = AssetMetadata {
 			name: "pal".as_bytes().to_vec().try_into().unwrap(),
@@ -42,9 +42,9 @@ fn register_token() {
 #[test]
 fn register_token_fails_delivery_fees_not_met() {
 	new_test_ext().execute_with(|| {
-		let origin_location = Location::new(1, [Parachain(2000)]);
+		let origin_location = Location::new(1, [Teyrchain(2000)]);
 		let origin = make_xcm_origin(origin_location);
-		let asset_location: Location = Location::new(1, [Parachain(2000), GeneralIndex(1)]);
+		let asset_location: Location = Location::new(1, [Teyrchain(2000), GeneralIndex(1)]);
 		let asset_id = Box::new(VersionedLocation::from(asset_location));
 		let asset_metadata = AssetMetadata {
 			name: "pal".as_bytes().to_vec().try_into().unwrap(),
@@ -67,9 +67,9 @@ fn register_token_fails_delivery_fees_not_met() {
 #[test]
 fn register_token_fails_unroutable() {
 	new_test_ext().execute_with(|| {
-		let origin_location = Location::new(1, [Parachain(2000)]);
+		let origin_location = Location::new(1, [Teyrchain(2000)]);
 		let origin = make_xcm_origin(origin_location);
-		let asset_location: Location = Location::new(1, [Parachain(2000), GeneralIndex(1)]);
+		let asset_location: Location = Location::new(1, [Teyrchain(2000), GeneralIndex(1)]);
 		let asset_id = Box::new(VersionedLocation::from(asset_location));
 		let asset_metadata = AssetMetadata {
 			name: "pal".as_bytes().to_vec().try_into().unwrap(),
@@ -117,9 +117,9 @@ fn test_switch_operating_mode() {
 			RawOrigin::Root.into(),
 			BasicOperatingMode::Halted,
 		));
-		let origin_location = Location::new(1, [Parachain(2000)]);
+		let origin_location = Location::new(1, [Teyrchain(2000)]);
 		let origin = make_xcm_origin(origin_location);
-		let asset_location: Location = Location::new(1, [Parachain(2000), GeneralIndex(1)]);
+		let asset_location: Location = Location::new(1, [Teyrchain(2000), GeneralIndex(1)]);
 		let asset_id = Box::new(VersionedLocation::from(asset_location));
 		let asset_metadata = AssetMetadata {
 			name: "pal".as_bytes().to_vec().try_into().unwrap(),
@@ -178,7 +178,7 @@ fn add_tip_non_ether_asset_succeeds() {
 	new_test_ext().execute_with(|| {
 		let who: AccountId = Keyring::Alice.into();
 		let message_id = MessageId::Outbound(2);
-		let non_ether_location = Location::new(1, [Parachain(3000)]);
+		let non_ether_location = Location::new(1, [Teyrchain(3000)]);
 		let tip_amount = 2000;
 		let asset = Asset::from((non_ether_location.clone(), tip_amount));
 
@@ -206,7 +206,7 @@ fn add_tip_unsupported_asset_fails() {
 		let who: AccountId = Keyring::Alice.into();
 		let message_id = MessageId::Inbound(1);
 		let asset = Asset {
-			id: AssetId(Location::new(1, [Parachain(4000)])),
+			id: AssetId(Location::new(1, [Teyrchain(4000)])),
 			fun: Fungibility::NonFungible(AssetInstance::Array4([0u8; 4])),
 		};
 		assert_noop!(
@@ -254,7 +254,7 @@ fn tip_fails_due_to_swap_error() {
 	new_test_ext().execute_with(|| {
 		let who: AccountId = Keyring::Alice.into();
 		let message_id = MessageId::Inbound(6);
-		let non_ether_location = Location::new(1, [Parachain(3000)]);
+		let non_ether_location = Location::new(1, [Teyrchain(3000)]);
 		// Use the special amount 12345 that will trigger a swap error in mock_swap_executor
 		let tip_amount = TRIGGER_SWAP_ERROR_AMOUNT;
 		let asset = Asset::from((non_ether_location.clone(), tip_amount));
@@ -269,9 +269,9 @@ fn tip_fails_due_to_swap_error() {
 #[test]
 fn register_token_with_non_ether_fee_asset_succeeds() {
 	new_test_ext().execute_with(|| {
-		let origin_location = Location::new(1, [Parachain(2000)]);
+		let origin_location = Location::new(1, [Teyrchain(2000)]);
 		let origin = make_xcm_origin(origin_location.clone());
-		let asset_location: Location = Location::new(1, [Parachain(2000), GeneralIndex(1)]);
+		let asset_location: Location = Location::new(1, [Teyrchain(2000), GeneralIndex(1)]);
 		let asset_id = Box::new(VersionedLocation::from(asset_location));
 		let asset_metadata = AssetMetadata {
 			name: "pal".as_bytes().to_vec().try_into().unwrap(),

@@ -9,7 +9,7 @@
     "tokenDecimals": 12,
     "tokenSymbol": "UNIT"
   },
-  "relay_chain": "rococo-local",
+  "relay_chain": "pezkuwichain-local",
   "custom_field": "custom_value",
   "codeSubstitutes": {},
   "genesis": {

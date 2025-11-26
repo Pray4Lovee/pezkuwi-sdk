@@ -18,7 +18,7 @@ comment on your PR.
 Options:
 
 - `audience` The audience of whom the changes may concern.
-  - `runtime_dev`: Anyone building a runtime themselves. For example parachain teams, or people
+  - `runtime_dev`: Anyone building a runtime themselves. For example teyrchain teams, or people
     providing template runtimes. Also devs using pallets, FRAME etc directly. These are people who
     care about the protocol (WASM), not the meta-protocol (client).
   - `runtime_user`: Anyone using the runtime. Can be front-end devs reading the state, exchanges

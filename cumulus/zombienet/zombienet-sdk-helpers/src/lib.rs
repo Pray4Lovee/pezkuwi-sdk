@@ -5,7 +5,7 @@ use anyhow::anyhow;
 use codec::{Compact, Decode};
 use cumulus_primitives_core::{relay_chain, rpsr_digest::RPSR_CONSENSUS_ID};
 use futures::stream::StreamExt;
-use polkadot_primitives::{CandidateReceiptV2, Id as ParaId};
+use pezkuwi_primitives::{CandidateReceiptV2, Id as ParaId};
 use std::{
 	cmp::max,
 	collections::{HashMap, HashSet},
@@ -18,13 +18,13 @@ use tokio::{
 use zombienet_sdk::subxt::{
 	self,
 	blocks::Block,
-	config::{polkadot::PolkadotExtrinsicParamsBuilder, substrate::DigestItem},
+	config::{pezkuwi::PezkuwiExtrinsicParamsBuilder, substrate::DigestItem},
 	dynamic::Value,
 	events::Events,
 	ext::scale_value::value,
 	tx::{signer::Signer, DynamicPayload, TxStatus},
 	utils::H256,
-	OnlineClient, PolkadotConfig,
+	OnlineClient, PezkuwiConfig,
 };
 
 use zombienet_sdk::{
@@ -38,7 +38,7 @@ use zombienet_configuration::types::AssetLocation;
 // If it does not arrive for whatever reason, we should not wait forever.
 const WAIT_MAX_BLOCKS_FOR_SESSION: u32 = 50;
 
-/// Create a batch call to assign cores to a parachain.
+/// Create a batch call to assign cores to a teyrchain.
 pub fn create_assign_core_call(core_and_para: &[(u32, u32)]) -> DynamicPayload {
 	let mut assign_cores = vec![];
 	for (core, para_id) in core_and_para.iter() {
@@ -58,7 +58,7 @@ pub fn create_assign_core_call(core_and_para: &[(u32, u32)]) -> DynamicPayload {
 
 /// Find an event in subxt `Events` and attempt to decode the fields fo the event.
 fn find_event_and_decode_fields<T: Decode>(
-	events: &Events<PolkadotConfig>,
+	events: &Events<PezkuwiConfig>,
 	pallet: &str,
 	variant: &str,
 ) -> Result<Vec<T>, anyhow::Error> {
@@ -74,7 +74,7 @@ fn find_event_and_decode_fields<T: Decode>(
 }
 /// Returns `true` if the `block` is a session change.
 async fn is_session_change(
-	block: &Block<PolkadotConfig, OnlineClient<PolkadotConfig>>,
+	block: &Block<PezkuwiConfig, OnlineClient<PezkuwiConfig>>,
 ) -> Result<bool, anyhow::Error> {
 	let events = block.events().await?;
 	Ok(events.iter().any(|event| {
@@ -84,12 +84,12 @@ async fn is_session_change(
 	}))
 }
 
-// Helper function for asserting the throughput of parachains, after the first session change.
+// Helper function for asserting the throughput of teyrchains, after the first session change.
 //
 // The throughput is measured as total number of backed candidates in a window of relay chain
 // blocks. Relay chain blocks with session changes are generally ignores.
 pub async fn assert_para_throughput(
-	relay_client: &OnlineClient<PolkadotConfig>,
+	relay_client: &OnlineClient<PezkuwiConfig>,
 	stop_after: u32,
 	expected_candidate_ranges: HashMap<ParaId, Range<u32>>,
 ) -> Result<(), anyhow::Error> {
@@ -99,7 +99,7 @@ pub async fn assert_para_throughput(
 
 	let valid_para_ids: Vec<ParaId> = expected_candidate_ranges.keys().cloned().collect();
 
-	// Wait for the first session, block production on the parachain will start after that.
+	// Wait for the first session, block production on the teyrchain will start after that.
 	wait_for_first_session_change(&mut blocks_sub).await?;
 
 	while let Some(block) = blocks_sub.next().await {
@@ -135,7 +135,7 @@ pub async fn assert_para_throughput(
 	}
 
 	log::info!(
-		"Reached {stop_after} finalized relay chain blocks that contain backed candidates. The per-parachain distribution is: {:#?}",
+		"Reached {stop_after} finalized relay chain blocks that contain backed candidates. The per-teyrchain distribution is: {:#?}",
 		candidate_count.iter().map(|(para_id, count)| format!("{para_id} has {count} backed candidates")).collect::<Vec<_>>()
 	);
 
@@ -159,7 +159,7 @@ pub async fn assert_para_throughput(
 /// The session change is detected by inspecting the events in the block.
 pub async fn wait_for_first_session_change(
 	blocks_sub: &mut zombienet_sdk::subxt::backend::StreamOfResults<
-		Block<PolkadotConfig, OnlineClient<PolkadotConfig>>,
+		Block<PezkuwiConfig, OnlineClient<PezkuwiConfig>>,
 	>,
 ) -> Result<(), anyhow::Error> {
 	wait_for_nth_session_change(blocks_sub, 1).await
@@ -170,7 +170,7 @@ pub async fn wait_for_first_session_change(
 /// The session change is detected by inspecting the events in the block.
 pub async fn wait_for_nth_session_change(
 	blocks_sub: &mut zombienet_sdk::subxt::backend::StreamOfResults<
-		Block<PolkadotConfig, OnlineClient<PolkadotConfig>>,
+		Block<PezkuwiConfig, OnlineClient<PezkuwiConfig>>,
 	>,
 	mut sessions_to_wait: u32,
 ) -> Result<(), anyhow::Error> {
@@ -199,7 +199,7 @@ pub async fn wait_for_nth_session_change(
 
 // Helper function that asserts the maximum finality lag.
 pub async fn assert_finality_lag(
-	client: &OnlineClient<PolkadotConfig>,
+	client: &OnlineClient<PezkuwiConfig>,
 	maximum_lag: u32,
 ) -> Result<(), anyhow::Error> {
 	let mut best_stream = client.blocks().subscribe_best().await?;
@@ -219,7 +219,7 @@ pub async fn assert_finality_lag(
 
 /// Assert that finality has not stalled.
 pub async fn assert_blocks_are_being_finalized(
-	client: &OnlineClient<PolkadotConfig>,
+	client: &OnlineClient<PezkuwiConfig>,
 ) -> Result<(), anyhow::Error> {
 	let sleep_duration = Duration::from_secs(12);
 	let mut finalized_blocks = client.blocks().subscribe_finalized().await?;
@@ -244,24 +244,24 @@ pub async fn assert_blocks_are_being_finalized(
 	Ok(())
 }
 
-/// Asserts that parachain blocks have the correct relay parent offset. This also checks that the
+/// Asserts that teyrchain blocks have the correct relay parent offset. This also checks that the
 /// relay chain descendants do not contain any session changes.
 ///
 /// # Arguments
 ///
 /// * `relay_client` - Client connected to a relay chain node
-/// * `para_client` - Client connected to a parachain node
+/// * `para_client` - Client connected to a teyrchain node
 /// * `offset` - Expected minimum offset between relay parent and highest seen relay block
-/// * `block_limit` - Number of parachain blocks to verify before completing
+/// * `block_limit` - Number of teyrchain blocks to verify before completing
 pub async fn assert_relay_parent_offset(
-	relay_client: &OnlineClient<PolkadotConfig>,
-	para_client: &OnlineClient<PolkadotConfig>,
+	relay_client: &OnlineClient<PezkuwiConfig>,
+	para_client: &OnlineClient<PezkuwiConfig>,
 	offset: u32,
 	block_limit: u32,
 ) -> Result<(), anyhow::Error> {
 	let mut relay_block_stream = relay_client.blocks().subscribe_all().await?;
 
-	// First parachain header #0 does not contains RSPR digest item.
+	// First teyrchain header #0 does not contains RSPR digest item.
 	let mut para_block_stream = para_client.blocks().subscribe_all().await?.skip(1);
 	let mut highest_relay_block_seen = 0;
 	let mut num_para_blocks_seen = 0;
@@ -272,14 +272,14 @@ pub async fn assert_relay_parent_offset(
 			Some(Ok(relay_block)) = relay_block_stream.next() => {
 				highest_relay_block_seen = max(relay_block.number(), highest_relay_block_seen);
 				if highest_relay_block_seen > 15 && num_para_blocks_seen == 0 {
-					return Err(anyhow!("No parachain blocks produced!"))
+					return Err(anyhow!("No teyrchain blocks produced!"))
 				}
-				// When a relay chain block contains a session change, parachains shall not build on
+				// When a relay chain block contains a session change, teyrchains shall not build on
 				// any ancestor of that block, if the session change block is part of the descendants.
 				// Example:
 				// RC Chain: A -> B -> C -> D*
 				// "*" denotes session change
-				// In this scenario, parachains with an offset of 2 should never build on relay chain
+				// In this scenario, teyrchains with an offset of 2 should never build on relay chain
 				// blocks B or C. Both of them would include the session change block D* in their
 				// descendants, and we know that the candidate would span a session boundary.
 				if is_session_change(&relay_block).await? {
@@ -300,14 +300,14 @@ pub async fn assert_relay_parent_offset(
 				};
 				let para_block_number = para_block.number();
 				seen_parents.insert(relay_parent_state_root, para_block);
-				log::debug!("Parachain block #{} was built on relay parent #{relay_parent_number}, highest seen was {highest_relay_block_seen}", para_block_number);
+				log::debug!("Teyrchain block #{} was built on relay parent #{relay_parent_number}, highest seen was {highest_relay_block_seen}", para_block_number);
 				assert!(highest_relay_block_seen < offset || relay_parent_number <= highest_relay_block_seen.saturating_sub(offset), "Relay parent is not at the correct offset! relay_parent: #{relay_parent_number} highest_seen_relay_block: #{highest_relay_block_seen}");
-				// As per explanation above, we need to check that no parachain blocks are build
+				// As per explanation above, we need to check that no teyrchain blocks are build
 				// on the forbidden parents.
 				for forbidden in &forbidden_parents {
 					if let Some(para_block) = seen_parents.get(forbidden) {
 						panic!(
-							"Parachain block {} was built on forbidden relay parent with session change descendants (state_root: {})",
+							"Teyrchain block {} was built on forbidden relay parent with session change descendants (state_root: {})",
 							para_block.hash(),
 							forbidden
 						);
@@ -315,7 +315,7 @@ pub async fn assert_relay_parent_offset(
 				}
 				num_para_blocks_seen += 1;
 				if num_para_blocks_seen >= block_limit {
-					log::info!("Successfully verified relay parent offset of {offset} for {num_para_blocks_seen} parachain blocks.");
+					log::info!("Successfully verified relay parent offset of {offset} for {num_para_blocks_seen} teyrchain blocks.");
 					break;
 				}
 			}
@@ -342,12 +342,12 @@ fn extract_relay_parent_storage_root(
 /// Submits the given `call` as transaction and waits for it successful finalization.
 ///
 /// The transaction is send as immortal transaction.
-pub async fn submit_extrinsic_and_wait_for_finalization_success<S: Signer<PolkadotConfig>>(
-	client: &OnlineClient<PolkadotConfig>,
+pub async fn submit_extrinsic_and_wait_for_finalization_success<S: Signer<PezkuwiConfig>>(
+	client: &OnlineClient<PezkuwiConfig>,
 	call: &DynamicPayload,
 	signer: &S,
 ) -> Result<(), anyhow::Error> {
-	let extensions = PolkadotExtrinsicParamsBuilder::new().immortal().build();
+	let extensions = PezkuwiExtrinsicParamsBuilder::new().immortal().build();
 
 	let mut tx = client
 		.tx()
@@ -383,9 +383,9 @@ pub async fn submit_extrinsic_and_wait_for_finalization_success<S: Signer<Polkad
 /// If the transaction does not reach the finalized state in `timeout_secs` an error is returned.
 /// The transaction is send as immortal transaction.
 pub async fn submit_extrinsic_and_wait_for_finalization_success_with_timeout<
-	S: Signer<PolkadotConfig>,
+	S: Signer<PezkuwiConfig>,
 >(
-	client: &OnlineClient<PolkadotConfig>,
+	client: &OnlineClient<PezkuwiConfig>,
 	call: &DynamicPayload,
 	signer: &S,
 	timeout_secs: impl Into<u64>,
@@ -407,7 +407,7 @@ pub async fn submit_extrinsic_and_wait_for_finalization_success_with_timeout<
 
 /// Asserts that the given `para_id` is registered at the relay chain.
 pub async fn assert_para_is_registered(
-	relay_client: &OnlineClient<PolkadotConfig>,
+	relay_client: &OnlineClient<PezkuwiConfig>,
 	para_id: ParaId,
 	blocks_to_wait: u32,
 ) -> Result<(), anyhow::Error> {
@@ -415,28 +415,28 @@ pub async fn assert_para_is_registered(
 	let para_id: u32 = para_id.into();
 
 	let keys: Vec<Value> = vec![];
-	let query = subxt::dynamic::storage("Paras", "Parachains", keys);
+	let query = subxt::dynamic::storage("Paras", "Teyrchains", keys);
 
 	let mut blocks_cnt = 0;
 	while let Some(block) = blocks_sub.next().await {
 		let block = block?;
 		log::debug!("Relay block #{}, checking if para_id {para_id} is registered", block.number(),);
-		let parachains = block.storage().fetch(&query).await?;
+		let teyrchains = block.storage().fetch(&query).await?;
 
-		let parachains: Vec<u32> = match parachains {
-			Some(parachains) => parachains.as_type()?,
+		let teyrchains: Vec<u32> = match teyrchains {
+			Some(teyrchains) => teyrchains.as_type()?,
 			None => vec![],
 		};
 
-		log::debug!("Registered para_ids: {:?}", parachains);
+		log::debug!("Registered para_ids: {:?}", teyrchains);
 
-		if parachains.iter().any(|p| para_id.eq(p)) {
+		if teyrchains.iter().any(|p| para_id.eq(p)) {
 			log::debug!("para_id {para_id} registered");
 			return Ok(());
 		}
 		if blocks_cnt >= blocks_to_wait {
 			return Err(anyhow!(
-				"Parachain {para_id} not registered within {blocks_to_wait} blocks"
+				"Teyrchain {para_id} not registered within {blocks_to_wait} blocks"
 			));
 		}
 		blocks_cnt += 1;
@@ -451,8 +451,8 @@ pub async fn runtime_upgrade(
 	para_id: u32,
 	wasm_path: &str,
 ) -> Result<(), anyhow::Error> {
-	log::info!("Performing runtime upgrade for parachain {}, wasm: {}", para_id, wasm_path);
-	let para = network.parachain(para_id).unwrap();
+	log::info!("Performing runtime upgrade for teyrchain {}, wasm: {}", para_id, wasm_path);
+	let para = network.teyrchain(para_id).unwrap();
 
 	para.perform_runtime_upgrade(node, RuntimeUpgradeOptions::new(AssetLocation::from(wasm_path)))
 		.await
@@ -463,12 +463,12 @@ pub async fn assign_cores(
 	para_id: u32,
 	cores: Vec<u32>,
 ) -> Result<(), anyhow::Error> {
-	log::info!("Assigning {:?} cores to parachain {}", cores, para_id);
+	log::info!("Assigning {:?} cores to teyrchain {}", cores, para_id);
 
 	let assign_cores_call =
 		create_assign_core_call(&cores.into_iter().map(|core| (core, para_id)).collect::<Vec<_>>());
 
-	let client: OnlineClient<PolkadotConfig> = node.wait_client().await?;
+	let client: OnlineClient<PezkuwiConfig> = node.wait_client().await?;
 	let res = submit_extrinsic_and_wait_for_finalization_success_with_timeout(
 		&client,
 		&assign_cores_call,
@@ -477,13 +477,13 @@ pub async fn assign_cores(
 	)
 	.await;
 	assert!(res.is_ok(), "Extrinsic failed to finalize: {:?}", res.unwrap_err());
-	log::info!("Cores assigned to the parachain");
+	log::info!("Cores assigned to the teyrchain");
 
 	Ok(())
 }
 
 pub async fn wait_for_upgrade(
-	client: OnlineClient<PolkadotConfig>,
+	client: OnlineClient<PezkuwiConfig>,
 	expected_version: u32,
 ) -> Result<(), anyhow::Error> {
 	let updater = client.updater();

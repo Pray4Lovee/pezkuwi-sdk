@@ -38,8 +38,8 @@ use pallet_revive::{
 	AccountId32Mapper,
 };
 use pallet_transaction_payment::{ConstFeeMultiplier, FeeDetails, Multiplier, RuntimeDispatchInfo};
-use polkadot_sdk::{
-	polkadot_sdk_frame::{
+use pezkuwi_sdk::{
+	pezkuwi_sdk_frame::{
 		deps::sp_genesis_builder,
 		runtime::{apis, prelude::*},
 		traits::Block as BlockT,
@@ -48,9 +48,9 @@ use polkadot_sdk::{
 };
 use sp_weights::ConstantMultiplier;
 
-pub use polkadot_sdk::{
-	parachains_common::{AccountId, Balance, BlockNumber, Hash, Header, Nonce, Signature},
-	polkadot_sdk_frame::runtime::types_common::OpaqueBlock,
+pub use pezkuwi_sdk::{
+	teyrchains_common::{AccountId, Balance, BlockNumber, Hash, Header, Nonce, Signature},
+	pezkuwi_sdk_frame::runtime::types_common::OpaqueBlock,
 };
 
 pub mod currency {

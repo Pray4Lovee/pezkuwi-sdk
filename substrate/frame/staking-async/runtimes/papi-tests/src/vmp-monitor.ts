@@ -2,31 +2,31 @@
  * Vertical Message Passing (VMP) Monitor
  *
  * This tool monitors both Downward Message Passing (DMP) and Upward Message Passing (UMP) queues
- * in the Polkadot relay chain and parachains.
+ * in the Polkadot relay chain and teyrchains.
  *
  * ## Message Flow Overview
  *
- * ### Downward Message Passing (DMP): Relay Chain → Parachain
+ * ### Downward Message Passing (DMP): Relay Chain → Teyrchain
  *
  * 1. **Message Creation**: Messages are created on the relay chain (e.g., XCM messages from governance)
  * 2. **Queueing**: Messages are stored in `Dmp::DownwardMessageQueues` storage on the relay chain
- *    - Each parachain has its own queue indexed by ParaId
+ *    - Each teyrchain has its own queue indexed by ParaId
  *    - Messages include the actual message bytes and the block number when sent
- * 3. **Delivery**: During parachain validation, these messages are included in the parachain's
- *    inherent data and delivered to the parachain
- * 4. **Processing**: The parachain processes these messages in `parachain-system` pallet
+ * 3. **Delivery**: During teyrchain validation, these messages are included in the teyrchain's
+ *    inherent data and delivered to the teyrchain
+ * 4. **Processing**: The teyrchain processes these messages in `teyrchain-system` pallet
  *    - Messages are passed to the configured `DmpQueue` handler
  *    - In modern implementations, this is typically the `message-queue` pallet
- * 5. **Fee Management**: `Dmp::DeliveryFeeFactor` tracks fee multipliers per parachain
+ * 5. **Fee Management**: `Dmp::DeliveryFeeFactor` tracks fee multipliers per teyrchain
  *
- * ### Upward Message Passing (UMP): Parachain → Relay Chain
+ * ### Upward Message Passing (UMP): Teyrchain → Relay Chain
  *
- * 1. **Message Creation**: Messages are created on the parachain (e.g., XCM messages)
- * 2. **Parachain Queueing**: Messages are first stored in `ParachainSystem::PendingUpwardMessages`
- *    - The parachain tracks bandwidth limits and adjusts fee factors based on queue size
- * 3. **Commitment**: In `on_finalize`, pending messages are moved to `ParachainSystem::UpwardMessages`
- *    - These are included in the parachain block's proof of validity
- * 4. **Relay Chain Reception**: When the relay chain validates the parachain block:
+ * 1. **Message Creation**: Messages are created on the teyrchain (e.g., XCM messages)
+ * 2. **Teyrchain Queueing**: Messages are first stored in `TeyrchainSystem::PendingUpwardMessages`
+ *    - The teyrchain tracks bandwidth limits and adjusts fee factors based on queue size
+ * 3. **Commitment**: In `on_finalize`, pending messages are moved to `TeyrchainSystem::UpwardMessages`
+ *    - These are included in the teyrchain block's proof of validity
+ * 4. **Relay Chain Reception**: When the relay chain validates the teyrchain block:
  *    - UMP messages are extracted from the proof
  *    - Messages are processed by `inclusion` pallet's `receive_upward_messages`
  * 5. **Processing**: Messages are enqueued into the `message-queue` pallet with origin `Ump(ParaId)`
@@ -37,11 +37,11 @@
  *
  * ### Relay Chain Pallets
  * - `dmp`: Manages downward message queues and delivery fees
- * - `inclusion`: Handles parachain block validation and UMP message reception
+ * - `inclusion`: Handles teyrchain block validation and UMP message reception
  * - `message-queue`: Generic message queue processor for various origins (UMP, DMP, HRMP)
  *
- * ### Parachain Pallets
- * - `parachain-system`: Manages UMP message sending and DMP message reception
+ * ### Teyrchain Pallets
+ * - `teyrchain-system`: Manages UMP message sending and DMP message reception
  * - `message-queue`: Processes received DMP messages (and other message types)
  *
  * ## Storage Layout
@@ -51,10 +51,10 @@
  * - `Dmp::DeliveryFeeFactor`: Map<ParaId, FixedU128>
  * - Well-known keys for UMP queue sizes (relay_dispatch_queue_size)
  *
- * ### Parachain
- * - `ParachainSystem::PendingUpwardMessages`: Vec<UpwardMessage>
- * - `ParachainSystem::UpwardMessages`: Vec<UpwardMessage> (cleared each block)
- * - `ParachainSystem::UpwardDeliveryFeeFactor`: FixedU128
+ * ### Teyrchain
+ * - `TeyrchainSystem::PendingUpwardMessages`: Vec<UpwardMessage>
+ * - `TeyrchainSystem::UpwardMessages`: Vec<UpwardMessage> (cleared each block)
+ * - `TeyrchainSystem::UpwardDeliveryFeeFactor`: FixedU128
  *
  * ## Message Queue Pallet
  *
@@ -70,7 +70,7 @@
  * - Both DMP and UMP implement dynamic fee mechanisms
  * - Fees increase when queues grow large (deterring spam)
  * - Fees decrease when queues are small (encouraging usage)
- * - Bandwidth limits prevent any single parachain from monopolizing message passing
+ * - Bandwidth limits prevent any single teyrchain from monopolizing message passing
  *
  * ## VMP Message Limits and Risk Analysis
  *
@@ -79,25 +79,25 @@
  * ### 1. Single Message Size Limit
  *
  * **DMP (Downward):**
- * - Enforced at: `polkadot/runtime/parachains/src/dmp.rs:189` in `can_queue_downward_message()`
+ * - Enforced at: `polkadot/runtime/teyrchains/src/dmp.rs:189` in `can_queue_downward_message()`
  * - Configuration: `max_downward_message_size`
  * - Check: Rejects if `serialized_len > config.max_downward_message_size`
  *
  * **UMP (Upward):**
- * - Parachain enforcement: `cumulus/pallets/parachain-system/src/lib.rs:1665` in `send_upward_message()`
- * - Relay validation: `polkadot/runtime/parachains/src/inclusion/mod.rs:967` in `check_upward_messages()`
+ * - Teyrchain enforcement: `cumulus/pallets/teyrchain-system/src/lib.rs:1665` in `send_upward_message()`
+ * - Relay validation: `polkadot/runtime/teyrchains/src/inclusion/mod.rs:967` in `check_upward_messages()`
  * - Configuration: `max_upward_message_size` (hard bound: 128KB defined as MAX_UPWARD_MESSAGE_SIZE_BOUND)
  *
  * ### 2. Queue Total Size (Bytes)
  *
  * **DMP:**
  * - Max capacity: `MAX_POSSIBLE_ALLOCATION / max_downward_message_size`
- * - Calculated in: `polkadot/runtime/parachains/src/dmp.rs:318-319` in `dmq_max_length()`
- * - Enforced at: `polkadot/runtime/parachains/src/dmp.rs:194` in `can_queue_downward_message()`
+ * - Calculated in: `polkadot/runtime/teyrchains/src/dmp.rs:318-319` in `dmq_max_length()`
+ * - Enforced at: `polkadot/runtime/teyrchains/src/dmp.rs:194` in `can_queue_downward_message()`
  *
  * **UMP:**
- * - Parachain check: `cumulus/pallets/parachain-system/src/lib.rs:369-373` (respects relay's remaining capacity)
- * - Relay limit: `max_upward_queue_size` enforced at `polkadot/runtime/parachains/src/inclusion/mod.rs:977-980`
+ * - Teyrchain check: `cumulus/pallets/teyrchain-system/src/lib.rs:369-373` (respects relay's remaining capacity)
+ * - Relay limit: `max_upward_queue_size` enforced at `polkadot/runtime/teyrchains/src/inclusion/mod.rs:977-980`
  *
  * ### 3. Queue Total Count (Messages)
  *
@@ -106,8 +106,8 @@
  * - Only implicitly limited by total queue size
  *
  * **UMP:**
- * - Relay limit: `max_upward_queue_count` at `polkadot/runtime/parachains/src/inclusion/mod.rs:958-961`
- * - Parachain respects relay's `remaining_count` from `relay_dispatch_queue_remaining_capacity`
+ * - Relay limit: `max_upward_queue_count` at `polkadot/runtime/teyrchains/src/inclusion/mod.rs:958-961`
+ * - Teyrchain respects relay's `remaining_count` from `relay_dispatch_queue_remaining_capacity`
  *
  * ### 4. Per-Block Append Limit
  *
@@ -117,9 +117,9 @@
  *
  * **UMP:**
  * - Configuration: `max_upward_message_num_per_candidate`
- * - Parachain limit: `cumulus/pallets/parachain-system/src/lib.rs:386` in `on_finalize()`
- * - Relay validation: `polkadot/runtime/parachains/src/inclusion/mod.rs:949-952`
- * - Max bound: 16,384 messages (MAX_UPWARD_MESSAGE_NUM in `polkadot/parachain/src/primitives.rs:436`)
+ * - Teyrchain limit: `cumulus/pallets/teyrchain-system/src/lib.rs:386` in `on_finalize()`
+ * - Relay validation: `polkadot/runtime/teyrchains/src/inclusion/mod.rs:949-952`
+ * - Max bound: 16,384 messages (MAX_UPWARD_MESSAGE_NUM in `polkadot/teyrchain/src/primitives.rs:436`)
  *
  * ### Receiver-side Risk: Weight Exhaustion
  *
@@ -136,7 +136,7 @@
 import { createClient, type PolkadotClient, type TypedApi } from "polkadot-api";
 import { withPolkadotSdkCompat } from "polkadot-api/polkadot-sdk-compat";
 import { getWsProvider } from "polkadot-api/ws-provider/web";
-import { rc, parachain } from "@polkadot-api/descriptors";
+import { rc, teyrchain } from "@polkadot-api/descriptors";
 import { logger } from "./utils";
 
 interface MonitorOptions {
@@ -189,9 +189,9 @@ export async function monitorVmpQueues(options: MonitorOptions): Promise<void> {
 
 	logger.info(`🚀 Connecting to relay chain at ${relayWsUrl}`);
 	if (paraWsUrl) {
-		logger.info(`🚀 Connecting to parachain at ${paraWsUrl}`);
+		logger.info(`🚀 Connecting to teyrchain at ${paraWsUrl}`);
 	}
-	logger.info(`📊 Monitoring VMP queues${options.paraId ? ` for parachain ${options.paraId}` : ' for all parachains'}`);
+	logger.info(`📊 Monitoring VMP queues${options.paraId ? ` for teyrchain ${options.paraId}` : ' for all teyrchains'}`);
 	logger.info(`⏱️  Refresh interval: ${options.refreshInterval}s`);
 	logger.info("");
 
@@ -205,17 +205,17 @@ export async function monitorVmpQueues(options: MonitorOptions): Promise<void> {
 		const relayChainSpec = await relayClient.getChainSpecData();
 		logger.info(`✅ Connected to relay chain: ${relayChainSpec.name}`);
 
-		// Connect to parachain if port provided
+		// Connect to teyrchain if port provided
 		let paraClient: PolkadotClient | null = null;
 		let paraApi: any | null = null;
 		if (paraWsUrl) {
 			const paraWsProvider = getWsProvider(paraWsUrl);
 			paraClient = createClient(withPolkadotSdkCompat(paraWsProvider));
-			// Use parachain descriptor for the parachain API
-			paraApi = paraClient.getTypedApi(parachain);
+			// Use teyrchain descriptor for the teyrchain API
+			paraApi = paraClient.getTypedApi(teyrchain);
 
 			const paraChainSpec = await paraClient.getChainSpecData();
-			logger.info(`✅ Connected to parachain: ${paraChainSpec.name}`);
+			logger.info(`✅ Connected to teyrchain: ${paraChainSpec.name}`);
 		}
 
 		const version = await relayApi.constants.System.Version();
@@ -345,9 +345,9 @@ async function displayMessageStatus(relayApi: TypedApi<typeof rc>, paraApi: any 
 			console.log("⚠️  WARNING: High memory usage detected!");
 		}
 
-		// Note about parachain connection
+		// Note about teyrchain connection
 		if (!paraApi && specificParaId) {
-			console.log("ℹ️  Note: Connect to parachain with --para-port to see pending UMP messages");
+			console.log("ℹ️  Note: Connect to teyrchain with --para-port to see pending UMP messages");
 		}
 
 	} catch (error) {
@@ -420,7 +420,7 @@ async function fetchMessageStats(relayApi: TypedApi<typeof rc>, paraApi: any | n
 	let umpTotalMessages = 0;
 	let umpTotalSize = 0;
 
-	// Only check UMP for specified paraId when monitoring a specific parachain
+	// Only check UMP for specified paraId when monitoring a specific teyrchain
 	const paraIds = specificParaId ? [specificParaId] : [];
 
 	for (const paraId of paraIds) {
@@ -429,7 +429,7 @@ async function fetchMessageStats(relayApi: TypedApi<typeof rc>, paraApi: any | n
 			// This is stored by the inclusion pallet when processing UMP messages
 			const wellKnownKey = `0x` +
 				`3a6865617070616765735f73746f726167653a` + // :heappages_storage:
-				`0000` + // twox128("Parachains")
+				`0000` + // twox128("Teyrchains")
 				`0000` + // twox128("RelayDispatchQueueSize")
 				`0000` + // twox64(paraId) - simplified, would need proper encoding
 				paraId.toString(16).padStart(8, '0');
@@ -442,10 +442,10 @@ async function fetchMessageStats(relayApi: TypedApi<typeof rc>, paraApi: any | n
 				relayQueueSize: 0
 			};
 
-			// If we have parachain connection and it matches our paraId, get pending messages
+			// If we have teyrchain connection and it matches our paraId, get pending messages
 			if (paraApi && paraId === specificParaId) {
 				try {
-					const pendingMessages = await paraApi.query.ParachainSystem.PendingUpwardMessages();
+					const pendingMessages = await paraApi.query.TeyrchainSystem.PendingUpwardMessages();
 					if (pendingMessages) {
 						umpQueueInfo.pendingCount = pendingMessages.length;
 						umpQueueInfo.pendingSize = pendingMessages.reduce((sum: number, msg: any) => {
@@ -453,7 +453,7 @@ async function fetchMessageStats(relayApi: TypedApi<typeof rc>, paraApi: any | n
 						}, 0);
 					}
 				} catch (error) {
-					// Parachain might not have this storage item
+					// Teyrchain might not have this storage item
 				}
 			}
 

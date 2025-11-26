@@ -6,12 +6,12 @@
 //!
 //! ## Governance
 //!
-//! Only Polkadot governance itself can call these extrinsics. Delivery fees are waived.
+//! Only Pezkuwi governance itself can call these extrinsics. Delivery fees are waived.
 //!
 //! * [`Call::upgrade`]`: Upgrade the gateway contract
 //! * [`Call::set_operating_mode`]: Update the operating mode of the gateway contract
 //!
-//! ## Polkadot-native tokens on Ethereum
+//! ## Pezkuwi-native tokens on Ethereum
 //!
 //! Tokens deposited on AssetHub pallet can be bridged to Ethereum as wrapped ERC20 tokens. As a
 //! prerequisite, the token should be registered first.
@@ -189,11 +189,11 @@ pub mod pallet {
 		PricingParametersChanged {
 			params: PricingParametersOf<T>,
 		},
-		/// Register Polkadot-native token as a wrapped ERC20 token on Ethereum
+		/// Register Pezkuwi-native token as a wrapped ERC20 token on Ethereum
 		RegisterToken {
-			/// Location of Polkadot-native token
+			/// Location of Pezkuwi-native token
 			location: VersionedLocation,
-			/// ID of Polkadot-native token on Ethereum
+			/// ID of Pezkuwi-native token on Ethereum
 			foreign_token_id: H256,
 		},
 	}
@@ -236,9 +236,9 @@ pub mod pallet {
 	#[pallet::genesis_config]
 	#[derive(frame_support::DefaultNoBound)]
 	pub struct GenesisConfig<T: Config> {
-		// Own parachain id
+		// Own teyrchain id
 		pub para_id: ParaId,
-		// AssetHub's parachain id
+		// AssetHub's teyrchain id
 		pub asset_hub_para_id: ParaId,
 		#[serde(skip)]
 		pub _config: PhantomData<T>,
@@ -342,9 +342,9 @@ pub mod pallet {
 		///
 		/// - `origin`: Must be root
 		/// - `create_asset_xcm`: The XCM execution cost for creating a new asset class on AssetHub,
-		///   in DOT
+		///   in HEZ
 		/// - `transfer_asset_xcm`: The XCM execution cost for performing a reserve transfer on
-		///   AssetHub, in DOT
+		///   AssetHub, in HEZ
 		/// - `register_token`: The Ether fee for registering a new token, to discourage spamming
 		#[pallet::call_index(9)]
 		#[pallet::weight((T::WeightInfo::set_token_transfer_fees(), DispatchClass::Operational))]
@@ -378,7 +378,7 @@ pub mod pallet {
 			Ok(())
 		}
 
-		/// Registers a Polkadot-native token as a wrapped ERC20 token on Ethereum.
+		/// Registers a Pezkuwi-native token as a wrapped ERC20 token on Ethereum.
 		/// Privileged. Can only be called by root.
 		///
 		/// Fee required: No
@@ -437,7 +437,7 @@ pub mod pallet {
 		pub fn initialize(para_id: ParaId, asset_hub_para_id: ParaId) -> Result<(), DispatchError> {
 			// Asset Hub
 			let asset_hub_location: Location =
-				ParentThen(Parachain(asset_hub_para_id.into()).into()).into();
+				ParentThen(Teyrchain(asset_hub_para_id.into()).into()).into();
 			let asset_hub_agent_id = agent_id_of::<T>(&asset_hub_location)?;
 			let asset_hub_channel_id: ChannelId = asset_hub_para_id.into();
 			Agents::<T>::insert(asset_hub_agent_id, ());

@@ -21,19 +21,19 @@ sp-api = { workspace = true }
 sp-runtime = { workspace = true }
 sp-trie = { workspace = true }
 
-# Polkadot
-polkadot-core-primitives = { workspace = true }
-polkadot-parachain-primitives = { workspace = true }
-polkadot-primitives = { workspace = true }
+# Pezkuwi
+pezkuwi-core-primitives = { workspace = true }
+pezkuwi-teyrchain-primitives = { workspace = true }
+pezkuwi-primitives = { workspace = true }
 xcm = { workspace = true }
 
 [features]
 default = ["std"]
 std = [
 	"codec/std",
-	"polkadot-core-primitives/std",
-	"polkadot-parachain-primitives/std",
-	"polkadot-primitives/std",
+	"pezkuwi-core-primitives/std",
+	"pezkuwi-teyrchain-primitives/std",
+	"pezkuwi-primitives/std",
 	"scale-info/std",
 	"sp-api/std",
 	"sp-runtime/std",
@@ -42,8 +42,8 @@ std = [
 	"xcm/std",
 ]
 runtime-benchmarks = [
-	"polkadot-parachain-primitives/runtime-benchmarks",
-	"polkadot-primitives/runtime-benchmarks",
+	"pezkuwi-teyrchain-primitives/runtime-benchmarks",
+	"pezkuwi-primitives/runtime-benchmarks",
 	"sp-runtime/runtime-benchmarks",
 	"xcm/runtime-benchmarks",
 ]

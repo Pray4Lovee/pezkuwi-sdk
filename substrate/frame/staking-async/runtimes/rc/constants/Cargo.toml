@@ -8,7 +8,7 @@ license.workspace = true
 homepage.workspace = true
 repository.workspace = true
 
-[package.metadata.polkadot-sdk]
+[package.metadata.pezkuwi-sdk]
 exclude-from-umbrella = true
 
 [lints]
@@ -18,8 +18,8 @@ workspace = true
 smallvec = { workspace = true, default-features = true }
 
 frame-support = { workspace = true }
-polkadot-primitives = { workspace = true }
-polkadot-runtime-common = { workspace = true }
+pezkuwi-primitives = { workspace = true }
+pezkuwi-runtime-common = { workspace = true }
 sp-core = { workspace = true }
 sp-runtime = { workspace = true }
 sp-weights = { workspace = true }
@@ -31,8 +31,8 @@ xcm-builder = { workspace = true }
 default = ["std"]
 std = [
 	"frame-support/std",
-	"polkadot-primitives/std",
-	"polkadot-runtime-common/std",
+	"pezkuwi-primitives/std",
+	"pezkuwi-runtime-common/std",
 	"sp-core/std",
 	"sp-runtime/std",
 	"sp-weights/std",

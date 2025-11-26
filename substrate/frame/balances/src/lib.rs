@@ -139,7 +139,7 @@
 //! `insecure_zero_ed` cargo feature is enabled. However this is not a configuration which is
 //! generally supported, nor will it be.
 //!
-//! [`frame_tokens`]: ../polkadot_sdk_docs/reference_docs/frame_tokens/index.html
+//! [`frame_tokens`]: ../pezkuwi_sdk_docs/reference_docs/frame_tokens/index.html
 
 #![cfg_attr(not(feature = "std"), no_std)]
 mod benchmarking;
@@ -427,7 +427,7 @@ pub mod pallet {
 
 	/// Defensive/unexpected errors/events.
 	///
-	/// In case of observation in explorers, report it as an issue in polkadot-sdk.
+	/// In case of observation in explorers, report it as an issue in pezkuwi-sdk.
 	#[derive(Clone, Encode, Decode, DecodeWithMemTracking, PartialEq, TypeInfo, RuntimeDebug)]
 	pub enum UnexpectedKind {
 		/// Balance was altered/dusted during an operation that should have NOT done so.

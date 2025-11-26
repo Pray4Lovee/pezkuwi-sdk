@@ -17,7 +17,7 @@ pub mod ringbuffer;
 pub mod sparse_bitmap;
 
 pub use location::{AgentId, AgentIdOf, TokenId, TokenIdOf};
-pub use polkadot_parachain_primitives::primitives::{
+pub use pezkuwi_teyrchain_primitives::primitives::{
 	Id as ParaId, IsSystem, Sibling as SiblingParaId,
 };
 pub use ringbuffer::{RingBufferMap, RingBufferMapImpl};
@@ -31,7 +31,7 @@ use sp_core::{ConstU32, H256};
 use sp_io::hashing::keccak_256;
 use sp_runtime::{traits::AccountIdConversion, RuntimeDebug};
 use sp_std::prelude::*;
-use xcm::latest::{Asset, Junction::Parachain, Location, Result as XcmResult, XcmContext};
+use xcm::latest::{Asset, Junction::Teyrchain, Location, Result as XcmResult, XcmContext};
 use xcm_executor::traits::TransactAsset;
 
 /// The ID of an agent contract
@@ -49,7 +49,7 @@ where
 pub struct AllowSiblingsOnly;
 impl Contains<Location> for AllowSiblingsOnly {
 	fn contains(location: &Location) -> bool {
-		matches!(location.unpack(), (1, [Parachain(_)]))
+		matches!(location.unpack(), (1, [Teyrchain(_)]))
 	}
 }
 
@@ -65,7 +65,7 @@ pub fn eth(x: u128) -> U256 {
 	U256::from(1_000_000_000_000_000_000u128).saturating_mul(x.into())
 }
 
-pub const ROC: u128 = 1_000_000_000_000;
+pub const TYR: u128 = 1_000_000_000_000;
 
 /// Identifier for a message channel
 #[derive(
@@ -83,7 +83,7 @@ pub const ROC: u128 = 1_000_000_000_000;
 )]
 pub struct ChannelId([u8; 32]);
 
-/// Deterministically derive a ChannelId for a sibling parachain
+/// Deterministically derive a ChannelId for a sibling teyrchain
 /// Generator: keccak256("para" + big_endian_bytes(para_id))
 ///
 /// The equivalent generator on the Solidity side is in
@@ -142,7 +142,7 @@ impl AsRef<[u8]> for ChannelId {
 pub struct Channel {
 	/// ID of the agent contract deployed on Ethereum
 	pub agent_id: AgentId,
-	/// ID of the parachain who will receive or send messages using this channel
+	/// ID of the teyrchain who will receive or send messages using this channel
 	pub para_id: ParaId,
 }
 

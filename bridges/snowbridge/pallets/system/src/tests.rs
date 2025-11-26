@@ -193,7 +193,7 @@ fn no_genesis_build_is_uninitialized() {
 fn register_token_with_signed_yields_bad_origin() {
 	new_test_ext(true).execute_with(|| {
 		let origin = RuntimeOrigin::signed([14; 32].into());
-		let location = Location::new(1, [Parachain(2000)]);
+		let location = Location::new(1, [Teyrchain(2000)]);
 		let versioned_location: Box<VersionedLocation> = Box::new(location.clone().into());
 		assert_noop!(
 			EthereumSystem::register_token(origin, versioned_location, Default::default()),
@@ -203,7 +203,7 @@ fn register_token_with_signed_yields_bad_origin() {
 }
 
 pub struct RegisterTokenTestCase {
-	/// Input: Location of Polkadot-native token relative to BH
+	/// Input: Location of Pezkuwi-native token relative to BH
 	pub native: Location,
 	/// Output: Reanchored, canonicalized location
 	pub reanchored: Location,
@@ -214,28 +214,28 @@ pub struct RegisterTokenTestCase {
 #[test]
 fn register_all_tokens_succeeds() {
 	let test_cases = vec![
-		// DOT
+		// HEZ
 		RegisterTokenTestCase {
 			native: Location::parent(),
-			reanchored: Location::new(1, GlobalConsensus(Polkadot)),
+			reanchored: Location::new(1, GlobalConsensus(Pezkuwi)),
 			foreign: hex!("4e241583d94b5d48a27a22064cd49b2ed6f5231d2d950e432f9b7c2e0ade52b2")
 				.into(),
 		},
-		// GLMR (Some Polkadot parachain currency)
+		// GLMR (Some Pezkuwi teyrchain currency)
 		RegisterTokenTestCase {
-			native: Location::new(1, [Parachain(2004)]),
-			reanchored: Location::new(1, [GlobalConsensus(Polkadot), Parachain(2004)]),
+			native: Location::new(1, [Teyrchain(2004)]),
+			reanchored: Location::new(1, [GlobalConsensus(Pezkuwi), Teyrchain(2004)]),
 			foreign: hex!("34c08fc90409b6924f0e8eabb7c2aaa0c749e23e31adad9f6d217b577737fafb")
 				.into(),
 		},
 		// USDT
 		RegisterTokenTestCase {
-			native: Location::new(1, [Parachain(1000), PalletInstance(50), GeneralIndex(1984)]),
+			native: Location::new(1, [Teyrchain(1000), PalletInstance(50), GeneralIndex(1984)]),
 			reanchored: Location::new(
 				1,
 				[
-					GlobalConsensus(Polkadot),
-					Parachain(1000),
+					GlobalConsensus(Pezkuwi),
+					Teyrchain(1000),
 					PalletInstance(50),
 					GeneralIndex(1984),
 				],
@@ -250,10 +250,10 @@ fn register_all_tokens_succeeds() {
 			foreign: hex!("03b6054d0c576dd8391e34e1609cf398f68050c23009d19ce93c000922bcd852")
 				.into(),
 		},
-		// KAR (Some Kusama parachain currency)
+		// KAR (Some Kusama teyrchain currency)
 		RegisterTokenTestCase {
-			native: Location::new(2, [GlobalConsensus(Kusama), Parachain(2000)]),
-			reanchored: Location::new(1, [GlobalConsensus(Kusama), Parachain(2000)]),
+			native: Location::new(2, [GlobalConsensus(Kusama), Teyrchain(2000)]),
+			reanchored: Location::new(1, [GlobalConsensus(Kusama), Teyrchain(2000)]),
 			foreign: hex!("d3e39ad6ea4cee68c9741181e94098823b2ea34a467577d0875c036f0fce5be0")
 				.into(),
 		},
@@ -304,28 +304,28 @@ fn register_ethereum_native_token_fails() {
 #[test]
 fn check_pna_token_id_compatibility() {
 	let test_cases = vec![
-		// DOT
+		// HEZ
 		RegisterTokenTestCase {
 			native: Location::parent(),
-			reanchored: Location::new(1, GlobalConsensus(Polkadot)),
+			reanchored: Location::new(1, GlobalConsensus(Pezkuwi)),
 			foreign: hex!("4e241583d94b5d48a27a22064cd49b2ed6f5231d2d950e432f9b7c2e0ade52b2")
 				.into(),
 		},
-		// GLMR (Some Polkadot parachain currency)
+		// GLMR (Some Pezkuwi teyrchain currency)
 		RegisterTokenTestCase {
-			native: Location::new(1, [Parachain(2004)]),
-			reanchored: Location::new(1, [GlobalConsensus(Polkadot), Parachain(2004)]),
+			native: Location::new(1, [Teyrchain(2004)]),
+			reanchored: Location::new(1, [GlobalConsensus(Pezkuwi), Teyrchain(2004)]),
 			foreign: hex!("34c08fc90409b6924f0e8eabb7c2aaa0c749e23e31adad9f6d217b577737fafb")
 				.into(),
 		},
 		// USDT
 		RegisterTokenTestCase {
-			native: Location::new(1, [Parachain(1000), PalletInstance(50), GeneralIndex(1984)]),
+			native: Location::new(1, [Teyrchain(1000), PalletInstance(50), GeneralIndex(1984)]),
 			reanchored: Location::new(
 				1,
 				[
-					GlobalConsensus(Polkadot),
-					Parachain(1000),
+					GlobalConsensus(Pezkuwi),
+					Teyrchain(1000),
 					PalletInstance(50),
 					GeneralIndex(1984),
 				],
@@ -340,10 +340,10 @@ fn check_pna_token_id_compatibility() {
 			foreign: hex!("03b6054d0c576dd8391e34e1609cf398f68050c23009d19ce93c000922bcd852")
 				.into(),
 		},
-		// KAR (Some Kusama parachain currency)
+		// KAR (Some Kusama teyrchain currency)
 		RegisterTokenTestCase {
-			native: Location::new(2, [GlobalConsensus(Kusama), Parachain(2000)]),
-			reanchored: Location::new(1, [GlobalConsensus(Kusama), Parachain(2000)]),
+			native: Location::new(2, [GlobalConsensus(Kusama), Teyrchain(2000)]),
+			reanchored: Location::new(1, [GlobalConsensus(Kusama), Teyrchain(2000)]),
 			foreign: hex!("d3e39ad6ea4cee68c9741181e94098823b2ea34a467577d0875c036f0fce5be0")
 				.into(),
 		},

@@ -4,7 +4,7 @@ doc:
   description: |-
     Switch to system DNS resolver instead of 8.8.8.8 that litep2p uses by default. This enables full administrator control of what upstream DNS servers to use, including resolution of local names using custom DNS servers.
 
-    Fixes https://github.com/paritytech/polkadot-sdk/issues/9298.
+    Fixes https://github.com/pezkuwichain/pezkuwichain-sdk/issues/9298.
 crates:
 - name: sc-network
   bump: patch

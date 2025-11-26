@@ -8,11 +8,11 @@ use std::{path::Path, str::FromStr};
 use crate::utils::{initialize_network, BEST_BLOCK_METRIC};
 
 use cumulus_zombienet_sdk_helpers::assert_para_throughput;
-use polkadot_primitives::Id as ParaId;
+use pezkuwi_primitives::Id as ParaId;
 use sp_core::{hexdisplay::AsBytesRef, Bytes};
 use zombienet_sdk::{
 	subxt::{
-		self, dynamic::Value, tx::DynamicPayload, OnlineClient, PolkadotConfig, SubstrateConfig,
+		self, dynamic::Value, tx::DynamicPayload, OnlineClient, PezkuwiConfig, SubstrateConfig,
 	},
 	subxt_signer::sr25519::dev,
 	NetworkConfig, NetworkConfigBuilder, RegistrationStrategy,
@@ -46,9 +46,9 @@ async fn migrate_solo_to_para() -> Result<(), anyhow::Error> {
 	let network = initialize_network(config).await?;
 
 	let alice = network.get_node("alice")?;
-	let alice_client: OnlineClient<PolkadotConfig> = alice.wait_client().await?;
+	let alice_client: OnlineClient<PezkuwiConfig> = alice.wait_client().await?;
 
-	log::info!("Ensuring parachain making progress");
+	log::info!("Ensuring teyrchain making progress");
 	assert_para_throughput(
 		&alice_client,
 		20,
@@ -58,7 +58,7 @@ async fn migrate_solo_to_para() -> Result<(), anyhow::Error> {
 
 	let dave = network.get_node("dave")?;
 
-	// alice: parachain 2000 block height is at least 10 within 250 seconds
+	// alice: teyrchain 2000 block height is at least 10 within 250 seconds
 	log::info!("Ensuring dave reports expected block height");
 	assert!(dave
 		.wait_metric_with_timeout(BEST_BLOCK_METRIC, |b| b >= 10.0, 250u64)
@@ -113,45 +113,45 @@ async fn build_network_config() -> Result<NetworkConfig, anyhow::Error> {
 	// - relaychain nodes:
 	// 	 - alice   - validator
 	// 	 - bob     - validator
-	// - parachain A nodes:
+	// - teyrchain A nodes:
 	//   - dave    - validator initially produces blocks, after setting custom validation head data
-	//     to parachain B header it stops producing blocks
-	// - parachain B nodes:
-	//   - eve     - validator initially does not produce blocks because of the parachain header
-	//     mismatch, after setting custom validation head data to parachain B header it starts
+	//     to teyrchain B header it stops producing blocks
+	// - teyrchain B nodes:
+	//   - eve     - validator initially does not produce blocks because of the teyrchain header
+	//     mismatch, after setting custom validation head data to teyrchain B header it starts
 	//     producing blocks
 	let config = NetworkConfigBuilder::new()
 		.with_relaychain(|r| {
-			r.with_chain("rococo-local")
-				.with_default_command("polkadot")
-				.with_default_image(images.polkadot.as_str())
-				.with_default_args(vec![("-lparachain=debug").into()])
+			r.with_chain("pezkuwichain-local")
+				.with_default_command("pezkuwi")
+				.with_default_image(images.pezkuwi.as_str())
+				.with_default_args(vec![("-lteyrchain=debug").into()])
 				.with_node(|node| node.with_name("alice"))
 				.with_node(|node| node.with_name("bob"))
 		})
-		.with_parachain(|p| {
-			// parachain A
+		.with_teyrchain(|p| {
+			// teyrchain A
 			p.with_id(PARA_ID)
-				.with_default_command("test-parachain")
+				.with_default_command("test-teyrchain")
 				.with_default_image(images.cumulus.as_str())
 				.with_collator(|n| {
-					n.with_name("dave").with_args(vec![("-lparachain=debug").into()])
+					n.with_name("dave").with_args(vec![("-lteyrchain=debug").into()])
 				})
 		})
-		.with_parachain(|p| {
-			// parachain B
+		.with_teyrchain(|p| {
+			// teyrchain B
 			p.with_id(PARA_ID)
 				.with_registration_strategy(RegistrationStrategy::Manual)
-				.with_default_command("test-parachain")
+				.with_default_command("test-teyrchain")
 				.with_default_image(images.cumulus.as_str())
-				// modify genesis to produce different parachain header than for parachain A
+				// modify genesis to produce different teyrchain header than for teyrchain A
 				.with_genesis_overrides(json!({
 					"sudo": {
 						"key": "5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty"
 					}
 				}))
 				.with_collator(|n| {
-					n.with_name("eve").with_args(vec![("-lparachain=debug").into()]).bootnode(true)
+					n.with_name("eve").with_args(vec![("-lteyrchain=debug").into()]).bootnode(true)
 				})
 		})
 		.with_global_settings(|global_settings| match std::env::var("ZOMBIENET_SDK_BASE_DIR") {

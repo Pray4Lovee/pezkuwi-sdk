@@ -15,10 +15,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Cumulus. If not, see <https://www.gnu.org/licenses/>.
 
-//! Parachain specific wrapper for the AuRa import queue.
+//! Teyrchain specific wrapper for the AuRa import queue.
 
 use codec::Codec;
-use cumulus_client_consensus_common::ParachainBlockImportMarker;
+use cumulus_client_consensus_common::TeyrchainBlockImportMarker;
 use prometheus_endpoint::Registry;
 use sc_client_api::{backend::AuxStore, BlockOf, UsageProvider};
 use sc_consensus::{import_queue::DefaultImportQueue, BlockImport};
@@ -75,7 +75,7 @@ where
 		+ HeaderBackend<Block>
 		+ HeaderMetadata<Block, Error = sp_blockchain::Error>,
 	I: BlockImport<Block, Error = ConsensusError>
-		+ ParachainBlockImportMarker
+		+ TeyrchainBlockImportMarker
 		+ Send
 		+ Sync
 		+ 'static,

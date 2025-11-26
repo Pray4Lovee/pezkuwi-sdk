@@ -20,14 +20,14 @@ use alloc::collections::btree_map::BTreeMap;
 use cumulus_primitives_core::{
 	relay_chain, AbridgedHostConfiguration, AbridgedHrmpChannel, ParaId,
 };
-use polkadot_primitives::UpgradeGoAhead;
+use pezkuwi_primitives::UpgradeGoAhead;
 use sp_runtime::traits::HashingFor;
 use sp_trie::PrefixedMemoryDB;
 
 /// Builds a sproof (portmanteau of 'spoof' and 'proof') of the relay chain state.
 #[derive(Clone)]
 pub struct RelayStateSproofBuilder {
-	/// The para id of the current parachain.
+	/// The para id of the current teyrchain.
 	///
 	/// This doesn't get into the storage proof produced by the builder, however, it is used for
 	/// generation of the storage image and by auxiliary methods.
@@ -131,9 +131,9 @@ impl RelayStateSproofBuilder {
 
 	pub fn into_state_root_and_proof(
 		self,
-	) -> (polkadot_primitives::Hash, sp_state_machine::StorageProof) {
+	) -> (pezkuwi_primitives::Hash, sp_state_machine::StorageProof) {
 		let (db, root) =
-			PrefixedMemoryDB::<HashingFor<polkadot_primitives::Block>>::default_with_root();
+			PrefixedMemoryDB::<HashingFor<pezkuwi_primitives::Block>>::default_with_root();
 		let state_version = Default::default(); // for test using default.
 		let mut backend = sp_state_machine::TrieBackendBuilder::new(db, root).build();
 

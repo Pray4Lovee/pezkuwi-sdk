@@ -209,19 +209,19 @@ pub mod pallet {
 		/// - an arbitrary value through a custom implementation of the trait
 		///
 		/// There is currently no migration provided to "hot-swap" block number providers and it may
-		/// result in undefined behavior when doing so. Parachains are therefore best off setting
+		/// result in undefined behavior when doing so. Teyrchains are therefore best off setting
 		/// this to their local block number provider if they have the pallet already deployed.
 		///
 		/// Suggested values:
 		/// - Solo- and Relay-chains: `frame_system::Pallet`
-		/// - Parachains that may produce blocks sparingly or only when needed (on-demand):
+		/// - Teyrchains that may produce blocks sparingly or only when needed (on-demand):
 		///   - already have the pallet deployed: `frame_system::Pallet`
 		///   - are freshly deploying this pallet: `RelaychainDataProvider`
-		/// - Parachains with a reliably block production rate (PLO or bulk-coretime):
+		/// - Teyrchains with a reliably block production rate (PLO or bulk-coretime):
 		///   - already have the pallet deployed: `frame_system::Pallet`
 		///   - are freshly deploying this pallet: no strong recommendation. Both local and remote
 		///     providers can be used. Relay provider can be a bit better in cases where the
-		///     parachain is lagging its block production to avoid clock skew.
+		///     teyrchain is lagging its block production to avoid clock skew.
 		type BlockNumberProvider: BlockNumberProvider;
 	}
 

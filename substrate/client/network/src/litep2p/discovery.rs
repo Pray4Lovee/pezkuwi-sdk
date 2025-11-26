@@ -826,7 +826,7 @@ mod tests {
 		let mut known_peers = HashMap::new();
 		let genesis_hash = H256::from_low_u64_be(1);
 		let fork_id = Some("test-fork-id");
-		let protocol_id = ProtocolId::from("dot");
+		let protocol_id = ProtocolId::from("hez");
 
 		// Build backends such that the first peer is known to all other peers.
 		let backends = (0..10)

@@ -18,8 +18,8 @@
 //! block velocity.
 use super::{pallet, Aura};
 use core::{marker::PhantomData, num::NonZeroU32};
-use cumulus_pallet_parachain_system::{
-	self as parachain_system,
+use cumulus_pallet_teyrchain_system::{
+	self as teyrchain_system,
 	consensus_hook::{ConsensusHook, UnincludedSegmentCapacity},
 	relay_state_snapshot::RelayChainStateProof,
 };
@@ -28,7 +28,7 @@ use sp_consensus_aura::{Slot, SlotDuration};
 
 /// A consensus hook that enforces fixed block production velocity and unincluded segment capacity.
 ///
-/// It keeps track of relay chain slot information and parachain blocks authored per relay chain
+/// It keeps track of relay chain slot information and teyrchain blocks authored per relay chain
 /// slot.
 ///
 /// # Type Parameters
@@ -64,12 +64,12 @@ where
 	/// Consensus hook that performs validations on the provided relay chain state
 	/// proof:
 	/// - Ensures blocks are not produced faster than the specified velocity `V`
-	/// - Verifies parachain slot alignment with relay chain slot
+	/// - Verifies teyrchain slot alignment with relay chain slot
 	///
 	/// # Panics
 	/// - When the relay chain slot from the state is smaller than the slot from the proof
 	/// - When the number of authored blocks exceeds velocity limit
-	/// - When parachain slot is ahead of the calculated slot from relay chain
+	/// - When teyrchain slot is ahead of the calculated slot from relay chain
 	fn on_state_proof(state_proof: &RelayChainStateProof) -> (Weight, UnincludedSegmentCapacity) {
 		// Ensure velocity is non-zero.
 		let velocity = V.max(1);
@@ -103,7 +103,7 @@ where
 
 		if *para_slot != *para_slot_from_relay {
 			panic!(
-				"Parachain slot must match relay-derived slot: parachain_slot={:?}, derived_from_relay_slot={:?} velocity={:?}, relay_chain_slot={:?}",
+				"Teyrchain slot must match relay-derived slot: teyrchain_slot={:?}, derived_from_relay_slot={:?} velocity={:?}, relay_chain_slot={:?}",
 				para_slot,
 				para_slot_from_relay,
 				velocity,
@@ -123,7 +123,7 @@ where
 }
 
 impl<
-		T: pallet::Config + parachain_system::Config,
+		T: pallet::Config + teyrchain_system::Config,
 		const RELAY_CHAIN_SLOT_DURATION_MILLIS: u32,
 		const V: u32,
 		const C: u32,
@@ -147,14 +147,14 @@ impl<
 		};
 
 		let size_after_included =
-			parachain_system::Pallet::<T>::unincluded_segment_size_after(included_hash);
+			teyrchain_system::Pallet::<T>::unincluded_segment_size_after(included_hash);
 
 		// can never author when the unincluded segment is full.
 		if size_after_included >= C {
 			return false
 		}
 
-		// Check that we have not authored more than `V + 1` parachain blocks in the current relay
+		// Check that we have not authored more than `V + 1` teyrchain blocks in the current relay
 		// chain slot.
 		if last_slot == new_slot {
 			authored_so_far < velocity + 1

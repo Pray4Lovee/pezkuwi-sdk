@@ -1,6 +1,6 @@
 [package]
 name = "cumulus-client-consensus-aura"
-description = "AURA consensus algorithm for parachains"
+description = "AURA consensus algorithm for teyrchains"
 version = "0.7.0"
 authors.workspace = true
 edition.workspace = true
@@ -48,17 +48,17 @@ sp-trie = { workspace = true, default-features = true }
 cumulus-client-collator = { workspace = true, default-features = true }
 cumulus-client-consensus-common = { workspace = true, default-features = true }
 cumulus-client-consensus-proposer = { workspace = true, default-features = true }
-cumulus-client-parachain-inherent = { workspace = true, default-features = true }
+cumulus-client-teyrchain-inherent = { workspace = true, default-features = true }
 cumulus-primitives-aura = { workspace = true, default-features = true }
 cumulus-primitives-core = { workspace = true, default-features = true }
 cumulus-relay-chain-interface = { workspace = true, default-features = true }
 
-# Polkadot
-polkadot-node-primitives = { workspace = true, default-features = true }
-polkadot-node-subsystem = { workspace = true, default-features = true }
-polkadot-node-subsystem-util = { workspace = true, default-features = true }
-polkadot-overseer = { workspace = true, default-features = true }
-polkadot-primitives = { workspace = true, default-features = true }
+# Pezkuwi
+pezkuwi-node-primitives = { workspace = true, default-features = true }
+pezkuwi-node-subsystem = { workspace = true, default-features = true }
+pezkuwi-node-subsystem-util = { workspace = true, default-features = true }
+pezkuwi-overseer = { workspace = true, default-features = true }
+pezkuwi-primitives = { workspace = true, default-features = true }
 
 [dev-dependencies]
 cumulus-test-client = { workspace = true }

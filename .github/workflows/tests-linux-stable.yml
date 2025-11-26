@@ -123,7 +123,7 @@ jobs:
           app-key: ${{ secrets.WORKFLOW_STOPPER_RUNNER_APP_KEY }}
 
   # some tests do not run with `try-runtime` feature enabled
-  # https://github.com/paritytech/polkadot-sdk/pull/4251#discussion_r1624282143
+  # https://github.com/pezkuwichain/pezkuwichain-sdk/pull/4251#discussion_r1624282143
   test-linux-stable-no-try-runtime:
     needs: [preflight]
     if: ${{ needs.preflight.outputs.changes_rust }}

@@ -8,7 +8,7 @@ doc:
     
     The reason is that transaction are identified by their provided tag in the transaction pool, tasks provided tag is simply the hash of the tasks. Therefore, depending on how tasks are written, it may be possible to have a very large number of tasks that actually do the same operation but where the hash is different, thus it can be used to spam the transaction pool. A simple solution against this is to accept tasks only from local source.
     
-    Fix: https://github.com/paritytech/polkadot-sdk/issues/9693
+    Fix: https://github.com/pezkuwichain/pezkuwichain-sdk/issues/9693
 crates:
 - name: frame-support-procedural
   bump: major

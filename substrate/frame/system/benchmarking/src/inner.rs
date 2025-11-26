@@ -220,7 +220,7 @@ mod benchmarks {
 		#[extrinsic_call]
 		apply_authorized_upgrade(RawOrigin::Root, runtime_blob);
 
-		// Can't check for `CodeUpdated` in parachain upgrades. Just check that the authorization is
+		// Can't check for `CodeUpdated` in teyrchain upgrades. Just check that the authorization is
 		// gone.
 		assert!(System::<T>::authorized_upgrade().is_none());
 		Ok(())

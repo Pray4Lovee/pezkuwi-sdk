@@ -7,7 +7,7 @@ edition.workspace = true
 authors.workspace = true
 repository.workspace = true
 
-[package.metadata.polkadot-sdk]
+[package.metadata.pezkuwi-sdk]
 exclude-from-umbrella = true # for AHM only
 
 [dependencies]

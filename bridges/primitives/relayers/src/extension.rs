@@ -19,7 +19,7 @@
 
 use bp_header_chain::SubmitFinalityProofInfo;
 use bp_messages::MessagesCallInfo;
-use bp_parachains::SubmitParachainHeadsInfo;
+use bp_teyrchains::SubmitTeyrchainHeadsInfo;
 use bp_runtime::StaticStrProvider;
 use codec::{Decode, Encode};
 use frame_support::{
@@ -37,10 +37,10 @@ use sp_std::{fmt::Debug, marker::PhantomData, vec, vec::Vec};
 /// Type of the call that the signed extension recognizes.
 #[derive(PartialEq, RuntimeDebugNoBound)]
 pub enum ExtensionCallInfo<RemoteGrandpaChainBlockNumber: Debug, LaneId: Clone + Copy + Debug> {
-	/// Relay chain finality + parachain finality + message delivery/confirmation calls.
+	/// Relay chain finality + teyrchain finality + message delivery/confirmation calls.
 	AllFinalityAndMsgs(
 		SubmitFinalityProofInfo<RemoteGrandpaChainBlockNumber>,
-		SubmitParachainHeadsInfo,
+		SubmitTeyrchainHeadsInfo,
 		MessagesCallInfo<LaneId>,
 	),
 	/// Relay chain finality + message delivery/confirmation calls.
@@ -48,10 +48,10 @@ pub enum ExtensionCallInfo<RemoteGrandpaChainBlockNumber: Debug, LaneId: Clone +
 		SubmitFinalityProofInfo<RemoteGrandpaChainBlockNumber>,
 		MessagesCallInfo<LaneId>,
 	),
-	/// Parachain finality + message delivery/confirmation calls.
+	/// Teyrchain finality + message delivery/confirmation calls.
 	///
-	/// This variant is used only when bridging with parachain.
-	ParachainFinalityAndMsgs(SubmitParachainHeadsInfo, MessagesCallInfo<LaneId>),
+	/// This variant is used only when bridging with teyrchain.
+	TeyrchainFinalityAndMsgs(SubmitTeyrchainHeadsInfo, MessagesCallInfo<LaneId>),
 	/// Standalone message delivery/confirmation call.
 	Msgs(MessagesCallInfo<LaneId>),
 }
@@ -78,11 +78,11 @@ impl<RemoteGrandpaChainBlockNumber: Clone + Copy + Debug, LaneId: Clone + Copy +
 		}
 	}
 
-	/// Returns the pre-dispatch `SubmitParachainHeadsInfo`.
-	pub fn submit_parachain_heads_info(&self) -> Option<&SubmitParachainHeadsInfo> {
+	/// Returns the pre-dispatch `SubmitTeyrchainHeadsInfo`.
+	pub fn submit_teyrchain_heads_info(&self) -> Option<&SubmitTeyrchainHeadsInfo> {
 		match self {
 			Self::AllFinalityAndMsgs(_, info, _) => Some(info),
-			Self::ParachainFinalityAndMsgs(info, _) => Some(info),
+			Self::TeyrchainFinalityAndMsgs(info, _) => Some(info),
 			_ => None,
 		}
 	}
@@ -92,7 +92,7 @@ impl<RemoteGrandpaChainBlockNumber: Clone + Copy + Debug, LaneId: Clone + Copy +
 		match self {
 			Self::AllFinalityAndMsgs(_, _, info) => info,
 			Self::RelayFinalityAndMsgs(_, info) => info,
-			Self::ParachainFinalityAndMsgs(_, info) => info,
+			Self::TeyrchainFinalityAndMsgs(_, info) => info,
 			Self::Msgs(info) => info,
 		}
 	}
@@ -132,7 +132,7 @@ pub trait ExtensionConfig {
 	type PriorityBoostPerMessage: Get<TransactionPriority>;
 	/// Block number for the remote **GRANDPA chain**. Mind that this chain is not
 	/// necessarily the chain that we are bridging with. If we are bridging with
-	/// parachain, it must be its parent relay chain. If we are bridging with the
+	/// teyrchain, it must be its parent relay chain. If we are bridging with the
 	/// GRANDPA chain, it must be it.
 	type RemoteGrandpaChainBlockNumber: Clone + Copy + Debug;
 	/// Lane identifier type.

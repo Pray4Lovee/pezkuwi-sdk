@@ -17,16 +17,16 @@
 // along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 // Test inspired (copied) from:
-// https://github.com/paritytech/polkadot-sdk/blob/85b71daf7aac59da4d2186b45d589c7c619f0981/polkadot/zombienet-sdk-tests/tests/elastic_scaling/slot_based_3cores.rs#L21
+// https://github.com/pezkuwichain/pezkuwichain-sdk/blob/85b71daf7aac59da4d2186b45d589c7c619f0981/polkadot/zombienet-sdk-tests/tests/elastic_scaling/slot_based_3cores.rs#L21
 // and patched as in:
-// https://github.com/paritytech/polkadot-sdk/pull/7220#issuecomment-2808830472
+// https://github.com/pezkuwichain/pezkuwichain-sdk/pull/7220#issuecomment-2808830472
 
 use crate::zombienet::{BlockSubscriptionType, NetworkSpawner, ScenarioBuilderSharedParams};
 use cumulus_zombienet_sdk_helpers::create_assign_core_call;
 use serde_json::json;
 use txtesttool::{execution_log::ExecutionLog, scenario::ScenarioBuilder};
 use zombienet_sdk::{
-	subxt::{OnlineClient, PolkadotConfig},
+	subxt::{OnlineClient, PezkuwiConfig},
 	subxt_signer::sr25519::dev,
 	NetworkConfigBuilder,
 };
@@ -40,10 +40,10 @@ async fn slot_based_3cores_test() -> Result<(), anyhow::Error> {
 		NetworkConfigBuilder::new()
 			.with_relaychain(|r| {
 				let r = r
-					.with_chain("rococo-local")
-					.with_default_command("polkadot")
-					.with_default_image(images.polkadot.as_str())
-					.with_default_args(vec![("-lparachain=debug").into()])
+					.with_chain("pezkuwichain-local")
+					.with_default_command("pezkuwi")
+					.with_default_image(images.pezkuwi.as_str())
+					.with_default_args(vec![("-lteyrchain=debug").into()])
 					.with_genesis_overrides(json!({
 						"configuration": {
 							"config": {
@@ -64,13 +64,13 @@ async fn slot_based_3cores_test() -> Result<(), anyhow::Error> {
 
 				(1..3).fold(r, |acc, i| acc.with_node(|node| node.with_name(names[i])))
 			})
-			.with_parachain(|p| {
+			.with_teyrchain(|p| {
 				// Para 2200 uses the new RFC103-enabled collator which sends the UMP signal
 				// commitment for selecting the core index
 				p.with_id(2200)
-					.with_default_command("polkadot-parachain")
+					.with_default_command("pezkuwi-teyrchain")
 					.with_default_image(images.cumulus.as_str())
-					.with_chain("yap-rococo-local-2200")
+					.with_chain("yap-pezkuwichain-local-2200")
 					.with_genesis_overrides(json!({
 						"balances": {
 							"devAccounts": [
@@ -86,7 +86,7 @@ async fn slot_based_3cores_test() -> Result<(), anyhow::Error> {
 						"--pool-limit=2500000".into(),
 						"--pool-kbytes=4048000".into(),
 						"--pool-type=fork-aware".into(),
-						("-lparachain=debug,aura=debug,txpool=debug,txpoolstat=debug").into(),
+						("-lteyrchain=debug,aura=debug,txpool=debug,txpoolstat=debug").into(),
 					])
 					.with_collator(|n| n.with_name("dave").with_rpc_port(9944))
 			})
@@ -96,11 +96,11 @@ async fn slot_based_3cores_test() -> Result<(), anyhow::Error> {
 
 	let relay_node = spawner.network().get_node("alice")?;
 
-	let relay_client: OnlineClient<PolkadotConfig> = relay_node.wait_client().await?;
+	let relay_client: OnlineClient<PezkuwiConfig> = relay_node.wait_client().await?;
 	let alice = dev::alice();
 
 	let assign_cores_call = create_assign_core_call(&[(0, 2200), (1, 2200)]);
-	// Assign two extra cores to each parachain.
+	// Assign two extra cores to each teyrchain.
 	relay_client
 		.tx()
 		.sign_and_submit_then_watch_default(&assign_cores_call, &alice)
@@ -108,9 +108,9 @@ async fn slot_based_3cores_test() -> Result<(), anyhow::Error> {
 		.wait_for_finalized_success()
 		.await?;
 
-	tracing::info!("2 more cores assigned to the parachain");
+	tracing::info!("2 more cores assigned to the teyrchain");
 
-	// Wait for the parachain collator to start block production.
+	// Wait for the teyrchain collator to start block production.
 	spawner.wait_for_block("dave", BlockSubscriptionType::Best).await.unwrap();
 
 	// Create txs executor.

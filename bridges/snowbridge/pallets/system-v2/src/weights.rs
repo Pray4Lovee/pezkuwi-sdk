@@ -5,22 +5,22 @@
 //! DATE: 2023-10-09, STEPS: `2`, REPEAT: `1`, LOW RANGE: `[]`, HIGH RANGE: `[]`
 //! WORST CASE MAP SIZE: `1000000`
 //! HOSTNAME: `crake.local`, CPU: `<UNKNOWN>`
-//! WASM-EXECUTION: `Compiled`, CHAIN: `Some("bridge-hub-rococo-dev")`, DB CACHE: `1024`
+//! WASM-EXECUTION: `Compiled`, CHAIN: `Some("bridge-hub-pezkuwichain-dev")`, DB CACHE: `1024`
 
 // Executed Command:
-// target/release/polkadot-parachain
+// target/release/pezkuwi-teyrchain
 // benchmark
 // pallet
 // --chain
-// bridge-hub-rococo-dev
+// bridge-hub-pezkuwichain-dev
 // --pallet=snowbridge_system
 // --extrinsic=*
 // --execution=wasm
 // --wasm-execution=compiled
 // --template
-// ../parachain/templates/module-weight-template.hbs
+// ../teyrchain/templates/module-weight-template.hbs
 // --output
-// ../parachain/pallets/control/src/weights.rs
+// ../teyrchain/pallets/control/src/weights.rs
 
 #![cfg_attr(rustfmt, rustfmt_skip)]
 #![allow(unused_parens)]
@@ -49,8 +49,8 @@ impl WeightInfo for () {
 			.saturating_add(RocksDbWeight::get().reads(5_u64))
 			.saturating_add(RocksDbWeight::get().writes(3_u64))
 	}
-	/// Storage: ParachainInfo ParachainId (r:1 w:0)
-	/// Proof: ParachainInfo ParachainId (max_values: Some(1), max_size: Some(4), added: 499, mode: MaxEncodedLen)
+	/// Storage: TeyrchainInfo TeyrchainId (r:1 w:0)
+	/// Proof: TeyrchainInfo TeyrchainId (max_values: Some(1), max_size: Some(4), added: 499, mode: MaxEncodedLen)
 	/// Storage: EthereumOutboundQueue PalletOperatingMode (r:1 w:0)
 	/// Proof: EthereumOutboundQueue PalletOperatingMode (max_values: Some(1), max_size: Some(1), added: 496, mode: MaxEncodedLen)
 	/// Storage: MessageQueue BookStateFor (r:1 w:1)
@@ -68,8 +68,8 @@ impl WeightInfo for () {
 			.saturating_add(RocksDbWeight::get().reads(4_u64))
 			.saturating_add(RocksDbWeight::get().writes(3_u64))
 	}
-	/// Storage: ParachainInfo ParachainId (r:1 w:0)
-	/// Proof: ParachainInfo ParachainId (max_values: Some(1), max_size: Some(4), added: 499, mode: MaxEncodedLen)
+	/// Storage: TeyrchainInfo TeyrchainId (r:1 w:0)
+	/// Proof: TeyrchainInfo TeyrchainId (max_values: Some(1), max_size: Some(4), added: 499, mode: MaxEncodedLen)
 	/// Storage: EthereumOutboundQueue PalletOperatingMode (r:1 w:0)
 	/// Proof: EthereumOutboundQueue PalletOperatingMode (max_values: Some(1), max_size: Some(1), added: 496, mode: MaxEncodedLen)
 	/// Storage: MessageQueue BookStateFor (r:1 w:1)

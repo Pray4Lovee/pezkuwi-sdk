@@ -106,7 +106,7 @@
 //!
 //! ## Log Target Prefixing
 //!
-//! Many [`crate::polkadot_sdk::frame_runtime`] pallets emit logs with log target `runtime::<name of
+//! Many [`crate::pezkuwi_sdk::frame_runtime`] pallets emit logs with log target `runtime::<name of
 //! pallet>`, for example `runtime::system`. This then allows one to run a node with a wasm blob
 //! compiled with `LOG_TARGET=runtime=debug`, which enables the log target of all pallets who's log
 //! target starts with `runtime`.
@@ -131,8 +131,8 @@
 //! [`frame_system::BlockWeight`] will be different, causing a state root mismatch, which is
 //! typically a fatal error emitted from [`frame_executive`].
 //!
-//! This also can also happen in a parachain context, and cause discrepancies between the relay
-//! chain and the parachain, when execution the Parachain Validation Function (PVF) on the relay
+//! This also can also happen in a teyrchain context, and cause discrepancies between the relay
+//! chain and the teyrchain, when execution the Teyrchain Validation Function (PVF) on the relay
 //! chain.
 //!
 //! **In summary, you should only used storage values in logging (especially for levels lower than
@@ -151,5 +151,5 @@
 //! }
 //! ```
 //!
-//! Please read [this issue](https://github.com/paritytech/polkadot-sdk/issues/8735) for one
+//! Please read [this issue](https://github.com/pezkuwichain/pezkuwichain-sdk/issues/8735) for one
 //! instance of the consensus issues caused by this mistake.

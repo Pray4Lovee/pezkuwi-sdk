@@ -33,5 +33,5 @@ doc:
     at /build/glibc-FcRMwW/glibc-2.31/misc/../sysdeps/unix/sysv/linux/x86_64/clone.S:95
     ```
 
-    Part of: https://github.com/paritytech/polkadot-sdk/issues/9169
+    Part of: https://github.com/pezkuwichain/pezkuwichain-sdk/issues/9169
 crates: []

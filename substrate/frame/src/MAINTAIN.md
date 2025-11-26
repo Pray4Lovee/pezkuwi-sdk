@@ -1,6 +1,6 @@
-# Maintaining `polkadot-sdk-frame`
+# Maintaining `pezkuwi-sdk-frame`
 
-This document provides guidelines for maintaining the `polkadot-sdk-frame` umbrella crate.
+This document provides guidelines for maintaining the `pezkuwi-sdk-frame` umbrella crate.
 
 ## Code Organization
 

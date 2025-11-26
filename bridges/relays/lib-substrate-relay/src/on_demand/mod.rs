@@ -21,7 +21,7 @@ use async_trait::async_trait;
 use relay_substrate_client::{BlockNumberOf, CallOf, Chain, Error as SubstrateError, HeaderIdOf};
 
 pub mod headers;
-pub mod parachains;
+pub mod teyrchains;
 
 /// On-demand headers relay that is relaying finalizing headers only when requested.
 #[async_trait]

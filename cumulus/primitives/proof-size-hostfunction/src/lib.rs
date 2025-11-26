@@ -14,7 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//! Tools for reclaiming PoV weight in parachain runtimes.
+//! Tools for reclaiming PoV weight in teyrchain runtimes.
 
 #![cfg_attr(not(feature = "std"), no_std)]
 

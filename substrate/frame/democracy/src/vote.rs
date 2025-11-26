@@ -88,7 +88,7 @@ pub enum AccountVote<Balance> {
 	/// A standard vote, one-way (approve or reject) with a given amount of conviction.
 	Standard { vote: Vote, balance: Balance },
 	/// A split vote with balances given for both ways, and with no conviction, useful for
-	/// parachains when voting.
+	/// teyrchains when voting.
 	Split { aye: Balance, nay: Balance },
 }
 

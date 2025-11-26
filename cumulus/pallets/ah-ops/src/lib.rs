@@ -141,7 +141,7 @@ pub mod pallet {
 
 	/// The reserve that was taken to create a crowdloan.
 	///
-	/// This is normally 500 DOT and can be refunded as last step after all
+	/// This is normally 500 HEZ and can be refunded as last step after all
 	/// `RcCrowdloanContribution`s of this loan have been withdrawn.
 	///
 	/// Keys:
@@ -178,7 +178,7 @@ pub mod pallet {
 		WrongSovereignTranslation,
 		/// The account is not a derived account.
 		WrongDerivedTranslation,
-		/// Account cannot be migrated since it is not a sovereign parachain account.
+		/// Account cannot be migrated since it is not a sovereign teyrchain account.
 		NotSovereign,
 		/// Internal error, please bug report.
 		InternalError,
@@ -219,10 +219,10 @@ pub mod pallet {
 			remaining: BalanceOf<T>,
 		},
 
-		/// A sovereign parachain account has been migrated from its child to sibling
+		/// A sovereign teyrchain account has been migrated from its child to sibling
 		/// representation.
 		SovereignMigrated {
-			/// The parachain ID that had its account migrated.
+			/// The teyrchain ID that had its account migrated.
 			para_id: ParaId,
 			/// The old account that was migrated out of.
 			from: T::AccountId,
@@ -309,7 +309,7 @@ pub mod pallet {
 			Self::do_unreserve_crowdloan_reserve(block, depositor, para_id).map_err(Into::into)
 		}
 
-		/// Try to migrate a parachain sovereign child account to its respective sibling.
+		/// Try to migrate a teyrchain sovereign child account to its respective sibling.
 		///
 		/// Takes the old and new account and migrates it only if they are as expected. An event of
 		/// `SovereignMigrated` will be emitted if the account was migrated successfully.
@@ -318,17 +318,17 @@ pub mod pallet {
 		#[pallet::call_index(3)]
 		#[pallet::weight(T::DbWeight::get().reads_writes(15, 15)
 					.saturating_add(Weight::from_parts(0, 50_000)))]
-		pub fn migrate_parachain_sovereign_acc(
+		pub fn migrate_teyrchain_sovereign_acc(
 			origin: OriginFor<T>,
 			from: T::AccountId,
 			to: T::AccountId,
 		) -> DispatchResult {
 			ensure_root(origin)?;
 
-			Self::do_migrate_parachain_sovereign_derived_acc(&from, &to, None).map_err(Into::into)
+			Self::do_migrate_teyrchain_sovereign_derived_acc(&from, &to, None).map_err(Into::into)
 		}
 
-		/// Try to migrate a parachain sovereign child account to its respective sibling.
+		/// Try to migrate a teyrchain sovereign child account to its respective sibling.
 		///
 		/// Takes the old and new account and migrates it only if they are as expected. An event of
 		/// `SovereignMigrated` will be emitted if the account was migrated successfully.
@@ -337,7 +337,7 @@ pub mod pallet {
 		#[pallet::call_index(5)]
 		#[pallet::weight(T::DbWeight::get().reads_writes(15, 15)
 					.saturating_add(Weight::from_parts(0, 50_000)))]
-		pub fn migrate_parachain_sovereign_derived_acc(
+		pub fn migrate_teyrchain_sovereign_derived_acc(
 			origin: OriginFor<T>,
 			from: T::AccountId,
 			to: T::AccountId,
@@ -345,7 +345,7 @@ pub mod pallet {
 		) -> DispatchResult {
 			ensure_root(origin)?;
 
-			Self::do_migrate_parachain_sovereign_derived_acc(&from, &to, Some(derivation))
+			Self::do_migrate_teyrchain_sovereign_derived_acc(&from, &to, Some(derivation))
 				.map_err(Into::into)
 		}
 
@@ -415,7 +415,7 @@ pub mod pallet {
 			.defensive()
 			.map_err(|_| Error::<T>::FailedToWithdrawCrowdloanContribution)?;
 			defensive_assert!(transferred == contribution);
-			// Need to reactivate since we deactivated it here https://github.com/paritytech/polkadot-sdk/blob/04847d515ef56da4d0801c9b89a4241dfa827b33/polkadot/runtime/common/src/crowdloan/mod.rs#L793
+			// Need to reactivate since we deactivated it here https://github.com/pezkuwichain/pezkuwichain-sdk/blob/04847d515ef56da4d0801c9b89a4241dfa827b33/polkadot/runtime/common/src/crowdloan/mod.rs#L793
 			<T as Config>::Currency::reactivate(transferred);
 
 			Ok(())
@@ -453,7 +453,7 @@ pub mod pallet {
 			contrib_iter.next().is_none()
 		}
 
-		pub fn do_migrate_parachain_sovereign_derived_acc(
+		pub fn do_migrate_teyrchain_sovereign_derived_acc(
 			from: &T::AccountId,
 			to: &T::AccountId,
 			derivation: Option<(T::AccountId, DerivationIndex)>,
@@ -614,23 +614,23 @@ pub mod pallet {
 			Ok(())
 		}
 
-		/// Try to translate a Parachain sovereign account to the Parachain AH sovereign account.
+		/// Try to translate a Teyrchain sovereign account to the Teyrchain AH sovereign account.
 		///
 		/// Returns:
-		/// - `Ok(None)` if the account is not a Parachain sovereign account
+		/// - `Ok(None)` if the account is not a Teyrchain sovereign account
 		/// - `Ok(Some((ah_account, para_id)))` with the translated account and the para id
 		/// - `Err(())` otherwise
 		///
 		/// The way that this normally works is through the configured
-		/// `SiblingParachainConvertsVia`: <https://github.com/polkadot-fellows/runtimes/blob/7b096c14c2b16cc81ca4e2188eea9103f120b7a4/system-parachains/asset-hubs/asset-hub-polkadot/src/xcm_config.rs#L93-L94>
+		/// `SiblingTeyrchainConvertsVia`: <https://github.com/polkadot-fellows/runtimes/blob/7b096c14c2b16cc81ca4e2188eea9103f120b7a4/system-parachains/asset-hubs/asset-hub-polkadot/src/xcm_config.rs#L93-L94>
 		/// it passes the `Sibling` type into it which has type-ID `sibl`:
-		/// <https://github.com/paritytech/polkadot-sdk/blob/c10e25aaa8b8afd8665b53f0a0b02e4ea44caa77/polkadot/parachain/src/primitives.rs#L272-L274>
+		/// <https://github.com/pezkuwichain/pezkuwichain-sdk/blob/c10e25aaa8b8afd8665b53f0a0b02e4ea44caa77/polkadot/parachain/src/primitives.rs#L272-L274>
 		/// This type-ID gets used by the converter here:
-		/// <https://github.com/paritytech/polkadot-sdk/blob/7ecf3f757a5d6f622309cea7f788e8a547a5dce8/polkadot/xcm/xcm-builder/src/location_conversion.rs#L314>
+		/// <https://github.com/pezkuwichain/pezkuwichain-sdk/blob/7ecf3f757a5d6f622309cea7f788e8a547a5dce8/polkadot/xcm/xcm-builder/src/location_conversion.rs#L314>
 		/// and eventually ends up in the encoding here
-		/// <https://github.com/paritytech/polkadot-sdk/blob/cdf107de700388a52a17b2fb852c98420c78278e/substrate/primitives/runtime/src/traits/mod.rs#L1997-L1999>
-		/// The `para` conversion is likewise with `ChildParachainConvertsVia` and the `para`
-		/// type-ID <https://github.com/paritytech/polkadot-sdk/blob/c10e25aaa8b8afd8665b53f0a0b02e4ea44caa77/polkadot/parachain/src/primitives.rs#L162-L164>
+		/// <https://github.com/pezkuwichain/pezkuwichain-sdk/blob/cdf107de700388a52a17b2fb852c98420c78278e/substrate/primitives/runtime/src/traits/mod.rs#L1997-L1999>
+		/// The `para` conversion is likewise with `ChildTeyrchainConvertsVia` and the `para`
+		/// type-ID <https://github.com/pezkuwichain/pezkuwichain-sdk/blob/c10e25aaa8b8afd8665b53f0a0b02e4ea44caa77/polkadot/parachain/src/primitives.rs#L162-L164>
 		pub fn try_translate_rc_sovereign_to_ah(
 			from: &AccountId32,
 		) -> Result<(AccountId32, ParaId), Error<T>> {
@@ -674,7 +674,7 @@ pub mod pallet {
 	}
 }
 
-/// Backward mapping from <https://github.com/paritytech/polkadot-sdk/blob/74a5e1a242274ddaadac1feb3990fc95c8612079/substrate/frame/balances/src/types.rs#L38>
+/// Backward mapping from <https://github.com/pezkuwichain/pezkuwichain-sdk/blob/74a5e1a242274ddaadac1feb3990fc95c8612079/substrate/frame/balances/src/types.rs#L38>
 pub fn map_lock_reason(reasons: LockReasons) -> LockWithdrawReasons {
 	match reasons {
 		LockReasons::All => LockWithdrawReasons::TRANSACTION_PAYMENT | LockWithdrawReasons::RESERVE,

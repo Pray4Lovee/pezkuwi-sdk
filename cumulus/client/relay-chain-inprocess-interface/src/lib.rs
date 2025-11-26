@@ -26,7 +26,7 @@ use async_trait::async_trait;
 use cumulus_client_bootnodes::bootnode_request_response_config;
 use cumulus_primitives_core::{
 	relay_chain::{
-		runtime_api::ParachainHost, Block as PBlock, BlockId, BlockNumber,
+		runtime_api::TeyrchainHost, Block as PBlock, BlockId, BlockNumber,
 		CommittedCandidateReceiptV2 as CommittedCandidateReceipt, CoreIndex, CoreState,
 		Hash as PHash, Header as PHeader, InboundHrmpMessage, OccupiedCoreAssumption, SessionIndex,
 		ValidationCodeHash, ValidatorId,
@@ -35,9 +35,9 @@ use cumulus_primitives_core::{
 };
 use cumulus_relay_chain_interface::{RelayChainError, RelayChainInterface, RelayChainResult};
 use futures::{FutureExt, Stream, StreamExt};
-use polkadot_primitives::CandidateEvent;
-use polkadot_service::{
-	builder::PolkadotServiceBuilder, CollatorOverseerGen, CollatorPair, Configuration, FullBackend,
+use pezkuwi_primitives::CandidateEvent;
+use pezkuwi_service::{
+	builder::PezkuwiServiceBuilder, CollatorOverseerGen, CollatorPair, Configuration, FullBackend,
 	FullClient, Handle, NewFull, NewFullParams, TaskManager,
 };
 use sc_cli::{RuntimeVersion, SubstrateCli};
@@ -359,45 +359,45 @@ pub fn check_block_in_chain(
 	Ok(BlockCheckStatus::Unknown(listener))
 }
 
-/// Build Polkadot full node with parachain bootnode request-response protocol.
-fn build_polkadot_with_paranode_protocol<Network>(
+/// Build Pezkuwi full node with teyrchain bootnode request-response protocol.
+fn build_pezkuwi_with_paranode_protocol<Network>(
 	config: Configuration,
 	params: NewFullParams<CollatorOverseerGen>,
-) -> Result<(NewFull, async_channel::Receiver<IncomingRequest>), polkadot_service::Error>
+) -> Result<(NewFull, async_channel::Receiver<IncomingRequest>), pezkuwi_service::Error>
 where
 	Network: NetworkBackend<PBlock, PHash>,
 {
 	let fork_id = config.chain_spec.fork_id().map(ToString::to_string);
-	let mut polkadot_builder = PolkadotServiceBuilder::<_, Network>::new(config, params)?;
+	let mut pezkuwi_builder = PezkuwiServiceBuilder::<_, Network>::new(config, params)?;
 	let (config, request_receiver) = bootnode_request_response_config::<_, _, Network>(
-		polkadot_builder.genesis_hash(),
+		pezkuwi_builder.genesis_hash(),
 		fork_id.as_deref(),
 	);
-	polkadot_builder.add_extra_request_response_protocol(config);
+	pezkuwi_builder.add_extra_request_response_protocol(config);
 
-	Ok((polkadot_builder.build()?, request_receiver))
+	Ok((pezkuwi_builder.build()?, request_receiver))
 }
 
-/// Build the Polkadot full node using the given `config`.
+/// Build the Pezkuwi full node using the given `config`.
 #[sc_tracing::logging::prefix_logs_with("Relaychain")]
-fn build_polkadot_full_node(
+fn build_pezkuwi_full_node(
 	config: Configuration,
-	parachain_config: &Configuration,
+	teyrchain_config: &Configuration,
 	telemetry_worker_handle: Option<TelemetryWorkerHandle>,
 	hwbench: Option<sc_sysinfo::HwBench>,
 ) -> Result<
 	(NewFull, Option<CollatorPair>, async_channel::Receiver<IncomingRequest>),
-	polkadot_service::Error,
+	pezkuwi_service::Error,
 > {
-	let (is_parachain_node, maybe_collator_key) = if parachain_config.role.is_authority() {
+	let (is_teyrchain_node, maybe_collator_key) = if teyrchain_config.role.is_authority() {
 		let collator_key = CollatorPair::generate().0;
-		(polkadot_service::IsParachainNode::Collator(collator_key.clone()), Some(collator_key))
+		(pezkuwi_service::IsTeyrchainNode::Collator(collator_key.clone()), Some(collator_key))
 	} else {
-		(polkadot_service::IsParachainNode::FullNode, None)
+		(pezkuwi_service::IsTeyrchainNode::FullNode, None)
 	};
 
-	let new_full_params = polkadot_service::NewFullParams {
-		is_parachain_node,
+	let new_full_params = pezkuwi_service::NewFullParams {
+		is_teyrchain_node,
 		// Disable BEEFY. It should not be required by the internal relay chain node.
 		enable_beefy: false,
 		force_authoring_backoff: false,
@@ -422,10 +422,10 @@ fn build_polkadot_full_node(
 	};
 
 	let (relay_chain_full_node, paranode_req_receiver) = match config.network.network_backend {
-		NetworkBackendType::Libp2p => build_polkadot_with_paranode_protocol::<
+		NetworkBackendType::Libp2p => build_pezkuwi_with_paranode_protocol::<
 			sc_network::NetworkWorker<_, _>,
 		>(config, new_full_params)?,
-		NetworkBackendType::Litep2p => build_polkadot_with_paranode_protocol::<
+		NetworkBackendType::Litep2p => build_pezkuwi_with_paranode_protocol::<
 			sc_network::Litep2pNetworkBackend,
 		>(config, new_full_params)?,
 	};
@@ -435,8 +435,8 @@ fn build_polkadot_full_node(
 
 /// Builds a relay chain interface by constructing a full relay chain node
 pub fn build_inprocess_relay_chain(
-	mut polkadot_config: Configuration,
-	parachain_config: &Configuration,
+	mut pezkuwi_config: Configuration,
+	teyrchain_config: &Configuration,
 	telemetry_worker_handle: Option<TelemetryWorkerHandle>,
 	task_manager: &mut TaskManager,
 	hwbench: Option<sc_sysinfo::HwBench>,
@@ -448,12 +448,12 @@ pub fn build_inprocess_relay_chain(
 )> {
 	// This is essentially a hack, but we want to ensure that we send the correct node version
 	// to the telemetry.
-	polkadot_config.impl_version = polkadot_cli::Cli::impl_version();
-	polkadot_config.impl_name = polkadot_cli::Cli::impl_name();
+	pezkuwi_config.impl_version = pezkuwi_cli::Cli::impl_version();
+	pezkuwi_config.impl_name = pezkuwi_cli::Cli::impl_name();
 
-	let (full_node, collator_key, paranode_req_receiver) = build_polkadot_full_node(
-		polkadot_config,
-		parachain_config,
+	let (full_node, collator_key, paranode_req_receiver) = build_pezkuwi_full_node(
+		pezkuwi_config,
+		teyrchain_config,
 		telemetry_worker_handle,
 		hwbench,
 	)
@@ -477,10 +477,10 @@ pub fn build_inprocess_relay_chain(
 mod tests {
 	use super::*;
 
-	use polkadot_primitives::Block as PBlock;
-	use polkadot_test_client::{
+	use pezkuwi_primitives::Block as PBlock;
+	use pezkuwi_test_client::{
 		construct_transfer_extrinsic, BlockBuilderExt, Client, ClientBlockImportExt,
-		DefaultTestClientBuilderExt, InitPolkadotBlockBuilder, TestClientBuilder,
+		DefaultTestClientBuilderExt, InitPezkuwiBlockBuilder, TestClientBuilder,
 		TestClientBuilderExt,
 	};
 	use sp_consensus::{BlockOrigin, SyncOracle};
@@ -506,7 +506,7 @@ mod tests {
 		let backend = builder.backend();
 		let client = Arc::new(builder.build());
 
-		let block_builder = client.init_polkadot_block_builder();
+		let block_builder = client.init_pezkuwi_block_builder();
 		let block = block_builder.build().expect("Finalizes the block").block;
 		let dummy_network: Arc<dyn SyncOracle + Sync + Send> = Arc::new(DummyNetwork {});
 
@@ -575,9 +575,9 @@ mod tests {
 			sp_keyring::Sr25519Keyring::Bob,
 			1000,
 		);
-		let mut block_builder = client.init_polkadot_block_builder();
+		let mut block_builder = client.init_pezkuwi_block_builder();
 		// Push an extrinsic to get a different block hash.
-		block_builder.push_polkadot_extrinsic(ext).expect("Push extrinsic");
+		block_builder.push_pezkuwi_extrinsic(ext).expect("Push extrinsic");
 		let block2 = block_builder.build().expect("Build second block").block;
 		let hash2 = block2.hash();
 

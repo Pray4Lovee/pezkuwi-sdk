@@ -31,7 +31,7 @@ use crate::{
 	LOG_TARGET,
 };
 use cumulus_client_collator::service::ServiceInterface as CollatorServiceInterface;
-use cumulus_client_consensus_common::{self as consensus_common, ParachainBlockImportMarker};
+use cumulus_client_consensus_common::{self as consensus_common, TeyrchainBlockImportMarker};
 use cumulus_client_consensus_proposer::ProposerInterface;
 use cumulus_primitives_aura::{AuraUnincludedSegmentApi, Slot};
 use cumulus_primitives_core::{
@@ -40,7 +40,7 @@ use cumulus_primitives_core::{
 };
 use cumulus_relay_chain_interface::RelayChainInterface;
 use futures::prelude::*;
-use polkadot_primitives::{
+use pezkuwi_primitives::{
 	Block as RelayBlock, CoreIndex, Hash as RelayHash, Header as RelayHeader, Id as ParaId,
 };
 use sc_client_api::{backend::AuxStore, BlockBackend, BlockOf, UsageProvider};
@@ -108,7 +108,7 @@ pub struct BuilderTaskParams<
 	/// wait for relay chain notifications because we woke up too early).
 	pub slot_offset: Duration,
 	/// The maximum percentage of the maximum PoV size that the collator can use.
-	/// It will be removed once https://github.com/paritytech/polkadot-sdk/issues/6020 is fixed.
+	/// It will be removed once https://github.com/pezkuwichain/pezkuwichain-sdk/issues/6020 is fixed.
 	pub max_pov_percentage: Option<u32>,
 }
 
@@ -133,7 +133,7 @@ where
 	RelayClient: RelayChainInterface + Clone + 'static,
 	CIDP: CreateInherentDataProviders<Block, ()> + 'static,
 	CIDP::InherentDataProviders: Send,
-	BI: BlockImport<Block> + ParachainBlockImportMarker + Send + Sync + 'static,
+	BI: BlockImport<Block> + TeyrchainBlockImportMarker + Send + Sync + 'static,
 	Proposer: ProposerInterface<Block> + Send + Sync + 'static,
 	CS: CollatorServiceInterface<Block> + Send + Sync + 'static,
 	CHP: consensus_common::ValidationCodeHashProvider<Block::Hash> + Send + 'static,
@@ -360,7 +360,7 @@ where
 				max_pov_size: *max_pov_size,
 			};
 
-			let (parachain_inherent_data, other_inherent_data) = match collator
+			let (teyrchain_inherent_data, other_inherent_data) = match collator
 				.create_inherent_data_with_rp_offset(
 					relay_parent,
 					&validation_data,
@@ -399,7 +399,7 @@ where
 			} else {
 				// Set the block limit to 85% of the maximum PoV size.
 				//
-				// Once https://github.com/paritytech/polkadot-sdk/issues/6020 issue is
+				// Once https://github.com/pezkuwichain/pezkuwichain-sdk/issues/6020 issue is
 				// fixed, this should be removed.
 				validation_data.max_pov_size * 85 / 100
 			} as usize;
@@ -429,7 +429,7 @@ where
 					&parent_header,
 					&slot_claim,
 					Some(vec![CumulusDigestItem::CoreInfo(core.core_info()).to_digest_item()]),
-					(parachain_inherent_data, other_inherent_data),
+					(teyrchain_inherent_data, other_inherent_data),
 					adjusted_authoring_duration,
 					allowed_pov_size,
 				)
@@ -449,7 +449,7 @@ where
 			if let Err(err) = collator_sender.unbounded_send(CollatorMessage {
 				relay_parent,
 				parent_header: parent_header.clone(),
-				parachain_candidate: candidate,
+				teyrchain_candidate: candidate,
 				validation_code_hash,
 				core_index: core.core_index(),
 				max_pov_size: validation_data.max_pov_size,
@@ -461,7 +461,7 @@ where
 	}
 }
 
-/// Translate the slot of the relay parent to the slot of the parachain.
+/// Translate the slot of the relay parent to the slot of the teyrchain.
 fn adjust_para_to_relay_parent_slot(
 	relay_header: &RelayHeader,
 	relay_chain_slot_duration: Duration,
@@ -480,7 +480,7 @@ fn adjust_para_to_relay_parent_slot(
 		target: LOG_TARGET,
 		timestamp = ?para_slot.timestamp,
 		slot = ?para_slot.slot,
-		"Parachain slot adjusted to relay chain.",
+		"Teyrchain slot adjusted to relay chain.",
 	);
 	Some(para_slot)
 }

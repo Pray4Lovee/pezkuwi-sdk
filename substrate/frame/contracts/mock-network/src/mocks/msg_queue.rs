@@ -14,15 +14,15 @@
 // You should have received a copy of the GNU General Public License
 // along with Substrate.  If not, see <http://www.gnu.org/licenses/>.
 
-//! Parachain runtime mock.
+//! Teyrchain runtime mock.
 
 use codec::{Decode, Encode};
 
 use frame_support::weights::Weight;
-use polkadot_parachain_primitives::primitives::{
+use pezkuwi_teyrchain_primitives::primitives::{
 	DmpMessageHandler, Id as ParaId, XcmpMessageFormat, XcmpMessageHandler,
 };
-use polkadot_primitives::BlockNumber as RelayBlockNumber;
+use pezkuwi_primitives::BlockNumber as RelayBlockNumber;
 use sp_runtime::traits::{Get, Hash};
 
 use xcm::{latest::prelude::*, VersionedXcm};
@@ -47,7 +47,7 @@ pub mod pallet {
 	pub struct Pallet<T>(_);
 
 	#[pallet::storage]
-	pub(super) type ParachainId<T: Config> = StorageValue<_, ParaId, ValueQuery>;
+	pub(super) type TeyrchainId<T: Config> = StorageValue<_, ParaId, ValueQuery>;
 
 	#[pallet::storage]
 	/// A queue of received DMP messages
@@ -55,7 +55,7 @@ pub mod pallet {
 
 	impl<T: Config> Get<ParaId> for Pallet<T> {
 		fn get() -> ParaId {
-			ParachainId::<T>::get()
+			TeyrchainId::<T>::get()
 		}
 	}
 
@@ -84,11 +84,11 @@ pub mod pallet {
 
 	impl<T: Config> Pallet<T> {
 		pub fn set_para_id(para_id: ParaId) {
-			ParachainId::<T>::put(para_id);
+			TeyrchainId::<T>::put(para_id);
 		}
 
-		pub fn parachain_id() -> ParaId {
-			ParachainId::<T>::get()
+		pub fn teyrchain_id() -> ParaId {
+			TeyrchainId::<T>::get()
 		}
 
 		pub fn received_dmp() -> Vec<Xcm<T::RuntimeCall>> {
@@ -105,7 +105,7 @@ pub mod pallet {
 			let mut message_hash = Encode::using_encoded(&xcm, sp_io::hashing::blake2_256);
 			let (result, event) = match Xcm::<T::RuntimeCall>::try_from(xcm) {
 				Ok(xcm) => {
-					let location = (Parent, Parachain(sender.into()));
+					let location = (Parent, Teyrchain(sender.into()));
 					match T::XcmExecutor::prepare_and_execute(
 						location,
 						xcm,

@@ -20,7 +20,7 @@ use sp_runtime::{
 	traits::{AccountIdConversion, BlakeTwo256, IdentityLookup},
 	AccountId32, BuildStorage, FixedU128,
 };
-use xcm::{opaque::latest::WESTEND_GENESIS_HASH, prelude::*};
+use xcm::{opaque::latest::ZAGROS_GENESIS_HASH, prelude::*};
 
 #[cfg(feature = "runtime-benchmarks")]
 use crate::BenchmarkHelper;
@@ -72,10 +72,10 @@ impl pallet_xcm_origin::Config for Test {
 
 parameter_types! {
 	pub const AnyNetwork: Option<NetworkId> = None;
-	pub const RelayNetwork: Option<NetworkId> = Some(NetworkId::ByGenesis(WESTEND_GENESIS_HASH));
+	pub const RelayNetwork: Option<NetworkId> = Some(NetworkId::ByGenesis(ZAGROS_GENESIS_HASH));
 	pub const RelayLocation: Location = Location::parent();
 	pub UniversalLocation: InteriorLocation =
-		[GlobalConsensus(RelayNetwork::get().unwrap()), Parachain(1013)].into();
+		[GlobalConsensus(RelayNetwork::get().unwrap()), Teyrchain(1013)].into();
 	pub EthereumNetwork: NetworkId = Ethereum { chain_id: 11155111 };
 	pub EthereumDestination: Location = Location::new(2,[GlobalConsensus(EthereumNetwork::get())]);
 }
@@ -86,7 +86,7 @@ parameter_types! {
 	pub AssetHubParaId: ParaId = ParaId::new(1000);
 	pub TestParaId: u32 = 2000;
 	pub RootLocation: Location = Location::parent();
-	pub FrontendLocation: Location = Location::new(1, [Parachain(1000), PalletInstance(36)]);
+	pub FrontendLocation: Location = Location::new(1, [Teyrchain(1000), PalletInstance(36)]);
 }
 
 #[cfg(feature = "runtime-benchmarks")]

@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Cumulus.  If not, see <http://www.gnu.org/licenses/>.
 
-//! Parachain bootnodes advertisement and discovery service.
+//! Teyrchain bootnodes advertisement and discovery service.
 
 #![warn(missing_docs)]
 

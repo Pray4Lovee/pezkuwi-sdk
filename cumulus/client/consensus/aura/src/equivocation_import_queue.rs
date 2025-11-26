@@ -21,10 +21,10 @@
 /// may see equivocations in a different order, and therefore may not agree on which blocks
 /// should be thrown out and which ones should be kept.
 use codec::Codec;
-use cumulus_client_consensus_common::ParachainBlockImportMarker;
+use cumulus_client_consensus_common::TeyrchainBlockImportMarker;
 use cumulus_primitives_core::{CumulusDigestItem, RelayBlockIdentifier};
 use parking_lot::Mutex;
-use polkadot_primitives::Hash as RHash;
+use pezkuwi_primitives::Hash as RHash;
 use sc_consensus::{
 	import_queue::{BasicQueue, Verifier as VerifierT},
 	BlockImport, BlockImportParams, ForkChoiceStrategy,
@@ -73,7 +73,7 @@ impl<N: std::hash::Hash + PartialEq> NaiveEquivocationDefender<N> {
 	}
 }
 
-/// A parachain block import verifier that checks for equivocation limits within each slot.
+/// A teyrchain block import verifier that checks for equivocation limits within each slot.
 pub struct Verifier<P: Pair, Client, Block: BlockT, CIDP> {
 	client: Arc<Client>,
 	create_inherent_data_providers: CIDP,
@@ -94,7 +94,7 @@ where
 
 	CIDP: CreateInherentDataProviders<Block, ()>,
 {
-	/// Creates a new Verifier instance for handling parachain block import verification in Aura
+	/// Creates a new Verifier instance for handling teyrchain block import verification in Aura
 	/// consensus.
 	pub fn new(
 		client: Arc<Client>,
@@ -257,7 +257,7 @@ fn slot_now(slot_duration: SlotDuration) -> Slot {
 
 /// Start an import queue for a Cumulus node which checks blocks' seals and inherent data.
 ///
-/// Pass in only inherent data providers which don't include aura or parachain consensus inherents,
+/// Pass in only inherent data providers which don't include aura or teyrchain consensus inherents,
 /// e.g. things like timestamp and custom inherents for the runtime.
 ///
 /// The others are generated explicitly internally.
@@ -277,7 +277,7 @@ where
 	P::Signature: Codec,
 	P::Public: Codec + Debug,
 	I: BlockImport<Block, Error = ConsensusError>
-		+ ParachainBlockImportMarker
+		+ TeyrchainBlockImportMarker
 		+ Send
 		+ Sync
 		+ 'static,
@@ -311,7 +311,7 @@ mod test {
 	};
 	use cumulus_test_relay_sproof_builder::RelayStateSproofBuilder;
 	use futures::FutureExt;
-	use polkadot_primitives::{HeadData, PersistedValidationData};
+	use pezkuwi_primitives::{HeadData, PersistedValidationData};
 	use sc_client_api::HeaderBackend;
 	use sp_consensus_aura::sr25519;
 	use sp_tracing::try_init_simple;
@@ -336,7 +336,7 @@ mod test {
 		let genesis = client.info().best_hash;
 		let mut sproof = RelayStateSproofBuilder::default();
 		sproof.included_para_head = Some(HeadData(client.header(genesis).unwrap().encode()));
-		sproof.para_id = cumulus_test_client::runtime::PARACHAIN_ID.into();
+		sproof.para_id = cumulus_test_client::runtime::TEYRCHAIN_ID.into();
 
 		let validation_data = PersistedValidationData {
 			relay_parent_number: 1,

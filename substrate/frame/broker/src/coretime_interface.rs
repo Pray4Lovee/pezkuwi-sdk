@@ -28,10 +28,10 @@ use sp_runtime::traits::BlockNumberProvider;
 
 use crate::Timeslice;
 
-/// Index of a Polkadot Core.
+/// Index of a Pezkuwi Core.
 pub type CoreIndex = u16;
 
-/// A Task Id. In general this is called a ParachainId.
+/// A Task Id. In general this is called a TeyrchainId.
 pub type TaskId = u32;
 
 /// Fraction expressed as a nominator with an assumed denominator of 57,600.
@@ -94,7 +94,7 @@ pub trait CoretimeInterface {
 	/// still be returned, but its `revenue` field may be `None`.
 	fn request_revenue_info_at(when: RCBlockNumberOf<Self>);
 
-	/// Instructs the Relay-chain to add the `amount` of DOT to the Instantaneous Coretime Market
+	/// Instructs the Relay-chain to add the `amount` of HEZ to the Instantaneous Coretime Market
 	/// Credit account of `who`.
 	///
 	/// It is expected that Instantaneous Coretime Market Credit on the Relay-chain is NOT

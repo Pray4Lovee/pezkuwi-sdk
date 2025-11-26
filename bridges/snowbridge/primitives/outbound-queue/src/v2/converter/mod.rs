@@ -101,9 +101,9 @@ where
 		}
 
 		let para_id = match local_sub.as_slice() {
-			[Parachain(para_id)] => *para_id,
+			[Teyrchain(para_id)] => *para_id,
 			_ => {
-				tracing::error!(target: TARGET, universal_source=?local_sub, "could not get parachain id.");
+				tracing::error!(target: TARGET, universal_source=?local_sub, "could not get teyrchain id.");
 				return Err(SendError::NotApplicable)
 			},
 		};

@@ -14,7 +14,7 @@ doc:
       `parachain` or `minimal`.
 
       This PR is part of a bigger step toward automating the template repositories, see the
-      following: https://github.com/paritytech/polkadot-sdk/issues/3155
+      following: https://github.com/pezkuwichain/pezkuwichain-sdk/issues/3155
 
 # the following crates are removed and renamed, although none are released.
 crates:

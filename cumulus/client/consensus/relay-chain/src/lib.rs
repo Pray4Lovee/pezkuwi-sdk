@@ -15,25 +15,25 @@
 // You should have received a copy of the GNU General Public License
 // along with Cumulus. If not, see <https://www.gnu.org/licenses/>.
 
-//! The relay-chain provided consensus algorithm for parachains.
+//! The relay-chain provided consensus algorithm for teyrchains.
 //!
-//! This is the simplest consensus algorithm you can use when developing a parachain. It is a
+//! This is the simplest consensus algorithm you can use when developing a teyrchain. It is a
 //! permission-less consensus algorithm that doesn't require any staking or similar to join as a
 //! collator. In this algorithm the consensus is provided by the relay-chain. This works in the
 //! following way.
 //!
-//! 1. Each node that sees itself as a collator is free to build a parachain candidate.
+//! 1. Each node that sees itself as a collator is free to build a teyrchain candidate.
 //!
-//! 2. This parachain candidate is send to the parachain validators that are part of the relay
+//! 2. This teyrchain candidate is send to the teyrchain validators that are part of the relay
 //! chain.
 //!
-//! 3. The parachain validators validate at most X different parachain candidates, where X is the
-//! total number of parachain validators.
+//! 3. The teyrchain validators validate at most X different teyrchain candidates, where X is the
+//! total number of teyrchain validators.
 //!
-//! 4. The parachain candidate that is backed by the most validators is chosen by the relay-chain
+//! 4. The teyrchain candidate that is backed by the most validators is chosen by the relay-chain
 //! block producer to be added as backed candidate on chain.
 //!
-//! 5. After the parachain candidate got backed and included, all collators start at 1.
+//! 5. After the teyrchain candidate got backed and included, all collators start at 1.
 
 mod import_queue;
 pub use import_queue::Verifier;

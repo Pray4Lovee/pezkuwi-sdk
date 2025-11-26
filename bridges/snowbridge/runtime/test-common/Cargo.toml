@@ -12,7 +12,7 @@ repository.workspace = true
 [lints]
 workspace = true
 
-[package.metadata.polkadot-sdk]
+[package.metadata.pezkuwi-sdk]
 exclude-from-umbrella = true
 
 [dependencies]
@@ -31,16 +31,16 @@ sp-io = { workspace = true }
 sp-keyring = { workspace = true, default-features = true }
 sp-runtime = { workspace = true }
 
-# Polkadot
+# Pezkuwi
 pallet-xcm = { workspace = true }
 xcm = { workspace = true }
 xcm-executor = { workspace = true }
 
 # Cumulus
-cumulus-pallet-parachain-system = { workspace = true }
+cumulus-pallet-teyrchain-system = { workspace = true }
 pallet-collator-selection = { workspace = true }
-parachain-info = { workspace = true }
-parachains-runtimes-test-utils = { workspace = true }
+teyrchain-info = { workspace = true }
+teyrchains-runtimes-test-utils = { workspace = true }
 
 # Ethereum Bridge (Snowbridge)
 snowbridge-core = { workspace = true }
@@ -53,7 +53,7 @@ snowbridge-pallet-system = { workspace = true }
 default = ["std"]
 std = [
 	"codec/std",
-	"cumulus-pallet-parachain-system/std",
+	"cumulus-pallet-teyrchain-system/std",
 	"frame-support/std",
 	"frame-system/std",
 	"pallet-balances/std",
@@ -63,8 +63,8 @@ std = [
 	"pallet-timestamp/std",
 	"pallet-utility/std",
 	"pallet-xcm/std",
-	"parachain-info/std",
-	"parachains-runtimes-test-utils/std",
+	"teyrchain-info/std",
+	"teyrchains-runtimes-test-utils/std",
 	"snowbridge-core/std",
 	"snowbridge-pallet-ethereum-client-fixtures/std",
 	"snowbridge-pallet-ethereum-client/std",
@@ -79,7 +79,7 @@ std = [
 ]
 
 runtime-benchmarks = [
-	"cumulus-pallet-parachain-system/runtime-benchmarks",
+	"cumulus-pallet-teyrchain-system/runtime-benchmarks",
 	"frame-support/runtime-benchmarks",
 	"frame-system/runtime-benchmarks",
 	"pallet-balances/runtime-benchmarks",

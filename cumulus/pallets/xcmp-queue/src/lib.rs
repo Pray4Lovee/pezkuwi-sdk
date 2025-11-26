@@ -20,7 +20,7 @@
 //! * `XcmpMessageSource`
 //!
 //! Also provides an implementation of `SendXcm` which can be placed in a router tuple for relaying
-//! XCM over XCMP if the destination is `Parent/Parachain`. It requires an implementation of
+//! XCM over XCMP if the destination is `Parent/Teyrchain`. It requires an implementation of
 //! `XcmExecutor` for dispatching incoming XCM messages.
 //!
 //! To prevent out of memory errors on the `OutboundXcmpMessages` queue, an exponential fee factor
@@ -72,8 +72,8 @@ use frame_support::{
 	weights::{Weight, WeightMeter},
 };
 use pallet_message_queue::OnQueueChanged;
-use polkadot_runtime_common::xcm_sender::PriceForMessageDelivery;
-use polkadot_runtime_parachains::{FeeTracker, GetMinFeeFactor};
+use pezkuwi_runtime_common::xcm_sender::PriceForMessageDelivery;
+use pezkuwi_runtime_teyrchains::{FeeTracker, GetMinFeeFactor};
 use scale_info::TypeInfo;
 use sp_core::MAX_POSSIBLE_ALLOCATION;
 use sp_runtime::{FixedU128, RuntimeDebug, SaturatedConversion, WeakBoundedVec};
@@ -164,7 +164,7 @@ pub mod pallet {
 		/// superuser origin.
 		type ControllerOriginConverter: ConvertOrigin<Self::RuntimeOrigin>;
 
-		/// The price for delivering an XCM to a sibling parachain destination.
+		/// The price for delivering an XCM to a sibling teyrchain destination.
 		type PriceForSiblingDelivery: PriceForMessageDelivery<Id = ParaId>;
 
 		/// The weight information of this pallet.
@@ -293,7 +293,7 @@ pub mod pallet {
 	#[pallet::event]
 	#[pallet::generate_deposit(pub(super) fn deposit_event)]
 	pub enum Event<T: Config> {
-		/// An HRMP message was sent to a sibling parachain.
+		/// An HRMP message was sent to a sibling teyrchain.
 		XcmpMessageSent { message_hash: XcmHash },
 	}
 
@@ -376,7 +376,7 @@ pub enum OutboundState {
 /// Struct containing detailed information about the outbound channel.
 #[derive(Clone, Eq, PartialEq, Encode, Decode, TypeInfo, RuntimeDebug, MaxEncodedLen)]
 pub struct OutboundChannelDetails {
-	/// The `ParaId` of the parachain that this channel is connected with.
+	/// The `ParaId` of the teyrchain that this channel is connected with.
 	recipient: ParaId,
 	/// The state of the channel.
 	state: OutboundState,
@@ -869,7 +869,7 @@ impl<T: Config> QueuePausedQuery<ParaId> for Pallet<T> {
 
 		// Make an exception for the superuser queue:
 		let sender_origin = T::ControllerOriginConverter::convert_origin(
-			(Parent, Parachain((*para).into())),
+			(Parent, Teyrchain((*para).into())),
 			OriginKind::Superuser,
 		);
 		let is_controller =
@@ -1150,7 +1150,7 @@ impl<T: Config> XcmpMessageSource for Pallet<T> {
 	}
 }
 
-/// Xcm sender for sending to a sibling parachain.
+/// Xcm sender for sending to a sibling teyrchain.
 impl<T: Config> SendXcm for Pallet<T> {
 	type Ticket = (ParaId, VersionedXcm<()>);
 
@@ -1161,8 +1161,8 @@ impl<T: Config> SendXcm for Pallet<T> {
 		let d = dest.take().ok_or(SendError::MissingArgument)?;
 
 		match d.unpack() {
-			// An HRMP message for a sibling parachain.
-			(1, [Parachain(id)]) => {
+			// An HRMP message for a sibling teyrchain.
+			(1, [Teyrchain(id)]) => {
 				let xcm = msg.take().ok_or(SendError::MissingArgument)?;
 				let id = ParaId::from(*id);
 				let price = T::PriceForSiblingDelivery::price_for_delivery(id, &xcm);
@@ -1240,7 +1240,7 @@ impl<T: Config> InspectMessageQueues for Pallet<T> {
 				}
 
 				(
-					VersionedLocation::from(Location::new(1, Parachain(para_id.into()))),
+					VersionedLocation::from(Location::new(1, Teyrchain(para_id.into()))),
 					decoded_messages,
 				)
 			})

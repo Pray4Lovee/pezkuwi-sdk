@@ -179,7 +179,7 @@ mod tests {
 	}
 
 	parameter_types! {
-		pub AssetHubLocation: Location = Location::new(1,[Parachain(1000)]);
+		pub AssetHubLocation: Location = Location::new(1,[Teyrchain(1000)]);
 		pub InboundQueueLocation: InteriorLocation = [PalletInstance(84)].into();
 		pub EthereumNetwork: NetworkId = NetworkId::Ethereum { chain_id: 11155111 };
 		pub const DefaultMyRewardKind: BridgeReward = BridgeReward::Snowbridge;
@@ -229,7 +229,7 @@ mod tests {
 		) -> SendResult<Self::Ticket> {
 			if let Some(location) = dest {
 				match location.unpack() {
-					(_, [Parachain(1001)]) => return Err(SendError::NotApplicable),
+					(_, [Teyrchain(1001)]) => return Err(SendError::NotApplicable),
 					_ => Ok((xcm.clone().unwrap(), Assets::default())),
 				}
 			} else {

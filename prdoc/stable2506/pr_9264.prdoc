@@ -3,7 +3,7 @@ doc:
 - audience: Node Dev
   description: |-
     All is not well when a validator is not properly connected, e.g: of things that might happen:
-    - Finality might be slightly delay because validator will be no-show because they can't retrieve PoVs to validate approval work: https://github.com/paritytech/polkadot-sdk/issues/8915.
+    - Finality might be slightly delay because validator will be no-show because they can't retrieve PoVs to validate approval work: https://github.com/pezkuwichain/pezkuwichain-sdk/issues/8915.
     - When they author blocks they won't back things because gossiping of backing statements happen using the grid topology:, e.g blocks authored by validators with a low number of peers:
         https://polkadot.js.org/apps/?rpc=wss%3A%2F%2Frpc-polkadot.helixstreet.io#/explorer/query/26931262
         https://polkadot.js.org/apps/?rpc=wss%3A%2F%2Frpc-polkadot.helixstreet.io#/explorer/query/26931260

@@ -106,7 +106,7 @@ pub trait Chain: Send + Sync + 'static {
 	/// A type that fulfills the abstract idea of what a Substrate block number is.
 	// Constraints come from the associated Number type of `sp_runtime::traits::Header`
 	// See here for more info:
-	// https://crates.parity.io/sp_runtime/traits/trait.Header.html#associatedtype.Number
+	// https://docs.rs/sp-runtime/latest/sp_runtime/traits/trait.Header.html#associatedtype.Number
 	//
 	// Note that the `AsPrimitive<usize>` trait is required by the GRANDPA justification
 	// verifier, and is not usually part of a Substrate Header's Number type.
@@ -127,7 +127,7 @@ pub trait Chain: Send + Sync + 'static {
 	/// A type that fulfills the abstract idea of what a Substrate hash is.
 	// Constraints come from the associated Hash type of `sp_runtime::traits::Header`
 	// See here for more info:
-	// https://crates.parity.io/sp_runtime/traits/trait.Header.html#associatedtype.Hash
+	// https://docs.rs/sp-runtime/latest/sp_runtime/traits/trait.Header.html#associatedtype.Hash
 	type Hash: Parameter
 		+ Member
 		+ MaybeSerializeDeserialize
@@ -145,12 +145,12 @@ pub trait Chain: Send + Sync + 'static {
 	/// that produces hashes) is.
 	// Constraints come from the associated Hashing type of `sp_runtime::traits::Header`
 	// See here for more info:
-	// https://crates.parity.io/sp_runtime/traits/trait.Header.html#associatedtype.Hashing
+	// https://docs.rs/sp-runtime/latest/sp_runtime/traits/trait.Header.html#associatedtype.Hashing
 	type Hasher: HashT<Output = Self::Hash>;
 
 	/// A type that fulfills the abstract idea of what a Substrate header is.
 	// See here for more info:
-	// https://crates.parity.io/sp_runtime/traits/trait.Header.html
+	// https://docs.rs/sp-runtime/latest/sp_runtime/traits/trait.Header.html
 	type Header: Parameter
 		+ HeaderT<Number = Self::BlockNumber, Hash = Self::Hash>
 		+ HeaderIdProvider<Self::Header>
@@ -238,11 +238,11 @@ where
 	}
 }
 
-/// Minimal parachain representation that may be used from no_std environment.
-pub trait Parachain: Chain {
-	/// Parachain identifier.
-	const PARACHAIN_ID: u32;
-	/// Maximal size of the parachain header.
+/// Minimal teyrchain representation that may be used from no_std environment.
+pub trait Teyrchain: Chain {
+	/// Teyrchain identifier.
+	const TEYRCHAIN_ID: u32;
+	/// Maximal size of the teyrchain header.
 	///
 	/// This isn't a strict limit. The relayer may submit larger headers and the
 	/// pallet will accept the call. The limit is only used to compute whether
@@ -250,21 +250,21 @@ pub trait Parachain: Chain {
 	const MAX_HEADER_SIZE: u32;
 }
 
-impl<T> Parachain for T
+impl<T> Teyrchain for T
 where
 	T: Chain + UnderlyingChainProvider,
-	<T as UnderlyingChainProvider>::Chain: Parachain,
+	<T as UnderlyingChainProvider>::Chain: Teyrchain,
 {
-	const PARACHAIN_ID: u32 = <<T as UnderlyingChainProvider>::Chain as Parachain>::PARACHAIN_ID;
+	const TEYRCHAIN_ID: u32 = <<T as UnderlyingChainProvider>::Chain as Teyrchain>::TEYRCHAIN_ID;
 	const MAX_HEADER_SIZE: u32 =
-		<<T as UnderlyingChainProvider>::Chain as Parachain>::MAX_HEADER_SIZE;
+		<<T as UnderlyingChainProvider>::Chain as Teyrchain>::MAX_HEADER_SIZE;
 }
 
-/// Adapter for `Get<u32>` to access `PARACHAIN_ID` from `trait Parachain`
-pub struct ParachainIdOf<Para>(sp_std::marker::PhantomData<Para>);
-impl<Para: Parachain> frame_support::traits::Get<u32> for ParachainIdOf<Para> {
+/// Adapter for `Get<u32>` to access `TEYRCHAIN_ID` from `trait Teyrchain`
+pub struct TeyrchainIdOf<Para>(sp_std::marker::PhantomData<Para>);
+impl<Para: Teyrchain> frame_support::traits::Get<u32> for TeyrchainIdOf<Para> {
 	fn get() -> u32 {
-		Para::PARACHAIN_ID
+		Para::TEYRCHAIN_ID
 	}
 }
 
@@ -308,7 +308,7 @@ pub type TransactionEraOf<C> = crate::TransactionEra<BlockNumberOf<C>, HashOf<C>
 /// - constants that are stringified names of runtime API methods:
 ///     - `BEST_FINALIZED_<THIS_CHAIN>_HEADER_METHOD`
 ///     - `<THIS_CHAIN>_ACCEPTED_<CONSENSUS>_FINALITY_PROOFS_METHOD`
-/// The name of the chain has to be specified in snake case (e.g. `bridge_hub_polkadot`).
+/// The name of the chain has to be specified in snake case (e.g. `bridge_hub_pezkuwi`).
 #[macro_export]
 macro_rules! decl_bridge_finality_runtime_apis {
 	($chain: ident $(, $consensus: ident => $justification_type: ty)?) => {
@@ -378,7 +378,7 @@ pub mod __private {
 ///     - `From<ThisChain>InboundLaneApi<LaneIdType>`
 /// - constants that are stringified names of runtime API methods:
 ///     - `FROM_<THIS_CHAIN>_MESSAGE_DETAILS_METHOD`,
-/// The name of the chain has to be specified in snake case (e.g. `bridge_hub_polkadot`).
+/// The name of the chain has to be specified in snake case (e.g. `bridge_hub_pezkuwi`).
 #[macro_export]
 macro_rules! decl_bridge_messages_runtime_apis {
 	($chain: ident, $lane_id_type:ty) => {
@@ -436,7 +436,7 @@ macro_rules! decl_bridge_messages_runtime_apis {
 
 /// Convenience macro that declares bridge finality runtime apis, bridge messages runtime apis
 /// and related constants for a chain.
-/// The name of the chain has to be specified in snake case (e.g. `bridge_hub_polkadot`).
+/// The name of the chain has to be specified in snake case (e.g. `bridge_hub_pezkuwi`).
 #[macro_export]
 macro_rules! decl_bridge_runtime_apis {
 	($chain: ident $(, $consensus: ident, $lane_id_type:ident)?) => {

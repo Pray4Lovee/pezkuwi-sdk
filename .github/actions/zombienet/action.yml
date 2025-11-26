@@ -52,8 +52,8 @@ runs:
           FLAKY_COUNT=$(grep -v '^#' .github/zombienet-flaky-tests | grep -v '^$' | wc -l | tr -d ' ')
           if [[ $FLAKY_COUNT -gt 0 ]]; then
             echo "⚠️ Flaky/Disabled Tests: $FLAKY_COUNT test(s) currently disabled"
-            echo "📄 See: https://github.com/paritytech/polkadot-sdk/blob/${{ github.sha }}/.github/zombienet-flaky-tests"
-            echo "📖 Docs: https://github.com/paritytech/polkadot-sdk/blob/${{ github.sha }}/.github/ZOMBIENET_FLAKY_TESTS.md"
+            echo "📄 See: https://github.com/pezkuwichain/pezkuwichain-sdk/blob/${{ github.sha }}/.github/zombienet-flaky-tests"
+            echo "📖 Docs: https://github.com/pezkuwichain/pezkuwichain-sdk/blob/${{ github.sha }}/.github/ZOMBIENET_FLAKY_TESTS.md"
           fi
         fi
         echo "════════════════════════════════════════════════════════════════"

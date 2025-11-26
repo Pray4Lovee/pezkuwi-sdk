@@ -19,21 +19,21 @@
 #![warn(missing_docs)]
 #![cfg_attr(not(feature = "std"), no_std)]
 
-pub use bp_polkadot_core::{
+pub use bp_pezkuwi_core::{
 	AccountId, AccountInfoStorageMapKeyProvider, AccountPublic, Balance, BlockNumber, Hash, Hasher,
 	Hashing, Header, Nonce, Perbill, Signature, SignedBlock, UncheckedExtrinsic,
 	EXTRA_STORAGE_PROOF_SIZE, TX_EXTRA_BYTES,
 };
 
-pub use parachains_common::{
+pub use teyrchains_common::{
 	AVERAGE_ON_INITIALIZE_RATIO, MAXIMUM_BLOCK_WEIGHT, MAXIMUM_BLOCK_WEIGHT_FOR_ASYNC_BACKING,
 	NORMAL_DISPATCH_RATIO, SLOT_DURATION,
 };
 
 use bp_messages::*;
-use bp_polkadot_core::SuffixedCommonTransactionExtension;
+use bp_pezkuwi_core::SuffixedCommonTransactionExtension;
 use bp_runtime::extensions::{
-	BridgeRejectObsoleteHeadersAndMessages, RefundBridgedParachainMessagesSchema,
+	BridgeRejectObsoleteHeadersAndMessages, RefundBridgedTeyrchainMessagesSchema,
 };
 use frame_support::{
 	dispatch::DispatchClass,
@@ -44,7 +44,7 @@ use frame_support::{
 use frame_system::limits;
 use sp_std::time::Duration;
 
-/// Average block time for Cumulus-based parachains
+/// Average block time for Cumulus-based teyrchains
 pub const AVERAGE_BLOCK_INTERVAL: Duration = Duration::from_millis(SLOT_DURATION);
 
 /// Maximal asset hub header size.
@@ -116,7 +116,7 @@ pub type Address = MultiAddress<AccountId, ()>;
 
 // Note about selecting values of two following constants:
 //
-// Normal transactions have limit of 75% of 1/2 second weight for Cumulus parachains. Let's keep
+// Normal transactions have limit of 75% of 1/2 second weight for Cumulus teyrchains. Let's keep
 // some reserve for the rest of stuff there => let's select values that fit in 50% of maximal limit.
 //
 // Using current constants, the limit would be:
@@ -137,12 +137,12 @@ pub type Address = MultiAddress<AccountId, ()>;
 // assumptions, or something will change, it shall be caught by the
 // `ensure_able_to_receive_confirmation` test.
 
-/// Maximal number of unrewarded relayer entries at inbound lane for Cumulus-based parachains.
+/// Maximal number of unrewarded relayer entries at inbound lane for Cumulus-based teyrchains.
 /// Note: this value is security-relevant, decreasing it should not be done without careful
 /// analysis (like the one above).
 pub const MAX_UNREWARDED_RELAYERS_IN_CONFIRMATION_TX: MessageNonce = 1024;
 
-/// Maximal number of unconfirmed messages at inbound lane for Cumulus-based parachains.
+/// Maximal number of unconfirmed messages at inbound lane for Cumulus-based teyrchains.
 /// Note: this value is security-relevant, decreasing it should not be done without careful
 /// analysis (like the one above).
 pub const MAX_UNCONFIRMED_MESSAGES_IN_CONFIRMATION_TX: MessageNonce = 4096;
@@ -150,5 +150,5 @@ pub const MAX_UNCONFIRMED_MESSAGES_IN_CONFIRMATION_TX: MessageNonce = 4096;
 /// Signed extension that is used by all bridge hubs.
 pub type TransactionExtension = SuffixedCommonTransactionExtension<(
 	BridgeRejectObsoleteHeadersAndMessages,
-	RefundBridgedParachainMessagesSchema,
+	RefundBridgedTeyrchainMessagesSchema,
 )>;

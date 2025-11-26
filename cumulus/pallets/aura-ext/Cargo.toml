@@ -3,7 +3,7 @@ name = "cumulus-pallet-aura-ext"
 version = "0.7.0"
 authors.workspace = true
 edition.workspace = true
-description = "AURA consensus extension pallet for parachains"
+description = "AURA consensus extension pallet for teyrchains"
 license = "Apache-2.0"
 homepage.workspace = true
 repository.workspace = true
@@ -25,13 +25,13 @@ sp-consensus-aura = { workspace = true }
 sp-runtime = { workspace = true }
 
 # Cumulus
-cumulus-pallet-parachain-system = { workspace = true }
+cumulus-pallet-teyrchain-system = { workspace = true }
 
 [dev-dependencies]
 rstest = { workspace = true }
 
 # Cumulus
-cumulus-pallet-parachain-system = { workspace = true, default-features = true }
+cumulus-pallet-teyrchain-system = { workspace = true, default-features = true }
 cumulus-primitives-core = { workspace = true, default-features = true }
 cumulus-primitives-proof-size-hostfunction = { workspace = true, default-features = true }
 cumulus-test-relay-sproof-builder = { workspace = true, default-features = true }
@@ -48,7 +48,7 @@ sp-version = { workspace = true, default-features = true }
 default = ["std"]
 std = [
 	"codec/std",
-	"cumulus-pallet-parachain-system/std",
+	"cumulus-pallet-teyrchain-system/std",
 	"frame-support/std",
 	"frame-system/std",
 	"pallet-aura/std",
@@ -59,7 +59,7 @@ std = [
 	"sp-runtime/std",
 ]
 try-runtime = [
-	"cumulus-pallet-parachain-system/try-runtime",
+	"cumulus-pallet-teyrchain-system/try-runtime",
 	"frame-support/try-runtime",
 	"frame-system/try-runtime",
 	"pallet-aura/try-runtime",

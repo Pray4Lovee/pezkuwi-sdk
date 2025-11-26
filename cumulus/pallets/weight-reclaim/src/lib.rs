@@ -82,7 +82,7 @@ pub mod pallet {
 /// For the time part of the weight, it does same as system `WeightReclaim` extension, it
 /// calculates the unused weight using the post information and reclaim the unused weight.
 /// So this extension can be used as a drop-in replacement for `WeightReclaim` extension for
-/// parachains.
+/// teyrchains.
 #[derive(Encode, Decode, DecodeWithMemTracking, TypeInfo)]
 #[derive_where(Clone, Eq, PartialEq, Default; S)]
 #[scale_info(skip_type_params(T))]

@@ -22,13 +22,13 @@ use cumulus_primitives_core::{
 	relay_chain::AccountId, ParaId, PersistedValidationData, ValidationParams,
 };
 use cumulus_test_client::{
-	generate_extrinsic_with_pair, BuildParachainBlockData, InitBlockBuilder, TestClientBuilder,
+	generate_extrinsic_with_pair, BuildTeyrchainBlockData, InitBlockBuilder, TestClientBuilder,
 	ValidationResult,
 };
 use cumulus_test_relay_sproof_builder::RelayStateSproofBuilder;
 use cumulus_test_runtime::{BalancesCall, Block, Header, UncheckedExtrinsic};
 use cumulus_test_service::bench_utils as utils;
-use polkadot_primitives::HeadData;
+use pezkuwi_primitives::HeadData;
 use sc_block_builder::BlockBuilderBuilder;
 use sc_client_api::UsageProvider;
 use sc_executor_common::wasm_runtime::WasmModule;
@@ -88,7 +88,7 @@ fn benchmark_block_validation(c: &mut Criterion) {
 	// Each account should only be included in one transfer.
 	let (src_accounts, dst_accounts, account_ids) = utils::create_benchmark_accounts();
 
-	let para_id = ParaId::from(cumulus_test_runtime::PARACHAIN_ID);
+	let para_id = ParaId::from(cumulus_test_runtime::TEYRCHAIN_ID);
 	let mut test_client_builder = TestClientBuilder::with_default_backend();
 	let genesis_init = test_client_builder.genesis_init_mut();
 	*genesis_init =
@@ -118,14 +118,14 @@ fn benchmark_block_validation(c: &mut Criterion) {
 		block_builder.push(extrinsic).unwrap();
 	}
 
-	let parachain_block = block_builder.build_parachain_block(*parent_header.state_root());
+	let teyrchain_block = block_builder.build_teyrchain_block(*parent_header.state_root());
 
-	let proof_size_in_kb = parachain_block.proof().encoded_size() as f64 / 1024f64;
+	let proof_size_in_kb = teyrchain_block.proof().encoded_size() as f64 / 1024f64;
 	let runtime = utils::get_wasm_module();
 
 	let (relay_parent_storage_root, _) = sproof_builder.into_state_root_and_proof();
 	let encoded_params = ValidationParams {
-		block_data: cumulus_test_client::BlockData(parachain_block.encode()),
+		block_data: cumulus_test_client::BlockData(teyrchain_block.encode()),
 		parent_head: HeadData(parent_header.encode()),
 		relay_parent_number: 1,
 		relay_parent_storage_root,
@@ -135,7 +135,7 @@ fn benchmark_block_validation(c: &mut Criterion) {
 	// This is not strictly necessary for this benchmark, but
 	// let us make sure that the result of `validate_block` is what
 	// we expect.
-	verify_expected_result(&runtime, &encoded_params, parachain_block.blocks()[0].clone());
+	verify_expected_result(&runtime, &encoded_params, teyrchain_block.blocks()[0].clone());
 
 	let mut group = c.benchmark_group("Block validation");
 	group.sample_size(20);
@@ -162,7 +162,7 @@ fn benchmark_block_validation(c: &mut Criterion) {
 fn verify_expected_result(
 	runtime: &Box<dyn WasmModule>,
 	encoded_params: &[u8],
-	parachain_block: Block,
+	teyrchain_block: Block,
 ) {
 	let res = runtime
 		.new_instance()
@@ -173,7 +173,7 @@ fn verify_expected_result(
 		ValidationResult::decode(&mut &res[..]).expect("Decode `ValidationResult`.");
 	let header =
 		Header::decode(&mut &validation_result.head_data.0[..]).expect("Decodes `Header`.");
-	assert_eq!(parachain_block.header, header);
+	assert_eq!(teyrchain_block.header, header);
 }
 
 criterion_group!(benches, benchmark_block_validation);

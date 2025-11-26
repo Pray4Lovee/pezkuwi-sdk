@@ -14,10 +14,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Substrate.  If not, see <http://www.gnu.org/licenses/>.
 
-//! XCM configurations for Westend.
+//! XCM configurations for Zagros.
 
 use super::{
-	parachains_origin, AccountId, AllPalletsWithSystem, Balances, Dmp, FellowshipAdmin,
+	teyrchains_origin, AccountId, AllPalletsWithSystem, Balances, Dmp, FellowshipAdmin,
 	GeneralAdmin, ParaId, Runtime, RuntimeCall, RuntimeEvent, RuntimeOrigin, StakingAdmin,
 	TransactionByteFee, Treasury, WeightToFee, XcmPallet,
 };
@@ -30,20 +30,20 @@ use frame_support::{
 };
 use frame_system::EnsureRoot;
 use pallet_staking_async_rc_runtime_constants::{
-	currency::CENTS, system_parachain::*, xcm::body::FELLOWSHIP_ADMIN_INDEX,
+	currency::CENTS, system_teyrchain::*, xcm::body::FELLOWSHIP_ADMIN_INDEX,
 };
 use pallet_xcm::XcmPassthrough;
-use polkadot_runtime_common::{
-	xcm_sender::{ChildParachainRouter, ExponentialPrice},
+use pezkuwi_runtime_common::{
+	xcm_sender::{ChildTeyrchainRouter, ExponentialPrice},
 	ToAuthor,
 };
 use sp_core::ConstU32;
-use xcm::latest::{prelude::*, WESTEND_GENESIS_HASH};
+use xcm::latest::{prelude::*, ZAGROS_GENESIS_HASH};
 use xcm_builder::{
 	AccountId32Aliases, AliasChildLocation, AllowExplicitUnpaidExecutionFrom,
 	AllowKnownQueryResponses, AllowSubscriptionsFrom, AllowTopLevelPaidExecutionFrom,
-	ChildParachainAsNative, ChildParachainConvertsVia, DescribeAllTerminal, DescribeFamily,
-	FrameTransactionalProcessor, FungibleAdapter, HashedDescription, IsChildSystemParachain,
+	ChildTeyrchainAsNative, ChildTeyrchainConvertsVia, DescribeAllTerminal, DescribeFamily,
+	FrameTransactionalProcessor, FungibleAdapter, HashedDescription, IsChildSystemTeyrchain,
 	IsConcrete, MintLocation, OriginToPluralityVoice, SendXcmFeeToAccount,
 	SignedAccountId32AsNative, SignedToAccountId32, SovereignSignedViaLocation, TakeWeightCredit,
 	TrailingSetTopicAsId, UsingComponents, WeightInfoBounds, WithComputedOrigin, WithUniqueTopic,
@@ -54,7 +54,7 @@ use xcm_executor::XcmExecutor;
 parameter_types! {
 	pub const TokenLocation: Location = Here.into_location();
 	pub const RootLocation: Location = Location::here();
-	pub const ThisNetwork: NetworkId = ByGenesis(WESTEND_GENESIS_HASH);
+	pub const ThisNetwork: NetworkId = ByGenesis(ZAGROS_GENESIS_HASH);
 	pub UniversalLocation: InteriorLocation = [GlobalConsensus(ThisNetwork::get())].into();
 	pub CheckAccount: AccountId = XcmPallet::check_account();
 	pub LocalCheckAccount: (AccountId, MintLocation) = (CheckAccount::get(), MintLocation::Local);
@@ -63,13 +63,13 @@ parameter_types! {
 	pub FeeAssetId: AssetId = AssetId(TokenLocation::get());
 	/// The base fee for the message delivery fees.
 	pub const BaseDeliveryFee: u128 = CENTS.saturating_mul(3);
-	/// Westend does not have mint authority anymore after the Asset Hub migration.
+	/// Zagros does not have mint authority anymore after the Asset Hub migration.
 	pub TeleportTracking: Option<(AccountId, MintLocation)> = None;
 }
 
 pub type LocationConverter = (
-	// We can convert a child parachain using the standard `AccountId` conversion.
-	ChildParachainConvertsVia<ParaId, AccountId>,
+	// We can convert a child teyrchain using the standard `AccountId` conversion.
+	ChildTeyrchainConvertsVia<ParaId, AccountId>,
 	// We can directly alias an `AccountId32` into a local account.
 	AccountId32Aliases<ThisNetwork, AccountId>,
 	// Foreign locations alias into accounts according to a hash of their standard description.
@@ -93,9 +93,9 @@ type LocalOriginConverter = (
 	// If the origin kind is `Sovereign`, then return a `Signed` origin with the account determined
 	// by the `LocationConverter` converter.
 	SovereignSignedViaLocation<LocationConverter, RuntimeOrigin>,
-	// If the origin kind is `Native` and the XCM origin is a child parachain, then we can express
-	// it with the special `parachains_origin::Origin` origin variant.
-	ChildParachainAsNative<parachains_origin::Origin, RuntimeOrigin>,
+	// If the origin kind is `Native` and the XCM origin is a child teyrchain, then we can express
+	// it with the special `teyrchains_origin::Origin` origin variant.
+	ChildTeyrchainAsNative<teyrchains_origin::Origin, RuntimeOrigin>,
 	// If the origin kind is `Native` and the XCM origin is the `AccountId32` location, then it can
 	// be expressed using the `Signed` origin variant.
 	SignedAccountId32AsNative<ThisNetwork, RuntimeOrigin>,
@@ -103,30 +103,30 @@ type LocalOriginConverter = (
 	XcmPassthrough<RuntimeOrigin>,
 );
 
-pub type PriceForChildParachainDelivery =
+pub type PriceForChildTeyrchainDelivery =
 	ExponentialPrice<FeeAssetId, BaseDeliveryFee, TransactionByteFee, Dmp>;
 
 /// The XCM router. When we want to send an XCM message, we use this type. It amalgamates all of our
 /// individual routers.
 pub type XcmRouter = WithUniqueTopic<
-	// Only one router so far - use DMP to communicate with child parachains.
-	ChildParachainRouter<Runtime, XcmPallet, PriceForChildParachainDelivery>,
+	// Only one router so far - use DMP to communicate with child teyrchains.
+	ChildTeyrchainRouter<Runtime, XcmPallet, PriceForChildTeyrchainDelivery>,
 >;
 
 parameter_types! {
-	pub AssetHub: Location = Parachain(ASSET_HUB_ID).into_location();
-	pub Collectives: Location = Parachain(COLLECTIVES_ID).into_location();
-	pub BridgeHub: Location = Parachain(BRIDGE_HUB_ID).into_location();
-	pub Encointer: Location = Parachain(ENCOINTER_ID).into_location();
-	pub People: Location = Parachain(PEOPLE_ID).into_location();
-	pub Broker: Location = Parachain(BROKER_ID).into_location();
-	pub Wnd: AssetFilter = Wild(AllOf { fun: WildFungible, id: AssetId(TokenLocation::get()) });
-	pub WndForAssetHub: (AssetFilter, Location) = (Wnd::get(), AssetHub::get());
-	pub WndForCollectives: (AssetFilter, Location) = (Wnd::get(), Collectives::get());
-	pub WndForBridgeHub: (AssetFilter, Location) = (Wnd::get(), BridgeHub::get());
-	pub WndForEncointer: (AssetFilter, Location) = (Wnd::get(), Encointer::get());
-	pub WndForPeople: (AssetFilter, Location) = (Wnd::get(), People::get());
-	pub WndForBroker: (AssetFilter, Location) = (Wnd::get(), Broker::get());
+	pub AssetHub: Location = Teyrchain(ASSET_HUB_ID).into_location();
+	pub Collectives: Location = Teyrchain(COLLECTIVES_ID).into_location();
+	pub BridgeHub: Location = Teyrchain(BRIDGE_HUB_ID).into_location();
+	pub Encointer: Location = Teyrchain(ENCOINTER_ID).into_location();
+	pub People: Location = Teyrchain(PEOPLE_ID).into_location();
+	pub Broker: Location = Teyrchain(BROKER_ID).into_location();
+	pub Zgr: AssetFilter = Wild(AllOf { fun: WildFungible, id: AssetId(TokenLocation::get()) });
+	pub WndForAssetHub: (AssetFilter, Location) = (Zgr::get(), AssetHub::get());
+	pub WndForCollectives: (AssetFilter, Location) = (Zgr::get(), Collectives::get());
+	pub WndForBridgeHub: (AssetFilter, Location) = (Zgr::get(), BridgeHub::get());
+	pub WndForEncointer: (AssetFilter, Location) = (Zgr::get(), Encointer::get());
+	pub WndForPeople: (AssetFilter, Location) = (Zgr::get(), People::get());
+	pub WndForBroker: (AssetFilter, Location) = (Zgr::get(), Broker::get());
 	pub MaxInstructions: u32 = 100;
 	pub MaxAssetsIntoHolding: u32 = 64;
 }
@@ -140,10 +140,10 @@ pub type TrustedTeleporters = (
 	xcm_builder::Case<WndForBroker>,
 );
 
-pub struct OnlyParachains;
-impl Contains<Location> for OnlyParachains {
+pub struct OnlyTeyrchains;
+impl Contains<Location> for OnlyTeyrchains {
 	fn contains(location: &Location) -> bool {
-		matches!(location.unpack(), (0, [Parachain(_)]))
+		matches!(location.unpack(), (0, [Teyrchain(_)]))
 	}
 }
 
@@ -152,7 +152,7 @@ impl Contains<Location> for Fellows {
 	fn contains(location: &Location) -> bool {
 		matches!(
 			location.unpack(),
-			(0, [Parachain(COLLECTIVES_ID), Plurality { id: BodyId::Technical, .. }])
+			(0, [Teyrchain(COLLECTIVES_ID), Plurality { id: BodyId::Technical, .. }])
 		)
 	}
 }
@@ -175,9 +175,9 @@ pub type Barrier = TrailingSetTopicAsId<(
 			// If the message is one that immediately attempts to pay for execution, then allow it.
 			AllowTopLevelPaidExecutionFrom<Everything>,
 			// Subscriptions for version tracking are OK.
-			AllowSubscriptionsFrom<OnlyParachains>,
-			// Messages from system parachains or the Fellows plurality need not pay for execution.
-			AllowExplicitUnpaidExecutionFrom<(IsChildSystemParachain<ParaId>, Fellows)>,
+			AllowSubscriptionsFrom<OnlyTeyrchains>,
+			// Messages from system teyrchains or the Fellows plurality need not pay for execution.
+			AllowExplicitUnpaidExecutionFrom<(IsChildSystemTeyrchain<ParaId>, Fellows)>,
 		),
 		UniversalLocation,
 		ConstU32<8>,
@@ -186,7 +186,7 @@ pub type Barrier = TrailingSetTopicAsId<(
 
 /// Locations that will not be charged fees in the executor, neither for execution nor delivery.
 /// We only waive fees for system functions, which these locations represent.
-pub type WaivedLocations = (SystemParachains, Equals<RootLocation>, LocalPlurality);
+pub type WaivedLocations = (SystemTeyrchains, Equals<RootLocation>, LocalPlurality);
 
 /// We let locations alias into child locations of their own.
 /// This is a very simple aliasing rule, mimicking the behaviour of
@@ -205,7 +205,7 @@ impl xcm_executor::Config for XcmConfig {
 	type UniversalLocation = UniversalLocation;
 	type Barrier = Barrier;
 	type Weigher = WeightInfoBounds<
-		crate::weights::xcm::WestendXcmWeight<RuntimeCall>,
+		crate::weights::xcm::ZagrosXcmWeight<RuntimeCall>,
 		RuntimeCall,
 		MaxInstructions,
 	>;
@@ -301,7 +301,7 @@ impl pallet_xcm::Config for Runtime {
 	type XcmTeleportFilter = Everything;
 	type XcmReserveTransferFilter = Everything;
 	type Weigher = WeightInfoBounds<
-		crate::weights::xcm::WestendXcmWeight<RuntimeCall>,
+		crate::weights::xcm::ZagrosXcmWeight<RuntimeCall>,
 		RuntimeCall,
 		MaxInstructions,
 	>;

@@ -12,8 +12,8 @@ workspace = true
 
 [dependencies]
 bp-header-chain = { workspace = true }
-bp-parachains = { workspace = true }
-bp-polkadot-core = { workspace = true }
+bp-teyrchains = { workspace = true }
+bp-pezkuwi-core = { workspace = true }
 bp-runtime = { features = ["test-helpers"], workspace = true }
 codec = { workspace = true }
 ed25519-dalek = { workspace = true }
@@ -29,8 +29,8 @@ sp-trie = { workspace = true }
 default = ["std"]
 std = [
 	"bp-header-chain/std",
-	"bp-parachains/std",
-	"bp-polkadot-core/std",
+	"bp-teyrchains/std",
+	"bp-pezkuwi-core/std",
 	"bp-runtime/std",
 	"codec/std",
 	"ed25519-dalek/std",

@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Cumulus.  If not, see <http://www.gnu.org/licenses/>.
 
-//! Parachain bootnodes advertisement and discovery service.
+//! Teyrchain bootnodes advertisement and discovery service.
 
 use crate::{
 	advertisement::{BootnodeAdvertisement, BootnodeAdvertisementParams},
@@ -39,7 +39,7 @@ pub struct StartBootnodeTasksParams<'a> {
 	pub embedded_dht_bootnode: bool,
 	/// Enable DHT bootnode discovery.
 	pub dht_bootnode_discovery: bool,
-	/// Parachain ID.
+	/// Teyrchain ID.
 	pub para_id: ParaId,
 	/// Task manager.
 	pub task_manager: &'a mut TaskManager,
@@ -51,16 +51,16 @@ pub struct StartBootnodeTasksParams<'a> {
 	pub relay_chain_network: Arc<dyn NetworkService>,
 	/// `/paranode` protocol request receiver.
 	pub request_receiver: async_channel::Receiver<IncomingRequest>,
-	/// Parachain node network service.
-	pub parachain_network: Arc<dyn NetworkService>,
+	/// Teyrchain node network service.
+	pub teyrchain_network: Arc<dyn NetworkService>,
 	/// Whether to advertise non-global IP addresses.
 	pub advertise_non_global_ips: bool,
-	/// Parachain genesis hash.
-	pub parachain_genesis_hash: Vec<u8>,
-	/// Parachain fork ID.
-	pub parachain_fork_id: Option<String>,
-	/// Parachain public addresses provided by the operator.
-	pub parachain_public_addresses: Vec<Multiaddr>,
+	/// Teyrchain genesis hash.
+	pub teyrchain_genesis_hash: Vec<u8>,
+	/// Teyrchain fork ID.
+	pub teyrchain_fork_id: Option<String>,
+	/// Teyrchain public addresses provided by the operator.
+	pub teyrchain_public_addresses: Vec<Multiaddr>,
 }
 
 async fn bootnode_advertisement(
@@ -68,10 +68,10 @@ async fn bootnode_advertisement(
 	relay_chain_interface: Arc<dyn RelayChainInterface>,
 	relay_chain_network: Arc<dyn NetworkService>,
 	request_receiver: async_channel::Receiver<IncomingRequest>,
-	parachain_network: Arc<dyn NetworkService>,
+	teyrchain_network: Arc<dyn NetworkService>,
 	advertise_non_global_ips: bool,
-	parachain_genesis_hash: Vec<u8>,
-	parachain_fork_id: Option<String>,
+	teyrchain_genesis_hash: Vec<u8>,
+	teyrchain_fork_id: Option<String>,
 	public_addresses: Vec<Multiaddr>,
 ) {
 	let bootnode_advertisement = BootnodeAdvertisement::new(BootnodeAdvertisementParams {
@@ -79,10 +79,10 @@ async fn bootnode_advertisement(
 		relay_chain_interface,
 		relay_chain_network,
 		request_receiver,
-		parachain_network,
+		teyrchain_network,
 		advertise_non_global_ips,
-		parachain_genesis_hash,
-		parachain_fork_id,
+		teyrchain_genesis_hash,
+		teyrchain_fork_id,
 		public_addresses,
 	});
 
@@ -93,9 +93,9 @@ async fn bootnode_advertisement(
 
 async fn bootnode_discovery(
 	para_id: ParaId,
-	parachain_network: Arc<dyn NetworkService>,
-	parachain_genesis_hash: Vec<u8>,
-	parachain_fork_id: Option<String>,
+	teyrchain_network: Arc<dyn NetworkService>,
+	teyrchain_genesis_hash: Vec<u8>,
+	teyrchain_fork_id: Option<String>,
 	relay_chain_interface: Arc<dyn RelayChainInterface>,
 	relay_chain_fork_id: Option<String>,
 	relay_chain_network: Arc<dyn NetworkService>,
@@ -126,9 +126,9 @@ async fn bootnode_discovery(
 
 	let bootnode_discovery = BootnodeDiscovery::new(BootnodeDiscoveryParams {
 		para_id,
-		parachain_network,
-		parachain_genesis_hash,
-		parachain_fork_id,
+		teyrchain_network,
+		teyrchain_genesis_hash,
+		teyrchain_fork_id,
 		relay_chain_interface,
 		relay_chain_network,
 		paranode_protocol_name,
@@ -141,7 +141,7 @@ async fn bootnode_discovery(
 	}
 }
 
-/// Start parachain bootnode advertisement and discovery tasks.
+/// Start teyrchain bootnode advertisement and discovery tasks.
 pub fn start_bootnode_tasks(
 	StartBootnodeTasksParams {
 		embedded_dht_bootnode,
@@ -152,11 +152,11 @@ pub fn start_bootnode_tasks(
 		relay_chain_fork_id,
 		relay_chain_network,
 		request_receiver,
-		parachain_network,
+		teyrchain_network,
 		advertise_non_global_ips,
-		parachain_genesis_hash,
-		parachain_fork_id,
-		parachain_public_addresses,
+		teyrchain_genesis_hash,
+		teyrchain_fork_id,
+		teyrchain_public_addresses,
 	}: StartBootnodeTasksParams,
 ) {
 	debug!(
@@ -174,11 +174,11 @@ pub fn start_bootnode_tasks(
 				relay_chain_interface.clone(),
 				relay_chain_network.clone(),
 				request_receiver,
-				parachain_network.clone(),
+				teyrchain_network.clone(),
 				advertise_non_global_ips,
-				parachain_genesis_hash.clone(),
-				parachain_fork_id.clone(),
-				parachain_public_addresses,
+				teyrchain_genesis_hash.clone(),
+				teyrchain_fork_id.clone(),
+				teyrchain_public_addresses,
 			),
 		);
 	}
@@ -189,9 +189,9 @@ pub fn start_bootnode_tasks(
 			None,
 			bootnode_discovery(
 				para_id,
-				parachain_network,
-				parachain_genesis_hash,
-				parachain_fork_id,
+				teyrchain_network,
+				teyrchain_genesis_hash,
+				teyrchain_fork_id,
 				relay_chain_interface,
 				relay_chain_fork_id,
 				relay_chain_network,

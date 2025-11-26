@@ -141,7 +141,7 @@ mod tests {
 	use xcm_executor::traits::ConvertLocation;
 
 	fn bridge() -> (Box<BridgeLocations>, TestLaneIdType) {
-		let origin = OpenBridgeOrigin::sibling_parachain_origin();
+		let origin = OpenBridgeOrigin::sibling_teyrchain_origin();
 		let with = bridged_asset_hub_universal_location();
 		let locations =
 			XcmOverBridge::bridge_locations_from_origin(origin, Box::new(with.into())).unwrap();

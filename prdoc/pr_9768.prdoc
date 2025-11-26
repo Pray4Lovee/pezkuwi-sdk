@@ -1,7 +1,7 @@
 title: 'pallet revive evm backend add tests for cross vm contract calls'
 doc:
 - audience: Runtime Dev
-  description: fixes https://github.com/paritytech/polkadot-sdk/issues/9576
+  description: fixes https://github.com/pezkuwichain/pezkuwichain-sdk/issues/9576
 crates:
 - name: pallet-revive
   bump: patch

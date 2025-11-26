@@ -21,7 +21,7 @@ pub use block_builder::*;
 use codec::{Decode, Encode};
 pub use cumulus_test_runtime as runtime;
 use cumulus_test_runtime::AuraId;
-pub use polkadot_parachain_primitives::primitives::{
+pub use pezkuwi_teyrchain_primitives::primitives::{
 	BlockData, HeadData, ValidationParams, ValidationResult,
 };
 use runtime::{
@@ -46,7 +46,7 @@ use sp_runtime::{generic::Era, traits::Header, BuildStorage, MultiAddress, Satur
 use std::sync::Arc;
 pub use substrate_test_client::*;
 
-pub type ParachainBlockData = cumulus_primitives_core::ParachainBlockData<Block>;
+pub type TeyrchainBlockData = cumulus_primitives_core::TeyrchainBlockData<Block>;
 
 /// Test client database backend.
 pub type Backend = substrate_test_client::Backend<Block>;
@@ -242,11 +242,11 @@ fn get_keystore() -> sp_keystore::KeystorePtr {
 ///
 /// Assumes that the authorities of the test runtime are present in the keyring.
 pub fn seal_block(mut block: Block, client: &Client) -> Block {
-	let parachain_slot =
+	let teyrchain_slot =
 		find_pre_digest::<Block, <AuraId as AppCrypto>::Signature>(&block.header).unwrap();
 	let parent_hash = block.header.parent_hash;
 	let authorities = client.runtime_api().authorities(parent_hash).unwrap();
-	let expected_author = slot_author::<<AuraId as AppCrypto>::Pair>(parachain_slot, &authorities)
+	let expected_author = slot_author::<<AuraId as AppCrypto>::Pair>(teyrchain_slot, &authorities)
 		.expect("Should be able to find author");
 
 	let keystore = get_keystore();

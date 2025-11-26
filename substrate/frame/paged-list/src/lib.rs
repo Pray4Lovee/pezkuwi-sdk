@@ -18,9 +18,9 @@
 //! > Made with *Substrate*, for *DotSama*.
 //!
 //! [![github]](https://github.com/paritytech/substrate/frame/fast-unstake) -
-//! [![polkadot]](https://polkadot.com)
+//! [![pezkuwi]](https://pezkuwichain.io)
 //!
-//! [polkadot]: https://img.shields.io/badge/polkadot-E6007A?style=for-the-badge&logo=polkadot&logoColor=white
+//! [pezkuwi]: https://img.shields.io/badge/polkadot-E6007A?style=for-the-badge&logo=polkadot&logoColor=white
 //! [github]: https://img.shields.io/badge/github-8da0cb?style=for-the-badge&labelColor=555555&logo=github
 //!
 //! # Paged List Pallet

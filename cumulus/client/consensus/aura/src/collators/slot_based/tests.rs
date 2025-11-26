@@ -24,8 +24,8 @@ use codec::Encode;
 use cumulus_primitives_core::{ClaimQueueOffset, CoreInfo, CoreSelector, CumulusDigestItem};
 use cumulus_relay_chain_interface::*;
 use futures::Stream;
-use polkadot_node_subsystem_util::runtime::ClaimQueueSnapshot;
-use polkadot_primitives::{
+use pezkuwi_node_subsystem_util::runtime::ClaimQueueSnapshot;
+use pezkuwi_primitives::{
 	CandidateEvent, CommittedCandidateReceiptV2, CoreIndex, Hash as RelayHash,
 	Header as RelayHeader, Id as ParaId,
 };
@@ -578,7 +578,7 @@ impl RelayChainInterface for TestRelayClient {
 
 	async fn header(
 		&self,
-		block_id: BlockId<polkadot_primitives::Block>,
+		block_id: BlockId<pezkuwi_primitives::Block>,
 	) -> RelayChainResult<Option<PHeader>> {
 		let hash = match block_id {
 			BlockId::Hash(hash) => hash,

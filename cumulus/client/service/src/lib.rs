@@ -28,7 +28,7 @@ use cumulus_relay_chain_inprocess_interface::build_inprocess_relay_chain;
 use cumulus_relay_chain_interface::{RelayChainInterface, RelayChainResult};
 use cumulus_relay_chain_minimal_node::build_minimal_relay_chain_node_with_rpc;
 use futures::{channel::mpsc, StreamExt};
-use polkadot_primitives::{CandidateEvent, CollatorPair, OccupiedCoreAssumption};
+use pezkuwi_primitives::{CandidateEvent, CollatorPair, OccupiedCoreAssumption};
 use prometheus::{Histogram, HistogramOpts, Registry};
 use sc_client_api::{
 	Backend as BackendT, BlockBackend, BlockchainEvents, Finalizer, ProofProvider, UsageProvider,
@@ -60,11 +60,11 @@ use std::{
 	time::{Duration, Instant},
 };
 
-/// Host functions that should be used in parachain nodes.
+/// Host functions that should be used in teyrchain nodes.
 ///
 /// Contains the standard substrate host functions, as well as a
-/// host function to enable PoV-reclaim on parachain nodes.
-pub type ParachainHostFunctions = (
+/// host function to enable PoV-reclaim on teyrchain nodes.
+pub type TeyrchainHostFunctions = (
 	cumulus_primitives_proof_size_hostfunction::storage_proof_size::HostFunctions,
 	sp_io::SubstrateHostFunctions,
 );
@@ -104,13 +104,13 @@ pub struct StartRelayChainTasksParams<'a, Block: BlockT, Client, RCInterface> {
 
 /// Start necessary consensus tasks related to the relay chain.
 ///
-/// Parachain nodes need to track the state of the relay chain and use the
+/// Teyrchain nodes need to track the state of the relay chain and use the
 /// relay chain's data availability service to fetch blocks if they don't
 /// arrive via the normal p2p layer (i.e. when authors withhold their blocks deliberately).
 ///
 /// This function spawns work for those side tasks.
 ///
-/// It also spawns a parachain informant task that will log the relay chain state and some metrics.
+/// It also spawns a teyrchain informant task that will log the relay chain state and some metrics.
 pub fn start_relay_chain_tasks<Block, Client, Backend, RCInterface>(
 	StartRelayChainTasksParams {
 		client,
@@ -142,7 +142,7 @@ where
 {
 	let (recovery_chan_tx, recovery_chan_rx) = mpsc::channel(RECOVERY_CHAN_SIZE);
 
-	cumulus_client_consensus_common::spawn_parachain_consensus_tasks(
+	cumulus_client_consensus_common::spawn_teyrchain_consensus_tasks(
 		para_id,
 		client.clone(),
 		relay_chain_interface.clone(),
@@ -190,32 +190,32 @@ where
 		.spawn_essential_handle()
 		.spawn("cumulus-pov-recovery", None, pov_recovery.run());
 
-	let parachain_informant = parachain_informant::<Block, _>(
+	let teyrchain_informant = teyrchain_informant::<Block, _>(
 		para_id,
 		relay_chain_interface.clone(),
 		client.clone(),
-		prometheus_registry.map(ParachainInformantMetrics::new).transpose()?,
+		prometheus_registry.map(TeyrchainInformantMetrics::new).transpose()?,
 	);
 	task_manager
 		.spawn_handle()
-		.spawn("parachain-informant", None, parachain_informant);
+		.spawn("teyrchain-informant", None, teyrchain_informant);
 
 	Ok(())
 }
 
-/// Prepare the parachain's node configuration
+/// Prepare the teyrchain's node configuration
 ///
 /// This function will:
-/// * Disable the default announcement of Substrate for the parachain in favor of the one of
+/// * Disable the default announcement of Substrate for the teyrchain in favor of the one of
 ///   Cumulus.
 /// * Set peers needed to start warp sync to 1.
-pub fn prepare_node_config(mut parachain_config: Configuration) -> Configuration {
-	parachain_config.announce_block = false;
-	// Parachains only need 1 peer to start warp sync, because the target block is fetched from the
+pub fn prepare_node_config(mut teyrchain_config: Configuration) -> Configuration {
+	teyrchain_config.announce_block = false;
+	// Teyrchains only need 1 peer to start warp sync, because the target block is fetched from the
 	// relay chain.
-	parachain_config.network.min_peers_to_start_warp_sync = Some(1);
+	teyrchain_config.network.min_peers_to_start_warp_sync = Some(1);
 
-	parachain_config
+	teyrchain_config
 }
 
 /// Build a relay chain interface.
@@ -223,7 +223,7 @@ pub fn prepare_node_config(mut parachain_config: Configuration) -> Configuration
 /// client or an inprocess node, based on the [`CollatorOptions`] passed in.
 pub async fn build_relay_chain_interface(
 	relay_chain_config: Configuration,
-	parachain_config: &Configuration,
+	teyrchain_config: &Configuration,
 	telemetry_worker_handle: Option<TelemetryWorkerHandle>,
 	task_manager: &mut TaskManager,
 	collator_options: CollatorOptions,
@@ -237,7 +237,7 @@ pub async fn build_relay_chain_interface(
 	match collator_options.relay_chain_mode {
 		cumulus_client_cli::RelayChainMode::Embedded => build_inprocess_relay_chain(
 			relay_chain_config,
-			parachain_config,
+			teyrchain_config,
 			telemetry_worker_handle,
 			task_manager,
 			hwbench,
@@ -245,7 +245,7 @@ pub async fn build_relay_chain_interface(
 		cumulus_client_cli::RelayChainMode::ExternalRpc(rpc_target_urls) =>
 			build_minimal_relay_chain_node_with_rpc(
 				relay_chain_config,
-				parachain_config.prometheus_registry(),
+				teyrchain_config.prometheus_registry(),
 				task_manager,
 				rpc_target_urls,
 			)
@@ -283,7 +283,7 @@ pub struct BuildNetworkParams<
 > where
 	Client::Api: sp_transaction_pool::runtime_api::TaggedTransactionQueue<Block>,
 {
-	pub parachain_config: &'a Configuration,
+	pub teyrchain_config: &'a Configuration,
 	pub net_config:
 		sc_network::config::FullNetworkConfiguration<Block, <Block as BlockT>::Hash, Network>,
 	pub client: Arc<Client>,
@@ -299,7 +299,7 @@ pub struct BuildNetworkParams<
 /// Build the network service, the network status sinks and an RPC sender.
 pub async fn build_network<'a, Block, Client, RCInterface, IQ, Network>(
 	BuildNetworkParams {
-		parachain_config,
+		teyrchain_config,
 		net_config,
 		client,
 		transaction_pool,
@@ -337,7 +337,7 @@ where
 	IQ: ImportQueue<Block> + 'static,
 	Network: NetworkBackend<Block, <Block as BlockT>::Hash>,
 {
-	let warp_sync_config = match parachain_config.network.sync_mode {
+	let warp_sync_config = match teyrchain_config.network.sync_mode {
 		SyncMode::Warp => {
 			log::debug!(target: LOG_TARGET_SYNC, "waiting for announce block...");
 
@@ -347,7 +347,7 @@ where
 					.inspect_err(|e| {
 						log::error!(
 							target: LOG_TARGET_SYNC,
-							"Unable to determine parachain target block {:?}",
+							"Unable to determine teyrchain target block {:?}",
 							e
 						);
 					})?;
@@ -369,7 +369,7 @@ where
 	};
 
 	sc_service::build_network(sc_service::BuildNetworkParams {
-		config: parachain_config,
+		config: teyrchain_config,
 		net_config,
 		client,
 		transaction_pool,
@@ -382,7 +382,7 @@ where
 	})
 }
 
-/// Waits for the relay chain to have finished syncing and then gets the parachain header that
+/// Waits for the relay chain to have finished syncing and then gets the teyrchain header that
 /// corresponds to the last finalized relay chain block.
 async fn wait_for_finalized_para_head<B, RCInterface>(
 	para_id: ParaId,
@@ -397,7 +397,7 @@ where
 		.await
 		.map_err(|error| {
 			sc_service::Error::Other(format!(
-				"Relay chain import notification stream error when waiting for parachain head: \
+				"Relay chain import notification stream error when waiting for teyrchain head: \
 				{error}"
 			))
 		})?
@@ -422,13 +422,13 @@ where
 				)
 				.await
 				.map_err(|e| format!("{e:?}"))?
-				.ok_or("Could not find parachain head in relay chain")?;
+				.ok_or("Could not find teyrchain head in relay chain")?;
 
 			let finalized_header = B::Header::decode(&mut &validation_data.parent_head.0[..])
-				.map_err(|e| format!("Failed to decode parachain head: {e}"))?;
+				.map_err(|e| format!("Failed to decode teyrchain head: {e}"))?;
 
 			log::info!(
-				"🎉 Received target parachain header #{} ({}) from the relay chain.",
+				"🎉 Received target teyrchain header #{} ({}) from the relay chain.",
 				finalized_header.number(),
 				finalized_header.hash()
 			);
@@ -436,22 +436,22 @@ where
 		}
 	}
 
-	Err("Stopping following imported blocks. Could not determine parachain target block".into())
+	Err("Stopping following imported blocks. Could not determine teyrchain target block".into())
 }
 
 /// Task for logging candidate events and some related metrics.
-async fn parachain_informant<Block: BlockT, Client>(
+async fn teyrchain_informant<Block: BlockT, Client>(
 	para_id: ParaId,
 	relay_chain_interface: impl RelayChainInterface + Clone,
 	client: Arc<Client>,
-	metrics: Option<ParachainInformantMetrics>,
+	metrics: Option<TeyrchainInformantMetrics>,
 ) where
 	Client: HeaderBackend<Block> + Send + Sync + 'static,
 {
 	let mut import_notifications = match relay_chain_interface.import_notification_stream().await {
 		Ok(import_notifications) => import_notifications,
 		Err(e) => {
-			log::error!("Failed to get import notification stream: {e:?}. Parachain informant will not run!");
+			log::error!("Failed to get import notification stream: {e:?}. Teyrchain informant will not run!");
 			return
 		},
 	};
@@ -477,7 +477,7 @@ async fn parachain_informant<Block: BlockT, Client>(
 						Ok(header) => header,
 						Err(e) => {
 							log::warn!(
-								"Failed to decode parachain header from backed block: {e:?}"
+								"Failed to decode teyrchain header from backed block: {e:?}"
 							);
 							continue
 						},
@@ -486,7 +486,7 @@ async fn parachain_informant<Block: BlockT, Client>(
 					if let Some(last_backed_block_time) = &last_backed_block_time {
 						let duration = backed_block_time.duration_since(*last_backed_block_time);
 						if let Some(metrics) = &metrics {
-							metrics.parachain_block_backed_duration.observe(duration.as_secs_f64());
+							metrics.teyrchain_block_backed_duration.observe(duration.as_secs_f64());
 						}
 					}
 					last_backed_block_time = Some(backed_block_time);
@@ -500,7 +500,7 @@ async fn parachain_informant<Block: BlockT, Client>(
 						Ok(header) => header,
 						Err(e) => {
 							log::warn!(
-								"Failed to decode parachain header from included block: {e:?}"
+								"Failed to decode teyrchain header from included block: {e:?}"
 							);
 							continue
 						},
@@ -521,7 +521,7 @@ async fn parachain_informant<Block: BlockT, Client>(
 						Ok(header) => header,
 						Err(e) => {
 							log::warn!(
-								"Failed to decode parachain header from timed out block: {e:?}"
+								"Failed to decode teyrchain header from timed out block: {e:?}"
 							);
 							continue
 						},
@@ -566,24 +566,24 @@ async fn parachain_informant<Block: BlockT, Client>(
 	}
 }
 
-struct ParachainInformantMetrics {
-	/// Time between parachain blocks getting backed by the relaychain.
-	parachain_block_backed_duration: Histogram,
+struct TeyrchainInformantMetrics {
+	/// Time between teyrchain blocks getting backed by the relaychain.
+	teyrchain_block_backed_duration: Histogram,
 	/// Number of blocks between best block and last included block.
 	unincluded_segment_size: Histogram,
 }
 
-impl ParachainInformantMetrics {
+impl TeyrchainInformantMetrics {
 	fn new(prometheus_registry: &Registry) -> prometheus::Result<Self> {
-		let parachain_block_authorship_duration = Histogram::with_opts(HistogramOpts::new(
-			"parachain_block_backed_duration",
-			"Time between parachain blocks getting backed by the relaychain",
+		let teyrchain_block_authorship_duration = Histogram::with_opts(HistogramOpts::new(
+			"teyrchain_block_backed_duration",
+			"Time between teyrchain blocks getting backed by the relaychain",
 		))?;
-		prometheus_registry.register(Box::new(parachain_block_authorship_duration.clone()))?;
+		prometheus_registry.register(Box::new(teyrchain_block_authorship_duration.clone()))?;
 
 		let unincluded_segment_size = Histogram::with_opts(
 			HistogramOpts::new(
-				"parachain_unincluded_segment_size",
+				"teyrchain_unincluded_segment_size",
 				"Number of blocks between best block and last included block",
 			)
 			.buckets((0..=24).into_iter().map(|i| i as f64).collect()),
@@ -591,28 +591,28 @@ impl ParachainInformantMetrics {
 		prometheus_registry.register(Box::new(unincluded_segment_size.clone()))?;
 
 		Ok(Self {
-			parachain_block_backed_duration: parachain_block_authorship_duration,
+			teyrchain_block_backed_duration: teyrchain_block_authorship_duration,
 			unincluded_segment_size,
 		})
 	}
 }
 
-/// Implementation of [`TracingExecuteBlock`] for parachains.
+/// Implementation of [`TracingExecuteBlock`] for teyrchains.
 ///
-/// Ensures that all the required extensions required by parachain runtimes are registered and
+/// Ensures that all the required extensions required by teyrchain runtimes are registered and
 /// available.
-pub struct ParachainTracingExecuteBlock<Client> {
+pub struct TeyrchainTracingExecuteBlock<Client> {
 	client: Arc<Client>,
 }
 
-impl<Client> ParachainTracingExecuteBlock<Client> {
+impl<Client> TeyrchainTracingExecuteBlock<Client> {
 	/// Creates a new instance of `self`.
 	pub fn new(client: Arc<Client>) -> Self {
 		Self { client }
 	}
 }
 
-impl<Block, Client> TracingExecuteBlock<Block> for ParachainTracingExecuteBlock<Client>
+impl<Block, Client> TracingExecuteBlock<Block> for TeyrchainTracingExecuteBlock<Client>
 where
 	Block: BlockT,
 	Client: ProvideRuntimeApi<Block> + Send + Sync,

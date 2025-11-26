@@ -1,30 +1,30 @@
 <div align="center">
 
-![SDK Logo](../docs/images/Polkadot_Logo_Horizontal_Pink_White.png#gh-dark-mode-only)
-![SDK Logo](../docs/images/Polkadot_Logo_Horizontal_Pink_Black.png#gh-light-mode-only)
+![SDK Logo](../docs/images/PezkuwiChain_Logo_Horizontal_Pink_White.png#gh-dark-mode-only)
+![SDK Logo](../docs/images/PezkuwiChain_Logo_Horizontal_Pink_Black.png#gh-light-mode-only)
 
 <!-- markdownlint-disable-next-line MD044 -->
-# `polkadot-sdk`
+# `pezkuwi-sdk`
 
-[![StackExchange](https://img.shields.io/badge/StackExchange-Community%20&%20Support-222222?logo=stackexchange)](https://substrate.stackexchange.com/)
+[![StackExchange](https://img.shields.io/badge/StackExchange-Community%20&%20Support-222222?logo=stackexchange)](https://pezkuwichain.app/community/)
 
 </div>
 
-`polkadot-sdk` is an umbrella crate for the [Polkadot
-SDK](https://github.com/paritytech/polkadot-sdk), in the sense that it is an "umbrella" that
+`pezkuwi-sdk` is an umbrella crate for the [PezkuwiChain
+SDK](https://github.com/pezkuwichain/pezkuwi-sdk), in the sense that it is an "umbrella" that
 encompasses other components. More specifically, it re-exports all the crates that are needed by
 builders.
 
-`polkadot-sdk` aims to be the entry to the Polkadot and Substrate ecosystem and make the SDK more
+`pezkuwi-sdk` aims to be the entry to the PezkuwiChain and Substrate ecosystem and make the SDK more
 approachable—the entire development environment made available with **one dependency**. More
 importantly, it guarantees the compatible combination of crate versions. So even if you know exactly
-which crates to use, you may still benefit from using `polkadot-sdk` for painless dependency
+which crates to use, you may still benefit from using `pezkuwi-sdk` for painless dependency
 updates.
 
-You may have seen another umbrella crate named `polkadot-sdk-frame`, also known as the FRAME umbrella crate.
+You may have seen another umbrella crate named `pezkuwi-sdk-frame`, also known as the FRAME umbrella crate.
 For clarification, while
-`polkadot-sdk` aims to ease dependency management, `polkadot-sdk-frame` intends to simplify
-[FRAME](https://docs.polkadot.com/polkadot-protocol/glossary/#frame-framework-for-runtime-aggregation-of-modularized-entities)
+`pezkuwi-sdk` aims to ease dependency management, `pezkuwi-sdk-frame` intends to simplify
+[FRAME](https://docs.pezkuwichain.app/polkadot-protocol/glossary/#frame-framework-for-runtime-aggregation-of-modularized-entities)
 pallet implementation, as demonstrated in the example below.
 
 ## 💻 Usage
@@ -52,11 +52,11 @@ may contain the following.
 
 ```toml
 [dependencies]
-polkadot-sdk = { version = "0.12.0", features = ["runtime", "serde"], default-features = false }
+pezkuwi-sdk = { version = "0.12.0", features = ["runtime", "serde"], default-features = false }
 
 [features]
-runtime-benchmarks = ["polkadot-sdk/runtime-benchmarks"]
-with-tracing = ["polkadot-sdk/with-tracing"]
+runtime-benchmarks = ["pezkuwi-sdk/runtime-benchmarks"]
+with-tracing = ["pezkuwi-sdk/with-tracing"]
 ```
 
 ```shell
@@ -69,10 +69,10 @@ feature.
 
 ```toml
 [dependencies]
-polkadot-sdk = { version = "0.12.0", features = ["runtime"], default-features = false }
+pezkuwi-sdk = { version = "0.12.0", features = ["runtime"], default-features = false }
 
 [features]
-try-runtime = ["polkadot-sdk/try-runtime"]
+try-runtime = ["pezkuwi-sdk/try-runtime"]
 ```
 
 ```shell
@@ -90,7 +90,7 @@ of increased compile time).
 
 ```toml
 [dependencies]
-polkadot-sdk = { version = "0.12.0", features = ["runtime", "tuples-96"], default-features = false }
+pezkuwi-sdk = { version = "0.12.0", features = ["runtime", "tuples-96"], default-features = false }
 ```
 
 In addition to all the features mentioned earlier, each exported crate is feature-gated individually
@@ -103,11 +103,11 @@ list instead to reduce build time.
 
 ---
 
-When using `polkadot-sdk` to build a node, it is a good start to enable the `node` feature.
+When using `pezkuwi-sdk` to build a node, it is a good start to enable the `node` feature.
 
 ```toml
 [dependencies]
-polkadot-sdk = { version = "0.12.0", features = ["node"] }
+pezkuwi-sdk = { version = "0.12.0", features = ["node"] }
 ```
 
 For a runtime implementation, you need the `runtime` feature instead. Besides, you may want to opt
@@ -116,18 +116,18 @@ where `std` isn't available.
 
 ```toml
 [dependencies]
-polkadot-sdk = { version = "0.12.0", features = ["runtime"], default-features = false }
+pezkuwi-sdk = { version = "0.12.0", features = ["runtime"], default-features = false }
 ```
 
-When building a runtime or writing an application pallet, `polkadot-sdk-frame` can be a handy
+When building a runtime or writing an application pallet, `pezkuwi-sdk-frame` can be a handy
 toolkit to start with. It gathers all the common types, traits, and functions from many different
 crates so that you can import them with a one-liner.
 
-`polkadot-sdk-frame` is also a part of `polkadot-sdk`. It is enabled by the `runtime` feature.
+`pezkuwi-sdk-frame` is also a part of `pezkuwi-sdk`. It is enabled by the `runtime` feature.
 
 ```rust
 // It's a convention to rename it to `frame`.
-use polkadot_sdk::polkadot_sdk_frame as frame;
+use pezkuwi_sdk::pezkuwi_sdk_frame as frame;
 
 #[frame::pallet(dev_mode)]
 pub mod pallet {
@@ -170,11 +170,11 @@ pub mod pallet {
 }
 ```
 
-For more detailed documentation and examples on `polkadot-sdk-frame`, see [`polkadot_sdk_frame`](https://paritytech.github.io/polkadot-sdk/master/polkadot_sdk_frame/index.html).
+For more detailed documentation and examples on `pezkuwi-sdk-frame`, see [`pezkuwi_sdk_frame`](https://docs.pezkuwichain.io/sdk/master/polkadot_sdk_frame/index.html).
 
-To learn more about building with the Polkadot SDK, you may start with these
-[guides](https://paritytech.github.io/polkadot-sdk/master/polkadot_sdk_docs/guides/index.html) and
-our [official docs](https://docs.polkadot.com/).
+To learn more about building with the Pezkuwi SDK, you may start with these
+[guides](https://docs.pezkuwichain.io/sdk/master/polkadot_sdk_docs/guides/index.html) and
+our [official docs](https://docs.pezkuwichain.app/).
 
 ## 🚀 Versioning
 
@@ -182,5 +182,5 @@ We do a stable release for the SDK every three months with a version schema refl
 cadence, which is tracked in the [release
 registry](https://github.com/paritytech/release-registry/). At the time of writing, the latest
 version is `stable2412` (released in 2024 December). To avoid confusion, we will align the
-versioning of `polkadot-sdk` with the established schema. For instance, the next stable version will
+versioning of `pezkuwi-sdk` with the established schema. For instance, the next stable version will
 be `2503.0.0`.

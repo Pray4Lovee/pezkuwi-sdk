@@ -36,12 +36,12 @@ pub fn generate_crate_access() -> TokenStream {
 		},
 		Err(e) => {
 			if let Ok(FoundCrate::Name(name)) =
-				crate_name(&"polkadot-sdk-frame").or_else(|_| crate_name(&"frame"))
+				crate_name(&"pezkuwi-sdk-frame").or_else(|_| crate_name(&"frame"))
 			{
 				let path = format!("{}::deps::sp_api::__private", name);
 				let path = syn::parse_str::<syn::Path>(&path).expect("is a valid path; qed");
 				quote!( #path )
-			} else if let Ok(FoundCrate::Name(name)) = crate_name(&"polkadot-sdk") {
+			} else if let Ok(FoundCrate::Name(name)) = crate_name(&"pezkuwi-sdk") {
 				let path = format!("{}::sp_api::__private", name);
 				let path = syn::parse_str::<syn::Path>(&path).expect("is a valid path; qed");
 				quote!( #path )
@@ -234,7 +234,7 @@ pub fn parse_runtime_api_version(version: &Attribute) -> Result<u32> {
 	version.base10_parse()
 }
 
-/// Each versioned trait is named 'ApiNameVN' where N is the specific version. E.g. ParachainHostV2
+/// Each versioned trait is named 'ApiNameVN' where N is the specific version. E.g. TeyrchainHostV2
 pub fn versioned_trait_name(trait_ident: &Ident, version: u32) -> Ident {
 	format_ident!("{}V{}", trait_ident, version)
 }

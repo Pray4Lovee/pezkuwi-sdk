@@ -47,7 +47,7 @@ This document provides a comprehensive inventory of all URLs found in the Polkad
 | 627 | https://www.gnu.org | LICENSE (Preserve) |
 | 240 | https://docs.rs | Rust docs (Preserve) |
 | 116 | https://paritytech.github.io | Parity docs (Analyze) |
-| 55 | https://docs.substrate.io | Substrate docs (Preserve) |
+| 55 | https://github.com/pezkuwichain/docs.pezkuwichain.io | Substrate docs (Preserve) |
 | 50 | https://img.shields.io | Badges (Preserve) |
 | 42 | https://doc.rust-lang.org | Rust docs (Preserve) |
 | 38 | https://crates.io | Dependencies (Preserve) |
@@ -68,29 +68,29 @@ This document provides a comprehensive inventory of all URLs found in the Polkad
 | 7 | https://tools.ietf.org | IETF specs (Preserve) |
 | 7 | https://polkadot-fellows.github.io | Fellows docs (Analyze) |
 | 6 | https://use.ink | Ink! docs (Preserve) |
-| 6 | https://unique.network | Parachain (Preserve) |
-| 6 | https://sora.org | Parachain (Preserve) |
+| 6 | https://unique.network | Teyrchain (Preserve) |
+| 6 | https://sora.org | Teyrchain (Preserve) |
 | 5 | https://substrate.io | Substrate branding (Analyze) |
 | 5 | https://storage.googleapis.com | Cloud storage (Preserve) |
 | 5 | https://min-api.cryptocompare.com | Price API (Preserve) |
 | 5 | https://crates.parity.io | Parity crates (Analyze) |
-| 4 | https://zero.io | Parachain (Preserve) |
+| 4 | https://zero.io | Teyrchain (Preserve) |
 | 4 | https://www.shawntabrizi.com | Personal blog (Preserve) |
 | 4 | https://www.rust-lang.org | Rust docs (Preserve) |
-| 4 | https://www.peaq.network | Parachain (Preserve) |
+| 4 | https://www.peaq.network | Teyrchain (Preserve) |
 | 4 | https://w3f.github.io | W3F docs (Preserve) |
-| 4 | https://totemaccounting.com | Parachain (Preserve) |
+| 4 | https://totemaccounting.com | Teyrchain (Preserve) |
 | 4 | https://t.me | Telegram (Preserve) |
-| 4 | https://subspace.network | Parachain (Preserve) |
+| 4 | https://subspace.network | Teyrchain (Preserve) |
 | 4 | https://prometheus.io | Monitoring (Preserve) |
-| 4 | https://polkafoundry.com | Parachain (Preserve) |
-| 4 | https://polkadex.trade | Parachain (Preserve) |
-| 4 | https://pendulumchain.org | Parachain (Preserve) |
-| 4 | https://parallel.fi | Parachain (Preserve) |
-| 4 | https://moonbeam.network | Parachain (Preserve) |
+| 4 | https://polkafoundry.com | Teyrchain (Preserve) |
+| 4 | https://polkadex.trade | Teyrchain (Preserve) |
+| 4 | https://pendulumchain.org | Teyrchain (Preserve) |
+| 4 | https://parallel.fi | Teyrchain (Preserve) |
+| 4 | https://moonbeam.network | Teyrchain (Preserve) |
 | 4 | https://mathwallet.org | Wallet (Preserve) |
-| 4 | https://manta.network | Parachain (Preserve) |
-| 4 | https://litentry.com | Parachain (Preserve) |
+| 4 | https://manta.network | Teyrchain (Preserve) |
+| 4 | https://litentry.com | Teyrchain (Preserve) |
 
 ---
 
@@ -102,7 +102,7 @@ External project dependencies that must be preserved:
 
 | Count | Repository | Purpose |
 |-------|------------|---------|
-| 304 | https://github.com/paritytech/polkadot-sdk | This repository (self-reference) |
+| 304 | https://github.com/pezkuwichain/pezkuwichain-sdk | This repository (self-reference) |
 | 125 | https://github.com/paritytech/substrate | Substrate framework |
 | 83 | https://github.com/paritytech/polkadot | Polkadot reference |
 | 23 | https://github.com/rust-lang/rust | Rust language |
@@ -120,7 +120,7 @@ External project dependencies that must be preserved:
 | 5 | https://github.com/polkadot-js/apps | Polkadot.js apps |
 | 5 | https://github.com/paritytech/try-runtime-cli | Try-runtime CLI |
 | 5 | https://github.com/paritytech/release-registry | Release registry |
-| 5 | https://github.com/paritytech/polkadot-sdk-parachain-template | Parachain template |
+| 5 | https://github.com/pezkuwichain/pezkuwichain-sdk-parachain-template | Teyrchain template |
 | 5 | https://github.com/paritytech/finality-grandpa | GRANDPA |
 | 4 | https://github.com/w3f/consensus | W3F consensus |
 | 4 | https://github.com/serde-rs/json | Serde JSON |
@@ -130,7 +130,7 @@ External project dependencies that must be preserved:
 | 4 | https://github.com/paritytech/prdoc | PRDoc tool |
 | 3 | https://github.com/polkadot-fellows/xcm-format | XCM format |
 | 3 | https://github.com/paritytech/subxt | Subxt library |
-| 3 | https://github.com/paritytech/polkadot-sdk-solochain-template | Solochain template |
+| 3 | https://github.com/pezkuwichain/pezkuwichain-sdk-solochain-template | Solochain template |
 | 3 | https://github.com/paritytech/parity-scale-codec | SCALE codec |
 
 ### Documentation & Crates
@@ -144,11 +144,11 @@ External project dependencies that must be preserved:
 #### Top Crates.io References
 - staging-chain-spec-builder (11 refs)
 - polkadot-omni-node (7 refs)
-- polkadot-parachain-bin (3 refs)
+- polkadot-teyrchain-bin (3 refs)
 - frame-omni-bencher (3 refs)
 
 #### Substrate Documentation (Preserve)
-- https://docs.substrate.io (55 references)
+- https://github.com/pezkuwichain/docs.pezkuwichain.io (55 references)
 
 #### Technical Specifications (Preserve)
 - https://eips.ethereum.org - Ethereum Improvement Proposals (16 refs)
@@ -222,7 +222,7 @@ References to official Polkadot documentation:
 - https://wiki.polkadot.network/* - Wiki references (35 refs)
 - https://docs.polkadot.com/* - Doc site references (18 refs)
 
-**Context:** Many are educational references explaining concepts like parachains, consensus, account generation. Consider:
+**Context:** Many are educational references explaining concepts like teyrchains, consensus, account generation. Consider:
 - **Preserve:** If referring to Polkadot ecosystem concepts
 - **Replace:** If should point to TeyrChain/Pezkuwi docs
 - **Supplement:** Add TeyrChain docs alongside Polkadot references
@@ -233,7 +233,7 @@ Key files containing Polkadot branding URLs:
 
 ```
 ./REBRANDING_HANDOFF.md - Rebranding documentation
-./templates/parachain/README.md - Template documentation
+./templates/teyrchain/README.md - Template documentation
 ./substrate/client/chain-spec/res/chain_spec.json - Chain specifications
 ./substrate/client/telemetry/src/endpoints.rs - Telemetry endpoints
 ./substrate/frame/people/src/mock.rs - Context constants
@@ -255,16 +255,16 @@ Key files containing Polkadot branding URLs:
 | Count | Endpoint | Purpose | Replacement |
 |-------|----------|---------|-------------|
 | 12 | wss://telemetry.polkadot.io/submit/ | Telemetry submission | wss://telemetry.pezkuwi.network/submit/ |
-| 4 | wss://westend-rpc.polkadot.io:443 | Westend testnet RPC | wss://zagros-rpc.pezkuwi.network:443 |
-| 1 | wss://westend-people-rpc.polkadot.io:443 | Westend People chain | Update testnet name |
-| 1 | wss://westend-coretime-rpc.polkadot.io:443 | Westend Coretime | Update testnet name |
-| 1 | wss://westend-collectives-rpc.polkadot.io:443 | Westend Collectives | Update testnet name |
-| 1 | wss://westend-bridge-hub-rpc.polkadot.io:443 | Westend Bridge Hub | Update testnet name |
-| 1 | wss://westend-asset-hub-rpc.polkadot.io:443 | Westend Asset Hub | Update testnet name |
-| 1 | wss://westend-asset-hub-rpc.polkadot.io | Westend Asset Hub | Update testnet name |
-| 1 | wss://try-runtime-westend.polkadot.io:443 | Try-runtime Westend | Update service |
-| 1 | wss://try-runtime-rococo.polkadot.io:443 | Try-runtime Rococo | Update service |
-| 1 | wss://rococo-rpc.polkadot.io:443 | Rococo testnet RPC | Update testnet name |
+| 4 | wss://westend-rpc.polkadot.io:443 | Zagros testnet RPC | wss://zagros-rpc.pezkuwi.network:443 |
+| 1 | wss://westend-people-rpc.polkadot.io:443 | Zagros People chain | Update testnet name |
+| 1 | wss://westend-coretime-rpc.polkadot.io:443 | Zagros Coretime | Update testnet name |
+| 1 | wss://westend-collectives-rpc.polkadot.io:443 | Zagros Collectives | Update testnet name |
+| 1 | wss://westend-bridge-hub-rpc.polkadot.io:443 | Zagros Bridge Hub | Update testnet name |
+| 1 | wss://westend-asset-hub-rpc.polkadot.io:443 | Zagros Asset Hub | Update testnet name |
+| 1 | wss://westend-asset-hub-rpc.polkadot.io | Zagros Asset Hub | Update testnet name |
+| 1 | wss://try-runtime-westend.polkadot.io:443 | Try-runtime Zagros | Update service |
+| 1 | wss://try-runtime-rococo.polkadot.io:443 | Try-runtime Pezkuwichain | Update service |
+| 1 | wss://rococo-rpc.polkadot.io:443 | Pezkuwichain testnet RPC | Update testnet name |
 
 #### External RPC Endpoints (Preserve)
 
@@ -329,24 +329,24 @@ Key files containing Polkadot branding URLs:
 const STAGING_TELEMETRY_URL: &str = "wss://telemetry.polkadot.io/submit/";
 
 ./polkadot/node/service/src/chain_spec.rs:31-35
-const WESTEND_STAGING_TELEMETRY_URL: &str = "wss://telemetry.polkadot.io/submit/";
-const ROCOCO_STAGING_TELEMETRY_URL: &str = "wss://telemetry.polkadot.io/submit/";
+const ZAGROS_STAGING_TELEMETRY_URL: &str = "wss://telemetry.polkadot.io/submit/";
+const PEZKUWICHAIN_STAGING_TELEMETRY_URL: &str = "wss://telemetry.polkadot.io/submit/";
 const VERSI_STAGING_TELEMETRY_URL: &str = "wss://telemetry.polkadot.io/submit/";
 ```
 
 #### Network Chain Specs (JSON)
 ```
 ./polkadot/node/service/chain-specs/kusama.json:45
-./polkadot/node/service/chain-specs/westend.json:39
+./polkadot/node/service/chain-specs/zagros.json:39
 ./polkadot/node/service/chain-specs/polkadot.json:46
 ```
 
 #### Runtime Test Configurations
 ```
-./substrate/frame/staking-async/runtimes/parachain/src/staking.rs:774
+./substrate/frame/staking-async/runtimes/teyrchain/src/staking.rs:774
 var("WS").unwrap_or("wss://westend-rpc.polkadot.io:443".to_string()).into();
 
-./polkadot/runtime/rococo/src/lib.rs:2742
+./polkadot/runtime/pezkuwichain/src/lib.rs:2742
 var("WS").unwrap_or("wss://rococo-rpc.polkadot.io:443".to_string()).into();
 ```
 
@@ -371,7 +371,7 @@ These URLs reference external projects, specifications, licenses, and tools that
 - Essential for technical functionality (crates.io, docs.rs, GitHub dependencies)
 - Industry standards (IETF, W3C, Ethereum specs)
 - License headers (Apache, GNU)
-- External ecosystem tools (Polkadot.js, parachain projects)
+- External ecosystem tools (Polkadot.js, teyrchain projects)
 
 **Total URLs to preserve:** ~5,800+ (89% of all URLs)
 
@@ -395,7 +395,7 @@ Replace these with Pezkuwi equivalents:
    - Update JSON chain specifications
 
 3. **RPC Endpoints:**
-   - westend-rpc.polkadot.io → zagros-rpc.pezkuwi.network
+   - zagros-rpc.polkadot.io → zagros-rpc.pezkuwi.network
    - Update testnet-specific endpoints
    - Update try-runtime endpoints
 
@@ -449,14 +449,14 @@ const STAGING_TELEMETRY_URL: &str = "wss://telemetry.pezkuwi.network/submit/";
 
 #### Testnet RPC Endpoints
 
-**Westend → Zagros rebranding:**
-- westend-rpc.polkadot.io → zagros-rpc.pezkuwi.network
-- westend-asset-hub-rpc.polkadot.io → zagros-asset-hub-rpc.pezkuwi.network
-- westend-*-rpc.polkadot.io → zagros-*-rpc.pezkuwi.network
+**Zagros → Zagros rebranding:**
+- zagros-rpc.polkadot.io → zagros-rpc.pezkuwi.network
+- zagros-asset-hub-rpc.polkadot.io → zagros-asset-hub-rpc.pezkuwi.network
+- zagros-*-rpc.polkadot.io → zagros-*-rpc.pezkuwi.network
 
-**Rococo testnet:**
-- Decide on Rococo replacement name
-- Update all rococo-rpc.polkadot.io references
+**Pezkuwichain testnet:**
+- Decide on Pezkuwichain replacement name
+- Update all pezkuwichain-rpc.polkadot.io references
 
 **Files to update:**
 - Runtime test files (substrate/frame/staking-async/*)
@@ -489,7 +489,7 @@ Generic test endpoints and localhost references need no changes:
 
 **Impact:** High | **Effort:** Medium | **Count:** ~40 refs
 
-1. Westend → Zagros RPC endpoints
+1. Zagros → Zagros RPC endpoints
 2. Runtime test configurations
 3. GitHub workflow matrices
 4. Utility test default endpoints

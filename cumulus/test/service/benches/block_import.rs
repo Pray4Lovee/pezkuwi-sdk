@@ -33,7 +33,7 @@ fn benchmark_block_import(c: &mut Criterion) {
 
 	let runtime = tokio::runtime::Runtime::new().expect("creating tokio runtime doesn't fail; qed");
 
-	let para_id = ParaId::from(cumulus_test_runtime::PARACHAIN_ID);
+	let para_id = ParaId::from(cumulus_test_runtime::TEYRCHAIN_ID);
 	let tokio_handle = runtime.handle();
 
 	// Create enough accounts to fill the block with transactions.

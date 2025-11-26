@@ -24,15 +24,15 @@ test(
 						logger.verbose("Nullified signed phase:", ok);
 					});
 				}),
-			Observe.on(Chain.Parachain, "Staking", "EraPruned")
+			Observe.on(Chain.Teyrchain, "Staking", "EraPruned")
 				.withDataCheck((x) => x.index == 0),
-			Observe.on(Chain.Parachain, "Staking", "EraPruned")
+			Observe.on(Chain.Teyrchain, "Staking", "EraPruned")
 				.withDataCheck((x) => x.index == 1),
-			// Observe.on(Chain.Parachain, "Staking", "EraPruned")
+			// Observe.on(Chain.Teyrchain, "Staking", "EraPruned")
 			// 	.withDataCheck((x) => x.index == 2),
-			// Observe.on(Chain.Parachain, "Staking", "EraPruned")
+			// Observe.on(Chain.Teyrchain, "Staking", "EraPruned")
 			// 	.withDataCheck((x) => x.index == 3),
-			// Observe.on(Chain.Parachain, "Staking", "EraPruned")
+			// Observe.on(Chain.Teyrchain, "Staking", "EraPruned")
 			// 	.withDataCheck((x) => x.index == 4),
 		].map((s) => s.build())
 

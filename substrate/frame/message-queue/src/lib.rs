@@ -572,7 +572,7 @@ pub mod pallet {
 
 		/// The maximum amount of weight (if any) to be used from remaining weight `on_idle` which
 		/// should be provided to the message queue for servicing enqueued items `on_idle`.
-		/// Useful for parachains to process messages at the same block they are received.
+		/// Useful for teyrchains to process messages at the same block they are received.
 		///
 		/// If `None`, it will not call `ServiceQueues::service_queues` in `on_idle`.
 		#[pallet::constant]

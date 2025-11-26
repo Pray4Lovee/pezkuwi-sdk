@@ -121,13 +121,13 @@ jobs:
         id: draft
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          ASSET_HUB_WESTEND_DIGEST: ${{ github.workspace}}/runtimes/asset-hub-westend-runtime/asset-hub-westend-srtool-digest.json
-          BRIDGE_HUB_WESTEND_DIGEST: ${{ github.workspace}}/runtimes/bridge-hub-westend-runtime/bridge-hub-westend-srtool-digest.json
-          COLLECTIVES_WESTEND_DIGEST: ${{ github.workspace}}/runtimes/collectives-westend-runtime/collectives-westend-srtool-digest.json
-          CORETIME_WESTEND_DIGEST: ${{ github.workspace}}/runtimes/coretime-westend-runtime/coretime-westend-srtool-digest.json
-          GLUTTON_WESTEND_DIGEST: ${{ github.workspace}}/runtimes/glutton-westend-runtime/glutton-westend-srtool-digest.json
-          PEOPLE_WESTEND_DIGEST: ${{ github.workspace}}/runtimes/people-westend-runtime/people-westend-srtool-digest.json
-          WESTEND_DIGEST: ${{ github.workspace}}/runtimes/westend-runtime/westend-srtool-digest.json
+          ASSET_HUB_ZAGROS_DIGEST: ${{ github.workspace}}/runtimes/asset-hub-zagros-runtime/asset-hub-zagros-srtool-digest.json
+          BRIDGE_HUB_ZAGROS_DIGEST: ${{ github.workspace}}/runtimes/bridge-hub-zagros-runtime/bridge-hub-zagros-srtool-digest.json
+          COLLECTIVES_ZAGROS_DIGEST: ${{ github.workspace}}/runtimes/collectives-zagros-runtime/collectives-zagros-srtool-digest.json
+          CORETIME_ZAGROS_DIGEST: ${{ github.workspace}}/runtimes/coretime-zagros-runtime/coretime-zagros-srtool-digest.json
+          GLUTTON_ZAGROS_DIGEST: ${{ github.workspace}}/runtimes/glutton-zagros-runtime/glutton-zagros-srtool-digest.json
+          PEOPLE_ZAGROS_DIGEST: ${{ github.workspace}}/runtimes/people-zagros-runtime/people-zagros-srtool-digest.json
+          ZAGROS_DIGEST: ${{ github.workspace}}/runtimes/zagros-runtime/zagros-srtool-digest.json
           RELEASE_TAG: ${{ needs.validate-inputs.outputs.release_tag }}
           NO_RUNTIMES: ${{ inputs.no_runtimes }}
           CRATES_ONLY: ${{ inputs.crates_only }}
@@ -231,7 +231,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        binary: [ polkadot, polkadot-execute-worker, polkadot-prepare-worker, polkadot-parachain, polkadot-omni-node, frame-omni-bencher, chain-spec-builder ]
+        binary: [ polkadot, polkadot-execute-worker, polkadot-prepare-worker, polkadot-teyrchain, polkadot-omni-node, frame-omni-bencher, chain-spec-builder ]
         target: [ x86_64-unknown-linux-gnu, aarch64-apple-darwin ]
 
     steps:
@@ -304,4 +304,4 @@ jobs:
           server: m.parity.io
           message: |
             **New version of polkadot tagged**: ${{ needs.validate-inputs.outputs.release_tag }}<br/>
-            And release draft is release created in [polkadot-sdk repo](https://github.com/paritytech/polkadot-sdk/releases)
+            And release draft is release created in [polkadot-sdk repo](https://github.com/pezkuwichain/pezkuwichain-sdk/releases)

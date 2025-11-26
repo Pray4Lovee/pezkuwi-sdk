@@ -2,7 +2,7 @@ title: 'revive: Rework the instruction benchmark'
 doc:
 - audience: Runtime Dev
   description: |-
-    Fixes https://github.com/paritytech/polkadot-sdk/issues/6157
+    Fixes https://github.com/pezkuwichain/pezkuwichain-sdk/issues/6157
 
     This fixes the last remaining benchmark that was not correct since it was too low level to be written in Rust. Instead, we opted.
 

@@ -4,7 +4,7 @@ on:
   workflow_call:
     inputs:
       package:
-        description: Package to be built, for now is either polkadot or polkadot-parachain-bin
+        description: Package to be built, for now is either polkadot or polkadot-teyrchain-bin
         required: true
         type: string
 

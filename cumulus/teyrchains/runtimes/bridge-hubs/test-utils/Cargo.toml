@@ -1,0 +1,94 @@
+[package]
+name = "bridge-hub-test-utils"
+version = "0.7.0"
+authors.workspace = true
+edition.workspace = true
+description = "Utils for BridgeHub testing"
+license = "Apache-2.0"
+homepage.workspace = true
+repository.workspace = true
+
+[lints]
+workspace = true
+
+[dependencies]
+codec = { features = ["derive", "max-encoded-len"], workspace = true }
+impl-trait-for-tuples = { workspace = true }
+tracing = { workspace = true }
+
+# Substrate
+frame-support = { workspace = true }
+frame-system = { workspace = true }
+pallet-balances = { workspace = true }
+pallet-timestamp = { workspace = true }
+pallet-utility = { workspace = true }
+sp-core = { workspace = true }
+sp-io = { workspace = true }
+sp-keyring = { workspace = true, default-features = true }
+sp-runtime = { workspace = true }
+sp-std = { workspace = true }
+sp-tracing = { workspace = true, default-features = true }
+
+# Cumulus
+asset-test-utils = { workspace = true, default-features = true }
+cumulus-pallet-teyrchain-system = { workspace = true }
+cumulus-pallet-xcmp-queue = { workspace = true }
+teyrchains-common = { workspace = true }
+teyrchains-runtimes-test-utils = { workspace = true }
+
+# Pezkuwi
+pallet-xcm = { workspace = true }
+xcm = { workspace = true }
+xcm-builder = { workspace = true }
+xcm-executor = { workspace = true }
+
+# Bridges
+bp-header-chain = { workspace = true }
+bp-messages = { workspace = true }
+bp-teyrchains = { workspace = true }
+bp-pezkuwi-core = { workspace = true }
+bp-relayers = { workspace = true }
+bp-runtime = { workspace = true }
+bp-test-utils = { workspace = true }
+pallet-bridge-grandpa = { workspace = true }
+pallet-bridge-messages = { features = ["test-helpers"], workspace = true }
+pallet-bridge-teyrchains = { workspace = true }
+pallet-bridge-relayers = { workspace = true }
+pallet-xcm-bridge-hub = { workspace = true }
+
+[features]
+default = ["std"]
+std = [
+	"asset-test-utils/std",
+	"bp-header-chain/std",
+	"bp-messages/std",
+	"bp-teyrchains/std",
+	"bp-pezkuwi-core/std",
+	"bp-relayers/std",
+	"bp-runtime/std",
+	"bp-test-utils/std",
+	"codec/std",
+	"cumulus-pallet-teyrchain-system/std",
+	"cumulus-pallet-xcmp-queue/std",
+	"frame-support/std",
+	"frame-system/std",
+	"pallet-balances/std",
+	"pallet-bridge-grandpa/std",
+	"pallet-bridge-messages/std",
+	"pallet-bridge-teyrchains/std",
+	"pallet-bridge-relayers/std",
+	"pallet-timestamp/std",
+	"pallet-utility/std",
+	"pallet-xcm-bridge-hub/std",
+	"pallet-xcm/std",
+	"teyrchains-common/std",
+	"teyrchains-runtimes-test-utils/std",
+	"sp-core/std",
+	"sp-io/std",
+	"sp-runtime/std",
+	"sp-std/std",
+	"tracing/std",
+	"xcm-builder/std",
+	"xcm-executor/std",
+	"xcm/std",
+]

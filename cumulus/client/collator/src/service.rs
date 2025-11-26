@@ -16,10 +16,10 @@
 // along with Cumulus. If not, see <https://www.gnu.org/licenses/>.
 
 //! The Cumulus [`CollatorService`] is a utility struct for performing common
-//! operations used in parachain consensus/authoring.
+//! operations used in teyrchain consensus/authoring.
 
 use cumulus_client_network::WaitToAnnounce;
-use cumulus_primitives_core::{CollationInfo, CollectCollationInfo, ParachainBlockData};
+use cumulus_primitives_core::{CollationInfo, CollectCollationInfo, TeyrchainBlockData};
 
 use sc_client_api::BlockBackend;
 use sp_api::{ApiExt, ProvideRuntimeApi};
@@ -27,8 +27,8 @@ use sp_consensus::BlockStatus;
 use sp_core::traits::SpawnNamed;
 use sp_runtime::traits::{Block as BlockT, HashingFor, Header as HeaderT, Zero};
 
-use cumulus_client_consensus_common::ParachainCandidate;
-use polkadot_node_primitives::{
+use cumulus_client_consensus_common::TeyrchainCandidate;
+use pezkuwi_node_primitives::{
 	BlockData, Collation, CollationSecondedSignal, MaybeCompressedPoV, PoV,
 };
 
@@ -42,22 +42,22 @@ const LOG_TARGET: &str = "cumulus-collator";
 
 /// Utility functions generally applicable to writing collators for Cumulus.
 pub trait ServiceInterface<Block: BlockT> {
-	/// Checks the status of the given block hash in the Parachain.
+	/// Checks the status of the given block hash in the Teyrchain.
 	///
 	/// Returns `true` if the block could be found and is good to be build on.
 	fn check_block_status(&self, hash: Block::Hash, header: &Block::Header) -> bool;
 
-	/// Build a full [`Collation`] from a given [`ParachainCandidate`]. This requires
+	/// Build a full [`Collation`] from a given [`TeyrchainCandidate`]. This requires
 	/// that the underlying block has been fully imported into the underlying client,
 	/// as implementations will fetch underlying runtime API data.
 	///
-	/// This also returns the unencoded parachain block data, in case that is desired.
+	/// This also returns the unencoded teyrchain block data, in case that is desired.
 	fn build_collation(
 		&self,
 		parent_header: &Block::Header,
 		block_hash: Block::Hash,
-		candidate: ParachainCandidate<Block>,
-	) -> Option<(Collation, ParachainBlockData<Block>)>;
+		candidate: TeyrchainCandidate<Block>,
+	) -> Option<(Collation, TeyrchainBlockData<Block>)>;
 
 	/// Inform networking systems that the block should be announced after a signal has
 	/// been received to indicate the block has been seconded by a relay-chain validator.
@@ -73,11 +73,11 @@ pub trait ServiceInterface<Block: BlockT> {
 	fn announce_block(&self, block_hash: Block::Hash, data: Option<Vec<u8>>);
 }
 
-/// The [`CollatorService`] provides common utilities for parachain consensus and authoring.
+/// The [`CollatorService`] provides common utilities for teyrchain consensus and authoring.
 ///
-/// This includes logic for checking the block status of arbitrary parachain headers
+/// This includes logic for checking the block status of arbitrary teyrchain headers
 /// gathered from the relay chain state, creating full [`Collation`]s to be shared with validators,
-/// and distributing new parachain blocks along the network.
+/// and distributing new teyrchain blocks along the network.
 pub struct CollatorService<Block: BlockT, BS, RA> {
 	block_status: Arc<BS>,
 	wait_to_announce: Arc<Mutex<WaitToAnnounce<Block>>>,
@@ -116,7 +116,7 @@ where
 		Self { block_status, wait_to_announce, announce_block, runtime_api }
 	}
 
-	/// Checks the status of the given block hash in the Parachain.
+	/// Checks the status of the given block hash in the Teyrchain.
 	///
 	/// Returns `true` if the block could be found and is good to be build on.
 	pub fn check_block_status(&self, hash: Block::Hash, header: &Block::Header) -> bool {
@@ -210,17 +210,17 @@ where
 		Ok(Some((collation_info, api_version)))
 	}
 
-	/// Build a full [`Collation`] from a given [`ParachainCandidate`]. This requires
+	/// Build a full [`Collation`] from a given [`TeyrchainCandidate`]. This requires
 	/// that the underlying block has been fully imported into the underlying client,
 	/// as it fetches underlying runtime API data.
 	///
-	/// This also returns the unencoded parachain block data, in case that is desired.
+	/// This also returns the unencoded teyrchain block data, in case that is desired.
 	pub fn build_collation(
 		&self,
 		parent_header: &Block::Header,
 		block_hash: Block::Hash,
-		candidate: ParachainCandidate<Block>,
-	) -> Option<(Collation, ParachainBlockData<Block>)> {
+		candidate: TeyrchainCandidate<Block>,
+	) -> Option<(Collation, TeyrchainBlockData<Block>)> {
 		let block = candidate.block;
 
 		let compact_proof = match candidate
@@ -234,7 +234,7 @@ where
 			},
 		};
 
-		// Create the parachain block data for the validators.
+		// Create the teyrchain block data for the validators.
 		let (collation_info, _api_version) = self
 			.fetch_collation_info(block_hash, block.header())
 			.map_err(|e| {
@@ -247,7 +247,7 @@ where
 			.ok()
 			.flatten()?;
 
-		// Workaround for: https://github.com/paritytech/polkadot-sdk/issues/64
+		// Workaround for: https://github.com/pezkuwichain/pezkuwichain-sdk/issues/64
 		//
 		// We are always using the `api_version` of the parent block. The `api_version` can only
 		// change with a runtime upgrade and this is when we want to observe the old `api_version`.
@@ -261,9 +261,9 @@ where
 			.ok()
 			.flatten()?;
 
-		let block_data = ParachainBlockData::<Block>::new(vec![block], compact_proof);
+		let block_data = TeyrchainBlockData::<Block>::new(vec![block], compact_proof);
 
-		let pov = polkadot_node_primitives::maybe_compress_pov(PoV {
+		let pov = pezkuwi_node_primitives::maybe_compress_pov(PoV {
 			block_data: BlockData(if api_version >= 3 {
 				block_data.encode()
 			} else {
@@ -343,8 +343,8 @@ where
 		&self,
 		parent_header: &Block::Header,
 		block_hash: Block::Hash,
-		candidate: ParachainCandidate<Block>,
-	) -> Option<(Collation, ParachainBlockData<Block>)> {
+		candidate: TeyrchainCandidate<Block>,
+	) -> Option<(Collation, TeyrchainBlockData<Block>)> {
 		CollatorService::build_collation(self, parent_header, block_hash, candidate)
 	}
 

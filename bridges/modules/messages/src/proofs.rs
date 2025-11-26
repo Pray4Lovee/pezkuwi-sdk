@@ -38,7 +38,7 @@ pub(crate) type ParsedMessagesDeliveryProofFromBridgedChain<T, I> =
 /// Verify proof of Bridged -> This chain messages.
 ///
 /// This function is used when Bridged chain is directly using GRANDPA finality. For Bridged
-/// parachains, please use the `verify_messages_proof_from_parachain`.
+/// teyrchains, please use the `verify_messages_proof_from_teyrchain`.
 ///
 /// The `messages_count` argument verification (sane limits) is supposed to be made
 /// outside of this function. This function only verifies that the proof declares exactly

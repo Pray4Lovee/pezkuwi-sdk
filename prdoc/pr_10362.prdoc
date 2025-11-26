@@ -21,7 +21,7 @@ doc:
 
     cc @paritytech/networking
 
-    Detected during versi-net triaging of elastic scaling: https://github.com/paritytech/polkadot-sdk/issues/10310#issuecomment-3543395157
+    Detected during versi-net triaging of elastic scaling: https://github.com/pezkuwichain/pezkuwichain-sdk/issues/10310#issuecomment-3543395157
 crates:
 - name: sc-network
   bump: patch

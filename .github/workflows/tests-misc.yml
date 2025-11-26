@@ -112,12 +112,12 @@ jobs:
       - name: script
         run: |
           # build runtime
-          forklift cargo build -q --locked --release -p westend-runtime -p rococo-runtime
+          forklift cargo build -q --locked --release -p zagros-runtime -p pezkuwichain-runtime
           # make checksum
           sha256sum target/release/wbuild/*-runtime/target/wasm32-unknown-unknown/release/*.wasm > checksum.sha256
           cargo clean
           # build again
-          forklift cargo build -q --locked --release -p westend-runtime -p rococo-runtime
+          forklift cargo build -q --locked --release -p zagros-runtime -p pezkuwichain-runtime
           # confirm checksum
           sha256sum -c checksum.sha256
 
@@ -274,9 +274,9 @@ jobs:
 
       - name: script
         run: |
-          forklift cargo build --locked -p westend-runtime --features metadata-hash
+          forklift cargo build --locked -p zagros-runtime --features metadata-hash
 
-  # disabled until https://github.com/paritytech/polkadot-sdk/issues/5812 is resolved
+  # disabled until https://github.com/pezkuwichain/pezkuwichain-sdk/issues/5812 is resolved
   # cargo-hfuzz:
   #   timeout-minutes: 20
   #   needs: [preflight, check-metadata-hash]

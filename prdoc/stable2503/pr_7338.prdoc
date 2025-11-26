@@ -4,7 +4,7 @@ doc:
   description: |-
     Instead of using libp2p-provided external address candidates, susceptible to address translation issues, use litep2p-backend approach based on confirming addresses observed by multiple peers as external.
 
-    Fixes https://github.com/paritytech/polkadot-sdk/issues/7207.
+    Fixes https://github.com/pezkuwichain/pezkuwichain-sdk/issues/7207.
 crates:
 - name: sc-network
   bump: major

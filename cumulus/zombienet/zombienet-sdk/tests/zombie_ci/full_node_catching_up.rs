@@ -7,16 +7,16 @@ use tokio::time::Duration;
 use crate::utils::{initialize_network, BEST_BLOCK_METRIC};
 
 use cumulus_zombienet_sdk_helpers::assert_para_throughput;
-use polkadot_primitives::Id as ParaId;
+use pezkuwi_primitives::Id as ParaId;
 use zombienet_orchestrator::network::node::LogLineCountOptions;
 use zombienet_sdk::{
-	subxt::{OnlineClient, PolkadotConfig},
+	subxt::{OnlineClient, PezkuwiConfig},
 	NetworkConfig, NetworkConfigBuilder,
 };
 
 const PARA_ID: u32 = 2000;
 
-// This tests makes sure that parachain full nodes are synchronizing with the validator
+// This tests makes sure that teyrchain full nodes are synchronizing with the validator
 // and report expected block height.
 #[tokio::test(flavor = "multi_thread")]
 async fn full_node_catching_up() -> Result<(), anyhow::Error> {
@@ -29,9 +29,9 @@ async fn full_node_catching_up() -> Result<(), anyhow::Error> {
 	let network = initialize_network(config).await?;
 
 	let relay_alice = network.get_node("alice")?;
-	let relay_client: OnlineClient<PolkadotConfig> = relay_alice.wait_client().await?;
+	let relay_client: OnlineClient<PezkuwiConfig> = relay_alice.wait_client().await?;
 
-	log::info!("Ensuring parachain making progress");
+	log::info!("Ensuring teyrchain making progress");
 	assert_para_throughput(
 		&relay_client,
 		20,
@@ -74,27 +74,27 @@ async fn build_network_config() -> Result<NetworkConfig, anyhow::Error> {
 	// - relaychain nodes:
 	// 	 - alice   - validator
 	// 	 - bob     - validator
-	// - parachain nodes
+	// - teyrchain nodes
 	//   - charlie - validator
 	//   - dave    - full node; synchronizes only with charlie
 	//   - eve     - RPC full node; synchronizes only with charlie
 	let config = NetworkConfigBuilder::new()
 		.with_relaychain(|r| {
-			r.with_chain("rococo-local")
-				.with_default_command("polkadot")
-				.with_default_image(images.polkadot.as_str())
-				.with_default_args(vec![("-lparachain=debug").into()])
+			r.with_chain("pezkuwichain-local")
+				.with_default_command("pezkuwi")
+				.with_default_image(images.pezkuwi.as_str())
+				.with_default_args(vec![("-lteyrchain=debug").into()])
 				.with_node(|node| node.with_name("alice"))
 				.with_node(|node| node.with_name("bob"))
 		})
-		.with_parachain(|p| {
+		.with_teyrchain(|p| {
 			p.with_id(PARA_ID)
-				.with_default_command("test-parachain")
+				.with_default_command("test-teyrchain")
 				.with_default_image(images.cumulus.as_str())
 				.with_collator(|n| {
 					n.with_name("charlie")
 						.validator(true)
-						.with_args(vec![("-lparachain=debug").into()])
+						.with_args(vec![("-lteyrchain=debug").into()])
 				})
 				.with_collator(|n| {
 					n.with_name("dave").validator(false).with_args(vec![

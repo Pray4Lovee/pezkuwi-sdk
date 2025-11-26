@@ -57,7 +57,7 @@ If you want to reproduce other steps of CI process you can use the following
 [guide](https://github.com/paritytech/scripts#reproduce-ci-locally).
 
 If you need more information about setting up your development environment [Substrate's Installation
-page](https://docs.substrate.io/main-docs/install/) is a good resource.
+page](https://github.com/pezkuwichain/docs.pezkuwichain.io/main-docs/install/) is a good resource.
 
 ## High-Level Architecture
 
@@ -68,7 +68,7 @@ For example, consider the case below where we want to bridge two Substrate based
 ```
 +---------------+                 +---------------+
 |               |                 |               |
-|     Rococo    |                 |    Westend    |
+|     pezkuwichain    |                 |    zagros    |
 |               |                 |               |
 +-------+-------+                 +-------+-------+
         ^                                 ^
@@ -79,9 +79,9 @@ For example, consider the case below where we want to bridge two Substrate based
                 +---------------+
 ```
 
-The Rococo chain must be able to accept Westend headers and verify their integrity. It does this by using a runtime
+The pezkuwichain chain must be able to accept zagros headers and verify their integrity. It does this by using a runtime
 module designed to track GRANDPA finality. Since two blockchains can't interact directly they need an external service,
-called a relayer, to communicate. The relayer will subscribe to new Rococo headers via RPC and submit them to the Westend
+called a relayer, to communicate. The relayer will subscribe to new pezkuwichain headers via RPC and submit them to the zagros
 chain for verification.
 
 Take a look at [Bridge High Level Documentation](./docs/high-level-overview.md) for more in-depth description of the
@@ -98,7 +98,7 @@ messages between chains.
 │  ├── beefy                 // On-Chain BEEFY Light Client (in progress)
 │  ├── grandpa               // On-Chain GRANDPA Light Client
 │  ├── messages              // Cross Chain Message Passing
-│  ├── parachains            // On-Chain Parachains Light Client
+│  ├── teyrchains            // On-Chain Teyrchains Light Client
 │  ├── relayers              // Relayer Rewards Registry
 │  ├── xcm-bridge-hub        // Multiple Dynamic Bridges Support
 │  ├── xcm-bridge-hub-router // XCM Router that may be used to Connect to XCM Bridge Hub
@@ -111,6 +111,6 @@ messages between chains.
 
 ## Running the Bridge
 
-Apart from live Rococo <> Westend bridge, you may spin up local networks and test see how it works locally. More
+Apart from live pezkuwichain <> zagros bridge, you may spin up local networks and test see how it works locally. More
 details may be found in
-[this document](https://github.com/paritytech/polkadot-sdk/tree/master//cumulus/parachains/runtimes/bridge-hubs/README.md).
+[this document](https://github.com/pezkuwichain/pezkuwi-sdk/tree/master//cumulus/parachains/runtimes/bridge-hubs/README.md).

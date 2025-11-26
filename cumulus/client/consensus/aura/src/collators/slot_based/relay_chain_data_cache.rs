@@ -20,13 +20,13 @@
 use crate::collators::claim_queue_at;
 use cumulus_primitives_core::CoreSelector;
 use cumulus_relay_chain_interface::RelayChainInterface;
-use polkadot_node_subsystem_util::runtime::ClaimQueueSnapshot;
-use polkadot_primitives::{
+use pezkuwi_node_subsystem_util::runtime::ClaimQueueSnapshot;
+use pezkuwi_primitives::{
 	Hash as RelayHash, Header as RelayHeader, Id as ParaId, OccupiedCoreAssumption,
 };
 use sp_runtime::generic::BlockId;
 
-/// Contains relay chain data necessary for parachain block building.
+/// Contains relay chain data necessary for teyrchain block building.
 #[derive(Clone, Debug)]
 pub struct RelayChainData {
 	/// Current relay chain parent header.

@@ -38,7 +38,7 @@ use sp_core::hexdisplay::HexDisplay;
 use sp_runtime::traits::{Block as BlockT, Zero};
 use url::Url;
 
-/// The `purge-chain` command used to remove the whole chain: the parachain and the relay chain.
+/// The `purge-chain` command used to remove the whole chain: the teyrchain and the relay chain.
 #[derive(Debug, clap::Parser)]
 #[group(skip)]
 pub struct PurgeChainCmd {
@@ -48,7 +48,7 @@ pub struct PurgeChainCmd {
 
 	/// Only delete the para chain database
 	#[arg(long, aliases = &["para"])]
-	pub parachain: bool,
+	pub teyrchain: bool,
 
 	/// Only delete the relay chain database
 	#[arg(long, aliases = &["relay"])]
@@ -62,11 +62,11 @@ impl PurgeChainCmd {
 		para_config: sc_service::Configuration,
 		relay_config: sc_service::Configuration,
 	) -> sc_cli::Result<()> {
-		let databases = match (self.parachain, self.relaychain) {
+		let databases = match (self.teyrchain, self.relaychain) {
 			(true, true) | (false, false) => {
-				vec![("parachain", para_config.database), ("relaychain", relay_config.database)]
+				vec![("teyrchain", para_config.database), ("relaychain", relay_config.database)]
 			},
-			(true, false) => vec![("parachain", para_config.database)],
+			(true, false) => vec![("teyrchain", para_config.database)],
 			(false, true) => vec![("relaychain", relay_config.database)],
 		};
 
@@ -128,7 +128,7 @@ impl sc_cli::CliConfiguration for PurgeChainCmd {
 	}
 }
 
-/// Get the SCALE encoded genesis header of the parachain.
+/// Get the SCALE encoded genesis header of the teyrchain.
 pub fn get_raw_genesis_header<B, C>(client: Arc<C>) -> sc_cli::Result<Vec<u8>>
 where
 	B: BlockT,
@@ -149,7 +149,7 @@ where
 	Ok(genesis_header.encode())
 }
 
-/// Command for exporting the genesis head data of the parachain
+/// Command for exporting the genesis head data of the teyrchain
 #[derive(Debug, clap::Parser)]
 pub struct ExportGenesisHeadCommand {
 	/// Output file name or stdout if unspecified.
@@ -308,19 +308,19 @@ pub struct RunCmd {
 	/// building blocks that do not fit in the max_pov_size. It is a percentage of the max_pov_size
 	/// configuration of the relay-chain.
 	///
-	/// It will be removed once <https://github.com/paritytech/polkadot-sdk/issues/6020> is fixed.
+	/// It will be removed once <https://github.com/pezkuwichain/pezkuwichain-sdk/issues/6020> is fixed.
 	#[arg(long)]
 	pub experimental_max_pov_percentage: Option<u32>,
 
 	/// Disable embedded DHT bootnode.
 	///
-	/// Do not advertise the node as a parachain bootnode on the relay chain DHT.
+	/// Do not advertise the node as a teyrchain bootnode on the relay chain DHT.
 	#[arg(long)]
 	pub no_dht_bootnode: bool,
 
 	/// Disable DHT bootnode discovery.
 	///
-	/// Disable discovery of the parachain bootnodes via the relay chain DHT.
+	/// Disable discovery of the teyrchain bootnodes via the relay chain DHT.
 	#[arg(long)]
 	pub no_dht_bootnode_discovery: bool,
 }
@@ -336,7 +336,7 @@ impl RunCmd {
 		NormalizedRunCmd { base: new_base }
 	}
 
-	/// Create [`CollatorOptions`] representing options only relevant to parachain collator nodes
+	/// Create [`CollatorOptions`] representing options only relevant to teyrchain collator nodes
 	pub fn collator_options(&self) -> CollatorOptions {
 		let relay_chain_mode = if self.relay_chain_rpc_urls.is_empty() {
 			RelayChainMode::Embedded
@@ -361,7 +361,7 @@ pub enum RelayChainMode {
 	ExternalRpc(Vec<Url>),
 }
 
-/// Options only relevant for collator/parachain nodes
+/// Options only relevant for collator/teyrchain nodes
 #[derive(Clone, Debug)]
 pub struct CollatorOptions {
 	/// How this collator retrieves relay chain information

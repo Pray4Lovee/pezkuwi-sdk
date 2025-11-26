@@ -10,7 +10,7 @@ on:
         type: string
 
       package:
-        description: Package to be built, for now can be polkadot, polkadot-parachain-bin, or polkadot-omni-node
+        description: Package to be built, for now can be polkadot, polkadot-teyrchain-bin, or polkadot-omni-node
         required: true
         type: string
 
@@ -55,7 +55,7 @@ jobs:
         run: |
           cat .github/env >> $GITHUB_OUTPUT
           RUNNER=""
-          if [[ "${BINARY}" =~ "polkadot-parachain" || "${BINARY}" =~ "polkadot-omni-node" ]]; then
+          if [[ "${BINARY}" =~ "polkadot-teyrchain" || "${BINARY}" =~ "polkadot-omni-node" ]]; then
             RUNNER="ubuntu-latest-m"
             echo "Using ubuntu-latest-m runner"
           else
@@ -362,12 +362,12 @@ jobs:
       target: ${{ inputs.target }}
     secrets: inherit
 
-  upload-polkadot-parachain-artifacts-to-s3:
-    if: ${{ inputs.package == 'polkadot-parachain-bin' && inputs.target == 'x86_64-unknown-linux-gnu' }}
+  upload-polkadot-teyrchain-artifacts-to-s3:
+    if: ${{ inputs.package == 'polkadot-teyrchain-bin' && inputs.target == 'x86_64-unknown-linux-gnu' }}
     needs: [build-rc]
     uses: ./.github/workflows/release-reusable-s3-upload.yml
     with:
-      package: polkadot-parachain
+      package: polkadot-teyrchain
       release_tag: ${{ inputs.release_tag }}
       target: ${{ inputs.target }}
     secrets: inherit
@@ -474,12 +474,12 @@ jobs:
        target: ${{ inputs.target }}
      secrets: inherit
 
-  upload-polkadot-parachain-macos-artifacts-to-s3:
-     if: ${{ inputs.package == 'polkadot-parachain-bin' && inputs.target == 'aarch64-apple-darwin' }}
+  upload-polkadot-teyrchain-macos-artifacts-to-s3:
+     if: ${{ inputs.package == 'polkadot-teyrchain-bin' && inputs.target == 'aarch64-apple-darwin' }}
      needs: [build-macos-rc]
      uses: ./.github/workflows/release-reusable-s3-upload.yml
      with:
-       package: polkadot-parachain
+       package: polkadot-teyrchain
        release_tag: ${{ inputs.release_tag }}
        target: ${{ inputs.target }}
      secrets: inherit

@@ -18,7 +18,7 @@ use sp_runtime::{
 };
 use sp_std::{convert::From, default::Default};
 use xcm::{
-	latest::{SendXcm, WESTEND_GENESIS_HASH},
+	latest::{SendXcm, ZAGROS_GENESIS_HASH},
 	prelude::*,
 };
 use xcm_executor::AssetsInHolding;
@@ -127,8 +127,8 @@ parameter_types! {
 	pub const InitialFund: u128 = 1_000_000_000_000;
 	pub const InboundQueuePalletInstance: u8 = 80;
 	pub UniversalLocation: InteriorLocation =
-		[GlobalConsensus(ByGenesis(WESTEND_GENESIS_HASH)), Parachain(1002)].into();
-	pub AssetHubFromEthereum: Location = Location::new(1,[GlobalConsensus(ByGenesis(WESTEND_GENESIS_HASH)),Parachain(1000)]);
+		[GlobalConsensus(ByGenesis(ZAGROS_GENESIS_HASH)), Teyrchain(1002)].into();
+	pub AssetHubFromEthereum: Location = Location::new(1,[GlobalConsensus(ByGenesis(ZAGROS_GENESIS_HASH)),Teyrchain(1000)]);
 }
 
 #[cfg(feature = "runtime-benchmarks")]
@@ -150,7 +150,7 @@ impl SendXcm for MockXcmSender {
 	) -> SendResult<Self::Ticket> {
 		if let Some(location) = dest {
 			match location.unpack() {
-				(_, [Parachain(1001)]) => return Err(XcmpSendError::NotApplicable),
+				(_, [Teyrchain(1001)]) => return Err(XcmpSendError::NotApplicable),
 				_ => Ok((xcm.clone().unwrap(), Assets::default())),
 			}
 		} else {
@@ -169,12 +169,12 @@ parameter_types! {
 	pub Parameters: PricingParameters<u128> = PricingParameters {
 		exchange_rate: FixedU128::from_rational(1, 400),
 		fee_per_gas: gwei(20),
-		rewards: Rewards { local: DOT, remote: meth(1) },
+		rewards: Rewards { local: HEZ, remote: meth(1) },
 		multiplier: FixedU128::from_rational(1, 1),
 	};
 }
 
-pub const DOT: u128 = 10_000_000_000;
+pub const HEZ: u128 = 10_000_000_000;
 
 pub struct MockChannelLookup;
 impl StaticLookup for MockChannelLookup {

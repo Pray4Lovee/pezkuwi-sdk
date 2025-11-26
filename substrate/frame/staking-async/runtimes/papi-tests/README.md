@@ -1,6 +1,6 @@
-# Staking Async Test Parachain
+# Staking Async Test Teyrchain
 
-- [Staking Async Test Parachain](#staking-async-test-parachain)
+- [Staking Async Test Teyrchain](#staking-async-test-teyrchain)
   - [Runtime Overview](#runtime-overview)
     - [Runtime Presets + Other Hacks](#runtime-presets--other-hacks)
       - [`parameter_types! { pub storage }` FTW](#parameter_types--pub-storage--ftw)
@@ -14,7 +14,7 @@
 
 This folder contains a Node+PAPI+Bun setup to:
 
-1. run the `pallet-staking-async-runtimes` parachain and relay-chain. It uses Zombienet under the
+1. run the `pallet-staking-async-runtimes` teyrchain and relay-chain. It uses Zombienet under the
    hood.
 2. Contains integration tests, based on ZN as well, that spawns a particular test, submits
    transactions, and inspects the chain state (notably events) for verification.
@@ -24,10 +24,10 @@ the setup, see [Setup](#setup).
 
 ## Runtime Overview
 
-This parachain runtime is a fake fork of the asset-hub next (created originally by Dónal). It is here
+This teyrchain runtime is a fake fork of the asset-hub next (created originally by Dónal). It is here
 to test the async-staking pallet in a real environment.
 
-This parachain contains:
+This teyrchain contains:
 
 - `pallet-staking-async`
 - `pallet-staking-async-rc-client`
@@ -40,10 +40,10 @@ communicated to it via the `pallet-staking-async-rc-client` pallet.
 
 A lot more is in the runtime, and can be eventually removed.
 
-Note that the parachain runtime also contains a `pallet-session` that works with
-`pallet-collator-selection` for the PARACHAIN block author selection.
+Note that the teyrchain runtime also contains a `pallet-session` that works with
+`pallet-collator-selection` for the TEYRCHAIN block author selection.
 
-The counterpart `rc` runtime is a relay chain that is meant to host the parachain. It contains:
+The counterpart `rc` runtime is a relay chain that is meant to host the teyrchain. It contains:
 
 - `pallet-staking-async-ah-client`
 - `pallet-session`
@@ -64,7 +64,7 @@ Config`, such as `type SignedPhase` (the duration of a phase) into an orphan sto
 two benefits:
 
 1. In manual testing, we can update them on the fly via `sudo(system.set_storage)` calls.
-   [This](https://paritytech.github.io/polkadot-sdk/master/src/frame_support/lib.rs.html#357) is how
+   [This](https://docs.pezkuwichain.io/sdk/master/src/frame_support/lib.rs.html#357) is how
    the key for these is generated.
 2. We can easily tweak them based on startup.
 
@@ -77,7 +77,7 @@ This type looks into `parameter_types! { pub storage UsePreviousValidators: bool
   **Why is this needed**? Because in ZN, our test relay chain is running with usually a set of known
   validators run by ZN (often alice and bob). If AH sends us back a validator set that contains a
   large new validator set, the setup will break. As seen in the next section, a number of runtime
-  presets are designed to generate large validator/nominator sets to mimic the behavior of Polkadot
+  presets are designed to generate large validator/nominator sets to mimic the behavior of PezkuwiChain
   and Kusama. We thereofre must use this hack in such cases.
 - If set to `false`, it will use the new validator set.
 
@@ -89,26 +89,26 @@ The runtime presets are generally divided into few categories:
   Consequently, AH will NOT generate random validators, and instead use 2 or 4 well know keys
   (alice, bob, dave, eve) as validator candidates. This setup is useful for slashing testing.
   `real-s` uses 2 validators, while `real-m` uses 4 validators. The latter is useful for testing
-  disabling. Note that we need at least 2 non-disabled validators to run a parachain.
+  disabling. Note that we need at least 2 non-disabled validators to run a teyrchain.
 - `fake-x`: these presets instruct asset-hub to generate various number of fake validators and
   nominators. Useful for testing large elections. `MaybeUsePreviousValidatorsElse` is used in the
   relay runtime to ignore the new validators, and stick to alice and bob.
 
 More concretely, the presets are:
 
-- Parachain:
+- Teyrchain:
     - `fake-dev`: 4 page, small number of fake validators and nominators.
-    - `fake-dot`: 32 pages, large number of fake validators and nominators.
+    - `fake-hez`: 32 pages, large number of fake validators and nominators.
     - `fake-ksm`: 16 pages, large number of fake validators and nominators.
     - `real-s`: 4 pages, alice and bob as validators, 500 fake nominators
     - `real-m`: 4 pages, alice, bob, dave, eve as validators, 2000 fake nominators.
 - Relay Chain
     - `fake-s`: alice and bob as relay validators, `UsePreviousValidators` set to true. Should be
-      used with all 3 `fake-x` presets in the parachain.
+      used with all 3 `fake-x` presets in the teyrchain.
     - `real-s`: alice and bob as relay validators, `UsePreviousValidators` set to false. Should be
-      used with `real-s` presets in the parachain.
+      used with `real-s` presets in the teyrchain.
     - `real-m`: alice, bob, dave, eve as relay validators, `UsePreviousValidators` set to false.
-      Should be used with `real-m` presets in the parachain.
+      Should be used with `real-m` presets in the teyrchain.
 
 See `genesis_config_presets.rs`, and `fn build_state` in each runtime for more details.
 
@@ -116,8 +116,8 @@ See `genesis_config_presets.rs`, and `fn build_state` in each runtime for more d
 
 This section describes how to set up and run this code. Make sure to have the latest version of
 node, bun and [just](https://github.com/casey/just) installed. Moreover, you are expected to have
-`zombienet`, `polkadot`, `polkadot-parachain`, `polkadot-prepare-worker` and
-`polkadot-execution-worker` in your `PATH` already. Rest of the binaries (`chain-spec-builder`) are
+`zombienet`, `pezkuwi`, `pezkuwi-teyrchain`, `pezkuwi-prepare-worker` and
+`pezkuwi-execution-worker` in your `PATH` already. Rest of the binaries (`chain-spec-builder`) are
 compiled from the sdk.
 
 > verified compatible zombienet version: 1.3.126
@@ -190,7 +190,7 @@ verbose: [Rely#91][⛓ 2,039ms / 777 kb] Processing event: ...
 verbose: [Para#71][⛓ 38ms / 852 kb][✍️ hd=0.22, xt=4.07, st=6.82, sum=11.11, cmp=9.74, time=2ms] Processing event: ...
 ```
 
-- `Rely` indicates the relay chain (truncated to be 4 chars), `Para` indicates the parachain.
+- `Rely` indicates the relay chain (truncated to be 4 chars), `Para` indicates the teyrchain.
 - Both chains' logs contain onchain (⛓) weight information, obtained from `frame-system`.
 - `Para` logs contain more information from the collator/author's logs (✍️). They are:
   - `hd` header size,

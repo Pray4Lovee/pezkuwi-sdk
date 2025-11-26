@@ -75,12 +75,12 @@ a substream is open, the **multistream-select** protocol is used to negotiate wh
 to use on that given substream.
 
 Protocols that are specific to a certain chain have a `<protocol-id>` in their name. This
-"protocol ID" is defined in the chain specifications. For example, the protocol ID of Polkadot
-is "dot". In the protocol names below, `<protocol-id>` must be replaced with the corresponding
+"protocol ID" is defined in the chain specifications. For example, the protocol ID of PezkuwiChain
+is "hez". In the protocol names below, `<protocol-id>` must be replaced with the corresponding
 protocol ID.
 
 > **Note**: It is possible for the same connection to be used for multiple chains. For example,
-> one can use both the `/dot/sync/2` and `/sub/sync/2` protocols on the same
+> one can use both the `/hez/sync/2` and `/sub/sync/2` protocols on the same
 > connection, provided that the remote supports them.
 
 Substrate uses the following standard libp2p protocols:

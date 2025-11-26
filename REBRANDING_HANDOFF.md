@@ -42,7 +42,7 @@ grep -rn "wss\?://\|127\.0\.0\.1\|localhost" . --include="*.rs" --include="*.tom
 **Categorization:**
 1. **Preserve:** External dependencies (GitHub, crates.io, official docs that must remain)
 2. **Replace:** Branding URLs (polkadot.network → pezkuwi.network)
-3. **Remove:** Westend-specific URLs (if removing Westend components)
+3. **Remove:** Zagros-specific URLs (if removing Zagros components)
 
 **Deliverable:** `URL_INVENTORY.md` with categorized list
 
@@ -66,9 +66,9 @@ grep -rn "protocol_id\|chain_id\|network_id\|para_id" . --include="*.rs" --inclu
 **Critical Parameters:**
 - **Protocol ID:** Must be unique for Pezkuwi
 - **Genesis Hash:** Will change after rebranding
-- **SS58 Prefix:** Polkadot=0, Kusama=2, Rococo=42 → Define Pezkuwi prefix
-- **Parachain IDs:** System parachains (1000, 1001, etc.)
-- **Token Decimals:** DOT=10, ROC=12, WND=12 → Define HEZ, ZGR, TYR decimals
+- **SS58 Prefix:** Polkadot=0, Kusama=2, Pezkuwichain=42 → Define Pezkuwi prefix
+- **Teyrchain IDs:** System teyrchains (1000, 1001, etc.)
+- **Token Decimals:** HEZ=10, TYR=12, ZGR=12 → Define HEZ, ZGR, TYR decimals
 
 #### Cryptographic Keys & Seeds
 ```bash
@@ -162,7 +162,7 @@ grep -rn "EXISTENTIAL_DEPOSIT\|CENTS\|DOLLARS\|MILLICENTS" . --include="*.rs" --
 ```
 ✓ https://github.com/paritytech/*
 ✓ https://crates.io/*
-✓ https://docs.substrate.io/*
+✓ https://github.com/pezkuwichain/docs.pezkuwichain.io/*
 ✓ https://wiki.polkadot.network/* (for reference documentation)
 ✓ wss://rpc.polkadot.io (if used as reference)
 ```
@@ -174,10 +174,10 @@ polkadot.io → pezkuwi.io
 telemetry.polkadot.io → telemetry.pezkuwi.network
 ```
 
-**Remove (Westend-specific):**
+**Remove (Zagros-specific):**
 ```
-westend-rpc.polkadot.io → (remove or replace with zagros-rpc.pezkuwi.network)
-westend.subscan.io → (remove)
+zagros-rpc.polkadot.io → (remove or replace with zagros-rpc.pezkuwi.network)
+zagros.subscan.io → (remove)
 ```
 
 ### 1.2 Execution Plan
@@ -262,7 +262,7 @@ license = "GPL-3.0-or-later"
 **Binary Names:**
 ```
 polkadot → pezkuwi
-polkadot-parachain → pezkuwi-parachain
+polkadot-teyrchain → pezkuwi-teyrchain
 polkadot-prepare-worker → pezkuwi-prepare-worker
 polkadot-execute-worker → pezkuwi-execute-worker
 ```
@@ -368,92 +368,92 @@ cargo build --release -p pezkuwi # formerly polkadot binary
 
 ---
 
-## Phase 3: Rococo → PezkuwiChain Rebranding
+## Phase 3: Pezkuwichain → PezkuwiChain Rebranding
 
-**Objective:** Transform Rococo testnet to PezkuwiChain relay chain
+**Objective:** Transform Pezkuwichain testnet to PezkuwiChain relay chain
 
 ### 3.1 Renaming Scope
 
 **Identifiers:**
 ```
-Rococo → PezkuwiChain
-rococo → pezkuwichain
-ROC → ZGR (Zagros token - see note below)
-ROCOCO → PEZKUWICHAIN
+Pezkuwichain → PezkuwiChain
+pezkuwichain → pezkuwichain
+TYR → ZGR (Zagros token - see note below)
+PEZKUWICHAIN → PEZKUWICHAIN
 ```
 
-**Note:** We're mapping Rococo → PezkuwiChain but its token will be ZGR (Zagros), defined in Phase 4.
+**Note:** We're mapping Pezkuwichain → PezkuwiChain but its token will be ZGR (Zagros), defined in Phase 4.
 
 ### 3.2 Key Files
 
 **Runtime:**
 ```
-polkadot/runtime/rococo/ → pezkuwi/runtime/pezkuwichain/
-polkadot/runtime/rococo/src/lib.rs → pezkuwi/runtime/pezkuwichain/src/lib.rs
-polkadot/runtime/rococo/Cargo.toml
+polkadot/runtime/pezkuwichain/ → pezkuwi/runtime/pezkuwichain/
+polkadot/runtime/pezkuwichain/src/lib.rs → pezkuwi/runtime/pezkuwichain/src/lib.rs
+polkadot/runtime/pezkuwichain/Cargo.toml
 ```
 
 **Chain Specs:**
 ```
-polkadot/chain-specs/rococo*.json → pezkuwi/chain-specs/pezkuwichain*.json
+polkadot/chain-specs/pezkuwichain*.json → pezkuwi/chain-specs/pezkuwichain*.json
 ```
 
 **Primitives:**
 ```
-polkadot/primitives/src/rococo.rs (if exists)
+polkadot/primitives/src/pezkuwichain.rs (if exists)
 ```
 
 ### 3.3 Execution Script
 
 ```bash
-cat > /tmp/rococo-pezkuwichain-rename.sh << 'SCRIPT'
+cat > /tmp/pezkuwichain-pezkuwichain-rename.sh << 'SCRIPT'
 #!/bin/bash
 
-git checkout -b rebranding-phase3-rococo-pezkuwichain
+git checkout -b rebranding-phase3-pezkuwichain-pezkuwichain
 
 # Rename in contents
 find . -type f \( -name "*.rs" -o -name "*.toml" -o -name "*.md" -o -name "*.json" \) \
   -not -path "*/target/*" \
   -not -path "*/.git/*" \
-  -exec sed -i 's/Rococo/PezkuwiChain/g' {} \;
+  -exec sed -i 's/Pezkuwichain/PezkuwiChain/g' {} \;
 
 find . -type f \( -name "*.rs" -o -name "*.toml" -o -name "*.md" -o -name "*.json" \) \
   -not -path "*/target/*" \
   -not -path "*/.git/*" \
-  -exec sed -i 's/rococo/pezkuwichain/g' {} \;
+  -exec sed -i 's/pezkuwichain/pezkuwichain/g' {} \;
 
 find . -type f \( -name "*.rs" -o -name "*.toml" -o -name "*.md" -o -name "*.json" \) \
   -not -path "*/target/*" \
   -not -path "*/.git/*" \
-  -exec sed -i 's/ROCOCO/PEZKUWICHAIN/g' {} \;
+  -exec sed -i 's/PEZKUWICHAIN/PEZKUWICHAIN/g' {} \;
 
 # Rename directories
-find . -depth -type d -name "*rococo*" -not -path "*/target/*" -not -path "*/.git/*" | while read dir; do
-  newdir=$(echo "$dir" | sed 's/rococo/pezkuwichain/g')
+find . -depth -type d -name "*pezkuwichain*" -not -path "*/target/*" -not -path "*/.git/*" | while read dir; do
+  newdir=$(echo "$dir" | sed 's/pezkuwichain/pezkuwichain/g')
   if [ "$dir" != "$newdir" ]; then
     mv "$dir" "$newdir"
   fi
 done
 
 # Rename files
-find . -type f -name "*rococo*" -not -path "*/target/*" -not -path "*/.git/*" | while read file; do
-  newfile=$(echo "$file" | sed 's/rococo/pezkuwichain/g')
+find . -type f -name "*pezkuwichain*" -not -path "*/target/*" -not -path "*/.git/*" | while read file; do
+  newfile=$(echo "$file" | sed 's/pezkuwichain/pezkuwichain/g')
   if [ "$file" != "$newfile" ]; then
     mv "$file" "$newfile"
   fi
 done
 
 git add -A
-git commit -m "Phase 3: Rococo → PezkuwiChain relay chain rebranding
+git commit -m "Phase 3: Pezkuwichain → PezkuwiChain relay chain rebranding
 
-- Renamed Rococo to PezkuwiChain throughout codebase
+- Renamed Pezkuwichain to PezkuwiChain throughout codebase
 - Updated runtime package names
 - Renamed chain specifications
 - Updated all code references and comments
 "
 SCRIPT
 
-chmod +x /tmp/rococo-pezkuwichain-rename.sh
+chmod +x /tmp/pezkuwichain-pezkuwichain-rename.sh
 ```
 
 ### 3.4 Runtime-Specific Changes
@@ -500,14 +500,14 @@ pub const UNITS: Balance = 1_000_000_000_000; // 12 decimals
 
 ---
 
-## Phase 4: Westend → Zagros Rebranding
+## Phase 4: Zagros → Zagros Rebranding
 
-**Objective:** Transform Westend testnet to Zagros network
+**Objective:** Transform Zagros testnet to Zagros network
 
 **Decision Point:** Before starting this phase, confirm whether to:
-1. Keep Westend infrastructure (recommended for Polkadot bridge compatibility)
+1. Keep Zagros infrastructure (recommended for Polkadot bridge compatibility)
 2. Rebrand to Zagros (full independence)
-3. Remove Westend entirely (simplification)
+3. Remove Zagros entirely (simplification)
 
 **Recommended:** Option 1 or 2 (keep infrastructure for bridge testing)
 
@@ -515,63 +515,63 @@ pub const UNITS: Balance = 1_000_000_000_000; // 12 decimals
 
 **Identifiers:**
 ```
-Westend → Zagros
-westend → zagros
-WND → TYR (Tyr token)
-WESTEND → ZAGROS
+Zagros → Zagros
+zagros → zagros
+ZGR → TYR (Tyr token)
+ZAGROS → ZAGROS
 ```
 
 ### 4.2 Execution Script
 
 ```bash
-cat > /tmp/westend-zagros-rename.sh << 'SCRIPT'
+cat > /tmp/zagros-zagros-rename.sh << 'SCRIPT'
 #!/bin/bash
 
-git checkout -b rebranding-phase4-westend-zagros
+git checkout -b rebranding-phase4-zagros-zagros
 
 # Rename in contents
 find . -type f \( -name "*.rs" -o -name "*.toml" -o -name "*.md" -o -name "*.json" \) \
   -not -path "*/target/*" \
   -not -path "*/.git/*" \
-  -exec sed -i 's/Westend/Zagros/g' {} \;
+  -exec sed -i 's/Zagros/Zagros/g' {} \;
 
 find . -type f \( -name "*.rs" -o -name "*.toml" -o -name "*.md" -o -name "*.json" \) \
   -not -path "*/target/*" \
   -not -path "*/.git/*" \
-  -exec sed -i 's/westend/zagros/g' {} \;
+  -exec sed -i 's/zagros/zagros/g' {} \;
 
 find . -type f \( -name "*.rs" -o -name "*.toml" -o -name "*.md" -o -name "*.json" \) \
   -not -path "*/target/*" \
   -not -path "*/.git/*" \
-  -exec sed -i 's/WESTEND/ZAGROS/g' {} \;
+  -exec sed -i 's/ZAGROS/ZAGROS/g' {} \;
 
 # Rename directories
-find . -depth -type d -name "*westend*" -not -path "*/target/*" -not -path "*/.git/*" | while read dir; do
-  newdir=$(echo "$dir" | sed 's/westend/zagros/g')
+find . -depth -type d -name "*zagros*" -not -path "*/target/*" -not -path "*/.git/*" | while read dir; do
+  newdir=$(echo "$dir" | sed 's/zagros/zagros/g')
   if [ "$dir" != "$newdir" ]; then
     mv "$dir" "$newdir"
   fi
 done
 
 # Rename files
-find . -type f -name "*westend*" -not -path "*/target/*" -not -path "*/.git/*" | while read file; do
-  newfile=$(echo "$file" | sed 's/westend/zagros/g')
+find . -type f -name "*zagros*" -not -path "*/target/*" -not -path "*/.git/*" | while read file; do
+  newfile=$(echo "$file" | sed 's/zagros/zagros/g')
   if [ "$file" != "$newfile" ]; then
     mv "$file" "$newfile"
   fi
 done
 
 git add -A
-git commit -m "Phase 4: Westend → Zagros network rebranding
+git commit -m "Phase 4: Zagros → Zagros network rebranding
 
-- Renamed Westend to Zagros throughout codebase
+- Renamed Zagros to Zagros throughout codebase
 - Updated runtime package names
 - Renamed chain specifications
 - Prepared for TYR token integration (Phase 6)
 "
 SCRIPT
 
-chmod +x /tmp/westend-zagros-rename.sh
+chmod +x /tmp/zagros-zagros-rename.sh
 ```
 
 ### 4.3 Runtime Configuration
@@ -600,69 +600,69 @@ pub const VERSION: RuntimeVersion = RuntimeVersion {
 
 ---
 
-## Phase 5: Parachain → TeyrChain Rebranding
+## Phase 5: Teyrchain → TeyrChain Rebranding
 
-**Objective:** Rename template/example parachains to TeyrChain
+**Objective:** Rename template/example teyrchains to TeyrChain
 
 ### 5.1 Scope
 
-**Target Parachains:**
-- Generic parachain template → TeyrChain
-- Asset Hub Rococo → Asset Hub PezkuwiChain (or rename to custom name)
-- Bridge Hub Rococo → Bridge Hub PezkuwiChain
-- Collectives Rococo → Collectives PezkuwiChain
+**Target Teyrchains:**
+- Generic teyrchain template → TeyrChain
+- Asset Hub Pezkuwichain → Asset Hub PezkuwiChain (or rename to custom name)
+- Bridge Hub Pezkuwichain → Bridge Hub PezkuwiChain
+- Collectives Pezkuwichain → Collectives PezkuwiChain
 
-**Primary Focus:** Template parachain → TeyrChain
+**Primary Focus:** Template teyrchain → TeyrChain
 
 ### 5.2 Execution Script
 
 ```bash
-cat > /tmp/parachain-teyrchain-rename.sh << 'SCRIPT'
+cat > /tmp/teyrchain-teyrchain-rename.sh << 'SCRIPT'
 #!/bin/bash
 
-git checkout -b rebranding-phase5-parachain-teyrchain
+git checkout -b rebranding-phase5-teyrchain-teyrchain
 
-# Rename parachain-template to teyrchain
+# Rename teyrchain-template to teyrchain
 find . -type f \( -name "*.rs" -o -name "*.toml" -o -name "*.md" -o -name "*.json" \) \
-  -path "*/parachain-template/*" \
-  -exec sed -i 's/parachain-template/teyrchain/g' {} \;
+  -path "*/teyrchain-template/*" \
+  -exec sed -i 's/teyrchain-template/teyrchain/g' {} \;
 
 find . -type f \( -name "*.rs" -o -name "*.toml" -o -name "*.md" -o -name "*.json" \) \
-  -path "*/parachain-template/*" \
-  -exec sed -i 's/ParachainTemplate/TeyrChain/g' {} \;
+  -path "*/teyrchain-template/*" \
+  -exec sed -i 's/TeyrchainTemplate/TeyrChain/g' {} \;
 
-# Rename system parachains
+# Rename system teyrchains
 find . -type f \( -name "*.rs" -o -name "*.toml" -o -name "*.json" \) \
-  -exec sed -i 's/asset-hub-rococo/asset-hub-pezkuwichain/g' {} \;
-
-find . -type f \( -name "*.rs" -o -name "*.toml" -o -name "*.json" \) \
-  -exec sed -i 's/bridge-hub-rococo/bridge-hub-pezkuwichain/g' {} \;
+  -exec sed -i 's/asset-hub-pezkuwichain/asset-hub-pezkuwichain/g' {} \;
 
 find . -type f \( -name "*.rs" -o -name "*.toml" -o -name "*.json" \) \
-  -exec sed -i 's/collectives-rococo/collectives-pezkuwichain/g' {} \;
+  -exec sed -i 's/bridge-hub-pezkuwichain/bridge-hub-pezkuwichain/g' {} \;
+
+find . -type f \( -name "*.rs" -o -name "*.toml" -o -name "*.json" \) \
+  -exec sed -i 's/collectives-pezkuwichain/collectives-pezkuwichain/g' {} \;
 
 # Rename directories
-find . -depth -type d -name "*parachain-template*" -not -path "*/target/*" | while read dir; do
-  newdir=$(echo "$dir" | sed 's/parachain-template/teyrchain/g')
+find . -depth -type d -name "*teyrchain-template*" -not -path "*/target/*" | while read dir; do
+  newdir=$(echo "$dir" | sed 's/teyrchain-template/teyrchain/g')
   mv "$dir" "$newdir" 2>/dev/null
 done
 
 git add -A
-git commit -m "Phase 5: Parachain → TeyrChain rebranding
+git commit -m "Phase 5: Teyrchain → TeyrChain rebranding
 
-- Renamed parachain-template to teyrchain
-- Updated system parachains (Asset Hub, Bridge Hub, Collectives)
-- Updated all parachain references to PezkuwiChain ecosystem
+- Renamed teyrchain-template to teyrchain
+- Updated system teyrchains (Asset Hub, Bridge Hub, Collectives)
+- Updated all teyrchain references to PezkuwiChain ecosystem
 "
 SCRIPT
 
-chmod +x /tmp/parachain-teyrchain-rename.sh
+chmod +x /tmp/teyrchain-teyrchain-rename.sh
 ```
 
 ### 5.3 TeyrChain Runtime Configuration
 
 ```rust
-// cumulus/parachains/runtimes/teyrchain/src/lib.rs
+// cumulus/teyrchains/runtimes/teyrchain/src/lib.rs
 
 pub const VERSION: RuntimeVersion = RuntimeVersion {
     spec_name: create_runtime_str!("teyrchain"),
@@ -675,9 +675,9 @@ pub const VERSION: RuntimeVersion = RuntimeVersion {
     state_version: 1,
 };
 
-// Parachain Info
+// Teyrchain Info
 parameter_types! {
-    pub const ParachainId: ParaId = ParaId::new(2000); // Default para ID
+    pub const TeyrchainId: ParaId = ParaId::new(2000); // Default para ID
 }
 ```
 
@@ -691,15 +691,15 @@ parameter_types! {
 
 ## Phase 6: Token Symbol Rebranding
 
-**Objective:** Replace DOT, ROC, WND with HEZ, ZGR, TYR throughout the codebase
+**Objective:** Replace HEZ, TYR, ZGR with HEZ, ZGR, TYR throughout the codebase
 
 ### 6.1 Token Mapping
 
 | Original | New | Network | Decimals |
 |----------|-----|---------|----------|
-| DOT | HEZ | Pezkuwi (mainnet) | 10 |
-| ROC | ZGR | PezkuwiChain (testnet relay) | 12 |
-| WND | TYR | Zagros (testnet) | 12 |
+| HEZ | HEZ | Pezkuwi (mainnet) | 10 |
+| TYR | ZGR | PezkuwiChain (testnet relay) | 12 |
+| ZGR | TYR | Zagros (testnet) | 12 |
 
 ### 6.2 Execution Script
 
@@ -709,36 +709,36 @@ cat > /tmp/token-rebranding.sh << 'SCRIPT'
 
 git checkout -b rebranding-phase6-tokens
 
-# DOT → HEZ (Pezkuwi mainnet)
+# HEZ → HEZ (Pezkuwi mainnet)
 find . -type f \( -name "*.rs" -o -name "*.toml" -o -name "*.json" -o -name "*.md" \) \
   -not -path "*/target/*" \
   -not -path "*/.git/*" \
   -path "*/pezkuwi/runtime/pezkuwi/*" \
-  -exec sed -i 's/"DOT"/"HEZ"/g' {} \;
+  -exec sed -i 's/"HEZ"/"HEZ"/g' {} \;
 
 find . -type f \( -name "*.rs" -o -name "*.toml" -o -name "*.json" \) \
   -not -path "*/target/*" \
   -path "*/pezkuwi/runtime/pezkuwi/*" \
   -exec sed -i 's/\bDOT\b/HEZ/g' {} \;
 
-# ROC → ZGR (PezkuwiChain testnet)
+# TYR → ZGR (PezkuwiChain testnet)
 find . -type f \( -name "*.rs" -o -name "*.toml" -o -name "*.json" -o -name "*.md" \) \
   -not -path "*/target/*" \
   -not -path "*/.git/*" \
   -path "*/runtime/pezkuwichain/*" \
-  -exec sed -i 's/"ROC"/"ZGR"/g' {} \;
+  -exec sed -i 's/"TYR"/"ZGR"/g' {} \;
 
 find . -type f \( -name "*.rs" -o -name "*.toml" -o -name "*.json" \) \
   -not -path "*/target/*" \
   -path "*/runtime/pezkuwichain/*" \
-  -exec sed -i 's/\bROC\b/ZGR/g' {} \;
+  -exec sed -i 's/\bTYR\b/ZGR/g' {} \;
 
-# WND → TYR (Zagros testnet)
+# ZGR → TYR (Zagros testnet)
 find . -type f \( -name "*.rs" -o -name "*.toml" -o -name "*.json" -o -name "*.md" \) \
   -not -path "*/target/*" \
   -not -path "*/.git/*" \
   -path "*/runtime/zagros/*" \
-  -exec sed -i 's/"WND"/"TYR"/g' {} \;
+  -exec sed -i 's/"ZGR"/"TYR"/g' {} \;
 
 find . -type f \( -name "*.rs" -o -name "*.toml" -o -name "*.json" \) \
   -not -path "*/target/*" \
@@ -746,17 +746,17 @@ find . -type f \( -name "*.rs" -o -name "*.toml" -o -name "*.json" \) \
   -exec sed -i 's/\bWND\b/TYR/g' {} \;
 
 # Update token properties in chain specs
-find . -name "*pezkuwi*.json" -path "*/chain-specs/*" -exec sed -i 's/"tokenSymbol": "DOT"/"tokenSymbol": "HEZ"/g' {} \;
-find . -name "*pezkuwichain*.json" -path "*/chain-specs/*" -exec sed -i 's/"tokenSymbol": "ROC"/"tokenSymbol": "ZGR"/g' {} \;
-find . -name "*zagros*.json" -path "*/chain-specs/*" -exec sed -i 's/"tokenSymbol": "WND"/"tokenSymbol": "TYR"/g' {} \;
-find . -name "*teyrchain*.json" -path "*/chain-specs/*" -exec sed -i 's/"tokenSymbol": "ROC"/"tokenSymbol": "TEYR"/g' {} \;
+find . -name "*pezkuwi*.json" -path "*/chain-specs/*" -exec sed -i 's/"tokenSymbol": "HEZ"/"tokenSymbol": "HEZ"/g' {} \;
+find . -name "*pezkuwichain*.json" -path "*/chain-specs/*" -exec sed -i 's/"tokenSymbol": "TYR"/"tokenSymbol": "ZGR"/g' {} \;
+find . -name "*zagros*.json" -path "*/chain-specs/*" -exec sed -i 's/"tokenSymbol": "ZGR"/"tokenSymbol": "TYR"/g' {} \;
+find . -name "*teyrchain*.json" -path "*/chain-specs/*" -exec sed -i 's/"tokenSymbol": "TYR"/"tokenSymbol": "TEYR"/g' {} \;
 
 git add -A
-git commit -m "Phase 6: Token symbol rebranding (DOT→HEZ, ROC→ZGR, WND→TYR)
+git commit -m "Phase 6: Token symbol rebranding (HEZ→HEZ, TYR→ZGR, ZGR→TYR)
 
-- Replaced DOT with HEZ in Pezkuwi mainnet runtime
-- Replaced ROC with ZGR in PezkuwiChain testnet
-- Replaced WND with TYR in Zagros testnet
+- Replaced HEZ with HEZ in Pezkuwi mainnet runtime
+- Replaced TYR with ZGR in PezkuwiChain testnet
+- Replaced ZGR with TYR in Zagros testnet
 - Updated chain specification token metadata
 - Set correct decimal places for each token
 "
@@ -782,7 +782,7 @@ pub const UNITS: Balance = 1_000_000_000_000; // 10^12
 pub const DECIMALS: u8 = 12;
 pub const UNITS: Balance = 1_000_000_000_000; // 10^12
 
-// cumulus/parachains/runtimes/teyrchain/src/lib.rs
+// cumulus/teyrchains/runtimes/teyrchain/src/lib.rs
 pub const DECIMALS: u8 = 12;
 pub const UNITS: Balance = 1_000_000_000_000; // 10^12
 ```
@@ -851,7 +851,7 @@ cargo test --workspace --lib
   --bootnodes /ip4/127.0.0.1/tcp/30333/p2p/<ALICE_PEER_ID>
 ```
 
-2. **Register TeyrChain Parachain:**
+2. **Register TeyrChain Teyrchain:**
 ```bash
 # Generate chain spec for TeyrChain
 ./target/release/teyrchain-collator build-spec \
@@ -885,7 +885,7 @@ cargo test --workspace --lib
 3. **Verify Network:**
 - [ ] Relay chain produces blocks (6s interval)
 - [ ] TeyrChain collator connects to relay chain
-- [ ] Parachain produces blocks after registration
+- [ ] Teyrchain produces blocks after registration
 - [ ] Token symbols display correctly (ZGR on relay, TEYR on para)
 
 ---
@@ -900,9 +900,9 @@ main (clean starting point)
 ├── rebranding-phase0-discovery (documentation only)
 ├── rebranding-phase1-urls
 ├── rebranding-phase2-polkadot-pezkuwi
-├── rebranding-phase3-rococo-pezkuwichain
-├── rebranding-phase4-westend-zagros
-├── rebranding-phase5-parachain-teyrchain
+├── rebranding-phase3-pezkuwichain-pezkuwichain
+├── rebranding-phase4-zagros-zagros
+├── rebranding-phase5-teyrchain-teyrchain
 └── rebranding-phase6-tokens
 ```
 
@@ -946,7 +946,7 @@ git reset --hard main
 **Create:**
 - `PEZKUWI_GENESIS.md` - Genesis configuration for mainnet
 - `TESTNET_GUIDE.md` - How to connect to PezkuwiChain/Zagros testnets
-- `PARACHAIN_DEPLOYMENT.md` - TeyrChain deployment guide
+- `TEYRCHAIN_DEPLOYMENT.md` - TeyrChain deployment guide
 - `TOKEN_ECONOMICS.md` - HEZ/ZGR/TYR tokenomics
 
 ---
@@ -985,7 +985,7 @@ git reset --hard main
 **Final Success Criteria:**
 - [ ] Full workspace builds successfully
 - [ ] All unit tests pass
-- [ ] Local testnet (relay + parachain) operational
+- [ ] Local testnet (relay + teyrchain) operational
 - [ ] Token symbols display correctly
 - [ ] Chain specs generate without errors
 - [ ] Documentation updated
@@ -1007,7 +1007,7 @@ git reset --hard main
 - `pezkuwi/runtime/pezkuwi/` - Mainnet runtime (HEZ token)
 - `pezkuwi/runtime/pezkuwichain/` - Testnet relay runtime (ZGR token)
 - `pezkuwi/runtime/zagros/` - Alternative testnet runtime (TYR token)
-- `cumulus/parachains/runtimes/teyrchain/` - Parachain runtime (TEYR token)
+- `cumulus/teyrchains/runtimes/teyrchain/` - Teyrchain runtime (TEYR token)
 
 **Chain Specifications:**
 - `chain-specs/*.json` - All chain spec files
@@ -1036,7 +1036,7 @@ https://github.com/paritytech/*
 https://github.com/substrate-developer-hub/*
 
 # Documentation
-https://docs.substrate.io/*
+https://github.com/pezkuwichain/docs.pezkuwichain.io/*
 https://wiki.polkadot.network/* (reference docs only)
 
 # Crate registry

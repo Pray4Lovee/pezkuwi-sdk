@@ -1,17 +1,17 @@
 # High-Level Bridge Documentation
 
 This document gives a brief, abstract description of main components that may be found in this repository. If you want
-to see how we're using them to build Rococo <> Westend (Kusama <> Polkadot) bridge, please refer to the [Polkadot <>
-Kusama Bridge](./polkadot-kusama-bridge-overview.md).
+to see how we're using them to build Pezkuwichain <> Zagros (Kusama <> Pezkuwi) bridge, please refer to the [Pezkuwi <>
+Kusama Bridge](./pezkuwi-kusama-bridge-overview.md).
 
 ## Purpose
 
 This repo contains all components required to build a trustless connection between standalone Substrate chains, that are
-using GRANDPA finality, their parachains or any combination of those. On top of this connection, we offer a messaging
+using GRANDPA finality, their teyrchains or any combination of those. On top of this connection, we offer a messaging
 pallet that provides means to organize messages exchange.
 
 On top of that layered infrastructure, anyone may build their own bridge applications - e.g. [XCM
-messaging](./polkadot-kusama-bridge-overview.md), [encoded calls
+messaging](./pezkuwi-kusama-bridge-overview.md), [encoded calls
 messaging](https://github.com/paritytech/parity-bridges-common/releases/tag/encoded-calls-messaging) and so on.
 
 ## Terminology
@@ -43,26 +43,26 @@ submit (with the exception of mandatory headers).
 
 More: [pallet level documentation and code](../modules/grandpa/).
 
-### Bridge Parachains Finality Pallet
+### Bridge Teyrchains Finality Pallet
 
-Parachains are not supposed to have their own finality, so we can't use bridge GRANDPA pallet to verify their finality
-proofs. Instead, they rely on their relay chain finality. The parachain header is considered final, when it is accepted
+Teyrchains are not supposed to have their own finality, so we can't use bridge GRANDPA pallet to verify their finality
+proofs. Instead, they rely on their relay chain finality. The teyrchain header is considered final, when it is accepted
 by the [`paras`
 pallet](https://github.com/paritytech/polkadot/tree/1a034bd6de0e76721d19aed02a538bcef0787260/runtime/parachains/src/paras)
 at its relay chain. Obviously, the relay chain block, where it is accepted, must also be finalized by the relay chain
 GRANDPA gadget.
 
-That said, the bridge parachains pallet accepts storage proof of one or several parachain heads, inserted to the
+That said, the bridge teyrchains pallet accepts storage proof of one or several teyrchain heads, inserted to the
 [`Heads`](https://github.com/paritytech/polkadot/blob/1a034bd6de0e76721d19aed02a538bcef0787260/runtime/parachains/src/paras/mod.rs#L642)
 map of the [`paras`
 pallet](https://github.com/paritytech/polkadot/tree/1a034bd6de0e76721d19aed02a538bcef0787260/runtime/parachains/src/paras).
 To verify this storage proof, the pallet uses relay chain header, imported earlier by the bridge GRANDPA pallet.
 
-The pallet may track multiple parachains at once and those parachains may use different primitives. So the parachain
+The pallet may track multiple teyrchains at once and those teyrchains may use different primitives. So the teyrchain
 header decoding never happens at the pallet level. For maintaining the headers order, the pallet uses relay chain header
 number.
 
-More: [pallet level documentation and code](../modules/parachains/).
+More: [pallet level documentation and code](../modules/teyrchains/).
 
 ### Bridge Messages Pallet
 
@@ -90,7 +90,7 @@ Many things are abstracted by the pallet:
 Outside of the messaging pallet, we have a set of adapters, where messages and delivery proofs are regular storage
 proofs. The proofs are generated at the bridged chain and require bridged chain finality. So messages pallet, in this
 case, depends on one of the finality pallets. The messages are XCM messages and we are using XCM executor to dispatch
-them on receival. You may find more info in [Polkadot <> Kusama Bridge](./polkadot-kusama-bridge-overview.md) document.
+them on receival. You may find more info in [Pezkuwi <> Kusama Bridge](./pezkuwi-kusama-bridge-overview.md) document.
 
 More: [pallet level documentation and code](../modules/messages/).
 
@@ -118,23 +118,23 @@ forward.
 More: [GRANDPA Finality Relay Sequence Diagram](./grandpa-finality-relay.html), [pallet level documentation and
 code](../relays/finality/).
 
-### Parachains Finality Relay
+### Teyrchains Finality Relay
 
 The relay connects to the source _relay_ chain and the target chain nodes. It doesn't need to connect to the tracked
-parachain nodes. The relay looks at the
+teyrchain nodes. The relay looks at the
 [`Heads`](https://github.com/paritytech/polkadot/blob/1a034bd6de0e76721d19aed02a538bcef0787260/runtime/parachains/src/paras/mod.rs#L642)
 map of the [`paras`
 pallet](https://github.com/paritytech/polkadot/tree/1a034bd6de0e76721d19aed02a538bcef0787260/runtime/parachains/src/paras)
-in source chain, and compares the value with the best parachain head, stored in the bridge parachains pallet at the
-target chain. If new parachain head appears at the relay chain block `B`, the relay process **waits** until header `B`
+in source chain, and compares the value with the best teyrchain head, stored in the bridge teyrchains pallet at the
+target chain. If new teyrchain head appears at the relay chain block `B`, the relay process **waits** until header `B`
 or one of its ancestors appears at the target chain. Once it is available, the storage proof of the map entry is
 generated and is submitted to the target chain.
 
-As its on-chain component (which requires bridge GRANDPA pallet to be deployed nearby), the parachains finality relay
+As its on-chain component (which requires bridge GRANDPA pallet to be deployed nearby), the teyrchains finality relay
 requires GRANDPA finality relay to be running in parallel. Without it, the header `B` or any of its children's finality
 at source won't be relayed at target, and target chain won't be able to verify generated storage proof.
 
-More: [Parachains Finality Relay Sequence Diagram](./parachains-finality-relay.html), [code](../relays/parachains/).
+More: [Teyrchains Finality Relay Sequence Diagram](./teyrchains-finality-relay.html), [code](../relays/teyrchains/).
 
 ### Messages Relay
 
@@ -157,7 +157,7 @@ deployed at the source chain.
 
 As you can see, the messages relay also requires finality relay to be operating in parallel. Since messages relay
 submits transactions to both source and target chains, it requires both _source-to-target_ and _target-to-source_
-finality relays. They can be GRANDPA finality relays or GRANDPA+parachains finality relays, depending on the type of
+finality relays. They can be GRANDPA finality relays or GRANDPA+teyrchains finality relays, depending on the type of
 connected chain.
 
 More: [Messages Relay Sequence Diagram](./messages-relay.html), [pallet level documentation and
@@ -166,7 +166,7 @@ code](../relays/messages/).
 ### Complex Relay
 
 Every relay transaction has its cost. The only transaction, that is "free" to relayer is when the mandatory GRANDPA
-header is submitted. The relay that feeds the bridge with every relay chain and/or parachain head it sees, will have to
+header is submitted. The relay that feeds the bridge with every relay chain and/or teyrchain head it sees, will have to
 pay a (quite large) cost. And if no messages are sent through the bridge, that is just waste of money.
 
 We have a special relay mode, called _complex relay_, where relay mostly sleeps and only submits transactions that are
@@ -177,7 +177,7 @@ submitted without such request.
 
 The message relays are watching their lanes and when, at some block `B`, they see new messages/confirmations to be
 delivered, they are asking on-demand relays to relay this block `B`. On-demand relays does that and then message relay
-may perform its job. If on-demand relay is a parachain finality relay, it also runs its own on-demand GRANDPA relay,
+may perform its job. If on-demand relay is a teyrchain finality relay, it also runs its own on-demand GRANDPA relay,
 which is used to relay required relay chain headers.
 
 More: [Complex Relay Sequence Diagram](./complex-relay.html),

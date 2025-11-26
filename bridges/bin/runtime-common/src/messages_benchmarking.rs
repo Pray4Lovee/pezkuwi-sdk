@@ -23,8 +23,8 @@ use bp_messages::{
 	source_chain::FromBridgedChainMessagesDeliveryProof,
 	target_chain::FromBridgedChainMessagesProof, MessagePayload,
 };
-use bp_polkadot_core::parachains::ParaHash;
-use bp_runtime::{AccountIdOf, Chain, HashOf, Parachain};
+use bp_pezkuwi_core::teyrchains::ParaHash;
+use bp_runtime::{AccountIdOf, Chain, HashOf, Teyrchain};
 use codec::Encode;
 use frame_support::weights::Weight;
 use pallet_bridge_messages::{
@@ -68,7 +68,7 @@ fn prepare_inbound_message<LaneId>(
 /// proof.
 ///
 /// This method is intended to be used when benchmarking pallet, linked to the chain that
-/// uses GRANDPA finality. For parachains, please use the `prepare_message_proof_from_parachain`
+/// uses GRANDPA finality. For teyrchains, please use the `prepare_message_proof_from_teyrchain`
 /// function.
 pub fn prepare_message_proof_from_grandpa_chain<R, FI, MI>(
 	params: MessageProofParams<LaneIdOf<R, MI>>,
@@ -121,17 +121,17 @@ where
 /// proof.
 ///
 /// This method is intended to be used when benchmarking pallet, linked to the chain that
-/// uses parachain finality. For GRANDPA chains, please use the
+/// uses teyrchain finality. For GRANDPA chains, please use the
 /// `prepare_message_proof_from_grandpa_chain` function.
-pub fn prepare_message_proof_from_parachain<R, PI, MI>(
+pub fn prepare_message_proof_from_teyrchain<R, PI, MI>(
 	params: MessageProofParams<LaneIdOf<R, MI>>,
 	message_generator: impl Fn(usize) -> MessagePayload,
 ) -> (FromBridgedChainMessagesProof<HashOf<BridgedChainOf<R, MI>>, LaneIdOf<R, MI>>, Weight)
 where
-	R: pallet_bridge_parachains::Config<PI> + pallet_bridge_messages::Config<MI>,
+	R: pallet_bridge_teyrchains::Config<PI> + pallet_bridge_messages::Config<MI>,
 	PI: 'static,
 	MI: 'static,
-	BridgedChainOf<R, MI>: Chain<Hash = ParaHash> + Parachain,
+	BridgedChainOf<R, MI>: Chain<Hash = ParaHash> + Teyrchain,
 {
 	// prepare storage proof
 	let (state_root, storage_proof) = prepare_messages_storage_proof::<
@@ -152,7 +152,7 @@ where
 
 	// update runtime storage
 	let (_, bridged_header_hash) =
-		insert_header_to_parachains_pallet::<R, PI, BridgedChainOf<R, MI>>(state_root);
+		insert_header_to_teyrchains_pallet::<R, PI, BridgedChainOf<R, MI>>(state_root);
 
 	(
 		FromBridgedChainMessagesProof {
@@ -169,8 +169,8 @@ where
 /// Prepare proof of messages delivery for the `receive_messages_delivery_proof` call.
 ///
 /// This method is intended to be used when benchmarking pallet, linked to the chain that
-/// uses GRANDPA finality. For parachains, please use the
-/// `prepare_message_delivery_proof_from_parachain` function.
+/// uses GRANDPA finality. For teyrchains, please use the
+/// `prepare_message_delivery_proof_from_teyrchain` function.
 pub fn prepare_message_delivery_proof_from_grandpa_chain<R, FI, MI>(
 	params: MessageDeliveryProofParams<AccountIdOf<ThisChainOf<R, MI>>, LaneIdOf<R, MI>>,
 ) -> FromBridgedChainMessagesDeliveryProof<HashOf<BridgedChainOf<R, MI>>, LaneIdOf<R, MI>>
@@ -204,16 +204,16 @@ where
 /// Prepare proof of messages delivery for the `receive_messages_delivery_proof` call.
 ///
 /// This method is intended to be used when benchmarking pallet, linked to the chain that
-/// uses parachain finality. For GRANDPA chains, please use the
+/// uses teyrchain finality. For GRANDPA chains, please use the
 /// `prepare_message_delivery_proof_from_grandpa_chain` function.
-pub fn prepare_message_delivery_proof_from_parachain<R, PI, MI>(
+pub fn prepare_message_delivery_proof_from_teyrchain<R, PI, MI>(
 	params: MessageDeliveryProofParams<AccountIdOf<ThisChainOf<R, MI>>, LaneIdOf<R, MI>>,
 ) -> FromBridgedChainMessagesDeliveryProof<HashOf<BridgedChainOf<R, MI>>, LaneIdOf<R, MI>>
 where
-	R: pallet_bridge_parachains::Config<PI> + pallet_bridge_messages::Config<MI>,
+	R: pallet_bridge_teyrchains::Config<PI> + pallet_bridge_messages::Config<MI>,
 	PI: 'static,
 	MI: 'static,
-	BridgedChainOf<R, MI>: Chain<Hash = ParaHash> + Parachain,
+	BridgedChainOf<R, MI>: Chain<Hash = ParaHash> + Teyrchain,
 {
 	// prepare storage proof
 	let lane = params.lane;
@@ -225,7 +225,7 @@ where
 
 	// update runtime storage
 	let (_, bridged_header_hash) =
-		insert_header_to_parachains_pallet::<R, PI, BridgedChainOf<R, MI>>(state_root);
+		insert_header_to_teyrchains_pallet::<R, PI, BridgedChainOf<R, MI>>(state_root);
 
 	FromBridgedChainMessagesDeliveryProof {
 		bridged_header_hash: bridged_header_hash.into(),
@@ -256,14 +256,14 @@ where
 	(bridged_block_number, bridged_header_hash)
 }
 
-/// Insert header to the bridge parachains pallet.
-pub(crate) fn insert_header_to_parachains_pallet<R, PI, PC>(
+/// Insert header to the bridge teyrchains pallet.
+pub(crate) fn insert_header_to_teyrchains_pallet<R, PI, PC>(
 	state_root: bp_runtime::HashOf<PC>,
 ) -> (bp_runtime::BlockNumberOf<PC>, bp_runtime::HashOf<PC>)
 where
-	R: pallet_bridge_parachains::Config<PI>,
+	R: pallet_bridge_teyrchains::Config<PI>,
 	PI: 'static,
-	PC: Chain<Hash = ParaHash> + Parachain,
+	PC: Chain<Hash = ParaHash> + Teyrchain,
 {
 	let bridged_block_number = Zero::zero();
 	let bridged_header = bp_runtime::HeaderOf::<PC>::new(
@@ -274,11 +274,11 @@ where
 		Default::default(),
 	);
 	let bridged_header_hash = bridged_header.hash();
-	pallet_bridge_parachains::initialize_for_benchmarks::<R, PI, PC>(bridged_header);
+	pallet_bridge_teyrchains::initialize_for_benchmarks::<R, PI, PC>(bridged_header);
 	(bridged_block_number, bridged_header_hash)
 }
 
-/// Returns callback which generates `BridgeMessage` from Polkadot XCM builder based on
+/// Returns callback which generates `BridgeMessage` from Pezkuwi XCM builder based on
 /// `expected_message_size` for benchmark.
 pub fn generate_xcm_builder_bridge_message_sample(
 	destination: InteriorLocation,
@@ -317,7 +317,7 @@ pub fn generate_xcm_builder_bridge_message_sample(
 			min_crate_minor: 0,
 		}]));
 
-		// this is the `BridgeMessage` from polkadot xcm builder, but it has no constructor
+		// this is the `BridgeMessage` from pezkuwi xcm builder, but it has no constructor
 		// or public fields, so just tuple
 		// (double encoding, because `.encode()` is called on original Xcm BLOB when it is pushed
 		// to the storage)

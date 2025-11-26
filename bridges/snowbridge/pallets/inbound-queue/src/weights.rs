@@ -6,7 +6,7 @@
 //! DATE: 2023-07-14, STEPS: `50`, REPEAT: `20`, LOW RANGE: `[]`, HIGH RANGE: `[]`
 //! WORST CASE MAP SIZE: `1000000`
 //! HOSTNAME: `macbook pro 14 m2`, CPU: `m2-arm64`
-//! EXECUTION: Some(Wasm), WASM-EXECUTION: Compiled, CHAIN: Some("bridge-hub-rococo-dev"), DB CACHE: 1024
+//! EXECUTION: Some(Wasm), WASM-EXECUTION: Compiled, CHAIN: Some("bridge-hub-pezkuwichain-dev"), DB CACHE: 1024
 
 #![cfg_attr(rustfmt, rustfmt_skip)]
 #![allow(unused_parens)]

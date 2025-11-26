@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Cumulus. If not, see <https://www.gnu.org/licenses/>.
 
-//! A collator for Aura that looks ahead of the most recently included parachain block
+//! A collator for Aura that looks ahead of the most recently included teyrchain block
 //! when determining what to build upon.
 //!
 //! This collator also builds additional blocks when the maximum backlog is not saturated.
@@ -25,7 +25,7 @@
 //! This takes more advantage of asynchronous backing, though not complete advantage.
 //! When the backlog is not saturated, this approach lets the backlog temporarily 'catch up'
 //! with periods of higher throughput. When the backlog is saturated, we typically
-//! fall back to the limited cadence of a single parachain block per relay-chain block.
+//! fall back to the limited cadence of a single teyrchain block per relay-chain block.
 //!
 //! Despite this, the fact that there is a backlog at all allows us to spend more time
 //! building the block, as there is some buffer before it can get posted to the relay-chain.
@@ -34,16 +34,16 @@
 
 use codec::{Codec, Encode};
 use cumulus_client_collator::service::ServiceInterface as CollatorServiceInterface;
-use cumulus_client_consensus_common::{self as consensus_common, ParachainBlockImportMarker};
+use cumulus_client_consensus_common::{self as consensus_common, TeyrchainBlockImportMarker};
 use cumulus_client_consensus_proposer::ProposerInterface;
 use cumulus_primitives_aura::AuraUnincludedSegmentApi;
 use cumulus_primitives_core::{CollectCollationInfo, PersistedValidationData};
 use cumulus_relay_chain_interface::RelayChainInterface;
 
-use polkadot_node_primitives::SubmitCollationParams;
-use polkadot_node_subsystem::messages::CollationGenerationMessage;
-use polkadot_overseer::Handle as OverseerHandle;
-use polkadot_primitives::{CollatorPair, Id as ParaId, OccupiedCoreAssumption};
+use pezkuwi_node_primitives::SubmitCollationParams;
+use pezkuwi_node_subsystem::messages::CollationGenerationMessage;
+use pezkuwi_overseer::Handle as OverseerHandle;
+use pezkuwi_primitives::{CollatorPair, Id as ParaId, OccupiedCoreAssumption};
 
 use crate::{
 	collator as collator_util,
@@ -102,17 +102,17 @@ pub struct Params<BI, CIDP, Client, Backend, RClient, CHP, Proposer, CS> {
 	/// Whether we should reinitialize the collator config (i.e. we are transitioning to aura).
 	pub reinitialize: bool,
 	/// The maximum percentage of the maximum PoV size that the collator can use.
-	/// It will be removed once <https://github.com/paritytech/polkadot-sdk/issues/6020> is fixed.
+	/// It will be removed once <https://github.com/pezkuwichain/pezkuwichain-sdk/issues/6020> is fixed.
 	pub max_pov_percentage: Option<u32>,
 }
 
-/// Get the current parachain slot from a given block hash.
+/// Get the current teyrchain slot from a given block hash.
 ///
-/// Returns the parachain slot, relay chain slot, and timestamp.
-fn get_parachain_slot<Block, Client, P>(
+/// Returns the teyrchain slot, relay chain slot, and timestamp.
+fn get_teyrchain_slot<Block, Client, P>(
 	para_client: &Client,
 	block_hash: Block::Hash,
-	relay_parent_header: &polkadot_primitives::Header,
+	relay_parent_header: &pezkuwi_primitives::Header,
 	relay_chain_slot_duration: Duration,
 ) -> Option<(Slot, Slot, Timestamp)>
 where
@@ -125,12 +125,12 @@ where
 		match sc_consensus_aura::standalone::slot_duration_at(para_client, block_hash) {
 			Ok(sd) => sd,
 			Err(err) => {
-				tracing::error!(target: crate::LOG_TARGET, ?err, "Failed to acquire parachain slot duration");
+				tracing::error!(target: crate::LOG_TARGET, ?err, "Failed to acquire teyrchain slot duration");
 				return None
 			},
 		};
 
-	tracing::debug!(target: crate::LOG_TARGET, ?slot_duration, ?block_hash, "Parachain slot duration acquired");
+	tracing::debug!(target: crate::LOG_TARGET, ?slot_duration, ?block_hash, "Teyrchain slot duration acquired");
 
 	let (relay_slot, timestamp) =
 		consensus_common::relay_slot_and_timestamp(relay_parent_header, relay_chain_slot_duration)?;
@@ -144,7 +144,7 @@ where
 		?timestamp,
 		?slot_duration,
 		?relay_chain_slot_duration,
-		"Adjusted relay-chain slot to parachain slot"
+		"Adjusted relay-chain slot to teyrchain slot"
 	);
 
 	Some((slot_now, relay_slot, timestamp))
@@ -170,7 +170,7 @@ where
 	RClient: RelayChainInterface + Clone + 'static,
 	CIDP: CreateInherentDataProviders<Block, ()> + 'static,
 	CIDP::InherentDataProviders: Send,
-	BI: BlockImport<Block> + ParachainBlockImportMarker + Send + Sync + 'static,
+	BI: BlockImport<Block> + TeyrchainBlockImportMarker + Send + Sync + 'static,
 	Proposer: ProposerInterface<Block> + Send + Sync + 'static,
 	CS: CollatorServiceInterface<Block> + Send + Sync + 'static,
 	CHP: consensus_common::ValidationCodeHashProvider<Block::Hash> + Send + 'static,
@@ -222,7 +222,7 @@ where
 	RClient: RelayChainInterface + Clone + 'static,
 	CIDP: CreateInherentDataProviders<Block, ()> + 'static,
 	CIDP::InherentDataProviders: Send,
-	BI: BlockImport<Block> + ParachainBlockImportMarker + Send + Sync + 'static,
+	BI: BlockImport<Block> + TeyrchainBlockImportMarker + Send + Sync + 'static,
 	Proposer: ProposerInterface<Block> + Send + Sync + 'static,
 	CS: CollatorServiceInterface<Block> + Send + Sync + 'static,
 	CHP: consensus_common::ValidationCodeHashProvider<Block::Hash> + Send + 'static,
@@ -323,7 +323,7 @@ where
 			let para_client = &*params.para_client;
 			let keystore = &params.keystore;
 			let can_build_upon = |block_hash| {
-				let (slot_now, relay_slot, timestamp) = get_parachain_slot::<_, _, P::Public>(
+				let (slot_now, relay_slot, timestamp) = get_teyrchain_slot::<_, _, P::Public>(
 					para_client,
 					block_hash,
 					&relay_parent_header,
@@ -354,7 +354,7 @@ where
 
 			// Trigger pre-conect to backing groups if necessary.
 			if let (Some((slot_now, _relay_slot, _timestamp)), Ok(authorities)) = (
-				get_parachain_slot::<_, _, P::Public>(
+				get_teyrchain_slot::<_, _, P::Public>(
 					para_client,
 					parent_hash,
 					&relay_parent_header,
@@ -392,7 +392,7 @@ where
 
 				// Build and announce collations recursively until
 				// `can_build_upon` fails or building a collation fails.
-				let (parachain_inherent_data, other_inherent_data) = match collator
+				let (teyrchain_inherent_data, other_inherent_data) = match collator
 					.create_inherent_data(
 						relay_parent,
 						&validation_data,
@@ -429,7 +429,7 @@ where
 				} else {
 					// Set the block limit to 85% of the maximum PoV size.
 					//
-					// Once https://github.com/paritytech/polkadot-sdk/issues/6020 issue is
+					// Once https://github.com/pezkuwichain/pezkuwichain-sdk/issues/6020 issue is
 					// fixed, the reservation should be removed.
 					validation_data.max_pov_size * 85 / 100
 				} as usize;
@@ -439,7 +439,7 @@ where
 						&parent_header,
 						&slot_claim,
 						None,
-						(parachain_inherent_data, other_inherent_data),
+						(teyrchain_inherent_data, other_inherent_data),
 						params.authoring_duration,
 						allowed_pov_size,
 					)

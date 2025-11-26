@@ -37,7 +37,7 @@
 // --extrinsic
 // *
 // --runtime
-// ../../../../../target/release/wbuild/pallet-staking-async-parachain-runtime/pallet_staking_async_parachain_runtime.compact.wasm
+// ../../../../../target/release/wbuild/pallet-staking-async-teyrchain-runtime/pallet_staking_async_teyrchain_runtime.compact.wasm
 // --steps
 // 5
 // --repeat

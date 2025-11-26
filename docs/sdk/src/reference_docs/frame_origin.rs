@@ -21,9 +21,9 @@
 //! example:
 //!
 //! * If the majority of token holders agreed upon this. This is more or less what the
-//!   [`pallet_democracy`] does under the hood ([reference](https://github.com/paritytech/polkadot-sdk/blob/edd95b3749754d2ed0c5738588e872c87be91624/substrate/frame/democracy/src/lib.rs#L1603-L1633)).
+//!   [`pallet_democracy`] does under the hood ([reference](https://github.com/pezkuwichain/pezkuwichain-sdk/blob/edd95b3749754d2ed0c5738588e872c87be91624/substrate/frame/democracy/src/lib.rs#L1603-L1633)).
 //! * If a specific ratio of an instance of [`pallet_collective`]/DAO agrees upon this.
-//! * If another consensus system, for example a bridged network or a parachain, agrees upon this.
+//! * If another consensus system, for example a bridged network or a teyrchain, agrees upon this.
 //! * If the majority of validator/authority set agrees upon this[^1].
 //! * If caller holds a particular NFT.
 //!
@@ -123,7 +123,7 @@
 //! ## Further References
 //!
 //! - [Gavin Wood's speech about FRAME features at Protocol Berg 2023.](https://youtu.be/j7b8Upipmeg?si=83_XUgYuJxMwWX4g&t=195)
-//! - [A related StackExchange question.](https://substrate.stackexchange.com/questions/10992/how-do-you-find-the-public-key-for-the-medium-spender-track-origin)
+//! - [A related StackExchange question.](https://exchange.pezkuwichain.app/questions/10992/how-do-you-find-the-public-key-for-the-medium-spender-track-origin)
 //!
 //! [^1]: Inherents are essentially unsigned extrinsics that need an [`frame_system::ensure_none`]
 //! origin check, and through the virtue of being an inherent, are agreed upon by all validators.

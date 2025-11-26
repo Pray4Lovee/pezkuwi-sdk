@@ -934,11 +934,11 @@ impl Notifications {
 					.push(Box::pin(async move { (rx.await, index) }));
 			},
 			Err(err) => {
-				// parachain collators enable the syncing protocol but `NotificationService` for
+				// teyrchain collators enable the syncing protocol but `NotificationService` for
 				// `SyncingEngine` is not created which causes `report_incoming_substream()` to
 				// fail. This is not a fatal error and should be ignored even though in typical
 				// cases the `NotificationService` not existing is a fatal error and indicates that
-				// the protocol has exited. Until the parachain collator issue is fixed, just report
+				// the protocol has exited. Until the teyrchain collator issue is fixed, just report
 				// and error and reject the peer.
 				debug!(target: LOG_TARGET, "protocol has exited: {err:?} {:?}", incoming.set_id);
 

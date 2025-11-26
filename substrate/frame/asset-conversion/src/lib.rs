@@ -37,8 +37,8 @@
 //!
 //! The `quote_price_exact_tokens_for_tokens` and `quote_price_tokens_for_exact_tokens` functions
 //! both take a path parameter of the route to take. If you want to swap from native asset to
-//! non-native asset 1, you would pass in a path of `[DOT, 1]` or `[1, DOT]`. If you want to swap
-//! from non-native asset 1 to non-native asset 2, you would pass in a path of `[1, DOT, 2]`.
+//! non-native asset 1, you would pass in a path of `[HEZ, 1]` or `[1, HEZ]`. If you want to swap
+//! from non-native asset 1 to non-native asset 2, you would pass in a path of `[1, HEZ, 2]`.
 //!
 //! (For an example of configuring this pallet to use `Location` as an asset id, see the
 //! cumulus repo).
@@ -274,7 +274,7 @@ pub mod pallet {
 			/// The amount of the second asset that was received.
 			amount_out: T::Balance,
 			/// The route of asset IDs with amounts that the swap went through.
-			/// E.g. (A, amount_in) -> (Dot, amount_out) -> (B, amount_out)
+			/// E.g. (A, amount_in) -> (Hez, amount_out) -> (B, amount_out)
 			path: BalancePath<T>,
 		},
 		/// Assets have been converted from one to another.
@@ -284,7 +284,7 @@ pub mod pallet {
 			/// The amount of the second asset that was received.
 			amount_out: T::Balance,
 			/// The route of asset IDs with amounts that the swap went through.
-			/// E.g. (A, amount_in) -> (Dot, amount_out) -> (B, amount_out)
+			/// E.g. (A, amount_in) -> (Hez, amount_out) -> (B, amount_out)
 			path: BalancePath<T>,
 		},
 		/// Pool has been touched in order to fulfill operational requirements.
@@ -1070,7 +1070,7 @@ pub mod pallet {
 			};
 			if preservation == Preserve {
 				// TODO drop the ensure! when this issue addressed
-				// https://github.com/paritytech/polkadot-sdk/issues/1698
+				// https://github.com/pezkuwichain/pezkuwichain-sdk/issues/1698
 				let free = T::Assets::reducible_balance(asset.clone(), who, preservation, Polite);
 				ensure!(free >= value, TokenError::NotExpendable);
 			}

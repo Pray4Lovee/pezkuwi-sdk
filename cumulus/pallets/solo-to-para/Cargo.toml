@@ -3,7 +3,7 @@ name = "cumulus-pallet-solo-to-para"
 version = "0.7.0"
 authors.workspace = true
 edition.workspace = true
-description = "Adds functionality to migrate from a Solo to a Parachain"
+description = "Adds functionality to migrate from a Solo to a Teyrchain"
 license = "Apache-2.0"
 homepage.workspace = true
 repository.workspace = true
@@ -21,26 +21,26 @@ frame-system = { workspace = true }
 pallet-sudo = { workspace = true }
 sp-runtime = { workspace = true }
 
-# Polkadot
-polkadot-primitives = { workspace = true }
+# Pezkuwi
+pezkuwi-primitives = { workspace = true }
 
 # Cumulus
-cumulus-pallet-parachain-system = { workspace = true }
+cumulus-pallet-teyrchain-system = { workspace = true }
 
 [features]
 default = ["std"]
 std = [
 	"codec/std",
-	"cumulus-pallet-parachain-system/std",
+	"cumulus-pallet-teyrchain-system/std",
 	"frame-support/std",
 	"frame-system/std",
 	"pallet-sudo/std",
-	"polkadot-primitives/std",
+	"pezkuwi-primitives/std",
 	"scale-info/std",
 	"sp-runtime/std",
 ]
 try-runtime = [
-	"cumulus-pallet-parachain-system/try-runtime",
+	"cumulus-pallet-teyrchain-system/try-runtime",
 	"frame-support/try-runtime",
 	"frame-system/try-runtime",
 	"pallet-sudo/try-runtime",

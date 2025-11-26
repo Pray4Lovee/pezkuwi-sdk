@@ -14,10 +14,10 @@ The NFTs pallet provides functionality for non-fungible tokens' management, incl
 * NFT Burning
 
 To use it in your runtime, you need to implement
-[`nfts::Config`](https://paritytech.github.io/substrate/master/pallet_nfts/pallet/trait.Config.html).
+[`nfts::Config`](https://docs.pezkuwichain.io/substrate/master/pallet_nfts/pallet/trait.Config.html).
 
 The supported dispatchable functions are documented in the
-[`nfts::Call`](https://paritytech.github.io/substrate/master/pallet_nfts/pallet/enum.Call.html) enum.
+[`nfts::Call`](https://docs.pezkuwichain.io/substrate/master/pallet_nfts/pallet/enum.Call.html) enum.
 
 ### Terminology
 
@@ -96,7 +96,7 @@ The NFTs pallet in Substrate is designed to make the following possible:
 * `force_collection_config`: Change collection's config.
 * `force_set_attribute`: Set an attribute.
 
-Please refer to the [`Call`](https://paritytech.github.io/substrate/master/pallet_nfts/pallet/enum.Call.html) enum and
+Please refer to the [`Call`](https://docs.pezkuwichain.io/substrate/master/pallet_nfts/pallet/enum.Call.html) enum and
 its associated variants for documentation on each function.
 
 ## Related Modules

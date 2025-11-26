@@ -2,7 +2,7 @@
 
 # This is used to build our binaries:
 # - polkadot
-# - polkadot-parachain
+# - polkadot-teyrchain
 # - polkadot-omni-node
 #
 # set -e

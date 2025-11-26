@@ -5,7 +5,7 @@ title: Use the custom target riscv32emac-unknown-none-polkavm
 doc:
   - audience: Runtime Dev
     description: |
-      Closes: https://github.com/paritytech/polkadot-sdk/issues/6335
+      Closes: https://github.com/pezkuwichain/pezkuwichain-sdk/issues/6335
 
 crates:
 - name: substrate-wasm-builder

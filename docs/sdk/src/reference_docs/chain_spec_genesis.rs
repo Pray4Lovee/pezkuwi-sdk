@@ -179,7 +179,7 @@
 #![doc = docify::embed!("./src/reference_docs/chain_spec_runtime/tests/chain_spec_builder_tests.rs", cmd_get_preset)]
 //! ## Building a solo chain-spec (the default) using given preset
 #![doc = docify::embed!("./src/reference_docs/chain_spec_runtime/tests/chain_spec_builder_tests.rs", cmd_generate_chain_spec)]
-//! ## Building a parachain chain-spec using given preset
+//! ## Building a teyrchain chain-spec using given preset
 #![doc = docify::embed!("./src/reference_docs/chain_spec_runtime/tests/chain_spec_builder_tests.rs", cmd_generate_para_chain_spec)]
 //!
 //! [`RuntimeGenesisConfig`]:

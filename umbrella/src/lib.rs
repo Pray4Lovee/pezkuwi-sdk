@@ -3,10 +3,10 @@
 
 #![cfg_attr(not(feature = "std"), no_std)]
 
-//! Polkadot SDK umbrella crate re-exporting all other published crates.
+//! Pezkuwi SDK umbrella crate re-exporting all other published crates.
 //!
 //! This helps to set a single version number for all your dependencies. Docs are in the
-//! `polkadot-sdk-docs` crate.
+//! `pezkuwi-sdk-docs` crate.
 
 // This file is auto-generated and checked by the CI.  You can edit it manually, but it must be
 // exactly the way that the CI expects it.
@@ -31,13 +31,13 @@ pub use bp_header_chain;
 #[cfg(feature = "bp-messages")]
 pub use bp_messages;
 
-/// Primitives of parachains module.
-#[cfg(feature = "bp-parachains")]
-pub use bp_parachains;
+/// Primitives of teyrchains module.
+#[cfg(feature = "bp-teyrchains")]
+pub use bp_teyrchains;
 
-/// Primitives of Polkadot-like runtime.
-#[cfg(feature = "bp-polkadot-core")]
-pub use bp_polkadot_core;
+/// Primitives of Pezkuwi-like runtime.
+#[cfg(feature = "bp-pezkuwi-core")]
+pub use bp_pezkuwi_core;
 
 /// Primitives of relayers module.
 #[cfg(feature = "bp-relayers")]
@@ -72,19 +72,19 @@ pub use bridge_hub_test_utils;
 #[cfg(feature = "bridge-runtime-common")]
 pub use bridge_runtime_common;
 
-/// Parachain bootnodes registration and discovery.
+/// Teyrchain bootnodes registration and discovery.
 #[cfg(feature = "cumulus-client-bootnodes")]
 pub use cumulus_client_bootnodes;
 
-/// Parachain node CLI utilities.
+/// Teyrchain node CLI utilities.
 #[cfg(feature = "cumulus-client-cli")]
 pub use cumulus_client_cli;
 
-/// Common node-side functionality and glue code to collate parachain blocks.
+/// Common node-side functionality and glue code to collate teyrchain blocks.
 #[cfg(feature = "cumulus-client-collator")]
 pub use cumulus_client_collator;
 
-/// AURA consensus algorithm for parachains.
+/// AURA consensus algorithm for teyrchains.
 #[cfg(feature = "cumulus-client-consensus-aura")]
 pub use cumulus_client_consensus_aura;
 
@@ -92,7 +92,7 @@ pub use cumulus_client_consensus_aura;
 #[cfg(feature = "cumulus-client-consensus-common")]
 pub use cumulus_client_consensus_common;
 
-/// A Substrate `Proposer` for building parachain blocks.
+/// A Substrate `Proposer` for building teyrchain blocks.
 #[cfg(feature = "cumulus-client-consensus-proposer")]
 pub use cumulus_client_consensus_proposer;
 
@@ -104,20 +104,20 @@ pub use cumulus_client_consensus_relay_chain;
 #[cfg(feature = "cumulus-client-network")]
 pub use cumulus_client_network;
 
-/// Inherent that needs to be present in every parachain block. Contains messages and a relay
+/// Inherent that needs to be present in every teyrchain block. Contains messages and a relay
 /// chain storage-proof.
-#[cfg(feature = "cumulus-client-parachain-inherent")]
-pub use cumulus_client_parachain_inherent;
+#[cfg(feature = "cumulus-client-teyrchain-inherent")]
+pub use cumulus_client_teyrchain_inherent;
 
-/// Parachain PoV recovery.
+/// Teyrchain PoV recovery.
 #[cfg(feature = "cumulus-client-pov-recovery")]
 pub use cumulus_client_pov_recovery;
 
-/// Common functions used to assemble the components of a parachain node.
+/// Common functions used to assemble the components of a teyrchain node.
 #[cfg(feature = "cumulus-client-service")]
 pub use cumulus_client_service;
 
-/// AURA consensus extension pallet for parachains.
+/// AURA consensus extension pallet for teyrchains.
 #[cfg(feature = "cumulus-pallet-aura-ext")]
 pub use cumulus_pallet_aura_ext;
 
@@ -125,19 +125,19 @@ pub use cumulus_pallet_aura_ext;
 #[cfg(feature = "cumulus-pallet-dmp-queue")]
 pub use cumulus_pallet_dmp_queue;
 
-/// Base pallet for cumulus-based parachains.
-#[cfg(feature = "cumulus-pallet-parachain-system")]
-pub use cumulus_pallet_parachain_system;
+/// Base pallet for cumulus-based teyrchains.
+#[cfg(feature = "cumulus-pallet-teyrchain-system")]
+pub use cumulus_pallet_teyrchain_system;
 
-/// Proc macros provided by the parachain-system pallet.
-#[cfg(feature = "cumulus-pallet-parachain-system-proc-macro")]
-pub use cumulus_pallet_parachain_system_proc_macro;
+/// Proc macros provided by the teyrchain-system pallet.
+#[cfg(feature = "cumulus-pallet-teyrchain-system-proc-macro")]
+pub use cumulus_pallet_teyrchain_system_proc_macro;
 
 /// FRAME sessions pallet benchmarking.
 #[cfg(feature = "cumulus-pallet-session-benchmarking")]
 pub use cumulus_pallet_session_benchmarking;
 
-/// Adds functionality to migrate from a Solo to a Parachain.
+/// Adds functionality to migrate from a Solo to a Teyrchain.
 #[cfg(feature = "cumulus-pallet-solo-to-para")]
 pub use cumulus_pallet_solo_to_para;
 
@@ -145,7 +145,7 @@ pub use cumulus_pallet_solo_to_para;
 #[cfg(feature = "cumulus-pallet-weight-reclaim")]
 pub use cumulus_pallet_weight_reclaim;
 
-/// Pallet for stuff specific to parachains' usage of XCM.
+/// Pallet for stuff specific to teyrchains' usage of XCM.
 #[cfg(feature = "cumulus-pallet-xcm")]
 pub use cumulus_pallet_xcm;
 
@@ -165,10 +165,10 @@ pub use cumulus_primitives_aura;
 #[cfg(feature = "cumulus-primitives-core")]
 pub use cumulus_primitives_core;
 
-/// Inherent that needs to be present in every parachain block. Contains messages and a relay
+/// Inherent that needs to be present in every teyrchain block. Contains messages and a relay
 /// chain storage-proof.
-#[cfg(feature = "cumulus-primitives-parachain-inherent")]
-pub use cumulus_primitives_parachain_inherent;
+#[cfg(feature = "cumulus-primitives-teyrchain-inherent")]
+pub use cumulus_primitives_teyrchain_inherent;
 
 /// Hostfunction exposing storage proof size to the runtime.
 #[cfg(feature = "cumulus-primitives-proof-size-hostfunction")]
@@ -178,7 +178,7 @@ pub use cumulus_primitives_proof_size_hostfunction;
 #[cfg(feature = "cumulus-primitives-storage-weight-reclaim")]
 pub use cumulus_primitives_storage_weight_reclaim;
 
-/// Provides timestamp related functionality for parachains.
+/// Provides timestamp related functionality for teyrchains.
 #[cfg(feature = "cumulus-primitives-timestamp")]
 pub use cumulus_primitives_timestamp;
 
@@ -186,7 +186,7 @@ pub use cumulus_primitives_timestamp;
 #[cfg(feature = "cumulus-primitives-utility")]
 pub use cumulus_primitives_utility;
 
-/// Implementation of the RelayChainInterface trait for Polkadot full-nodes.
+/// Implementation of the RelayChainInterface trait for Pezkuwi full-nodes.
 #[cfg(feature = "cumulus-relay-chain-inprocess-interface")]
 pub use cumulus_relay_chain_inprocess_interface;
 
@@ -394,15 +394,15 @@ pub use pallet_bridge_grandpa;
 #[cfg(feature = "pallet-bridge-messages")]
 pub use pallet_bridge_messages;
 
-/// Module that allows bridged relay chains to exchange information on their parachains' heads.
-#[cfg(feature = "pallet-bridge-parachains")]
-pub use pallet_bridge_parachains;
+/// Module that allows bridged relay chains to exchange information on their teyrchains' heads.
+#[cfg(feature = "pallet-bridge-teyrchains")]
+pub use pallet_bridge_teyrchains;
 
 /// Module used to store relayer rewards and coordinate relayers set.
 #[cfg(feature = "pallet-bridge-relayers")]
 pub use pallet_bridge_relayers;
 
-/// Brokerage tool for managing Polkadot Core scheduling.
+/// Brokerage tool for managing Pezkuwi Core scheduling.
 #[cfg(feature = "pallet-broker")]
 pub use pallet_broker;
 
@@ -410,7 +410,7 @@ pub use pallet_broker;
 #[cfg(feature = "pallet-child-bounties")]
 pub use pallet_child_bounties;
 
-/// Simple pallet to select collators for a parachain.
+/// Simple pallet to select collators for a teyrchain.
 #[cfg(feature = "pallet-collator-selection")]
 pub use pallet_collator_selection;
 
@@ -443,7 +443,7 @@ pub use pallet_contracts_uapi;
 #[cfg(feature = "pallet-conviction-voting")]
 pub use pallet_conviction_voting;
 
-/// Logic as per the description of The Fellowship for core Polkadot technology.
+/// Logic as per the description of The Fellowship for core Pezkuwi technology.
 #[cfg(feature = "pallet-core-fellowship")]
 pub use pallet_core_fellowship;
 
@@ -811,226 +811,226 @@ pub use pallet_xcm_bridge_hub_router;
 #[cfg(feature = "pallet-xcm-precompiles")]
 pub use pallet_xcm_precompiles;
 
-/// Logic which is common to all parachain runtimes.
-#[cfg(feature = "parachains-common")]
-pub use parachains_common;
+/// Logic which is common to all teyrchain runtimes.
+#[cfg(feature = "teyrchains-common")]
+pub use teyrchains_common;
 
 /// Utils for Runtimes testing.
-#[cfg(feature = "parachains-runtimes-test-utils")]
-pub use parachains_runtimes_test_utils;
+#[cfg(feature = "teyrchains-runtimes-test-utils")]
+pub use teyrchains_runtimes_test_utils;
 
-/// Polkadot Approval Distribution subsystem for the distribution of assignments and approvals
+/// Pezkuwi Approval Distribution subsystem for the distribution of assignments and approvals
 /// for approval checks on candidates over the network.
-#[cfg(feature = "polkadot-approval-distribution")]
-pub use polkadot_approval_distribution;
+#[cfg(feature = "pezkuwi-approval-distribution")]
+pub use pezkuwi_approval_distribution;
 
-/// Polkadot Bitfiled Distribution subsystem, which gossips signed availability bitfields used
+/// Pezkuwi Bitfiled Distribution subsystem, which gossips signed availability bitfields used
 /// to compactly determine which backed candidates are available or not based on a 2/3+ quorum.
-#[cfg(feature = "polkadot-availability-bitfield-distribution")]
-pub use polkadot_availability_bitfield_distribution;
+#[cfg(feature = "pezkuwi-availability-bitfield-distribution")]
+pub use pezkuwi_availability_bitfield_distribution;
 
 /// The Availability Distribution subsystem. Requests the required availability data. Also
 /// distributes availability data and chunks to requesters.
-#[cfg(feature = "polkadot-availability-distribution")]
-pub use polkadot_availability_distribution;
+#[cfg(feature = "pezkuwi-availability-distribution")]
+pub use pezkuwi_availability_distribution;
 
 /// The Availability Recovery subsystem. Handles requests for recovering the availability data
 /// of included candidates.
-#[cfg(feature = "polkadot-availability-recovery")]
-pub use polkadot_availability_recovery;
+#[cfg(feature = "pezkuwi-availability-recovery")]
+pub use pezkuwi_availability_recovery;
 
-/// Polkadot Relay-chain Client Node.
-#[cfg(feature = "polkadot-cli")]
-pub use polkadot_cli;
+/// Pezkuwi Relay-chain Client Node.
+#[cfg(feature = "pezkuwi-cli")]
+pub use pezkuwi_cli;
 
-/// Polkadot Collator Protocol subsystem. Allows collators and validators to talk to each
+/// Pezkuwi Collator Protocol subsystem. Allows collators and validators to talk to each
 /// other.
-#[cfg(feature = "polkadot-collator-protocol")]
-pub use polkadot_collator_protocol;
+#[cfg(feature = "pezkuwi-collator-protocol")]
+pub use pezkuwi_collator_protocol;
 
-/// Core Polkadot types used by Relay Chains and parachains.
-#[cfg(feature = "polkadot-core-primitives")]
-pub use polkadot_core_primitives;
+/// Core Pezkuwi types used by Relay Chains and teyrchains.
+#[cfg(feature = "pezkuwi-core-primitives")]
+pub use pezkuwi_core_primitives;
 
-/// Polkadot Dispute Distribution subsystem, which ensures all concerned validators are aware
+/// Pezkuwi Dispute Distribution subsystem, which ensures all concerned validators are aware
 /// of a dispute and have the relevant votes.
-#[cfg(feature = "polkadot-dispute-distribution")]
-pub use polkadot_dispute_distribution;
+#[cfg(feature = "pezkuwi-dispute-distribution")]
+pub use pezkuwi_dispute_distribution;
 
-/// Erasure coding used for Polkadot's availability system.
-#[cfg(feature = "polkadot-erasure-coding")]
-pub use polkadot_erasure_coding;
+/// Erasure coding used for Pezkuwi's availability system.
+#[cfg(feature = "pezkuwi-erasure-coding")]
+pub use pezkuwi_erasure_coding;
 
-/// Polkadot Gossip Support subsystem. Responsible for keeping track of session changes and
+/// Pezkuwi Gossip Support subsystem. Responsible for keeping track of session changes and
 /// issuing a connection request to the relevant validators on every new session.
-#[cfg(feature = "polkadot-gossip-support")]
-pub use polkadot_gossip_support;
+#[cfg(feature = "pezkuwi-gossip-support")]
+pub use pezkuwi_gossip_support;
 
-/// The Network Bridge Subsystem — protocol multiplexer for Polkadot.
-#[cfg(feature = "polkadot-network-bridge")]
-pub use polkadot_network_bridge;
+/// The Network Bridge Subsystem — protocol multiplexer for Pezkuwi.
+#[cfg(feature = "pezkuwi-network-bridge")]
+pub use pezkuwi_network_bridge;
 
-/// Collator-side subsystem that handles incoming candidate submissions from the parachain.
-#[cfg(feature = "polkadot-node-collation-generation")]
-pub use polkadot_node_collation_generation;
+/// Collator-side subsystem that handles incoming candidate submissions from the teyrchain.
+#[cfg(feature = "pezkuwi-node-collation-generation")]
+pub use pezkuwi_node_collation_generation;
 
-/// Approval Voting Subsystem of the Polkadot node.
-#[cfg(feature = "polkadot-node-core-approval-voting")]
-pub use polkadot_node_core_approval_voting;
+/// Approval Voting Subsystem of the Pezkuwi node.
+#[cfg(feature = "pezkuwi-node-core-approval-voting")]
+pub use pezkuwi_node_core_approval_voting;
 
 /// Approval Voting Subsystem running approval work in parallel.
-#[cfg(feature = "polkadot-node-core-approval-voting-parallel")]
-pub use polkadot_node_core_approval_voting_parallel;
+#[cfg(feature = "pezkuwi-node-core-approval-voting-parallel")]
+pub use pezkuwi_node_core_approval_voting_parallel;
 
 /// The Availability Store subsystem. Wrapper over the DB that stores availability data and
 /// chunks.
-#[cfg(feature = "polkadot-node-core-av-store")]
-pub use polkadot_node_core_av_store;
+#[cfg(feature = "pezkuwi-node-core-av-store")]
+pub use pezkuwi_node_core_av_store;
 
-/// The Candidate Backing Subsystem. Tracks parachain candidates that can be backed, as well as
+/// The Candidate Backing Subsystem. Tracks teyrchain candidates that can be backed, as well as
 /// the issuance of statements about candidates.
-#[cfg(feature = "polkadot-node-core-backing")]
-pub use polkadot_node_core_backing;
+#[cfg(feature = "pezkuwi-node-core-backing")]
+pub use pezkuwi_node_core_backing;
 
-/// Bitfield signing subsystem for the Polkadot node.
-#[cfg(feature = "polkadot-node-core-bitfield-signing")]
-pub use polkadot_node_core_bitfield_signing;
+/// Bitfield signing subsystem for the Pezkuwi node.
+#[cfg(feature = "pezkuwi-node-core-bitfield-signing")]
+pub use pezkuwi_node_core_bitfield_signing;
 
-/// Polkadot crate that implements the Candidate Validation subsystem. Handles requests to
+/// Pezkuwi crate that implements the Candidate Validation subsystem. Handles requests to
 /// validate candidates according to a PVF.
-#[cfg(feature = "polkadot-node-core-candidate-validation")]
-pub use polkadot_node_core_candidate_validation;
+#[cfg(feature = "pezkuwi-node-core-candidate-validation")]
+pub use pezkuwi_node_core_candidate_validation;
 
 /// The Chain API subsystem provides access to chain related utility functions like block
 /// number to hash conversions.
-#[cfg(feature = "polkadot-node-core-chain-api")]
-pub use polkadot_node_core_chain_api;
+#[cfg(feature = "pezkuwi-node-core-chain-api")]
+pub use pezkuwi_node_core_chain_api;
 
 /// Chain Selection Subsystem.
-#[cfg(feature = "polkadot-node-core-chain-selection")]
-pub use polkadot_node_core_chain_selection;
+#[cfg(feature = "pezkuwi-node-core-chain-selection")]
+pub use pezkuwi_node_core_chain_selection;
 
 /// The node-side components that participate in disputes.
-#[cfg(feature = "polkadot-node-core-dispute-coordinator")]
-pub use polkadot_node_core_dispute_coordinator;
+#[cfg(feature = "pezkuwi-node-core-dispute-coordinator")]
+pub use pezkuwi_node_core_dispute_coordinator;
 
-/// Parachains inherent data provider for Polkadot node.
-#[cfg(feature = "polkadot-node-core-parachains-inherent")]
-pub use polkadot_node_core_parachains_inherent;
+/// Teyrchains inherent data provider for Pezkuwi node.
+#[cfg(feature = "pezkuwi-node-core-teyrchains-inherent")]
+pub use pezkuwi_node_core_teyrchains_inherent;
 
-/// The Prospective Parachains subsystem. Tracks and handles prospective parachain fragments.
-#[cfg(feature = "polkadot-node-core-prospective-parachains")]
-pub use polkadot_node_core_prospective_parachains;
+/// The Prospective Teyrchains subsystem. Tracks and handles prospective teyrchain fragments.
+#[cfg(feature = "pezkuwi-node-core-prospective-teyrchains")]
+pub use pezkuwi_node_core_prospective_teyrchains;
 
-/// Responsible for assembling a relay chain block from a set of available parachain
+/// Responsible for assembling a relay chain block from a set of available teyrchain
 /// candidates.
-#[cfg(feature = "polkadot-node-core-provisioner")]
-pub use polkadot_node_core_provisioner;
+#[cfg(feature = "pezkuwi-node-core-provisioner")]
+pub use pezkuwi_node_core_provisioner;
 
-/// Polkadot crate that implements the PVF validation host. Responsible for coordinating
+/// Pezkuwi crate that implements the PVF validation host. Responsible for coordinating
 /// preparation and execution of PVFs.
-#[cfg(feature = "polkadot-node-core-pvf")]
-pub use polkadot_node_core_pvf;
+#[cfg(feature = "pezkuwi-node-core-pvf")]
+pub use pezkuwi_node_core_pvf;
 
-/// Polkadot crate that implements the PVF pre-checking subsystem. Responsible for checking and
+/// Pezkuwi crate that implements the PVF pre-checking subsystem. Responsible for checking and
 /// voting for PVFs that are pending approval.
-#[cfg(feature = "polkadot-node-core-pvf-checker")]
-pub use polkadot_node_core_pvf_checker;
+#[cfg(feature = "pezkuwi-node-core-pvf-checker")]
+pub use pezkuwi_node_core_pvf_checker;
 
-/// Polkadot crate that contains functionality related to PVFs that is shared by the PVF host
+/// Pezkuwi crate that contains functionality related to PVFs that is shared by the PVF host
 /// and the PVF workers.
-#[cfg(feature = "polkadot-node-core-pvf-common")]
-pub use polkadot_node_core_pvf_common;
+#[cfg(feature = "pezkuwi-node-core-pvf-common")]
+pub use pezkuwi_node_core_pvf_common;
 
-/// Polkadot crate that contains the logic for executing PVFs. Used by the
-/// polkadot-execute-worker binary.
-#[cfg(feature = "polkadot-node-core-pvf-execute-worker")]
-pub use polkadot_node_core_pvf_execute_worker;
+/// Pezkuwi crate that contains the logic for executing PVFs. Used by the
+/// pezkuwi-execute-worker binary.
+#[cfg(feature = "pezkuwi-node-core-pvf-execute-worker")]
+pub use pezkuwi_node_core_pvf_execute_worker;
 
-/// Polkadot crate that contains the logic for preparing PVFs. Used by the
-/// polkadot-prepare-worker binary.
-#[cfg(feature = "polkadot-node-core-pvf-prepare-worker")]
-pub use polkadot_node_core_pvf_prepare_worker;
+/// Pezkuwi crate that contains the logic for preparing PVFs. Used by the
+/// pezkuwi-prepare-worker binary.
+#[cfg(feature = "pezkuwi-node-core-pvf-prepare-worker")]
+pub use pezkuwi_node_core_pvf_prepare_worker;
 
-/// Wrapper around the parachain-related runtime APIs.
-#[cfg(feature = "polkadot-node-core-runtime-api")]
-pub use polkadot_node_core_runtime_api;
+/// Wrapper around the teyrchain-related runtime APIs.
+#[cfg(feature = "pezkuwi-node-core-runtime-api")]
+pub use pezkuwi_node_core_runtime_api;
 
 /// Subsystem metric helpers.
-#[cfg(feature = "polkadot-node-metrics")]
-pub use polkadot_node_metrics;
+#[cfg(feature = "pezkuwi-node-metrics")]
+pub use pezkuwi_node_metrics;
 
 /// Primitives types for the Node-side.
-#[cfg(feature = "polkadot-node-network-protocol")]
-pub use polkadot_node_network_protocol;
+#[cfg(feature = "pezkuwi-node-network-protocol")]
+pub use pezkuwi_node_network_protocol;
 
 /// Primitives types for the Node-side.
-#[cfg(feature = "polkadot-node-primitives")]
-pub use polkadot_node_primitives;
+#[cfg(feature = "pezkuwi-node-primitives")]
+pub use pezkuwi_node_primitives;
 
 /// Subsystem traits and message definitions and the generated overseer.
-#[cfg(feature = "polkadot-node-subsystem")]
-pub use polkadot_node_subsystem;
+#[cfg(feature = "pezkuwi-node-subsystem")]
+pub use pezkuwi_node_subsystem;
 
 /// Subsystem traits and message definitions.
-#[cfg(feature = "polkadot-node-subsystem-types")]
-pub use polkadot_node_subsystem_types;
+#[cfg(feature = "pezkuwi-node-subsystem-types")]
+pub use pezkuwi_node_subsystem_types;
 
 /// Subsystem traits and message definitions.
-#[cfg(feature = "polkadot-node-subsystem-util")]
-pub use polkadot_node_subsystem_util;
+#[cfg(feature = "pezkuwi-node-subsystem-util")]
+pub use pezkuwi_node_subsystem_util;
 
-/// Helper library that can be used to build a parachain node.
-#[cfg(feature = "polkadot-omni-node-lib")]
-pub use polkadot_omni_node_lib;
+/// Helper library that can be used to build a teyrchain node.
+#[cfg(feature = "pezkuwi-omni-node-lib")]
+pub use pezkuwi_omni_node_lib;
 
-/// System overseer of the Polkadot node.
-#[cfg(feature = "polkadot-overseer")]
-pub use polkadot_overseer;
+/// System overseer of the Pezkuwi node.
+#[cfg(feature = "pezkuwi-overseer")]
+pub use pezkuwi_overseer;
 
-/// Types and utilities for creating and working with parachains.
-#[cfg(feature = "polkadot-parachain-primitives")]
-pub use polkadot_parachain_primitives;
+/// Types and utilities for creating and working with teyrchains.
+#[cfg(feature = "pezkuwi-teyrchain-primitives")]
+pub use pezkuwi_teyrchain_primitives;
 
-/// Shared primitives used by Polkadot runtime.
-#[cfg(feature = "polkadot-primitives")]
-pub use polkadot_primitives;
+/// Shared primitives used by Pezkuwi runtime.
+#[cfg(feature = "pezkuwi-primitives")]
+pub use pezkuwi_primitives;
 
-/// Test helpers for Polkadot runtime primitives.
-#[cfg(feature = "polkadot-primitives-test-helpers")]
-pub use polkadot_primitives_test_helpers;
+/// Test helpers for Pezkuwi runtime primitives.
+#[cfg(feature = "pezkuwi-primitives-test-helpers")]
+pub use pezkuwi_primitives_test_helpers;
 
-/// Polkadot specific RPC functionality.
-#[cfg(feature = "polkadot-rpc")]
-pub use polkadot_rpc;
+/// Pezkuwi specific RPC functionality.
+#[cfg(feature = "pezkuwi-rpc")]
+pub use pezkuwi_rpc;
 
 /// Pallets and constants used in Relay Chain networks.
-#[cfg(feature = "polkadot-runtime-common")]
-pub use polkadot_runtime_common;
+#[cfg(feature = "pezkuwi-runtime-common")]
+pub use pezkuwi_runtime_common;
 
-/// Runtime metric interface for the Polkadot node.
-#[cfg(feature = "polkadot-runtime-metrics")]
-pub use polkadot_runtime_metrics;
+/// Runtime metric interface for the Pezkuwi node.
+#[cfg(feature = "pezkuwi-runtime-metrics")]
+pub use pezkuwi_runtime_metrics;
 
-/// Relay Chain runtime code responsible for Parachains.
-#[cfg(feature = "polkadot-runtime-parachains")]
-pub use polkadot_runtime_parachains;
+/// Relay Chain runtime code responsible for Teyrchains.
+#[cfg(feature = "pezkuwi-runtime-teyrchains")]
+pub use pezkuwi_runtime_teyrchains;
 
 /// The single package to get you started with building frame pallets and runtimes.
-#[cfg(feature = "polkadot-sdk-frame")]
-pub use polkadot_sdk_frame;
+#[cfg(feature = "pezkuwi-sdk-frame")]
+pub use pezkuwi_sdk_frame;
 
-/// Utils to tie different Polkadot components together and allow instantiation of a node.
-#[cfg(feature = "polkadot-service")]
-pub use polkadot_service;
+/// Utils to tie different Pezkuwi components together and allow instantiation of a node.
+#[cfg(feature = "pezkuwi-service")]
+pub use pezkuwi_service;
 
 /// Statement Distribution Subsystem.
-#[cfg(feature = "polkadot-statement-distribution")]
-pub use polkadot_statement_distribution;
+#[cfg(feature = "pezkuwi-statement-distribution")]
+pub use pezkuwi_statement_distribution;
 
-/// Stores messages other authorities issue about candidates in Polkadot.
-#[cfg(feature = "polkadot-statement-table")]
-pub use polkadot_statement_table;
+/// Stores messages other authorities issue about candidates in Pezkuwi.
+#[cfg(feature = "pezkuwi-statement-table")]
+pub use pezkuwi_statement_table;
 
 /// Collection of allocator implementations.
 #[cfg(feature = "sc-allocator")]
@@ -1136,7 +1136,7 @@ pub use sc_executor_wasmtime;
 #[cfg(feature = "sc-informant")]
 pub use sc_informant;
 
-/// Keystore (and session key management) for ed25519 based chains like Polkadot.
+/// Keystore (and session key management) for ed25519 based chains like Pezkuwi.
 #[cfg(feature = "sc-keystore")]
 pub use sc_keystore;
 
@@ -1253,7 +1253,7 @@ pub use sc_transaction_pool_api;
 #[cfg(feature = "sc-utils")]
 pub use sc_utils;
 
-/// Helper crate for generating slot ranges for the Polkadot runtime.
+/// Helper crate for generating slot ranges for the Pezkuwi runtime.
 #[cfg(feature = "slot-range-helper")]
 pub use slot_range_helper;
 
@@ -1487,9 +1487,9 @@ pub use staging_chain_spec_builder;
 #[cfg(feature = "staging-node-inspect")]
 pub use staging_node_inspect;
 
-/// Pallet to store the parachain ID.
-#[cfg(feature = "staging-parachain-info")]
-pub use staging_parachain_info;
+/// Pallet to store the teyrchain ID.
+#[cfg(feature = "staging-teyrchain-info")]
+pub use staging_teyrchain_info;
 
 /// Tracking allocator to control the amount of memory consumed by the process.
 #[cfg(feature = "staging-tracking-allocator")]
@@ -1507,8 +1507,8 @@ pub use staging_xcm_builder;
 #[cfg(feature = "staging-xcm-executor")]
 pub use staging_xcm_executor;
 
-/// Generate and restore keys for Substrate based chains such as Polkadot, Kusama and a growing
-/// number of parachains and Substrate based projects.
+/// Generate and restore keys for Substrate based chains such as Pezkuwi, Kusama and a growing
+/// number of teyrchains and Substrate based projects.
 #[cfg(feature = "subkey")]
 pub use subkey;
 
@@ -1544,9 +1544,9 @@ pub use substrate_state_trie_migration_rpc;
 #[cfg(feature = "substrate-wasm-builder")]
 pub use substrate_wasm_builder;
 
-/// Common constants for Testnet Parachains runtimes.
-#[cfg(feature = "testnet-parachains-constants")]
-pub use testnet_parachains_constants;
+/// Common constants for Testnet Teyrchains runtimes.
+#[cfg(feature = "testnet-teyrchains-constants")]
+pub use testnet_teyrchains_constants;
 
 /// Stick logs together with the TraceID as provided by tempo.
 #[cfg(feature = "tracing-gum")]

@@ -20,7 +20,7 @@
 //! ## Message Submission
 //!
 //! * [`Call::submit`]: Submit a message for verification and dispatch to the final destination
-//!   parachain.
+//!   teyrchain.
 #![cfg_attr(not(feature = "std"), no_std)]
 
 extern crate alloc;
@@ -91,7 +91,7 @@ pub mod pallet {
 		/// Address of the Gateway contract.
 		#[pallet::constant]
 		type GatewayAddress: Get<H160>;
-		/// AssetHub parachain ID.
+		/// AssetHub teyrchain ID.
 		type AssetHubParaId: Get<u32>;
 		/// Convert a command from Ethereum to an XCM message.
 		type MessageConverter: ConvertMessage;
@@ -116,7 +116,7 @@ pub mod pallet {
 		MessageReceived {
 			/// The message nonce
 			nonce: u64,
-			/// ID of the XCM message which was forwarded to the final destination parachain
+			/// ID of the XCM message which was forwarded to the final destination teyrchain
 			message_id: [u8; 32],
 		},
 		/// Set OperatingMode
@@ -246,7 +246,7 @@ pub mod pallet {
 				T::MessageConverter::convert(message).map_err(|error| Error::<T>::from(error))?;
 
 			// Forward XCM to AH
-			let dest = Location::new(1, [Parachain(T::AssetHubParaId::get())]);
+			let dest = Location::new(1, [Teyrchain(T::AssetHubParaId::get())]);
 
 			// Mark message as received
 			Nonce::<T>::set(nonce);

@@ -17,7 +17,7 @@ use super::*;
 use crate as xcmp_queue;
 use alloc::collections::BTreeMap;
 use core::marker::PhantomData;
-use cumulus_pallet_parachain_system::AnyRelayNumber;
+use cumulus_pallet_teyrchain_system::AnyRelayNumber;
 use cumulus_primitives_core::{ChannelInfo, IsSystem, ParaId};
 use frame_support::{
 	derive_impl, parameter_types,
@@ -41,7 +41,7 @@ frame_support::construct_runtime!(
 	{
 		System: frame_system::{Pallet, Call, Config<T>, Storage, Event<T>},
 		Balances: pallet_balances::{Pallet, Call, Storage, Config<T>, Event<T>},
-		ParachainSystem: cumulus_pallet_parachain_system::{
+		TeyrchainSystem: cumulus_pallet_teyrchain_system::{
 			Pallet, Call, Config<T>, Storage, Inherent, Event<T>,
 		},
 		XcmpQueue: xcmp_queue::{Pallet, Call, Storage, Event<T>},
@@ -76,7 +76,7 @@ impl frame_system::Config for Test {
 	type OnKilledAccount = ();
 	type SystemWeightInfo = ();
 	type SS58Prefix = SS58Prefix;
-	type OnSetCode = cumulus_pallet_parachain_system::ParachainSetCode<Test>;
+	type OnSetCode = cumulus_pallet_teyrchain_system::TeyrchainSetCode<Test>;
 	type MaxConsumers = frame_support::traits::ConstU32<16>;
 }
 
@@ -92,7 +92,7 @@ impl pallet_balances::Config for Test {
 	type AccountStore = System;
 }
 
-impl cumulus_pallet_parachain_system::Config for Test {
+impl cumulus_pallet_teyrchain_system::Config for Test {
 	type WeightInfo = ();
 	type RuntimeEvent = RuntimeEvent;
 	type OnSystemEvent = ();
@@ -104,21 +104,21 @@ impl cumulus_pallet_parachain_system::Config for Test {
 	type XcmpMessageHandler = XcmpQueue;
 	type ReservedXcmpWeight = ();
 	type CheckAssociatedRelayNumber = AnyRelayNumber;
-	type ConsensusHook = cumulus_pallet_parachain_system::consensus_hook::ExpectParentIncluded;
+	type ConsensusHook = cumulus_pallet_teyrchain_system::consensus_hook::ExpectParentIncluded;
 	type RelayParentOffset = ConstU32<0>;
 }
 
 parameter_types! {
 	pub const RelayChain: Location = Location::parent();
-	pub UniversalLocation: InteriorLocation = [Parachain(1u32)].into();
+	pub UniversalLocation: InteriorLocation = [Teyrchain(1u32)].into();
 	pub UnitWeightCost: Weight = Weight::from_parts(1_000_000, 1024);
 	pub const MaxInstructions: u32 = 100;
 	pub const MaxAssetsIntoHolding: u32 = 64;
 }
 
-pub struct SystemParachainAsSuperuser<RuntimeOrigin>(PhantomData<RuntimeOrigin>);
+pub struct SystemTeyrchainAsSuperuser<RuntimeOrigin>(PhantomData<RuntimeOrigin>);
 impl<RuntimeOrigin: OriginTrait> ConvertOrigin<RuntimeOrigin>
-	for SystemParachainAsSuperuser<RuntimeOrigin>
+	for SystemTeyrchainAsSuperuser<RuntimeOrigin>
 {
 	fn convert_origin(
 		origin: impl Into<Location>,
@@ -128,7 +128,7 @@ impl<RuntimeOrigin: OriginTrait> ConvertOrigin<RuntimeOrigin>
 		if kind == OriginKind::Superuser &&
 			matches!(
 				origin.unpack(),
-				(1,	[Parachain(id)]) if ParaId::from(*id).is_system(),
+				(1,	[Teyrchain(id)]) if ParaId::from(*id).is_system(),
 			) {
 			Ok(RuntimeOrigin::root())
 		} else {
@@ -222,7 +222,7 @@ parameter_types! {
 	pub const ByteFee: Balance = 1_000_000;
 }
 
-pub type PriceForSiblingParachainDelivery = polkadot_runtime_common::xcm_sender::ExponentialPrice<
+pub type PriceForSiblingTeyrchainDelivery = pezkuwi_runtime_common::xcm_sender::ExponentialPrice<
 	FeeAssetId,
 	BaseDeliveryFee,
 	ByteFee,
@@ -240,9 +240,9 @@ impl Config for Test {
 	// need to set the page size larger than that until we reduce the channel size on-chain.
 	type MaxPageSize = ConstU32<{ 103 * 1024 }>;
 	type ControllerOrigin = EnsureRoot<AccountId>;
-	type ControllerOriginConverter = SystemParachainAsSuperuser<RuntimeOrigin>;
+	type ControllerOriginConverter = SystemTeyrchainAsSuperuser<RuntimeOrigin>;
 	type WeightInfo = ();
-	type PriceForSiblingDelivery = PriceForSiblingParachainDelivery;
+	type PriceForSiblingDelivery = PriceForSiblingTeyrchainDelivery;
 }
 
 pub fn new_test_ext() -> sp_io::TestExternalities {
@@ -259,7 +259,7 @@ impl GetChannelInfo for MockedChannelInfo {
 			return ChannelStatus::Ready(usize::MAX, usize::MAX);
 		}
 
-		ParachainSystem::get_channel_status(id)
+		TeyrchainSystem::get_channel_status(id)
 	}
 
 	fn get_channel_info(id: ParaId) -> Option<ChannelInfo> {
@@ -273,7 +273,7 @@ impl GetChannelInfo for MockedChannelInfo {
 			});
 		}
 
-		ParachainSystem::get_channel_info(id)
+		TeyrchainSystem::get_channel_info(id)
 	}
 }
 

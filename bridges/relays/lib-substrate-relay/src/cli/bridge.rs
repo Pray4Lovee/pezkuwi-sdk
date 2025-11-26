@@ -20,11 +20,11 @@ use crate::{
 	equivocation::SubstrateEquivocationDetectionPipeline,
 	finality::SubstrateFinalitySyncPipeline,
 	messages::{MessagesRelayLimits, SubstrateMessageLane},
-	parachains::SubstrateParachainsPipeline,
+	teyrchains::SubstrateTeyrchainsPipeline,
 };
-use bp_parachains::{RelayBlockHash, RelayBlockHasher, RelayBlockNumber};
+use bp_teyrchains::{RelayBlockHash, RelayBlockHasher, RelayBlockNumber};
 use relay_substrate_client::{
-	Chain, ChainWithRuntimeVersion, ChainWithTransactions, Parachain, RelayChain,
+	Chain, ChainWithRuntimeVersion, ChainWithTransactions, Teyrchain, RelayChain,
 };
 
 /// Minimal bridge representation that can be used from the CLI.
@@ -73,20 +73,20 @@ pub trait RelayToRelayEquivocationDetectionCliBridge:
 }
 
 /// Bridge representation that can be used from the CLI for relaying headers
-/// from a parachain to a relay chain.
-pub trait ParachainToRelayHeadersCliBridge: CliBridgeBase
+/// from a teyrchain to a relay chain.
+pub trait TeyrchainToRelayHeadersCliBridge: CliBridgeBase
 where
-	Self::Source: Parachain,
+	Self::Source: Teyrchain,
 {
-	/// The `CliBridgeBase` type represents the parachain in this situation.
+	/// The `CliBridgeBase` type represents the teyrchain in this situation.
 	/// We need to add an extra type for the relay chain.
 	type SourceRelay: Chain<BlockNumber = RelayBlockNumber, Hash = RelayBlockHash, Hasher = RelayBlockHasher>
 		+ ChainWithRuntimeVersion
 		+ RelayChain;
-	/// Finality proofs synchronization pipeline (source parachain -> target).
-	type ParachainFinality: SubstrateParachainsPipeline<
+	/// Finality proofs synchronization pipeline (source teyrchain -> target).
+	type TeyrchainFinality: SubstrateTeyrchainsPipeline<
 		SourceRelayChain = Self::SourceRelay,
-		SourceParachain = Self::Source,
+		SourceTeyrchain = Self::Source,
 		TargetChain = Self::Target,
 	>;
 	/// Finality proofs synchronization pipeline (source relay chain -> target).

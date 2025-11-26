@@ -4,7 +4,7 @@ doc:
   - audience: Node Operator
     description: |
       Fix crash of `SyncingEngine` when an already synced parachain node is run with `--sync=warp`
-      (issue https://github.com/paritytech/polkadot-sdk/issues/3496).
+      (issue https://github.com/pezkuwichain/pezkuwichain-sdk/issues/3496).
       The issue manifests itself by errors in the logs:
       ```
       [Parachain] Cannot set warp sync target block: no warp sync strategy is active.

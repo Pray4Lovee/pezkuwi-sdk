@@ -20,13 +20,13 @@ tuplex = { workspace = true }
 # Bridge dependencies
 bp-header-chain = { workspace = true }
 bp-messages = { workspace = true }
-bp-parachains = { workspace = true }
-bp-polkadot-core = { workspace = true }
+bp-teyrchains = { workspace = true }
+bp-pezkuwi-core = { workspace = true }
 bp-relayers = { workspace = true }
 bp-runtime = { workspace = true }
 pallet-bridge-grandpa = { workspace = true }
 pallet-bridge-messages = { workspace = true }
-pallet-bridge-parachains = { workspace = true }
+pallet-bridge-teyrchains = { workspace = true }
 pallet-bridge-relayers = { workspace = true }
 
 # Substrate dependencies
@@ -40,7 +40,7 @@ sp-std = { workspace = true }
 sp-trie = { optional = true, workspace = true }
 sp-weights = { workspace = true }
 
-# Polkadot dependencies
+# Pezkuwi dependencies
 xcm = { workspace = true }
 
 [dev-dependencies]
@@ -54,8 +54,8 @@ default = ["std"]
 std = [
 	"bp-header-chain/std",
 	"bp-messages/std",
-	"bp-parachains/std",
-	"bp-polkadot-core/std",
+	"bp-teyrchains/std",
+	"bp-pezkuwi-core/std",
 	"bp-relayers/std",
 	"bp-runtime/std",
 	"bp-test-utils/std",
@@ -64,7 +64,7 @@ std = [
 	"frame-system/std",
 	"pallet-bridge-grandpa/std",
 	"pallet-bridge-messages/std",
-	"pallet-bridge-parachains/std",
+	"pallet-bridge-teyrchains/std",
 	"pallet-bridge-relayers/std",
 	"pallet-transaction-payment/std",
 	"pallet-utility/std",
@@ -86,7 +86,7 @@ runtime-benchmarks = [
 	"pallet-bridge-grandpa/runtime-benchmarks",
 	"pallet-bridge-messages/runtime-benchmarks",
 	"pallet-bridge-messages/test-helpers",
-	"pallet-bridge-parachains/runtime-benchmarks",
+	"pallet-bridge-teyrchains/runtime-benchmarks",
 	"pallet-bridge-relayers/runtime-benchmarks",
 	"pallet-transaction-payment/runtime-benchmarks",
 	"pallet-utility/runtime-benchmarks",

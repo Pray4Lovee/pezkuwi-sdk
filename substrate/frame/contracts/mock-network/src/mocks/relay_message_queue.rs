@@ -47,6 +47,6 @@ impl ProcessMessage for MessageProcessor {
 			Junction,
 			xcm_executor::XcmExecutor<XcmConfig>,
 			RuntimeCall,
-		>::process_message(message, Junction::Parachain(para.into()), meter, id)
+		>::process_message(message, Junction::Teyrchain(para.into()), meter, id)
 	}
 }

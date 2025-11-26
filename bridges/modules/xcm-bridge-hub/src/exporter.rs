@@ -444,7 +444,7 @@ mod tests {
 	}
 
 	fn open_lane_and_send_regular_message() -> (BridgeId, TestLaneIdType) {
-		let (locations, lane_id) = open_lane(OpenBridgeOrigin::sibling_parachain_origin());
+		let (locations, lane_id) = open_lane(OpenBridgeOrigin::sibling_teyrchain_origin());
 
 		// now let's try to enqueue message using our `ExportXcm` implementation
 		export_xcm::<XcmOverBridge>(
@@ -653,7 +653,7 @@ mod tests {
 			let dest = Location::new(2, BridgedUniversalDestination::get());
 
 			// open bridge
-			let origin = OpenBridgeOrigin::sibling_parachain_origin();
+			let origin = OpenBridgeOrigin::sibling_teyrchain_origin();
 			let origin_as_location =
 				OpenBridgeOriginOf::<TestRuntime, ()>::try_origin(origin.clone()).unwrap();
 			let (_, expected_lane_id) = open_lane(origin);
@@ -679,7 +679,7 @@ mod tests {
 				>,
 			>(dest.clone(), Xcm::<()>::default()));
 
-			// we need to set `UniversalLocation` for `sibling_parachain_origin` for
+			// we need to set `UniversalLocation` for `sibling_teyrchain_origin` for
 			// `XcmOverBridgeWrappedWithExportMessageRouterInstance`.
 			ExportMessageOriginUniversalLocation::set(Some(SiblingUniversalLocation::get()));
 			// send `ExportMessage(message)` by `pallet_xcm_bridge_hub_router`.
@@ -730,7 +730,7 @@ mod tests {
 
 			// dest starts with wrong `NetworkId`
 			let mut invalid_dest_wrapper = Some(
-				[GlobalConsensus(NetworkId::ByGenesis([0; 32])), Parachain(BRIDGED_ASSET_HUB_ID)]
+				[GlobalConsensus(NetworkId::ByGenesis([0; 32])), Teyrchain(BRIDGED_ASSET_HUB_ID)]
 					.into(),
 			);
 			assert_eq!(
@@ -750,7 +750,7 @@ mod tests {
 				&Some(
 					[
 						GlobalConsensus(NetworkId::ByGenesis([0; 32]),),
-						Parachain(BRIDGED_ASSET_HUB_ID)
+						Teyrchain(BRIDGED_ASSET_HUB_ID)
 					]
 					.into()
 				),
@@ -759,7 +759,7 @@ mod tests {
 
 			// no opened lane for dest
 			let mut dest_without_lane_wrapper =
-				Some([GlobalConsensus(BridgedRelayNetwork::get()), Parachain(5679)].into());
+				Some([GlobalConsensus(BridgedRelayNetwork::get()), Teyrchain(5679)].into());
 			assert_eq!(
 				XcmOverBridge::validate(
 					BridgedRelayNetwork::get(),
@@ -774,12 +774,12 @@ mod tests {
 			assert_eq!(&Some(xcm.clone()), &xcm_wrapper);
 			assert_eq!(&Some(universal_source()), &universal_source_wrapper);
 			assert_eq!(
-				&Some([GlobalConsensus(BridgedRelayNetwork::get(),), Parachain(5679)].into()),
+				&Some([GlobalConsensus(BridgedRelayNetwork::get(),), Teyrchain(5679)].into()),
 				&dest_without_lane_wrapper
 			);
 
 			// ok
-			let _ = open_lane(OpenBridgeOrigin::sibling_parachain_origin());
+			let _ = open_lane(OpenBridgeOrigin::sibling_teyrchain_origin());
 			let mut dest_wrapper = Some(bridged_relative_destination());
 			assert_ok!(XcmOverBridge::validate(
 				BridgedRelayNetwork::get(),
@@ -809,12 +809,12 @@ mod tests {
 			}
 
 			// open two bridges
-			let origin = OpenBridgeOrigin::sibling_parachain_origin();
+			let origin = OpenBridgeOrigin::sibling_teyrchain_origin();
 			let origin_as_location =
 				OpenBridgeOriginOf::<TestRuntime, ()>::try_origin(origin.clone()).unwrap();
 			let (bridge_1, expected_lane_id_1) = open_lane(origin);
 
-			// we need to set `UniversalLocation` for `sibling_parachain_origin` for
+			// we need to set `UniversalLocation` for `sibling_teyrchain_origin` for
 			// `XcmOverBridgeWrappedWithExportMessageRouterInstance`.
 			ExportMessageOriginUniversalLocation::set(Some(SiblingUniversalLocation::get()));
 

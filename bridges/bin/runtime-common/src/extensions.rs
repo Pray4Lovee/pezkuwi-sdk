@@ -18,14 +18,14 @@
 //! obsolete (duplicated) data or do not pass some additional pallet-specific
 //! checks.
 
-use bp_parachains::SubmitParachainHeadsInfo;
+use bp_teyrchains::SubmitTeyrchainHeadsInfo;
 use bp_relayers::ExplicitOrAccountParams;
-use bp_runtime::Parachain;
+use bp_runtime::Teyrchain;
 use pallet_bridge_grandpa::{
 	BridgedBlockNumber, CallSubType as GrandpaCallSubType, SubmitFinalityProofHelper,
 };
 use pallet_bridge_messages::CallSubType as MessagesCallSubType;
-use pallet_bridge_parachains::{CallSubType as ParachainsCallSubtype, SubmitParachainHeadsHelper};
+use pallet_bridge_teyrchains::{CallSubType as TeyrchainsCallSubtype, SubmitTeyrchainHeadsHelper};
 use pallet_bridge_relayers::Pallet as RelayersPallet;
 use sp_runtime::{
 	traits::{Get, UniqueSaturatedInto},
@@ -116,45 +116,45 @@ where
 	}
 }
 
-/// Wrapper for the bridge parachains pallet that checks calls for obsolete submissions
+/// Wrapper for the bridge teyrchains pallet that checks calls for obsolete submissions
 /// and also boosts transaction priority if it has submitted by registered relayer.
 /// The boost is computed as
 /// `(BundledHeaderNumber - 1 - BestKnownHeaderNumber) * Priority::get()`.
 /// The boost is only applied if submitter has active registration in the relayers
 /// pallet.
-pub struct CheckAndBoostBridgeParachainsTransactions<
+pub struct CheckAndBoostBridgeTeyrchainsTransactions<
 	T,
-	ParachainsInstance,
+	TeyrchainsInstance,
 	Para,
 	Priority,
 	SlashAccount,
->(PhantomData<(T, ParachainsInstance, Para, Priority, SlashAccount)>);
+>(PhantomData<(T, TeyrchainsInstance, Para, Priority, SlashAccount)>);
 
 impl<
 		T,
-		ParachainsInstance,
+		TeyrchainsInstance,
 		Para,
 		Priority: Get<TransactionPriority>,
 		SlashAccount: Get<T::AccountId>,
 	> BridgeRuntimeFilterCall<T::AccountId, T::RuntimeCall>
-	for CheckAndBoostBridgeParachainsTransactions<T, ParachainsInstance, Para, Priority, SlashAccount>
+	for CheckAndBoostBridgeTeyrchainsTransactions<T, TeyrchainsInstance, Para, Priority, SlashAccount>
 where
-	T: pallet_bridge_relayers::Config + pallet_bridge_parachains::Config<ParachainsInstance>,
-	ParachainsInstance: 'static,
-	Para: Parachain,
-	T::RuntimeCall: ParachainsCallSubtype<T, ParachainsInstance>,
+	T: pallet_bridge_relayers::Config + pallet_bridge_teyrchains::Config<TeyrchainsInstance>,
+	TeyrchainsInstance: 'static,
+	Para: Teyrchain,
+	T::RuntimeCall: TeyrchainsCallSubtype<T, TeyrchainsInstance>,
 {
 	// bridged header number, bundled in transaction
-	type ToPostDispatch = Option<SubmitParachainHeadsInfo>;
+	type ToPostDispatch = Option<SubmitTeyrchainHeadsInfo>;
 
 	fn validate(
 		who: &T::AccountId,
 		call: &T::RuntimeCall,
 	) -> (Self::ToPostDispatch, TransactionValidity) {
-		match ParachainsCallSubtype::<T, ParachainsInstance>::check_obsolete_submit_parachain_heads(
+		match TeyrchainsCallSubtype::<T, TeyrchainsInstance>::check_obsolete_submit_teyrchain_heads(
 			call,
 		) {
-			Ok(Some(our_tx)) if our_tx.base.para_id.0 == Para::PARACHAIN_ID => {
+			Ok(Some(our_tx)) if our_tx.base.para_id.0 == Para::TEYRCHAIN_ID => {
 				let to_post_dispatch = Some(our_tx.base);
 				let total_priority_boost =
 					compute_priority_boost::<T, _, Priority>(&who, our_tx.improved_by);
@@ -173,7 +173,7 @@ where
 		let Some(update) = maybe_update else { return };
 		// we are only interested in failed or unneeded transactions
 		let has_failed = has_failed ||
-			!SubmitParachainHeadsHelper::<T, ParachainsInstance>::was_successful(&update);
+			!SubmitTeyrchainHeadsHelper::<T, TeyrchainsInstance>::was_successful(&update);
 
 		if !has_failed {
 			return
@@ -204,16 +204,16 @@ where
 }
 
 impl<T, I: 'static> BridgeRuntimeFilterCall<T::AccountId, T::RuntimeCall>
-	for pallet_bridge_parachains::Pallet<T, I>
+	for pallet_bridge_teyrchains::Pallet<T, I>
 where
-	T: pallet_bridge_parachains::Config<I>,
-	T::RuntimeCall: ParachainsCallSubtype<T, I>,
+	T: pallet_bridge_teyrchains::Config<I>,
+	T::RuntimeCall: TeyrchainsCallSubtype<T, I>,
 {
 	type ToPostDispatch = ();
 	fn validate(_who: &T::AccountId, call: &T::RuntimeCall) -> ((), TransactionValidity) {
 		(
 			(),
-			ParachainsCallSubtype::<T, I>::check_obsolete_submit_parachain_heads(call)
+			TeyrchainsCallSubtype::<T, I>::check_obsolete_submit_teyrchain_heads(call)
 				.and_then(|_| ValidTransactionBuilder::default().build()),
 		)
 	}
@@ -260,8 +260,8 @@ where
 /// ```nocompile
 /// generate_bridge_reject_obsolete_headers_and_messages!{
 ///     Call, AccountId
-///     BridgeRococoGrandpa, BridgeRococoMessages,
-///     BridgeRococoParachains
+///     BridgePezkuwichainGrandpa, BridgePezkuwichainMessages,
+///     BridgePezkuwichainTeyrchains
 /// }
 /// ```
 ///
@@ -376,15 +376,15 @@ mod tests {
 	use crate::mock::*;
 	use bp_header_chain::StoredHeaderDataBuilder;
 	use bp_messages::{InboundLaneData, MessageNonce, OutboundLaneData};
-	use bp_parachains::{BestParaHeadHash, ParaInfo};
-	use bp_polkadot_core::parachains::{ParaHeadsProof, ParaId};
+	use bp_teyrchains::{BestParaHeadHash, ParaInfo};
+	use bp_pezkuwi_core::teyrchains::{ParaHeadsProof, ParaId};
 	use bp_relayers::{RewardsAccountOwner, RewardsAccountParams};
 	use bp_runtime::HeaderId;
 	use bp_test_utils::{make_default_justification, test_keyring, TEST_GRANDPA_SET_ID};
 	use codec::{Decode, Encode, MaxEncodedLen};
 	use frame_support::{assert_err, assert_ok, traits::fungible::Mutate};
 	use pallet_bridge_grandpa::{Call as GrandpaCall, StoredAuthoritySet};
-	use pallet_bridge_parachains::Call as ParachainsCall;
+	use pallet_bridge_teyrchains::Call as TeyrchainsCall;
 	use scale_info::TypeInfo;
 	use sp_runtime::{
 		traits::{
@@ -527,7 +527,7 @@ mod tests {
 
 	fn initialize_environment(
 		best_relay_header_number: BridgedChainBlockNumber,
-		parachain_head_at_relay_header_number: BridgedChainBlockNumber,
+		teyrchain_head_at_relay_header_number: BridgedChainBlockNumber,
 		best_message: MessageNonce,
 	) {
 		let authorities = test_keyring().into_iter().map(|(a, w)| (a.into(), w)).collect();
@@ -541,15 +541,15 @@ mod tests {
 			bp_test_utils::test_header::<BridgedChainHeader>(0).build(),
 		);
 
-		let para_id = ParaId(BridgedUnderlyingParachain::PARACHAIN_ID);
+		let para_id = ParaId(BridgedUnderlyingTeyrchain::TEYRCHAIN_ID);
 		let para_info = ParaInfo {
 			best_head_hash: BestParaHeadHash {
-				at_relay_block_number: parachain_head_at_relay_header_number,
-				head_hash: [parachain_head_at_relay_header_number as u8; 32].into(),
+				at_relay_block_number: teyrchain_head_at_relay_header_number,
+				head_hash: [teyrchain_head_at_relay_header_number as u8; 32].into(),
 			},
 			next_imported_hash_position: 0,
 		};
-		pallet_bridge_parachains::ParasInfo::<TestRuntime>::insert(para_id, para_info);
+		pallet_bridge_teyrchains::ParasInfo::<TestRuntime>::insert(para_id, para_info);
 
 		let lane_id = test_lane_id();
 		let in_lane_data =
@@ -585,16 +585,16 @@ mod tests {
 		})
 	}
 
-	fn submit_parachain_head_call(
-		parachain_head_at_relay_header_number: BridgedChainBlockNumber,
+	fn submit_teyrchain_head_call(
+		teyrchain_head_at_relay_header_number: BridgedChainBlockNumber,
 	) -> RuntimeCall {
-		RuntimeCall::BridgeParachains(ParachainsCall::submit_parachain_heads {
-			at_relay_block: (parachain_head_at_relay_header_number, BridgedChainHash::default()),
-			parachains: vec![(
-				ParaId(BridgedUnderlyingParachain::PARACHAIN_ID),
-				[parachain_head_at_relay_header_number as u8; 32].into(),
+		RuntimeCall::BridgeTeyrchains(TeyrchainsCall::submit_teyrchain_heads {
+			at_relay_block: (teyrchain_head_at_relay_header_number, BridgedChainHash::default()),
+			teyrchains: vec![(
+				ParaId(BridgedUnderlyingTeyrchain::TEYRCHAIN_ID),
+				[teyrchain_head_at_relay_header_number as u8; 32].into(),
 			)],
-			parachain_heads_proof: ParaHeadsProof { storage_proof: Default::default() },
+			teyrchain_heads_proof: ParaHeadsProof { storage_proof: Default::default() },
 		})
 	}
 
@@ -761,22 +761,22 @@ mod tests {
 		})
 	}
 
-	type BridgeParachainsWrapper = CheckAndBoostBridgeParachainsTransactions<
+	type BridgeTeyrchainsWrapper = CheckAndBoostBridgeTeyrchainsTransactions<
 		TestRuntime,
 		(),
-		BridgedUnderlyingParachain,
+		BridgedUnderlyingTeyrchain,
 		ConstU64<1_000>,
 		SlashDestination,
 	>;
 
 	#[test]
-	fn parachains_wrapper_does_not_boost_extensions_for_unregistered_relayer() {
+	fn teyrchains_wrapper_does_not_boost_extensions_for_unregistered_relayer() {
 		run_test(|| {
 			initialize_environment(100, 100, 100);
 
-			let priority_boost = BridgeParachainsWrapper::validate(
+			let priority_boost = BridgeTeyrchainsWrapper::validate(
 				&relayer_account_at_this_chain(),
-				&submit_parachain_head_call(200),
+				&submit_teyrchain_head_call(200),
 			)
 			.1
 			.unwrap()
@@ -786,15 +786,15 @@ mod tests {
 	}
 
 	#[test]
-	fn parachains_wrapper_boosts_extensions_for_registered_relayer() {
+	fn teyrchains_wrapper_boosts_extensions_for_registered_relayer() {
 		run_test(|| {
 			initialize_environment(100, 100, 100);
 			BridgeRelayers::register(RuntimeOrigin::signed(relayer_account_at_this_chain()), 1000)
 				.unwrap();
 
-			let priority_boost = BridgeParachainsWrapper::validate(
+			let priority_boost = BridgeTeyrchainsWrapper::validate(
 				&relayer_account_at_this_chain(),
-				&submit_parachain_head_call(200),
+				&submit_teyrchain_head_call(200),
 			)
 			.1
 			.unwrap()
@@ -804,19 +804,19 @@ mod tests {
 	}
 
 	#[test]
-	fn parachains_wrapper_slashes_registered_relayer_if_transaction_fails() {
+	fn teyrchains_wrapper_slashes_registered_relayer_if_transaction_fails() {
 		run_test(|| {
 			initialize_environment(100, 100, 100);
 			BridgeRelayers::register(RuntimeOrigin::signed(relayer_account_at_this_chain()), 1000)
 				.unwrap();
 
 			assert!(BridgeRelayers::is_registration_active(&relayer_account_at_this_chain()));
-			BridgeParachainsWrapper::post_dispatch(
+			BridgeTeyrchainsWrapper::post_dispatch(
 				&relayer_account_at_this_chain(),
 				true,
-				Some(SubmitParachainHeadsInfo {
+				Some(SubmitTeyrchainHeadsInfo {
 					at_relay_block: HeaderId(150, Default::default()),
-					para_id: ParaId(BridgedUnderlyingParachain::PARACHAIN_ID),
+					para_id: ParaId(BridgedUnderlyingTeyrchain::TEYRCHAIN_ID),
 					para_head_hash: [150u8; 32].into(),
 					is_free_execution_expected: false,
 				}),
@@ -826,19 +826,19 @@ mod tests {
 	}
 
 	#[test]
-	fn parachains_wrapper_does_not_slash_registered_relayer_if_transaction_succeeds() {
+	fn teyrchains_wrapper_does_not_slash_registered_relayer_if_transaction_succeeds() {
 		run_test(|| {
 			initialize_environment(100, 100, 100);
 			BridgeRelayers::register(RuntimeOrigin::signed(relayer_account_at_this_chain()), 1000)
 				.unwrap();
 
 			assert!(BridgeRelayers::is_registration_active(&relayer_account_at_this_chain()));
-			BridgeParachainsWrapper::post_dispatch(
+			BridgeTeyrchainsWrapper::post_dispatch(
 				&relayer_account_at_this_chain(),
 				false,
-				Some(SubmitParachainHeadsInfo {
+				Some(SubmitTeyrchainHeadsInfo {
 					at_relay_block: HeaderId(100, Default::default()),
-					para_id: ParaId(BridgedUnderlyingParachain::PARACHAIN_ID),
+					para_id: ParaId(BridgedUnderlyingTeyrchain::TEYRCHAIN_ID),
 					para_head_hash: [100u8; 32].into(),
 					is_free_execution_expected: false,
 				}),

@@ -7,10 +7,10 @@ use std::time::Duration;
 use crate::utils::initialize_network;
 
 use cumulus_zombienet_sdk_helpers::{assert_para_throughput, wait_for_upgrade};
-use polkadot_primitives::Id as ParaId;
+use pezkuwi_primitives::Id as ParaId;
 use zombienet_configuration::types::AssetLocation;
 use zombienet_sdk::{
-	subxt::{OnlineClient, PolkadotConfig},
+	subxt::{OnlineClient, PezkuwiConfig},
 	tx_helper::{ChainUpgrade, RuntimeUpgradeOptions},
 	NetworkConfig, NetworkConfigBuilder,
 };
@@ -19,8 +19,8 @@ const PARA_ID: u32 = 2000;
 const WASM_WITH_SPEC_VERSION_INCREMENTED: &str =
 	"/tmp/wasm_binary_spec_version_incremented.rs.compact.compressed.wasm";
 
-// This tests makes sure that it is possible to upgrade parachain's runtime
-// and parachain produces blocks after such upgrade.
+// This tests makes sure that it is possible to upgrade teyrchain's runtime
+// and teyrchain produces blocks after such upgrade.
 #[tokio::test(flavor = "multi_thread")]
 async fn runtime_upgrade() -> Result<(), anyhow::Error> {
 	let _ = env_logger::try_init_from_env(
@@ -32,9 +32,9 @@ async fn runtime_upgrade() -> Result<(), anyhow::Error> {
 	let network = initialize_network(config).await?;
 
 	let alice = network.get_node("alice")?;
-	let alice_client: OnlineClient<PolkadotConfig> = alice.wait_client().await?;
+	let alice_client: OnlineClient<PezkuwiConfig> = alice.wait_client().await?;
 
-	log::info!("Ensuring parachain making progress");
+	log::info!("Ensuring teyrchain making progress");
 	assert_para_throughput(
 		&alice_client,
 		20,
@@ -44,7 +44,7 @@ async fn runtime_upgrade() -> Result<(), anyhow::Error> {
 
 	let timeout_secs: u64 = 250;
 	let charlie = network.get_node("charlie")?;
-	let charlie_client: OnlineClient<PolkadotConfig> = charlie.wait_client().await?;
+	let charlie_client: OnlineClient<PezkuwiConfig> = charlie.wait_client().await?;
 
 	let current_spec_version =
 		charlie_client.backend().current_runtime_version().await?.spec_version;
@@ -52,7 +52,7 @@ async fn runtime_upgrade() -> Result<(), anyhow::Error> {
 
 	log::info!("Performing runtime upgrade");
 	network
-		.parachain(PARA_ID)
+		.teyrchain(PARA_ID)
 		.unwrap()
 		.perform_runtime_upgrade(
 			charlie,
@@ -61,11 +61,11 @@ async fn runtime_upgrade() -> Result<(), anyhow::Error> {
 		.await?;
 
 	let dave = network.get_node("dave")?;
-	let dave_client: OnlineClient<PolkadotConfig> = dave.wait_client().await?;
+	let dave_client: OnlineClient<PezkuwiConfig> = dave.wait_client().await?;
 	let expected_spec_version = current_spec_version + 1;
 
 	log::info!(
-		"Waiting (up to {timeout_secs}s) for parachain runtime upgrade to version {}",
+		"Waiting (up to {timeout_secs}s) for teyrchain runtime upgrade to version {}",
 		expected_spec_version
 	);
 	tokio::time::timeout(
@@ -91,26 +91,26 @@ async fn build_network_config() -> Result<NetworkConfig, anyhow::Error> {
 	// - relaychain nodes:
 	// 	 - alice   - validator
 	// 	 - bob     - validator
-	// - parachain nodes
+	// - teyrchain nodes
 	//   - charlie - validator
 	//   - dave    - full node
 	let config = NetworkConfigBuilder::new()
 		.with_relaychain(|r| {
-			r.with_chain("rococo-local")
-				.with_default_command("polkadot")
-				.with_default_image(images.polkadot.as_str())
-				.with_default_args(vec![("-lparachain=debug").into()])
+			r.with_chain("pezkuwichain-local")
+				.with_default_command("pezkuwi")
+				.with_default_image(images.pezkuwi.as_str())
+				.with_default_args(vec![("-lteyrchain=debug").into()])
 				.with_node(|node| node.with_name("alice"))
 				.with_node(|node| node.with_name("bob"))
 		})
-		.with_parachain(|p| {
+		.with_teyrchain(|p| {
 			p.with_id(PARA_ID)
-				.with_default_command("test-parachain")
+				.with_default_command("test-teyrchain")
 				.with_default_image(images.cumulus.as_str())
 				.with_collator(|n| {
 					n.with_name("charlie")
 						.validator(true)
-						.with_args(vec![("-lparachain=debug").into()])
+						.with_args(vec![("-lteyrchain=debug").into()])
 				})
 				.with_collator(|n| n.with_name("dave").validator(false))
 		})

@@ -1,6 +1,6 @@
 # Zombienet Flaky Tests
 
-This document explains how to manage flaky or temporarily disabled zombienet tests in the Polkadot SDK repository.
+This document explains how to manage flaky or temporarily disabled zombienet tests in the Pezkuwi SDK repository.
 
 ## Overview
 
@@ -29,7 +29,7 @@ zombienet-cumulus-0009-elastic_scaling_pov_recovery:8986
    - `.github/zombienet-tests/zombienet_polkadot_tests.yml`
    - `.github/zombienet-tests/zombienet_cumulus_tests.yml`
    - `.github/zombienet-tests/zombienet_substrate_tests.yml`
-   - `.github/zombienet-tests/zombienet_parachain-template_tests.yml`
+   - `.github/zombienet-tests/zombienet_teyrchain-template_tests.yml`
 
 2. **Filtering**: During the preflight job, tests listed in `zombienet-flaky-tests` are filtered out from the test matrix.
 

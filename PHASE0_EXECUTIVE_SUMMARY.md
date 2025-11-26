@@ -10,7 +10,7 @@
 
 ## Executive Summary
 
-Phase 0 discovery successfully cataloged **ALL** URLs, cryptographic parameters, and protocol constants across the polkadot-sdk-fresh codebase. This comprehensive audit provides a complete roadmap for systematic rebranding from Polkadot/Rococo/Westend to Pezkuwi/PezkuwiChain/Zagros.
+Phase 0 discovery successfully cataloged **ALL** URLs, cryptographic parameters, and protocol constants across the polkadot-sdk-fresh codebase. This comprehensive audit provides a complete roadmap for systematic rebranding from Polkadot/Pezkuwichain/Zagros to Pezkuwi/PezkuwiChain/Zagros.
 
 ### Total Scope Documented
 - **6,477 URL references** across 4,812 files
@@ -46,24 +46,24 @@ Phase 0 discovery successfully cataloged **ALL** URLs, cryptographic parameters,
 - **SS58 Prefixes:**
   - Polkadot: 0
   - Kusama: 2
-  - Rococo: 42 (generic Substrate - **MUST REGISTER NEW**)
-  - Westend: 42 (generic Substrate - **MUST REGISTER NEW**)
-- **System Parachain IDs:** 7 per relay chain (AssetHub=1000, BridgeHub=1013, etc.)
+  - Pezkuwichain: 42 (generic Substrate - **MUST REGISTER NEW**)
+  - Zagros: 42 (generic Substrate - **MUST REGISTER NEW**)
+- **System Teyrchain IDs:** 7 per relay chain (AssetHub=1000, BridgeHub=1013, etc.)
 - **Token Configurations:**
-  - DOT: 10 decimals
-  - ROC: 12 decimals
-  - WND: 12 decimals
+  - HEZ: 10 decimals
+  - TYR: 12 decimals
+  - ZGR: 12 decimals
   - Proposed HEZ: 12 decimals
   - Proposed ZGR: 12 decimals
   - Proposed TYR: 12 decimals
 - **Development Keys:** //Alice, //Bob, //Charlie, //Dave, //Eve, //Ferdie (115+ locations)
-- **Protocol ID:** "dot" → Needs replacement
+- **Protocol ID:** "hez" → Needs replacement
 
 **9 Critical Findings:**
 1. SS58 prefix registration required (4-6 weeks lead time)
 2. Protocol ID collision prevention
 3. Development keys in genesis (security risk)
-4. System parachain ID consistency
+4. System teyrchain ID consistency
 5. Token decimal decisions
 6. Genesis hash migration dependencies
 7. Bootnode infrastructure replacement
@@ -75,16 +75,16 @@ Phase 0 discovery successfully cataloged **ALL** URLs, cryptographic parameters,
 
 - **Total Constants:** 154+
 - **Network-Specific:** 32 requiring rebranding (21%)
-- **Runtime Versions:** 13 files (2 relay chains + 11 parachains)
-  - spec_name: "rococo" → "pezkuwichain"
-  - spec_name: "westend" → "zagros"
-  - impl_name: "parity-rococo-v2.0" → "pezkuwi-pezkuwichain"
+- **Runtime Versions:** 13 files (2 relay chains + 11 teyrchains)
+  - spec_name: "pezkuwichain" → "pezkuwichain"
+  - spec_name: "zagros" → "zagros"
+  - impl_name: "parity-pezkuwichain-v2.0" → "pezkuwi-pezkuwichain"
 - **Asset Hub Legacy Names:**
   - "statemine" → pezkuwichain-assethub (wallet compatibility critical)
   - "westmint" → zagros-assethub (wallet compatibility critical)
 - **Environment Variables:**
-  - ROCOCO_EPOCH_DURATION → PEZKUWICHAIN_EPOCH_DURATION
-  - WESTEND_EPOCH_DURATION → ZAGROS_EPOCH_DURATION
+  - PEZKUWICHAIN_EPOCH_DURATION → PEZKUWICHAIN_EPOCH_DURATION
+  - ZAGROS_EPOCH_DURATION → ZAGROS_EPOCH_DURATION
 
 **Unchanged Protocol Constants:**
 - Block time: 6 seconds
@@ -106,7 +106,7 @@ Phase 0 discovery successfully cataloged **ALL** URLs, cryptographic parameters,
 **Proposed:**
 - HEZ (Pezkuwi mainnet token) - 12 decimals
 - ZGR (Zagros testnet token) - 12 decimals
-- TYR (TeyrChain parachain token) - 12 decimals
+- TYR (TeyrChain teyrchain token) - 12 decimals
 
 **Action:** Verify availability and register
 
@@ -118,7 +118,7 @@ Phase 0 discovery successfully cataloged **ALL** URLs, cryptographic parameters,
 
 **Action:** Confirm naming convention
 
-### 4. System Parachain IDs
+### 4. System Teyrchain IDs
 **Recommendation:** Keep existing IDs for continuity
 - Asset Hub: 1000
 - Contracts: 1002
@@ -149,9 +149,9 @@ Phase 0 discovery successfully cataloged **ALL** URLs, cryptographic parameters,
 
 ### High Priority (Immediate Updates Required)
 **13 Runtime Configuration Files:**
-1. /polkadot/runtime/rococo/src/lib.rs (spec_name, impl_name)
-2. /polkadot/runtime/westend/src/lib.rs (spec_name, impl_name)
-3-13. System parachain runtimes (AssetHub, BridgeHub, People, Coretime, Collectives)
+1. /polkadot/runtime/pezkuwichain/src/lib.rs (spec_name, impl_name)
+2. /polkadot/runtime/zagros/src/lib.rs (spec_name, impl_name)
+3-13. System teyrchain runtimes (AssetHub, BridgeHub, People, Coretime, Collectives)
 
 ### Medium Priority (Phase 1-3)
 - 35+ chain specification JSON files
@@ -210,24 +210,24 @@ Phase 0 discovery successfully cataloged **ALL** URLs, cryptographic parameters,
 - Effort: Core branding, package names, crate names
 - Risk: Medium (build system dependencies)
 
-**Phase 3: Rococo → PezkuwiChain Rebranding**
+**Phase 3: Pezkuwichain → PezkuwiChain Rebranding**
 - Duration: 1-2 weeks
 - Effort: Runtime configs, chain specs, genesis
 - Risk: Medium (runtime metadata changes)
 
-**Phase 4: Westend → Zagros Rebranding**
+**Phase 4: Zagros → Zagros Rebranding**
 - Duration: 1-2 weeks
 - Effort: Testnet infrastructure, runtime configs
 - Risk: Medium (parallel to Phase 3)
 
-**Phase 5: Parachain → TeyrChain Rebranding**
+**Phase 5: Teyrchain → TeyrChain Rebranding**
 - Duration: 1 week
-- Effort: Parachain-specific terminology
+- Effort: Teyrchain-specific terminology
 - Risk: Low (isolated changes)
 
 **Phase 6: Token Symbol Rebranding**
 - Duration: 3-5 days
-- Effort: DOT→HEZ, ROC→ZGR, WND→TYR
+- Effort: HEZ→HEZ, TYR→ZGR, ZGR→TYR
 - Risk: Low (string replacements)
 
 **Total Estimated Duration:** 8-12 weeks (excluding SS58 registration wait time)
@@ -262,7 +262,7 @@ Phase 0 discovery successfully cataloged **ALL** URLs, cryptographic parameters,
    - Plan telemetry and RPC deployment timeline
 5. **Decision Confirmation**
    - Protocol IDs: Confirm naming convention
-   - Parachain IDs: Confirm keeping existing IDs
+   - Teyrchain IDs: Confirm keeping existing IDs
    - Token decimals: Confirm 12 decimals for all
 
 ### Week 2-3: Pre-Phase 1 Preparation

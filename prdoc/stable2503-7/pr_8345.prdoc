@@ -9,7 +9,7 @@ doc:
     - a histogram vector of execution times, which is labeled by `initial event` -> `final event`
       - This helps us identify how long it takes the transaction pool to advance the state of the events, and further debug issues
 
-    Part of: https://github.com/paritytech/polkadot-sdk/issues/8336
+    Part of: https://github.com/pezkuwichain/pezkuwichain-sdk/issues/8336
 
     ### (outdated) PoC Dashboards
 

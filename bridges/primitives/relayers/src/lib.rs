@@ -65,8 +65,8 @@ pub enum RewardsAccountOwner {
 ///
 /// A bridge connects 2 bridge ends. Each one is located on a separate relay chain. The bridge ends
 /// can be the final destinations of the bridge, or they can be intermediary points
-/// (e.g. a bridge hub) used to forward messages between pairs of parachains on the bridged relay
-/// chains. A pair of such parachains is connected using a bridge lane. Each of the 2 final
+/// (e.g. a bridge hub) used to forward messages between pairs of teyrchains on the bridged relay
+/// chains. A pair of such teyrchains is connected using a bridge lane. Each of the 2 final
 /// destinations of a bridge lane must have a sovereign account at each end of the bridge and each
 /// of the sovereign accounts will pay rewards for different operations. So we need multiple
 /// parameters to identify the account that pays a reward to the relayer.
@@ -283,7 +283,7 @@ mod tests {
 	fn pay_reward_from_account_for_legacy_lane_id_works() {
 		let test_data = vec![
 			// Note: these accounts are used for integration tests within
-			// `bridges_rococo_westend.sh`
+			// `bridges_pezkuwichain_zagros.sh`
 			(
 				LegacyLaneId([0, 0, 0, 1]),
 				b"bhks",
@@ -309,7 +309,7 @@ mod tests {
 				(2_u16, "EoQBtnx69txxumxSJexVzxYD1Q4LWAuWmRq8LrBWb27nhYN"),
 			),
 			// Note: these accounts are used for integration tests within
-			// `bridges_polkadot_kusama.sh` from fellows.
+			// `bridges_pezkuwi_kusama.sh` from fellows.
 			(
 				LegacyLaneId([0, 0, 0, 2]),
 				b"bhwd",

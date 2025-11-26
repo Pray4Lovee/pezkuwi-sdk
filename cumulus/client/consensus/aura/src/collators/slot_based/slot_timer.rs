@@ -64,7 +64,7 @@ pub(crate) struct SlotInfo {
 /// Manages block-production timings based on chain parameters and assigned cores.
 #[derive(Debug)]
 pub(crate) struct SlotTimer<Block, Client, P> {
-	/// Parachain client that is used for runtime calls
+	/// Teyrchain client that is used for runtime calls
 	client: Arc<Client>,
 	/// Offset the current time by this duration.
 	time_offset: Duration,
@@ -79,7 +79,7 @@ pub(crate) struct SlotTimer<Block, Client, P> {
 }
 
 /// Compute when to try block-authoring next.
-/// The exact time point is determined by the slot duration of relay- and parachain as
+/// The exact time point is determined by the slot duration of relay- and teyrchain as
 /// well as the last observed core count. If more cores are available, we attempt to author blocks
 /// for them.
 ///

@@ -7,7 +7,7 @@
 //!
 //! [`your_first_runtime`] is a runtime with no consensus related code, and therefore can only be
 //! executed with a node that also expects no consensus ([`sc_consensus_manual_seal`]).
-//! `polkadot-omni-node`'s [`--dev-block-time`] precisely does this.
+//! `pezkuwi-omni-node`'s [`--dev-block-time`] precisely does this.
 //!
 //! > All of the following steps are coded as unit tests of this module. Please see `Source` of the
 //! > page for more information.
@@ -16,11 +16,11 @@
 //!
 //! ### Installs
 //!
-//! The `polkadot-omni-node` can either be downloaded from the latest [Release](https://github.com/paritytech/polkadot-sdk/releases/) of `polkadot-sdk`,
+//! The `pezkuwi-omni-node` can either be downloaded from the latest [Release](https://github.com/pezkuwichain/pezkuwichain-sdk/releases/) of `pezkuwi-sdk`,
 //! or installed using `cargo`:
 //!
 //! ```text
-//! cargo install polkadot-omni-node
+//! cargo install pezkuwi-omni-node
 //! ```
 //!
 //! Next, we need to install the [`chain-spec-builder`]. This is the tool that allows us to build
@@ -32,7 +32,7 @@
 //! ```
 //!
 //! > The name of the crate is prefixed with `staging` as the crate name `chain-spec-builder` on
-//! > crates.io is already taken and is not controlled by `polkadot-sdk` developers.
+//! > crates.io is already taken and is not controlled by `pezkuwi-sdk` developers.
 //!
 //! ### Building Runtime
 //!
@@ -51,8 +51,8 @@
 //! Next, we can generate the corresponding chain-spec file. For this example, we will use the
 //! `development` (`sp_genesis_config::DEVELOPMENT`) preset.
 //!
-//! Note that we intend to run this chain-spec with `polkadot-omni-node`, which is tailored for
-//! running parachains. This requires the chain-spec to always contain the `para_id` and a
+//! Note that we intend to run this chain-spec with `pezkuwi-omni-node`, which is tailored for
+//! running teyrchains. This requires the chain-spec to always contain the `para_id` and a
 //! `relay_chain` fields, which are provided below as CLI arguments.
 //!
 //! ```text
@@ -60,7 +60,7 @@
 //! 	-c <path-to-output> \
 //! 	create \
 //! 	--relay-chain dontcare \
-//! 	--runtime polkadot_sdk_docs_first_runtime.wasm \
+//! 	--runtime pezkuwi_sdk_docs_first_runtime.wasm \
 //! 	named-preset development
 //! ```
 //!
@@ -68,13 +68,13 @@
 #![doc = docify::embed!("./src/guides/your_first_node.rs", csb)]
 //!
 //!
-//! ### Running `polkadot-omni-node`
+//! ### Running `pezkuwi-omni-node`
 //!
 //! Finally, we can run the node with the generated chain-spec file. We can also specify the block
 //! time using the `--dev-block-time` flag.
 //!
 //! ```text
-//! polkadot-omni-node \
+//! pezkuwi-omni-node \
 //! 	--tmp \
 //! 	--dev-block-time 1000 \
 //! 	--chain <chain_spec_file>.json
@@ -97,7 +97,7 @@
 //! [`node`]: crate::reference_docs::glossary#node
 //! [`build_config`]: first_runtime::Runtime#method.build_config
 //! [`omni-node`]: crate::reference_docs::omni_node
-//! [`--dev-block-time`]: (polkadot_omni_node_lib::cli::Cli::dev_block_time)
+//! [`--dev-block-time`]: (pezkuwi_omni_node_lib::cli::Cli::dev_block_time)
 
 #[cfg(test)]
 mod tests {
@@ -113,9 +113,9 @@ mod tests {
 		time::Duration,
 	};
 
-	const PARA_RUNTIME: &'static str = "parachain-template-runtime";
+	const PARA_RUNTIME: &'static str = "teyrchain-template-runtime";
 	const CHAIN_SPEC_BUILDER: &'static str = "chain-spec-builder";
-	const OMNI_NODE: &'static str = "polkadot-omni-node";
+	const OMNI_NODE: &'static str = "pezkuwi-omni-node";
 
 	fn cargo() -> Command {
 		Command::new(std::env::var("CARGO").unwrap_or_else(|_| "cargo".to_string()))
@@ -162,7 +162,7 @@ mod tests {
 
 	fn maybe_build_runtimes() {
 		if find_wasm(&PARA_RUNTIME).is_none() {
-			println!("Building parachain-template-runtime...");
+			println!("Building teyrchain-template-runtime...");
 			Command::new("cargo")
 				.arg("build")
 				.arg("--release")
@@ -191,12 +191,12 @@ mod tests {
 
 	fn maybe_build_omni_node() {
 		if find_release_binary(OMNI_NODE).is_none() {
-			println!("Building polkadot-omni-node...");
+			println!("Building pezkuwi-omni-node...");
 			Command::new("cargo")
 				.arg("build")
 				.arg("--release")
 				.arg("-p")
-				.arg("polkadot-omni-node")
+				.arg("pezkuwi-omni-node")
 				.assert()
 				.success();
 		}
@@ -292,7 +292,7 @@ mod tests {
 
 		// we need this snippet just for docs
 		#[docify::export_content(csb)]
-		fn build_parachain_spec_works() {
+		fn build_teyrchain_spec_works() {
 			let chain_spec_builder = find_release_binary(&CHAIN_SPEC_BUILDER).unwrap();
 			let runtime_path = find_wasm(PARA_RUNTIME).unwrap();
 			let output = "/tmp/demo-chain-spec.json";
@@ -302,11 +302,11 @@ mod tests {
 			).expect("Failed to run command");
 			std::fs::remove_file(output).unwrap();
 		}
-		build_parachain_spec_works();
+		build_teyrchain_spec_works();
 	}
 
 	#[tokio::test]
-	async fn parachain_runtime_works() {
+	async fn teyrchain_runtime_works() {
 		// TODO: None doesn't work. But maybe it should? it would be misleading as many users might
 		// use it.
 		for preset in [Some(DEV_RUNTIME_PRESET.into()), Some(LOCAL_TESTNET_RUNTIME_PRESET.into())] {
@@ -316,7 +316,7 @@ mod tests {
 
 	#[tokio::test]
 	async fn omni_node_dev_mode_works() {
-		//Omni Node in dev mode works with parachain's template `dev_chain_spec`
+		//Omni Node in dev mode works with teyrchain's template `dev_chain_spec`
 		let dev_chain_spec = std::env::current_dir()
 			.unwrap()
 			.parent()
@@ -324,7 +324,7 @@ mod tests {
 			.parent()
 			.unwrap()
 			.join("templates")
-			.join("parachain")
+			.join("teyrchain")
 			.join("dev_chain_spec.json");
 		omni_node_test_setup(dev_chain_spec).await;
 	}
@@ -332,11 +332,11 @@ mod tests {
 	#[tokio::test]
 	// This is a regresion test so that we still remain compatible with runtimes that use
 	// `para-id` in chain specs, instead of implementing the
-	// `cumulus_primitives_core::GetParachainInfo`.
-	async fn omni_node_dev_mode_works_without_getparachaininfo() {
+	// `cumulus_primitives_core::GetTeyrchainInfo`.
+	async fn omni_node_dev_mode_works_without_getteyrchaininfo() {
 		let dev_chain_spec = std::env::current_dir()
 			.unwrap()
-			.join("src/guides/parachain_without_getparachaininfo.json");
+			.join("src/guides/teyrchain_without_getteyrchaininfo.json");
 		omni_node_test_setup(dev_chain_spec).await;
 	}
 }

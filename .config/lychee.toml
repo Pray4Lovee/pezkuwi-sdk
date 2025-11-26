@@ -29,11 +29,11 @@ exclude = [
 	# Place holders (no need to fix these):
 	"http://visitme/",
 	"https://visitme/",
-	# TODO meta issue: <https://github.com/paritytech/polkadot-sdk/issues/134>
-	"https://docs.substrate.io/main-docs/build/custom-rpc/#public-rpcs",
-	"https://docs.substrate.io/rustdocs/latest/sp_api/macro.decl_runtime_apis.html",
+	# TODO meta issue: <https://github.com/pezkuwichain/pezkuwichain-sdk/issues/134>
+	"https://github.com/pezkuwichain/docs.pezkuwichain.io/main-docs/build/custom-rpc/#public-rpcs",
+	"https://github.com/pezkuwichain/docs.pezkuwichain.io/rustdocs/latest/sp_api/macro.decl_runtime_apis.html",
 	"https://github.com/ipfs/js-ipfs-bitswap/blob/",
-	"https://github.com/paritytech/polkadot-sdk/substrate/frame/timestamp",
+	"https://github.com/pezkuwichain/pezkuwichain-sdk/substrate/frame/timestamp",
 	"https://github.com/paritytech/substrate/frame/fast-unstake",
 	"https://github.com/zkcrypto/bls12_381/blob/e224ad4ea1babfc582ccd751c2bf128611d10936/src/test-data/mod.rs",
 	"https://polkadot.network/the-path-of-a-parachain-block/",
@@ -61,7 +61,7 @@ exclude = [
 	# 403 rate limited:
 	"https://etherscan.io/block/11090290",
 	"https://subscan.io/",
-	"https://substrate.stackexchange.com/.*",
+	"https://exchange.pezkuwichain.app/.*",
 	# Broken for link-checker CI, but works in browser and local machine
 	"http://www.gnu.org/licenses/",
 	"https://www.gnu.org/licenses/",

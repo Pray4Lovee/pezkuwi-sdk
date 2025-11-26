@@ -67,7 +67,7 @@ fn test_submit_xcm_invalid_channel() {
 		let relayer: AccountId = Keyring::Bob.into();
 		let origin = RuntimeOrigin::signed(relayer);
 
-		// Deposit funds into sovereign account of parachain 1001
+		// Deposit funds into sovereign account of teyrchain 1001
 		let sovereign_account = sibling_sovereign_account::<Test>(TEMPLATE_PARAID.into());
 		println!("account: {}", sovereign_account);
 		let _ = Balances::mint_into(&sovereign_account, 10000);

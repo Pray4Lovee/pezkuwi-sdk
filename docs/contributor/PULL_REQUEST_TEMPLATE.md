@@ -3,7 +3,7 @@
 ✄ -----------------------------------------------------------------------------
 
 Thank you for your Pull Request! 🙏 Please make sure it follows the contribution guidelines outlined in [this
-document](https://github.com/paritytech/polkadot-sdk/blob/master/docs/contributor/CONTRIBUTING.md) and fill out the
+document](https://github.com/pezkuwichain/pezkuwichain-sdk/blob/master/docs/contributor/CONTRIBUTING.md) and fill out the
 sections below. Once you're ready to submit your PR for review, please delete this section and leave only the text under
 the "Description" heading.
 
@@ -36,7 +36,7 @@ possibly integration.*
 
 * [ ] My PR includes a detailed description as outlined in the "Description" and its two subsections above.
 * [ ] My PR follows the [labeling requirements](
-https://github.com/paritytech/polkadot-sdk/blob/master/docs/contributor/CONTRIBUTING.md#Process
+https://github.com/pezkuwichain/pezkuwichain-sdk/blob/master/docs/contributor/CONTRIBUTING.md#Process
 ) of this project (at minimum one label for `T` required)
     * External contributors: Use `/cmd label <label-name>` to add labels
     * Maintainers can also add labels manually
@@ -51,7 +51,7 @@ You can use the following bot commands in comments to help manage your PR:
 * `/cmd label T1-FRAME` - Add a single label
 * `/cmd label T1-FRAME R0-no-crate-publish-required` - Add multiple labels
 * `/cmd label T6-XCM D2-substantial I5-enhancement` - Add multiple labels at once
-* See [label documentation](https://paritytech.github.io/labels/doc_polkadot-sdk.html) for all available labels
+* See [label documentation](https://docs.pezkuwichain.io/labels/doc_polkadot-sdk.html) for all available labels
 
 **Other useful commands:**
 * `/cmd fmt` - Format code (cargo +nightly fmt and taplo)

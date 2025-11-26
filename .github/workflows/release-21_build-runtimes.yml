@@ -10,25 +10,25 @@ on:
         type: choice
         options:
           - all
-          - westend
-          - asset-hub-westend
-          - bridge-hub-westend
-          - collectives-westend
-          - coretime-westend
-          - glutton-westend
-          - people-westend
+          - zagros
+          - asset-hub-zagros
+          - bridge-hub-zagros
+          - collectives-zagros
+          - coretime-zagros
+          - glutton-zagros
+          - people-zagros
       runtime_dir:
         description: The runtime dir to be used (⚠️ this parameter is optional and needed only in case of the single runtime build, set it accordingly to the runtime you want to build)
-        default: polkadot/runtime/westend
+        default: polkadot/runtime/zagros
         type: choice
         options:
-          - polkadot/runtime/westend
-          - cumulus/parachains/runtimes/assets/asset-hub-westend
-          - cumulus/parachains/runtimes/bridge-hubs/bridge-hub-westend
-          - cumulus/parachains/runtimes/collectives/collectives-westend
-          - cumulus/parachains/runtimes/coretime/coretime-westend
-          - cumulus/parachains/runtimes/people/people-westend
-          - cumulus/parachains/runtimes/glutton/glutton-westend
+          - polkadot/runtime/zagros
+          - cumulus/teyrchains/runtimes/assets/asset-hub-zagros
+          - cumulus/teyrchains/runtimes/bridge-hubs/bridge-hub-zagros
+          - cumulus/teyrchains/runtimes/collectives/collectives-zagros
+          - cumulus/teyrchains/runtimes/coretime/coretime-zagros
+          - cumulus/teyrchains/runtimes/people/people-zagros
+          - cumulus/teyrchains/runtimes/glutton/glutton-zagros
 
       release_tag:
         description: Tag matching the actual release candidate with the format polkadot-stableYYMM(-X)-rcY or polkadot-stableYYMM(-X)
@@ -43,7 +43,7 @@ on:
         type: string
       runtime_dir:
         description: The runtime dir to be used (⚠️ this parameter is optional and needed only in case of the single runtime build, set it accordingly to the runtime you want to build)
-        default: polkadot/runtime/westend
+        default: polkadot/runtime/zagros
         type: string
       release_tag:
         description: Tag matching the actual release candidate with the format polkadot-stableYYMM(-X)-rcY or polkadot-stableYYMM(-X)
@@ -80,7 +80,7 @@ jobs:
     needs: [validate-inputs]
     uses: "./.github/workflows/release-srtool.yml"
     with:
-       excluded_runtimes: "asset-hub-rococo bridge-hub-rococo coretime-rococo people-rococo rococo rococo-parachain substrate-test bp cumulus-test kitchensink minimal-template parachain-template penpal polkadot-test seedling shell frame-try sp solochain-template polkadot-sdk-docs-first pallet-staking-async-parachain pallet-staking-async-rc frame-storage-access-test yet-another-parachain revive-dev"
+       excluded_runtimes: "asset-hub-pezkuwichain bridge-hub-pezkuwichain coretime-pezkuwichain people-pezkuwichain pezkuwichain pezkuwichain-teyrchain substrate-test bp cumulus-test kitchensink minimal-template teyrchain-template penpal polkadot-test seedling shell frame-try sp solochain-template polkadot-sdk-docs-first pallet-staking-async-teyrchain pallet-staking-async-rc frame-storage-access-test yet-another-teyrchain revive-dev"
        build_opts: "--features on-chain-release-build"
        profile: production
        chain: ${{ inputs.chain }}

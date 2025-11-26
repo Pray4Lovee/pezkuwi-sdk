@@ -1,7 +1,7 @@
 //! # Substrate CLI
 //!
 //! Let's see some examples of typical CLI arguments used when setting up and running a
-//! Substrate-based blockchain. We use the [`solochain-template`](https://github.com/paritytech/polkadot-sdk-solochain-template)
+//! Substrate-based blockchain. We use the [`solochain-template`](https://github.com/pezkuwichain/pezkuwichain-sdk-solochain-template)
 //! on these examples.
 //!
 //! #### Checking the available CLI arguments
@@ -55,7 +55,7 @@
 //!   --port 30333 \
 //!   --ws-port 9945 \
 //!   --rpc-port 9933 \
-//!   --telemetry-url "wss://telemetry.polkadot.io/submit/ 0" \
+//!   --telemetry-url "wss://telemetry.pezkuwichain.io/submit/ 0" \
 //!   --validator \
 //!   --rpc-methods Unsafe \
 //!   --name MyNode01
@@ -79,7 +79,7 @@
 //!   --bob \
 //!   --port 30334 \
 //!   --rpc-port 9946 \
-//!   --telemetry-url "wss://telemetry.polkadot.io/submit/ 0" \
+//!   --telemetry-url "wss://telemetry.pezkuwichain.io/submit/ 0" \
 //!   --validator \
 //!   --bootnodes /ip4/127.0.0.1/tcp/30333/p2p/12D3KooWEyoppNCUx8Yx66oV9fJnriXwCcXwDDUA2kj6vnc6iDEp
 //! ```

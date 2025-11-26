@@ -191,7 +191,7 @@ fn test_xcm_send_failure() {
 			|dest: &mut Option<Location>, xcm: &mut Option<Xcm<()>>| {
 				if let Some(location) = dest {
 					match location.unpack() {
-						(_, [Parachain(1001)]) => return Err(SendError::NotApplicable),
+						(_, [Teyrchain(1001)]) => return Err(SendError::NotApplicable),
 						_ => Ok((xcm.clone().unwrap(), Assets::default())),
 					}
 				} else {

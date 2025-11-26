@@ -21,8 +21,8 @@ use core::marker::PhantomData;
 use frame_support::pallet_prelude::DispatchResult;
 use frame_system::RawOrigin;
 use pallet_staking_async_rc_runtime_constants::currency::*;
-use polkadot_primitives::Balance;
-use polkadot_runtime_common::identity_migrator::{OnReapIdentity, WeightInfo};
+use pezkuwi_primitives::Balance;
+use pezkuwi_runtime_common::identity_migrator::{OnReapIdentity, WeightInfo};
 use xcm::{latest::prelude::*, VersionedLocation, VersionedXcm};
 use xcm_executor::traits::TransactAsset;
 
@@ -43,9 +43,9 @@ enum IdentityMigratorCalls<AccountId: Encode> {
 }
 
 /// Type that implements `OnReapIdentity` that will send the deposit needed to store the same
-/// information on a parachain, sends the deposit there, and then updates it.
-pub struct ToParachainIdentityReaper<Runtime, AccountId>(PhantomData<(Runtime, AccountId)>);
-impl<Runtime, AccountId> ToParachainIdentityReaper<Runtime, AccountId> {
+/// information on a teyrchain, sends the deposit there, and then updates it.
+pub struct ToTeyrchainIdentityReaper<Runtime, AccountId>(PhantomData<(Runtime, AccountId)>);
+impl<Runtime, AccountId> ToTeyrchainIdentityReaper<Runtime, AccountId> {
 	/// Calculate the balance needed on the remote chain based on the `IdentityInfo` and `Subs` on
 	/// this chain. The total includes:
 	///
@@ -54,11 +54,11 @@ impl<Runtime, AccountId> ToParachainIdentityReaper<Runtime, AccountId> {
 	/// - Sub accounts deposit
 	/// - 2x existential deposit (1 for account existence, 1 such that the user can transact)
 	fn calculate_remote_deposit(bytes: u32, subs: u32) -> Balance {
-		// Remote deposit constants. Parachain uses `deposit / 100`
+		// Remote deposit constants. Teyrchain uses `deposit / 100`
 		// Source:
-		// https://github.com/paritytech/polkadot-sdk/blob/a146918/cumulus/parachains/common/src/westend.rs#L28
+		// https://github.com/pezkuwichain/pezkuwichain-sdk/blob/a146918/cumulus/parachains/common/src/westend.rs#L28
 		//
-		// Parachain Deposit Configuration:
+		// Teyrchain Deposit Configuration:
 		//
 		// pub const BasicDeposit: Balance = deposit(1, 17);
 		// pub const ByteDeposit: Balance = deposit(0, 1);
@@ -82,7 +82,7 @@ impl<Runtime, AccountId> ToParachainIdentityReaper<Runtime, AccountId> {
 
 // Note / Warning: This implementation should only be used in a transactional context. If not, then
 // an error could result in assets being burned.
-impl<Runtime, AccountId> OnReapIdentity<AccountId> for ToParachainIdentityReaper<Runtime, AccountId>
+impl<Runtime, AccountId> OnReapIdentity<AccountId> for ToTeyrchainIdentityReaper<Runtime, AccountId>
 where
 	Runtime: frame_system::Config + pallet_xcm::Config,
 	AccountId: Into<[u8; 32]> + Clone + Encode,
@@ -90,7 +90,7 @@ where
 	fn on_reap_identity(who: &AccountId, fields: u32, subs: u32) -> DispatchResult {
 		use crate::{
 			impls::IdentityMigratorCalls::PokeDeposit,
-			weights::polkadot_runtime_common_identity_migrator::WeightInfo as MigratorWeights,
+			weights::pezkuwi_runtime_common_identity_migrator::WeightInfo as MigratorWeights,
 		};
 
 		let total_to_send = Self::calculate_remote_deposit(fields, subs);
@@ -98,7 +98,7 @@ where
 		// define asset / destination from relay perspective
 		let wnd = Asset { id: AssetId(Here.into_location()), fun: Fungible(total_to_send) };
 		// People Chain: ParaId 1004
-		let destination: Location = Location::new(0, Parachain(1004));
+		let destination: Location = Location::new(0, Teyrchain(1004));
 
 		// Do `check_out` accounting since the XCM Executor's `InitiateTeleport` doesn't support
 		// unpaid teleports.
@@ -160,7 +160,7 @@ where
 					.into_location()
 					.into(),
 			},
-			// Poke the deposit to reserve the appropriate amount on the parachain.
+			// Poke the deposit to reserve the appropriate amount on the teyrchain.
 			Transact {
 				origin_kind: OriginKind::Superuser,
 				call: poke.encode().into(),
@@ -179,6 +179,6 @@ where
 
 	#[cfg(feature = "runtime-benchmarks")]
 	fn ensure_successful_identity_reaping(_: &AccountId, _: u32, _: u32) {
-		crate::Dmp::make_parachain_reachable(1004);
+		crate::Dmp::make_teyrchain_reachable(1004);
 	}
 }

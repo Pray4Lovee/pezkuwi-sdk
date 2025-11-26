@@ -7,7 +7,7 @@ use frame_support::{
 	traits::{fungible::Mutate, OnFinalize, OnInitialize},
 };
 use frame_system::pallet_prelude::BlockNumberFor;
-use parachains_runtimes_test_utils::{
+use teyrchains_runtimes_test_utils::{
 	AccountIdOf, BalanceOf, CollatorSessionKeys, ExtBuilder, ValidatorIdOf, XcmReceivedFrom,
 };
 use snowbridge_core::{ChannelId, ParaId};
@@ -19,15 +19,15 @@ use xcm::latest::prelude::*;
 use xcm_executor::XcmExecutor;
 
 type RuntimeHelper<Runtime, AllPalletsWithoutSystem = ()> =
-	parachains_runtimes_test_utils::RuntimeHelper<Runtime, AllPalletsWithoutSystem>;
+	teyrchains_runtimes_test_utils::RuntimeHelper<Runtime, AllPalletsWithoutSystem>;
 
-pub fn initial_fund<Runtime>(assethub_parachain_id: u32, initial_amount: u128)
+pub fn initial_fund<Runtime>(assethub_teyrchain_id: u32, initial_amount: u128)
 where
 	Runtime: frame_system::Config + pallet_balances::Config,
 {
 	// fund asset hub sovereign account enough so it can pay fees
 	let asset_hub_sovereign_account =
-		snowbridge_core::sibling_sovereign_account::<Runtime>(assethub_parachain_id.into());
+		snowbridge_core::sibling_sovereign_account::<Runtime>(assethub_teyrchain_id.into());
 	<pallet_balances::Pallet<Runtime>>::mint_into(
 		&asset_hub_sovereign_account,
 		initial_amount.saturated_into::<BalanceOf<Runtime>>(),
@@ -37,7 +37,7 @@ where
 
 pub fn send_transfer_token_message<Runtime, XcmConfig>(
 	ethereum_chain_id: u64,
-	assethub_parachain_id: u32,
+	assethub_teyrchain_id: u32,
 	weth_contract_address: H160,
 	destination_address: H160,
 	fee_amount: u128,
@@ -47,14 +47,14 @@ where
 		+ pallet_balances::Config
 		+ pallet_session::Config
 		+ pallet_xcm::Config
-		+ parachain_info::Config
+		+ teyrchain_info::Config
 		+ pallet_collator_selection::Config
-		+ cumulus_pallet_parachain_system::Config
+		+ cumulus_pallet_teyrchain_system::Config
 		+ snowbridge_pallet_outbound_queue::Config
 		+ pallet_timestamp::Config,
 	XcmConfig: xcm_executor::Config,
 {
-	let assethub_parachain_location = Location::new(1, Parachain(assethub_parachain_id));
+	let assethub_teyrchain_location = Location::new(1, Teyrchain(assethub_teyrchain_id));
 	let asset = Asset {
 		id: AssetId(Location::new(
 			0,
@@ -95,7 +95,7 @@ where
 	// execute XCM
 	let mut hash = xcm.using_encoded(sp_io::hashing::blake2_256);
 	XcmExecutor::<XcmConfig>::prepare_and_execute(
-		assethub_parachain_location,
+		assethub_teyrchain_location,
 		xcm,
 		&mut hash,
 		RuntimeHelper::<Runtime>::xcm_max_weight(XcmReceivedFrom::Sibling),
@@ -107,7 +107,7 @@ pub fn send_transfer_token_message_success<Runtime, XcmConfig>(
 	ethereum_chain_id: u64,
 	collator_session_key: CollatorSessionKeys<Runtime>,
 	runtime_para_id: u32,
-	assethub_parachain_id: u32,
+	assethub_teyrchain_id: u32,
 	weth_contract_address: H160,
 	destination_address: H160,
 	fee_amount: u128,
@@ -119,10 +119,10 @@ pub fn send_transfer_token_message_success<Runtime, XcmConfig>(
 		+ pallet_balances::Config
 		+ pallet_session::Config
 		+ pallet_xcm::Config
-		+ parachain_info::Config
+		+ teyrchain_info::Config
 		+ pallet_collator_selection::Config
 		+ pallet_message_queue::Config
-		+ cumulus_pallet_parachain_system::Config
+		+ cumulus_pallet_teyrchain_system::Config
 		+ snowbridge_pallet_outbound_queue::Config
 		+ snowbridge_pallet_system::Config
 		+ pallet_timestamp::Config,
@@ -139,16 +139,16 @@ pub fn send_transfer_token_message_success<Runtime, XcmConfig>(
 		.execute_with(|| {
 			<snowbridge_pallet_system::Pallet<Runtime>>::initialize(
 				runtime_para_id.into(),
-				assethub_parachain_id.into(),
+				assethub_teyrchain_id.into(),
 			)
 			.unwrap();
 
 			// fund asset hub sovereign account enough so it can pay fees
-			initial_fund::<Runtime>(assethub_parachain_id, 5_000_000_000_000);
+			initial_fund::<Runtime>(assethub_teyrchain_id, 5_000_000_000_000);
 
 			let outcome = send_transfer_token_message::<Runtime, XcmConfig>(
 				ethereum_chain_id,
-				assethub_parachain_id,
+				assethub_teyrchain_id,
 				weth_contract_address,
 				destination_address,
 				fee_amount,
@@ -185,7 +185,7 @@ pub fn send_transfer_token_message_success<Runtime, XcmConfig>(
 			<snowbridge_pallet_outbound_queue::Pallet<Runtime>>::on_finalize(next_block_number);
 			let included_head = <frame_system::Pallet<Runtime>>::finalize();
 
-			let origin: ParaId = assethub_parachain_id.into();
+			let origin: ParaId = assethub_teyrchain_id.into();
 			let channel_id: ChannelId = origin.into();
 
 			let nonce = snowbridge_pallet_outbound_queue::Nonce::<Runtime>::try_get(channel_id);
@@ -207,7 +207,7 @@ pub fn ethereum_outbound_queue_processes_messages_before_message_queue_works<
 	ethereum_chain_id: u64,
 	collator_session_key: CollatorSessionKeys<Runtime>,
 	runtime_para_id: u32,
-	assethub_parachain_id: u32,
+	assethub_teyrchain_id: u32,
 	weth_contract_address: H160,
 	destination_address: H160,
 	fee_amount: u128,
@@ -219,10 +219,10 @@ pub fn ethereum_outbound_queue_processes_messages_before_message_queue_works<
 		+ pallet_balances::Config
 		+ pallet_session::Config
 		+ pallet_xcm::Config
-		+ parachain_info::Config
+		+ teyrchain_info::Config
 		+ pallet_collator_selection::Config
 		+ pallet_message_queue::Config
-		+ cumulus_pallet_parachain_system::Config
+		+ cumulus_pallet_teyrchain_system::Config
 		+ snowbridge_pallet_outbound_queue::Config
 		+ snowbridge_pallet_system::Config
 		+ pallet_timestamp::Config,
@@ -241,16 +241,16 @@ pub fn ethereum_outbound_queue_processes_messages_before_message_queue_works<
 		.execute_with(|| {
 			<snowbridge_pallet_system::Pallet<Runtime>>::initialize(
 				runtime_para_id.into(),
-				assethub_parachain_id.into(),
+				assethub_teyrchain_id.into(),
 			)
 			.unwrap();
 
 			// fund asset hub sovereign account enough so it can pay fees
-			initial_fund::<Runtime>(assethub_parachain_id, 5_000_000_000_000);
+			initial_fund::<Runtime>(assethub_teyrchain_id, 5_000_000_000_000);
 
 			let outcome = send_transfer_token_message::<Runtime, XcmConfig>(
 				ethereum_chain_id,
-				assethub_parachain_id,
+				assethub_teyrchain_id,
 				weth_contract_address,
 				destination_address,
 				fee_amount,
@@ -294,7 +294,7 @@ pub fn send_unpaid_transfer_token_message<Runtime, XcmConfig>(
 	ethereum_chain_id: u64,
 	collator_session_key: CollatorSessionKeys<Runtime>,
 	runtime_para_id: u32,
-	assethub_parachain_id: u32,
+	assethub_teyrchain_id: u32,
 	weth_contract_address: H160,
 	destination_contract: H160,
 ) where
@@ -302,16 +302,16 @@ pub fn send_unpaid_transfer_token_message<Runtime, XcmConfig>(
 		+ pallet_balances::Config
 		+ pallet_session::Config
 		+ pallet_xcm::Config
-		+ parachain_info::Config
+		+ teyrchain_info::Config
 		+ pallet_collator_selection::Config
-		+ cumulus_pallet_parachain_system::Config
+		+ cumulus_pallet_teyrchain_system::Config
 		+ snowbridge_pallet_outbound_queue::Config
 		+ snowbridge_pallet_system::Config
 		+ pallet_timestamp::Config,
 	XcmConfig: xcm_executor::Config,
 	ValidatorIdOf<Runtime>: From<AccountIdOf<Runtime>>,
 {
-	let assethub_parachain_location = Location::new(1, Parachain(assethub_parachain_id));
+	let assethub_teyrchain_location = Location::new(1, Teyrchain(assethub_teyrchain_id));
 
 	ExtBuilder::<Runtime>::default()
 		.with_collators(collator_session_key.collators())
@@ -322,7 +322,7 @@ pub fn send_unpaid_transfer_token_message<Runtime, XcmConfig>(
 		.execute_with(|| {
 			<snowbridge_pallet_system::Pallet<Runtime>>::initialize(
 				runtime_para_id.into(),
-				assethub_parachain_id.into(),
+				assethub_teyrchain_id.into(),
 			)
 			.unwrap();
 
@@ -362,7 +362,7 @@ pub fn send_unpaid_transfer_token_message<Runtime, XcmConfig>(
 			// execute XCM
 			let mut hash = xcm.using_encoded(sp_io::hashing::blake2_256);
 			let outcome = XcmExecutor::<XcmConfig>::prepare_and_execute(
-				assethub_parachain_location,
+				assethub_teyrchain_location,
 				xcm,
 				&mut hash,
 				RuntimeHelper::<Runtime>::xcm_max_weight(XcmReceivedFrom::Sibling),
@@ -377,7 +377,7 @@ pub fn send_transfer_token_message_failure<Runtime, XcmConfig>(
 	ethereum_chain_id: u64,
 	collator_session_key: CollatorSessionKeys<Runtime>,
 	runtime_para_id: u32,
-	assethub_parachain_id: u32,
+	assethub_teyrchain_id: u32,
 	initial_amount: u128,
 	weth_contract_address: H160,
 	destination_address: H160,
@@ -388,9 +388,9 @@ pub fn send_transfer_token_message_failure<Runtime, XcmConfig>(
 		+ pallet_balances::Config
 		+ pallet_session::Config
 		+ pallet_xcm::Config
-		+ parachain_info::Config
+		+ teyrchain_info::Config
 		+ pallet_collator_selection::Config
-		+ cumulus_pallet_parachain_system::Config
+		+ cumulus_pallet_teyrchain_system::Config
 		+ snowbridge_pallet_outbound_queue::Config
 		+ snowbridge_pallet_system::Config
 		+ pallet_timestamp::Config,
@@ -406,16 +406,16 @@ pub fn send_transfer_token_message_failure<Runtime, XcmConfig>(
 		.execute_with(|| {
 			<snowbridge_pallet_system::Pallet<Runtime>>::initialize(
 				runtime_para_id.into(),
-				assethub_parachain_id.into(),
+				assethub_teyrchain_id.into(),
 			)
 			.unwrap();
 
 			// fund asset hub sovereign account enough so it can pay fees
-			initial_fund::<Runtime>(assethub_parachain_id, initial_amount);
+			initial_fund::<Runtime>(assethub_teyrchain_id, initial_amount);
 
 			let outcome = send_transfer_token_message::<Runtime, XcmConfig>(
 				ethereum_chain_id,
-				assethub_parachain_id,
+				assethub_teyrchain_id,
 				weth_contract_address,
 				destination_address,
 				fee_amount,
@@ -440,9 +440,9 @@ pub fn ethereum_extrinsic<Runtime>(
 		+ pallet_session::Config
 		+ pallet_xcm::Config
 		+ pallet_utility::Config
-		+ parachain_info::Config
+		+ teyrchain_info::Config
 		+ pallet_collator_selection::Config
-		+ cumulus_pallet_parachain_system::Config
+		+ cumulus_pallet_teyrchain_system::Config
 		+ snowbridge_pallet_outbound_queue::Config
 		+ snowbridge_pallet_system::Config
 		+ snowbridge_pallet_ethereum_client::Config
@@ -566,7 +566,7 @@ pub fn ethereum_extrinsic<Runtime>(
 		});
 }
 
-pub fn ethereum_to_polkadot_message_extrinsics_work<Runtime>(
+pub fn ethereum_to_pezkuwi_message_extrinsics_work<Runtime>(
 	collator_session_key: CollatorSessionKeys<Runtime>,
 	runtime_para_id: u32,
 	construct_and_apply_extrinsic: fn(
@@ -579,9 +579,9 @@ pub fn ethereum_to_polkadot_message_extrinsics_work<Runtime>(
 		+ pallet_session::Config
 		+ pallet_xcm::Config
 		+ pallet_utility::Config
-		+ parachain_info::Config
+		+ teyrchain_info::Config
 		+ pallet_collator_selection::Config
-		+ cumulus_pallet_parachain_system::Config
+		+ cumulus_pallet_teyrchain_system::Config
 		+ snowbridge_pallet_outbound_queue::Config
 		+ snowbridge_pallet_system::Config
 		+ snowbridge_pallet_ethereum_client::Config

@@ -15,7 +15,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use crate::overhead::command::ParachainExtension;
+use crate::overhead::command::TeyrchainExtension;
 use sc_chain_spec::{ChainSpec, GenericChainSpec, GenesisConfigBuilderRuntimeCaller};
 use sc_cli::Result;
 use serde_json::Value;
@@ -27,7 +27,7 @@ use std::{borrow::Cow, path::PathBuf};
 const ERROR_CANNOT_BUILD_GENESIS: &str = "The runtime returned \
 an error when trying to build the genesis storage. Please ensure that all pallets \
 define a genesis config that can be built. This can be tested with: \
-https://github.com/paritytech/polkadot-sdk/pull/3412";
+https://github.com/pezkuwichain/pezkuwichain-sdk/pull/3412";
 
 /// Warn when using the chain spec to generate the genesis state.
 pub const WARN_SPEC_GENESIS_CTOR: &'static str = "Using the chain spec instead of the runtime to \
@@ -100,7 +100,7 @@ impl GenesisStateHandler {
 pub fn chain_spec_from_path<HF: HostFunctions>(
 	chain: PathBuf,
 ) -> Result<(Box<dyn ChainSpec>, Option<u32>)> {
-	let spec = GenericChainSpec::<ParachainExtension, HF>::from_json_file(chain)
+	let spec = GenericChainSpec::<TeyrchainExtension, HF>::from_json_file(chain)
 		.map_err(|e| format!("Unable to load chain spec: {:?}", e))?;
 
 	let para_id_from_chain_spec = spec.extensions().para_id;

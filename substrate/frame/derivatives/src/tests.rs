@@ -26,7 +26,7 @@ use xcm_executor::XcmExecutor;
 #[test]
 fn predefined_id_collection() {
 	new_test_ext().execute_with(|| {
-		let id = AssetId(Location::new(1, [Parachain(1111), PalletInstance(42), GeneralIndex(1)]));
+		let id = AssetId(Location::new(1, [Teyrchain(1111), PalletInstance(42), GeneralIndex(1)]));
 
 		// An invalid origin is rejected.
 		assert_err!(
@@ -40,7 +40,7 @@ fn predefined_id_collection() {
 		));
 
 		// EnsureDerivativeCreateOrigin yielded a strategy to assign the item's owner to the
-		// parachain's sovereign account.
+		// teyrchain's sovereign account.
 		let owner =
 			unique_items::ItemOwner::<Test, PredefinedIdCollectionsInstance>::get(&id).unwrap();
 
@@ -86,9 +86,9 @@ fn predefined_id_collection() {
 fn auto_id_collection() {
 	new_test_ext().execute_with(|| {
 		let id_a =
-			AssetId(Location::new(1, [Parachain(2222), PalletInstance(42), GeneralIndex(1)]));
+			AssetId(Location::new(1, [Teyrchain(2222), PalletInstance(42), GeneralIndex(1)]));
 		let id_b =
-			AssetId(Location::new(1, [Parachain(3333), PalletInstance(42), GeneralIndex(2)]));
+			AssetId(Location::new(1, [Teyrchain(3333), PalletInstance(42), GeneralIndex(2)]));
 
 		// An invalid origin is rejected.
 		assert_err!(
@@ -104,7 +104,7 @@ fn auto_id_collection() {
 		let derivative_id_a = AutoIdDerivativeCollections::get_derivative(&id_a).unwrap();
 
 		// EnsureDerivativeCreateOrigin yielded a strategy to assign the item's owner to the
-		// parachain's sovereign account.
+		// teyrchain's sovereign account.
 		let owner_a =
 			unique_items::ItemOwner::<Test, AutoIdCollectionsInstance>::get(&derivative_id_a)
 				.unwrap();
@@ -127,7 +127,7 @@ fn auto_id_collection() {
 		assert_ne!(derivative_id_a, derivative_id_b);
 
 		// EnsureDerivativeCreateOrigin yielded a strategy to assign the item's owner to the
-		// parachain's sovereign account.
+		// teyrchain's sovereign account.
 		let owner_b =
 			unique_items::ItemOwner::<Test, AutoIdCollectionsInstance>::get(&derivative_id_b)
 				.unwrap();
@@ -247,7 +247,7 @@ fn derivative_nfts() {
 		// Create derivative NFT collection
 		let foreign_collection_id = AssetId(Location::new(
 			1,
-			[Parachain(foreign_para_id), PalletInstance(42), GeneralIndex(1)],
+			[Teyrchain(foreign_para_id), PalletInstance(42), GeneralIndex(1)],
 		));
 		let foreign_nft_id = Index(112);
 		assert_ok!(AutoIdDerivativeCollections::create_derivative(
@@ -274,7 +274,7 @@ fn derivative_nfts() {
 			.deposit_asset(AllCounted(1), nft_beneficiary_location)
 			.build();
 
-		let origin = Location::new(1, [Parachain(foreign_para_id)]);
+		let origin = Location::new(1, [Teyrchain(foreign_para_id)]);
 		let mut hash = message.using_encoded(sp_io::hashing::blake2_256);
 
 		// Deposit a foreign NFT (i.e., create a derivative NFT)

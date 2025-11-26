@@ -9,7 +9,7 @@ doc:
       achieved during the sale to mitigate a potential price manipulation vector. More information
       here:
 
-        https://github.com/paritytech/polkadot-sdk/issues/4360
+        https://github.com/pezkuwichain/pezkuwichain-sdk/issues/4360
 
   - audience: Runtime User
     description: |

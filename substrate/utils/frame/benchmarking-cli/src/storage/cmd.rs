@@ -107,7 +107,7 @@ pub struct StorageParams {
 	#[arg(long, default_value_t = 1)]
 	pub warmups: u32,
 
-	/// The `StateVersion` to use. Substrate `--dev` should use `V1` and Polkadot `V0`.
+	/// The `StateVersion` to use. Substrate `--dev` should use `V1` and Pezkuwi `V0`.
 	/// Selecting the wrong version can corrupt the DB.
 	#[arg(long, value_parser = clap::value_parser!(u8).range(0..=1))]
 	pub state_version: u8,
@@ -134,7 +134,7 @@ pub struct StorageParams {
 	/// If the chain is recording a proof while building/importing a block, the pov recorder
 	/// should be activated.
 	///
-	/// Hence, when generating weights for a parachain this should be activated and when generating
+	/// Hence, when generating weights for a teyrchain this should be activated and when generating
 	/// weights for a standalone chain this should be deactivated.
 	#[arg(long, default_value = "false")]
 	pub disable_pov_recorder: bool,

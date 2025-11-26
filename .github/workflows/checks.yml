@@ -59,8 +59,8 @@ jobs:
         run: |
           forklift cargo check --locked --all --features try-runtime --quiet
           # this is taken from cumulus
-          # Check that parachain-template will compile with `try-runtime` feature flag.
-          forklift cargo check --locked -p parachain-template-node --features try-runtime
+          # Check that teyrchain-template will compile with `try-runtime` feature flag.
+          forklift cargo check --locked -p teyrchain-template-node --features try-runtime
           # add after https://github.com/paritytech/substrate/pull/14502 is merged
           # experimental code may rely on try-runtime and vice-versa
           forklift cargo check --locked --all --features try-runtime,experimental --quiet

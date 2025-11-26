@@ -73,7 +73,7 @@ test(
 
 			// in the meantime, we expect to see on the AH side:
 			...Array.from({ length: 20 }, (_, __) =>
-				Observe.on(Chain.Parachain, "StakingRcClient", "OffenceReceived").withDataCheck((x) => {
+				Observe.on(Chain.Teyrchain, "StakingRcClient", "OffenceReceived").withDataCheck((x) => {
 					received += x.offences_count;
 					return true
 				}),
@@ -84,7 +84,7 @@ test(
 			steps.map((s) => s.build()),
 			true,
 			() => {
-				logger.info(`Test completed. Created ${sent} offences, processed ${received} in parachain`);
+				logger.info(`Test completed. Created ${sent} offences, processed ${received} in teyrchain`);
 				killZn();
 			}
 		);

@@ -1176,30 +1176,30 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "9b34d609dfbaf33d6889b2b7106d3ca345eacad44200913df5ba02bfd31d2ba9"
 
 [[package]]
-name = "asset-hub-rococo-emulated-chain"
+name = "asset-hub-pezkuwichain-emulated-chain"
 version = "0.0.0"
 dependencies = [
- "asset-hub-rococo-runtime",
- "bp-bridge-hub-rococo",
+ "asset-hub-pezkuwichain-runtime",
+ "bp-bridge-hub-pezkuwichain",
  "cumulus-primitives-core",
  "emulated-integration-tests-common",
  "frame-support",
- "parachains-common",
- "rococo-emulated-chain",
+ "pezkuwichain-emulated-chain",
  "sp-core 28.0.0",
  "sp-keyring",
  "staging-xcm",
  "staging-xcm-builder",
- "testnet-parachains-constants",
+ "testnet-teyrchains-constants",
+ "teyrchains-common",
 ]
 
 [[package]]
-name = "asset-hub-rococo-integration-tests"
+name = "asset-hub-pezkuwichain-integration-tests"
 version = "1.0.0"
 dependencies = [
  "assert_matches",
  "asset-test-utils",
- "cumulus-pallet-parachain-system",
+ "cumulus-pallet-teyrchain-system",
  "emulated-integration-tests-common",
  "frame-support",
  "frame-system",
@@ -1211,31 +1211,31 @@ dependencies = [
  "pallet-treasury",
  "pallet-utility",
  "pallet-xcm",
- "parachains-common",
  "parity-scale-codec",
- "polkadot-runtime-common",
- "rococo-runtime-constants",
- "rococo-system-emulated-network",
+ "pezkuwi-runtime-common",
+ "pezkuwichain-runtime-constants",
+ "pezkuwichain-system-emulated-network",
  "sp-core 28.0.0",
  "sp-runtime",
  "staging-xcm",
  "staging-xcm-executor",
+ "teyrchains-common",
  "xcm-runtime-apis",
 ]
 
 [[package]]
-name = "asset-hub-rococo-runtime"
+name = "asset-hub-pezkuwichain-runtime"
 version = "0.11.0"
 dependencies = [
  "asset-test-utils",
  "assets-common",
- "bp-asset-hub-rococo",
- "bp-asset-hub-westend",
- "bp-bridge-hub-rococo",
- "bp-bridge-hub-westend",
+ "bp-asset-hub-pezkuwichain",
+ "bp-asset-hub-zagros",
+ "bp-bridge-hub-pezkuwichain",
+ "bp-bridge-hub-zagros",
  "cumulus-pallet-aura-ext",
- "cumulus-pallet-parachain-system",
  "cumulus-pallet-session-benchmarking",
+ "cumulus-pallet-teyrchain-system",
  "cumulus-pallet-weight-reclaim",
  "cumulus-pallet-xcm",
  "cumulus-pallet-xcmp-queue",
@@ -1275,13 +1275,11 @@ dependencies = [
  "pallet-xcm",
  "pallet-xcm-benchmarks",
  "pallet-xcm-bridge-hub-router",
- "parachains-common",
- "parachains-runtimes-test-utils",
  "parity-scale-codec",
- "polkadot-parachain-primitives",
- "polkadot-runtime-common",
+ "pezkuwi-runtime-common",
+ "pezkuwi-teyrchain-primitives",
+ "pezkuwichain-runtime-constants",
  "primitive-types 0.13.1",
- "rococo-runtime-constants",
  "scale-info",
  "serde_json",
  "sp-api",
@@ -1298,41 +1296,43 @@ dependencies = [
  "sp-transaction-pool",
  "sp-version",
  "sp-weights",
- "staging-parachain-info",
+ "staging-teyrchain-info",
  "staging-xcm",
  "staging-xcm-builder",
  "staging-xcm-executor",
  "substrate-wasm-builder",
- "testnet-parachains-constants",
+ "testnet-teyrchains-constants",
+ "teyrchains-common",
+ "teyrchains-runtimes-test-utils",
  "tracing",
  "xcm-runtime-apis",
 ]
 
 [[package]]
-name = "asset-hub-westend-emulated-chain"
+name = "asset-hub-zagros-emulated-chain"
 version = "0.0.0"
 dependencies = [
- "asset-hub-westend-runtime",
- "bp-bridge-hub-westend",
+ "asset-hub-zagros-runtime",
+ "bp-bridge-hub-zagros",
  "cumulus-primitives-core",
  "emulated-integration-tests-common",
  "frame-support",
- "parachains-common",
  "sp-core 28.0.0",
  "sp-keyring",
  "staging-xcm",
  "staging-xcm-builder",
- "testnet-parachains-constants",
- "westend-emulated-chain",
+ "testnet-teyrchains-constants",
+ "teyrchains-common",
+ "zagros-emulated-chain",
 ]
 
 [[package]]
-name = "asset-hub-westend-integration-tests"
+name = "asset-hub-zagros-integration-tests"
 version = "1.0.0"
 dependencies = [
  "assert_matches",
  "asset-test-utils",
- "cumulus-pallet-parachain-system",
+ "cumulus-pallet-teyrchain-system",
  "cumulus-pallet-xcmp-queue",
  "emulated-integration-tests-common",
  "frame-support",
@@ -1344,33 +1344,33 @@ dependencies = [
  "pallet-message-queue",
  "pallet-treasury",
  "pallet-xcm",
- "parachains-common",
  "parity-scale-codec",
- "polkadot-runtime-common",
+ "pezkuwi-runtime-common",
  "sp-core 28.0.0",
  "sp-runtime",
  "sp-tracing 16.0.0",
  "staging-xcm",
  "staging-xcm-builder",
  "staging-xcm-executor",
- "westend-system-emulated-network",
+ "teyrchains-common",
  "xcm-runtime-apis",
+ "zagros-system-emulated-network",
 ]
 
 [[package]]
-name = "asset-hub-westend-runtime"
+name = "asset-hub-zagros-runtime"
 version = "0.15.0"
 dependencies = [
  "alloy-core",
  "asset-test-utils",
  "assets-common",
- "bp-asset-hub-rococo",
- "bp-asset-hub-westend",
- "bp-bridge-hub-rococo",
- "bp-bridge-hub-westend",
+ "bp-asset-hub-pezkuwichain",
+ "bp-asset-hub-zagros",
+ "bp-bridge-hub-pezkuwichain",
+ "bp-bridge-hub-zagros",
  "cumulus-pallet-aura-ext",
- "cumulus-pallet-parachain-system",
  "cumulus-pallet-session-benchmarking",
+ "cumulus-pallet-teyrchain-system",
  "cumulus-pallet-weight-reclaim",
  "cumulus-pallet-xcm",
  "cumulus-pallet-xcmp-queue",
@@ -1440,11 +1440,9 @@ dependencies = [
  "pallet-xcm-benchmarks",
  "pallet-xcm-bridge-hub-router",
  "pallet-xcm-precompiles",
- "parachains-common",
- "parachains-runtimes-test-utils",
  "parity-scale-codec",
- "polkadot-parachain-primitives",
- "polkadot-runtime-common",
+ "pezkuwi-runtime-common",
+ "pezkuwi-teyrchain-primitives",
  "primitive-types 0.13.1",
  "scale-info",
  "serde_json",
@@ -1470,15 +1468,17 @@ dependencies = [
  "sp-tracing 16.0.0",
  "sp-transaction-pool",
  "sp-version",
- "staging-parachain-info",
+ "staging-teyrchain-info",
  "staging-xcm",
  "staging-xcm-builder",
  "staging-xcm-executor",
  "substrate-wasm-builder",
- "testnet-parachains-constants",
+ "testnet-teyrchains-constants",
+ "teyrchains-common",
+ "teyrchains-runtimes-test-utils",
  "tracing",
- "westend-runtime-constants",
  "xcm-runtime-apis",
+ "zagros-runtime-constants",
 ]
 
 [[package]]
@@ -1486,7 +1486,7 @@ name = "asset-test-utils"
 version = "7.0.0"
 dependencies = [
  "assets-common",
- "cumulus-pallet-parachain-system",
+ "cumulus-pallet-teyrchain-system",
  "cumulus-pallet-xcmp-queue",
  "cumulus-primitives-core",
  "frame-support",
@@ -1499,15 +1499,15 @@ dependencies = [
  "pallet-timestamp",
  "pallet-xcm",
  "pallet-xcm-bridge-hub-router",
- "parachains-common",
- "parachains-runtimes-test-utils",
  "parity-scale-codec",
  "sp-io",
  "sp-runtime",
- "staging-parachain-info",
+ "staging-teyrchain-info",
  "staging-xcm",
  "staging-xcm-builder",
  "staging-xcm-executor",
+ "teyrchains-common",
+ "teyrchains-runtimes-test-utils",
  "xcm-runtime-apis",
 ]
 
@@ -1525,7 +1525,6 @@ dependencies = [
  "pallet-revive",
  "pallet-revive-uapi",
  "pallet-xcm",
- "parachains-common",
  "parity-scale-codec",
  "scale-info",
  "serde",
@@ -1535,6 +1534,7 @@ dependencies = [
  "staging-xcm",
  "staging-xcm-builder",
  "staging-xcm-executor",
+ "teyrchains-common",
  "tracing",
 ]
 
@@ -2257,7 +2257,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "bp-asset-hub-rococo"
+name = "bp-asset-hub-pezkuwichain"
 version = "0.4.0"
 dependencies = [
  "bp-bridge-hub-cumulus",
@@ -2270,11 +2270,11 @@ dependencies = [
  "sp-api",
  "sp-core 28.0.0",
  "staging-xcm",
- "testnet-parachains-constants",
+ "testnet-teyrchains-constants",
 ]
 
 [[package]]
-name = "bp-asset-hub-westend"
+name = "bp-asset-hub-zagros"
 version = "0.3.0"
 dependencies = [
  "bp-bridge-hub-cumulus",
@@ -2287,7 +2287,7 @@ dependencies = [
  "sp-api",
  "sp-core 28.0.0",
  "staging-xcm",
- "testnet-parachains-constants",
+ "testnet-teyrchains-constants",
 ]
 
 [[package]]
@@ -2312,18 +2312,18 @@ name = "bp-bridge-hub-cumulus"
 version = "0.7.0"
 dependencies = [
  "bp-messages",
- "bp-polkadot-core",
+ "bp-pezkuwi-core",
  "bp-runtime",
  "frame-support",
  "frame-system",
- "parachains-common",
- "polkadot-primitives",
+ "pezkuwi-primitives",
  "sp-api",
  "sp-std 14.0.0",
+ "teyrchains-common",
 ]
 
 [[package]]
-name = "bp-bridge-hub-rococo"
+name = "bp-bridge-hub-pezkuwichain"
 version = "0.7.0"
 dependencies = [
  "bp-bridge-hub-cumulus",
@@ -2338,7 +2338,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "bp-bridge-hub-westend"
+name = "bp-bridge-hub-zagros"
 version = "0.3.0"
 dependencies = [
  "bp-bridge-hub-cumulus",
@@ -2389,28 +2389,12 @@ dependencies = [
 ]
 
 [[package]]
-name = "bp-parachains"
-version = "0.7.0"
-dependencies = [
- "bp-header-chain",
- "bp-polkadot-core",
- "bp-runtime",
- "frame-support",
- "impl-trait-for-tuples",
- "parity-scale-codec",
- "scale-info",
- "sp-core 28.0.0",
- "sp-runtime",
- "sp-std 14.0.0",
-]
-
-[[package]]
-name = "bp-polkadot-bulletin"
+name = "bp-pezkuwi-bulletin"
 version = "0.4.0"
 dependencies = [
  "bp-header-chain",
  "bp-messages",
- "bp-polkadot-core",
+ "bp-pezkuwi-core",
  "bp-runtime",
  "frame-support",
  "frame-system",
@@ -2422,7 +2406,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "bp-polkadot-core"
+name = "bp-pezkuwi-core"
 version = "0.7.0"
 dependencies = [
  "bp-messages",
@@ -2439,13 +2423,25 @@ dependencies = [
 ]
 
 [[package]]
+name = "bp-pezkuwichain"
+version = "0.6.0"
+dependencies = [
+ "bp-header-chain",
+ "bp-pezkuwi-core",
+ "bp-runtime",
+ "frame-support",
+ "sp-api",
+ "sp-std 14.0.0",
+]
+
+[[package]]
 name = "bp-relayers"
 version = "0.7.0"
 dependencies = [
  "bp-header-chain",
  "bp-messages",
- "bp-parachains",
  "bp-runtime",
+ "bp-teyrchains",
  "frame-support",
  "frame-system",
  "hex-literal",
@@ -2453,18 +2449,6 @@ dependencies = [
  "parity-scale-codec",
  "scale-info",
  "sp-runtime",
- "sp-std 14.0.0",
-]
-
-[[package]]
-name = "bp-rococo"
-version = "0.6.0"
-dependencies = [
- "bp-header-chain",
- "bp-polkadot-core",
- "bp-runtime",
- "frame-support",
- "sp-api",
  "sp-std 14.0.0",
 ]
 
@@ -2496,9 +2480,9 @@ name = "bp-test-utils"
 version = "0.7.0"
 dependencies = [
  "bp-header-chain",
- "bp-parachains",
- "bp-polkadot-core",
+ "bp-pezkuwi-core",
  "bp-runtime",
+ "bp-teyrchains",
  "ed25519-dalek",
  "finality-grandpa",
  "parity-scale-codec",
@@ -2511,14 +2495,18 @@ dependencies = [
 ]
 
 [[package]]
-name = "bp-westend"
-version = "0.3.0"
+name = "bp-teyrchains"
+version = "0.7.0"
 dependencies = [
  "bp-header-chain",
- "bp-polkadot-core",
+ "bp-pezkuwi-core",
  "bp-runtime",
  "frame-support",
- "sp-api",
+ "impl-trait-for-tuples",
+ "parity-scale-codec",
+ "scale-info",
+ "sp-core 28.0.0",
+ "sp-runtime",
  "sp-std 14.0.0",
 ]
 
@@ -2550,6 +2538,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "bp-zagros"
+version = "0.3.0"
+dependencies = [
+ "bp-header-chain",
+ "bp-pezkuwi-core",
+ "bp-runtime",
+ "frame-support",
+ "sp-api",
+ "sp-std 14.0.0",
+]
+
+[[package]]
 name = "bridge-hub-common"
 version = "0.1.0"
 dependencies = [
@@ -2568,27 +2568,27 @@ dependencies = [
 ]
 
 [[package]]
-name = "bridge-hub-rococo-emulated-chain"
+name = "bridge-hub-pezkuwichain-emulated-chain"
 version = "0.0.0"
 dependencies = [
  "bp-messages",
  "bridge-hub-common",
- "bridge-hub-rococo-runtime",
+ "bridge-hub-pezkuwichain-runtime",
  "emulated-integration-tests-common",
  "frame-support",
- "parachains-common",
  "sp-core 28.0.0",
  "sp-keyring",
  "staging-xcm",
- "testnet-parachains-constants",
+ "testnet-teyrchains-constants",
+ "teyrchains-common",
 ]
 
 [[package]]
-name = "bridge-hub-rococo-integration-tests"
+name = "bridge-hub-pezkuwichain-integration-tests"
 version = "1.0.0"
 dependencies = [
- "asset-hub-rococo-runtime",
- "bp-asset-hub-rococo",
+ "asset-hub-pezkuwichain-runtime",
+ "bp-asset-hub-pezkuwichain",
  "cumulus-pallet-xcmp-queue",
  "emulated-integration-tests-common",
  "frame-support",
@@ -2599,10 +2599,9 @@ dependencies = [
  "pallet-bridge-messages",
  "pallet-message-queue",
  "pallet-xcm",
- "parachains-common",
  "parity-scale-codec",
- "rococo-system-emulated-network",
- "rococo-westend-system-emulated-network",
+ "pezkuwichain-system-emulated-network",
+ "pezkuwichain-zagros-system-emulated-network",
  "scale-info",
  "snowbridge-inbound-queue-primitives",
  "snowbridge-outbound-queue-primitives",
@@ -2614,32 +2613,33 @@ dependencies = [
  "staging-xcm",
  "staging-xcm-builder",
  "staging-xcm-executor",
- "testnet-parachains-constants",
+ "testnet-teyrchains-constants",
+ "teyrchains-common",
 ]
 
 [[package]]
-name = "bridge-hub-rococo-runtime"
+name = "bridge-hub-pezkuwichain-runtime"
 version = "0.5.0"
 dependencies = [
- "bp-asset-hub-rococo",
- "bp-asset-hub-westend",
- "bp-bridge-hub-rococo",
- "bp-bridge-hub-westend",
+ "bp-asset-hub-pezkuwichain",
+ "bp-asset-hub-zagros",
+ "bp-bridge-hub-pezkuwichain",
+ "bp-bridge-hub-zagros",
  "bp-header-chain",
  "bp-messages",
- "bp-parachains",
- "bp-polkadot-bulletin",
- "bp-polkadot-core",
+ "bp-pezkuwi-bulletin",
+ "bp-pezkuwi-core",
  "bp-relayers",
  "bp-runtime",
- "bp-westend",
+ "bp-teyrchains",
  "bp-xcm-bridge-hub-router",
+ "bp-zagros",
  "bridge-hub-common",
  "bridge-hub-test-utils",
  "bridge-runtime-common",
  "cumulus-pallet-aura-ext",
- "cumulus-pallet-parachain-system",
  "cumulus-pallet-session-benchmarking",
+ "cumulus-pallet-teyrchain-system",
  "cumulus-pallet-weight-reclaim",
  "cumulus-pallet-xcm",
  "cumulus-pallet-xcmp-queue",
@@ -2660,8 +2660,8 @@ dependencies = [
  "pallet-balances",
  "pallet-bridge-grandpa",
  "pallet-bridge-messages",
- "pallet-bridge-parachains",
  "pallet-bridge-relayers",
+ "pallet-bridge-teyrchains",
  "pallet-collator-selection",
  "pallet-message-queue",
  "pallet-multisig",
@@ -2673,12 +2673,10 @@ dependencies = [
  "pallet-xcm",
  "pallet-xcm-benchmarks",
  "pallet-xcm-bridge-hub",
- "parachains-common",
- "parachains-runtimes-test-utils",
  "parity-scale-codec",
- "polkadot-parachain-primitives",
- "polkadot-runtime-common",
- "rococo-runtime-constants",
+ "pezkuwi-runtime-common",
+ "pezkuwi-teyrchain-primitives",
+ "pezkuwichain-runtime-constants",
  "scale-info",
  "serde",
  "serde_json",
@@ -2710,12 +2708,14 @@ dependencies = [
  "sp-storage 19.0.0",
  "sp-transaction-pool",
  "sp-version",
- "staging-parachain-info",
+ "staging-teyrchain-info",
  "staging-xcm",
  "staging-xcm-builder",
  "staging-xcm-executor",
  "substrate-wasm-builder",
- "testnet-parachains-constants",
+ "testnet-teyrchains-constants",
+ "teyrchains-common",
+ "teyrchains-runtimes-test-utils",
  "tracing",
  "xcm-runtime-apis",
 ]
@@ -2727,12 +2727,12 @@ dependencies = [
  "asset-test-utils",
  "bp-header-chain",
  "bp-messages",
- "bp-parachains",
- "bp-polkadot-core",
+ "bp-pezkuwi-core",
  "bp-relayers",
  "bp-runtime",
  "bp-test-utils",
- "cumulus-pallet-parachain-system",
+ "bp-teyrchains",
+ "cumulus-pallet-teyrchain-system",
  "cumulus-pallet-xcmp-queue",
  "frame-support",
  "frame-system",
@@ -2740,14 +2740,12 @@ dependencies = [
  "pallet-balances",
  "pallet-bridge-grandpa",
  "pallet-bridge-messages",
- "pallet-bridge-parachains",
  "pallet-bridge-relayers",
+ "pallet-bridge-teyrchains",
  "pallet-timestamp",
  "pallet-utility",
  "pallet-xcm",
  "pallet-xcm-bridge-hub",
- "parachains-common",
- "parachains-runtimes-test-utils",
  "parity-scale-codec",
  "sp-core 28.0.0",
  "sp-io",
@@ -2758,34 +2756,36 @@ dependencies = [
  "staging-xcm",
  "staging-xcm-builder",
  "staging-xcm-executor",
+ "teyrchains-common",
+ "teyrchains-runtimes-test-utils",
  "tracing",
 ]
 
 [[package]]
-name = "bridge-hub-westend-emulated-chain"
+name = "bridge-hub-zagros-emulated-chain"
 version = "0.0.0"
 dependencies = [
  "bp-messages",
  "bridge-hub-common",
- "bridge-hub-westend-runtime",
+ "bridge-hub-zagros-runtime",
  "emulated-integration-tests-common",
  "frame-support",
- "parachains-common",
  "sp-core 28.0.0",
  "sp-keyring",
  "staging-xcm",
- "testnet-parachains-constants",
+ "testnet-teyrchains-constants",
+ "teyrchains-common",
 ]
 
 [[package]]
-name = "bridge-hub-westend-integration-tests"
+name = "bridge-hub-zagros-integration-tests"
 version = "1.0.0"
 dependencies = [
- "asset-hub-westend-runtime",
- "bp-asset-hub-westend",
+ "asset-hub-zagros-runtime",
+ "bp-asset-hub-zagros",
  "bridge-hub-common",
- "bridge-hub-westend-runtime",
- "cumulus-pallet-parachain-system",
+ "bridge-hub-zagros-runtime",
+ "cumulus-pallet-teyrchain-system",
  "cumulus-pallet-xcmp-queue",
  "emulated-integration-tests-common",
  "frame-support",
@@ -2797,9 +2797,8 @@ dependencies = [
  "pallet-bridge-relayers",
  "pallet-message-queue",
  "pallet-xcm",
- "parachains-common",
  "parity-scale-codec",
- "rococo-westend-system-emulated-network",
+ "pezkuwichain-zagros-system-emulated-network",
  "scale-info",
  "snowbridge-core",
  "snowbridge-inbound-queue-primitives",
@@ -2817,31 +2816,32 @@ dependencies = [
  "staging-xcm",
  "staging-xcm-builder",
  "staging-xcm-executor",
- "testnet-parachains-constants",
+ "testnet-teyrchains-constants",
+ "teyrchains-common",
 ]
 
 [[package]]
-name = "bridge-hub-westend-runtime"
+name = "bridge-hub-zagros-runtime"
 version = "0.3.0"
 dependencies = [
- "bp-asset-hub-rococo",
- "bp-asset-hub-westend",
- "bp-bridge-hub-rococo",
- "bp-bridge-hub-westend",
+ "bp-asset-hub-pezkuwichain",
+ "bp-asset-hub-zagros",
+ "bp-bridge-hub-pezkuwichain",
+ "bp-bridge-hub-zagros",
  "bp-header-chain",
  "bp-messages",
- "bp-parachains",
- "bp-polkadot-core",
+ "bp-pezkuwi-core",
+ "bp-pezkuwichain",
  "bp-relayers",
- "bp-rococo",
  "bp-runtime",
+ "bp-teyrchains",
  "bp-xcm-bridge-hub-router",
  "bridge-hub-common",
  "bridge-hub-test-utils",
  "bridge-runtime-common",
  "cumulus-pallet-aura-ext",
- "cumulus-pallet-parachain-system",
  "cumulus-pallet-session-benchmarking",
+ "cumulus-pallet-teyrchain-system",
  "cumulus-pallet-weight-reclaim",
  "cumulus-pallet-xcm",
  "cumulus-pallet-xcmp-queue",
@@ -2862,8 +2862,8 @@ dependencies = [
  "pallet-balances",
  "pallet-bridge-grandpa",
  "pallet-bridge-messages",
- "pallet-bridge-parachains",
  "pallet-bridge-relayers",
+ "pallet-bridge-teyrchains",
  "pallet-collator-selection",
  "pallet-message-queue",
  "pallet-multisig",
@@ -2875,11 +2875,9 @@ dependencies = [
  "pallet-xcm",
  "pallet-xcm-benchmarks",
  "pallet-xcm-bridge-hub",
- "parachains-common",
- "parachains-runtimes-test-utils",
  "parity-scale-codec",
- "polkadot-parachain-primitives",
- "polkadot-runtime-common",
+ "pezkuwi-runtime-common",
+ "pezkuwi-teyrchain-primitives",
  "scale-info",
  "serde",
  "serde_json",
@@ -2917,15 +2915,17 @@ dependencies = [
  "sp-storage 19.0.0",
  "sp-transaction-pool",
  "sp-version",
- "staging-parachain-info",
+ "staging-teyrchain-info",
  "staging-xcm",
  "staging-xcm-builder",
  "staging-xcm-executor",
  "substrate-wasm-builder",
- "testnet-parachains-constants",
+ "testnet-teyrchains-constants",
+ "teyrchains-common",
+ "teyrchains-runtimes-test-utils",
  "tracing",
- "westend-runtime-constants",
  "xcm-runtime-apis",
+ "zagros-runtime-constants",
 ]
 
 [[package]]
@@ -2934,18 +2934,18 @@ version = "0.7.0"
 dependencies = [
  "bp-header-chain",
  "bp-messages",
- "bp-parachains",
- "bp-polkadot-core",
+ "bp-pezkuwi-core",
  "bp-relayers",
  "bp-runtime",
  "bp-test-utils",
+ "bp-teyrchains",
  "frame-support",
  "frame-system",
  "pallet-balances",
  "pallet-bridge-grandpa",
  "pallet-bridge-messages",
- "pallet-bridge-parachains",
  "pallet-bridge-relayers",
+ "pallet-bridge-teyrchains",
  "pallet-transaction-payment",
  "pallet-utility",
  "parity-scale-codec",
@@ -3210,7 +3210,7 @@ dependencies = [
  "docify",
  "frame-support",
  "parity-scale-codec",
- "polkadot-sdk-frame",
+ "pezkuwi-sdk-frame",
  "sc-chain-spec",
  "scale-info",
  "serde",
@@ -3428,24 +3428,24 @@ dependencies = [
 ]
 
 [[package]]
-name = "collectives-westend-emulated-chain"
+name = "collectives-zagros-emulated-chain"
 version = "0.0.0"
 dependencies = [
- "collectives-westend-runtime",
+ "collectives-zagros-runtime",
  "cumulus-primitives-core",
  "emulated-integration-tests-common",
  "frame-support",
- "parachains-common",
  "sp-core 28.0.0",
- "testnet-parachains-constants",
+ "testnet-teyrchains-constants",
+ "teyrchains-common",
 ]
 
 [[package]]
-name = "collectives-westend-integration-tests"
+name = "collectives-zagros-integration-tests"
 version = "1.0.0"
 dependencies = [
- "collectives-westend-runtime",
- "cumulus-pallet-parachain-system",
+ "collectives-zagros-runtime",
+ "cumulus-pallet-teyrchain-system",
  "cumulus-pallet-xcmp-queue",
  "emulated-integration-tests-common",
  "frame-support",
@@ -3457,21 +3457,21 @@ dependencies = [
  "pallet-whitelist",
  "pallet-xcm",
  "parity-scale-codec",
- "polkadot-runtime-common",
+ "pezkuwi-runtime-common",
  "sp-runtime",
  "staging-xcm",
  "staging-xcm-executor",
- "westend-runtime-constants",
- "westend-system-emulated-network",
+ "zagros-runtime-constants",
+ "zagros-system-emulated-network",
 ]
 
 [[package]]
-name = "collectives-westend-runtime"
+name = "collectives-zagros-runtime"
 version = "3.0.0"
 dependencies = [
  "cumulus-pallet-aura-ext",
- "cumulus-pallet-parachain-system",
  "cumulus-pallet-session-benchmarking",
+ "cumulus-pallet-teyrchain-system",
  "cumulus-pallet-weight-reclaim",
  "cumulus-pallet-xcm",
  "cumulus-pallet-xcmp-queue",
@@ -3513,11 +3513,9 @@ dependencies = [
  "pallet-utility",
  "pallet-xcm",
  "pallet-xcm-benchmarks",
- "parachains-common",
- "parachains-runtimes-test-utils",
  "parity-scale-codec",
- "polkadot-parachain-primitives",
- "polkadot-runtime-common",
+ "pezkuwi-runtime-common",
+ "pezkuwi-teyrchain-primitives",
  "scale-info",
  "serde_json",
  "sp-api",
@@ -3536,15 +3534,17 @@ dependencies = [
  "sp-storage 19.0.0",
  "sp-transaction-pool",
  "sp-version",
- "staging-parachain-info",
+ "staging-teyrchain-info",
  "staging-xcm",
  "staging-xcm-builder",
  "staging-xcm-executor",
  "substrate-wasm-builder",
- "testnet-parachains-constants",
+ "testnet-teyrchains-constants",
+ "teyrchains-common",
+ "teyrchains-runtimes-test-utils",
  "tracing",
- "westend-runtime-constants",
  "xcm-runtime-apis",
+ "zagros-runtime-constants",
 ]
 
 [[package]]
@@ -3795,41 +3795,41 @@ dependencies = [
 ]
 
 [[package]]
-name = "coretime-rococo-emulated-chain"
+name = "coretime-pezkuwichain-emulated-chain"
 version = "0.1.0"
 dependencies = [
- "coretime-rococo-runtime",
+ "coretime-pezkuwichain-runtime",
  "cumulus-primitives-core",
  "emulated-integration-tests-common",
  "frame-support",
- "parachains-common",
  "sp-core 28.0.0",
- "testnet-parachains-constants",
+ "testnet-teyrchains-constants",
+ "teyrchains-common",
 ]
 
 [[package]]
-name = "coretime-rococo-integration-tests"
+name = "coretime-pezkuwichain-integration-tests"
 version = "0.0.0"
 dependencies = [
- "cumulus-pallet-parachain-system",
+ "cumulus-pallet-teyrchain-system",
  "emulated-integration-tests-common",
  "frame-support",
  "pallet-broker",
  "pallet-message-queue",
- "polkadot-runtime-parachains",
- "rococo-runtime-constants",
- "rococo-system-emulated-network",
+ "pezkuwi-runtime-teyrchains",
+ "pezkuwichain-runtime-constants",
+ "pezkuwichain-system-emulated-network",
  "sp-runtime",
  "staging-xcm",
 ]
 
 [[package]]
-name = "coretime-rococo-runtime"
+name = "coretime-pezkuwichain-runtime"
 version = "0.1.0"
 dependencies = [
  "cumulus-pallet-aura-ext",
- "cumulus-pallet-parachain-system",
  "cumulus-pallet-session-benchmarking",
+ "cumulus-pallet-teyrchain-system",
  "cumulus-pallet-weight-reclaim",
  "cumulus-pallet-xcm",
  "cumulus-pallet-xcmp-queue",
@@ -3860,12 +3860,10 @@ dependencies = [
  "pallet-utility",
  "pallet-xcm",
  "pallet-xcm-benchmarks",
- "parachains-common",
- "parachains-runtimes-test-utils",
  "parity-scale-codec",
- "polkadot-parachain-primitives",
- "polkadot-runtime-common",
- "rococo-runtime-constants",
+ "pezkuwi-runtime-common",
+ "pezkuwi-teyrchain-primitives",
+ "pezkuwichain-runtime-constants",
  "scale-info",
  "serde",
  "serde_json",
@@ -3882,53 +3880,55 @@ dependencies = [
  "sp-storage 19.0.0",
  "sp-transaction-pool",
  "sp-version",
- "staging-parachain-info",
+ "staging-teyrchain-info",
  "staging-xcm",
  "staging-xcm-builder",
  "staging-xcm-executor",
  "substrate-wasm-builder",
- "testnet-parachains-constants",
+ "testnet-teyrchains-constants",
+ "teyrchains-common",
+ "teyrchains-runtimes-test-utils",
  "tracing",
  "xcm-runtime-apis",
 ]
 
 [[package]]
-name = "coretime-westend-emulated-chain"
+name = "coretime-zagros-emulated-chain"
 version = "0.1.0"
 dependencies = [
- "coretime-westend-runtime",
+ "coretime-zagros-runtime",
  "cumulus-primitives-core",
  "emulated-integration-tests-common",
  "frame-support",
- "parachains-common",
  "sp-core 28.0.0",
- "testnet-parachains-constants",
+ "testnet-teyrchains-constants",
+ "teyrchains-common",
 ]
 
 [[package]]
-name = "coretime-westend-integration-tests"
+name = "coretime-zagros-integration-tests"
 version = "0.0.0"
 dependencies = [
- "cumulus-pallet-parachain-system",
+ "cumulus-pallet-teyrchain-system",
  "emulated-integration-tests-common",
  "frame-support",
  "pallet-broker",
  "pallet-message-queue",
- "polkadot-runtime-parachains",
+ "pezkuwi-runtime-teyrchains",
  "sp-runtime",
  "staging-xcm",
  "staging-xcm-executor",
- "westend-runtime-constants",
- "westend-system-emulated-network",
+ "zagros-runtime-constants",
+ "zagros-system-emulated-network",
 ]
 
 [[package]]
-name = "coretime-westend-runtime"
+name = "coretime-zagros-runtime"
 version = "0.1.0"
 dependencies = [
  "cumulus-pallet-aura-ext",
- "cumulus-pallet-parachain-system",
  "cumulus-pallet-session-benchmarking",
+ "cumulus-pallet-teyrchain-system",
  "cumulus-pallet-weight-reclaim",
  "cumulus-pallet-xcm",
  "cumulus-pallet-xcmp-queue",
@@ -3959,11 +3959,9 @@ dependencies = [
  "pallet-utility",
  "pallet-xcm",
  "pallet-xcm-benchmarks",
- "parachains-common",
- "parachains-runtimes-test-utils",
  "parity-scale-codec",
- "polkadot-parachain-primitives",
- "polkadot-runtime-common",
+ "pezkuwi-runtime-common",
+ "pezkuwi-teyrchain-primitives",
  "scale-info",
  "serde",
  "serde_json",
@@ -3980,15 +3978,17 @@ dependencies = [
  "sp-storage 19.0.0",
  "sp-transaction-pool",
  "sp-version",
- "staging-parachain-info",
+ "staging-teyrchain-info",
  "staging-xcm",
  "staging-xcm-builder",
  "staging-xcm-executor",
  "substrate-wasm-builder",
- "testnet-parachains-constants",
+ "testnet-teyrchains-constants",
+ "teyrchains-common",
+ "teyrchains-runtimes-test-utils",
  "tracing",
- "westend-runtime-constants",
  "xcm-runtime-apis",
+ "zagros-runtime-constants",
 ]
 
 [[package]]
@@ -4408,11 +4408,11 @@ dependencies = [
  "futures",
  "parity-scale-codec",
  "parking_lot 0.12.3",
- "polkadot-node-primitives",
- "polkadot-node-subsystem",
- "polkadot-node-subsystem-test-helpers",
- "polkadot-overseer",
- "polkadot-primitives",
+ "pezkuwi-node-primitives",
+ "pezkuwi-node-subsystem",
+ "pezkuwi-node-subsystem-test-helpers",
+ "pezkuwi-overseer",
+ "pezkuwi-primitives",
  "sc-client-api",
  "sp-api",
  "sp-consensus",
@@ -4432,7 +4432,7 @@ dependencies = [
  "cumulus-client-collator",
  "cumulus-client-consensus-common",
  "cumulus-client-consensus-proposer",
- "cumulus-client-parachain-inherent",
+ "cumulus-client-teyrchain-inherent",
  "cumulus-primitives-aura",
  "cumulus-primitives-core",
  "cumulus-relay-chain-interface",
@@ -4441,11 +4441,11 @@ dependencies = [
  "futures",
  "parity-scale-codec",
  "parking_lot 0.12.3",
- "polkadot-node-primitives",
- "polkadot-node-subsystem",
- "polkadot-node-subsystem-util",
- "polkadot-overseer",
- "polkadot-primitives",
+ "pezkuwi-node-primitives",
+ "pezkuwi-node-subsystem",
+ "pezkuwi-node-subsystem-util",
+ "pezkuwi-overseer",
+ "pezkuwi-primitives",
  "rstest",
  "sc-client-api",
  "sc-consensus",
@@ -4493,7 +4493,7 @@ dependencies = [
  "futures-timer",
  "log",
  "parity-scale-codec",
- "polkadot-primitives",
+ "pezkuwi-primitives",
  "sc-client-api",
  "sc-consensus",
  "sc-consensus-babe",
@@ -4519,7 +4519,7 @@ version = "0.7.0"
 dependencies = [
  "anyhow",
  "async-trait",
- "cumulus-primitives-parachain-inherent",
+ "cumulus-primitives-teyrchain-inherent",
  "sc-basic-authorship",
  "sc-block-builder",
  "sc-transaction-pool-api",
@@ -4567,12 +4567,12 @@ dependencies = [
  "futures-timer",
  "parity-scale-codec",
  "parking_lot 0.12.3",
- "polkadot-node-primitives",
- "polkadot-node-subsystem",
- "polkadot-parachain-primitives",
- "polkadot-primitives",
- "polkadot-primitives-test-helpers",
- "polkadot-test-client",
+ "pezkuwi-node-primitives",
+ "pezkuwi-node-subsystem",
+ "pezkuwi-primitives",
+ "pezkuwi-primitives-test-helpers",
+ "pezkuwi-test-client",
+ "pezkuwi-teyrchain-primitives",
  "rstest",
  "sc-client-api",
  "sc-network",
@@ -4590,27 +4590,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "cumulus-client-parachain-inherent"
-version = "0.1.0"
-dependencies = [
- "async-trait",
- "cumulus-primitives-core",
- "cumulus-primitives-parachain-inherent",
- "cumulus-relay-chain-interface",
- "cumulus-test-relay-sproof-builder",
- "parity-scale-codec",
- "sc-client-api",
- "sc-consensus-babe",
- "sc-network-types",
- "sp-crypto-hashing 0.1.0",
- "sp-inherents",
- "sp-runtime",
- "sp-state-machine",
- "sp-storage 19.0.0",
- "tracing",
-]
-
-[[package]]
 name = "cumulus-client-pov-recovery"
 version = "0.7.0"
 dependencies = [
@@ -4623,10 +4602,10 @@ dependencies = [
  "futures",
  "futures-timer",
  "parity-scale-codec",
- "polkadot-node-primitives",
- "polkadot-node-subsystem",
- "polkadot-overseer",
- "polkadot-primitives",
+ "pezkuwi-node-primitives",
+ "pezkuwi-node-subsystem",
+ "pezkuwi-overseer",
+ "pezkuwi-primitives",
  "rand 0.8.5",
  "rstest",
  "sc-client-api",
@@ -4661,8 +4640,8 @@ dependencies = [
  "cumulus-relay-chain-minimal-node",
  "cumulus-relay-chain-streams",
  "futures",
- "polkadot-overseer",
- "polkadot-primitives",
+ "pezkuwi-overseer",
+ "pezkuwi-primitives",
  "prometheus",
  "sc-client-api",
  "sc-consensus",
@@ -4687,10 +4666,31 @@ dependencies = [
 ]
 
 [[package]]
+name = "cumulus-client-teyrchain-inherent"
+version = "0.1.0"
+dependencies = [
+ "async-trait",
+ "cumulus-primitives-core",
+ "cumulus-primitives-teyrchain-inherent",
+ "cumulus-relay-chain-interface",
+ "cumulus-test-relay-sproof-builder",
+ "parity-scale-codec",
+ "sc-client-api",
+ "sc-consensus-babe",
+ "sc-network-types",
+ "sp-crypto-hashing 0.1.0",
+ "sp-inherents",
+ "sp-runtime",
+ "sp-state-machine",
+ "sp-storage 19.0.0",
+ "tracing",
+]
+
+[[package]]
 name = "cumulus-pallet-aura-ext"
 version = "0.7.0"
 dependencies = [
- "cumulus-pallet-parachain-system",
+ "cumulus-pallet-teyrchain-system",
  "cumulus-primitives-core",
  "cumulus-primitives-proof-size-hostfunction",
  "cumulus-test-relay-sproof-builder",
@@ -4731,16 +4731,42 @@ dependencies = [
 ]
 
 [[package]]
-name = "cumulus-pallet-parachain-system"
+name = "cumulus-pallet-session-benchmarking"
+version = "9.0.0"
+dependencies = [
+ "frame-benchmarking",
+ "frame-support",
+ "frame-system",
+ "pallet-session",
+ "parity-scale-codec",
+ "sp-runtime",
+]
+
+[[package]]
+name = "cumulus-pallet-solo-to-para"
+version = "0.7.0"
+dependencies = [
+ "cumulus-pallet-teyrchain-system",
+ "frame-support",
+ "frame-system",
+ "pallet-sudo",
+ "parity-scale-codec",
+ "pezkuwi-primitives",
+ "scale-info",
+ "sp-runtime",
+]
+
+[[package]]
+name = "cumulus-pallet-teyrchain-system"
 version = "0.7.0"
 dependencies = [
  "array-bytes 6.2.2",
  "assert_matches",
  "bytes",
- "cumulus-pallet-parachain-system-proc-macro",
+ "cumulus-pallet-teyrchain-system-proc-macro",
  "cumulus-primitives-core",
- "cumulus-primitives-parachain-inherent",
  "cumulus-primitives-proof-size-hostfunction",
+ "cumulus-primitives-teyrchain-inherent",
  "cumulus-test-client",
  "cumulus-test-relay-sproof-builder",
  "environmental",
@@ -4754,8 +4780,8 @@ dependencies = [
  "log",
  "pallet-message-queue",
  "parity-scale-codec",
- "polkadot-parachain-primitives",
- "polkadot-runtime-parachains",
+ "pezkuwi-runtime-teyrchains",
+ "pezkuwi-teyrchain-primitives",
  "rand 0.8.5",
  "rstest",
  "sc-consensus",
@@ -4782,39 +4808,13 @@ dependencies = [
 ]
 
 [[package]]
-name = "cumulus-pallet-parachain-system-proc-macro"
+name = "cumulus-pallet-teyrchain-system-proc-macro"
 version = "0.6.0"
 dependencies = [
  "proc-macro-crate 3.1.0",
  "proc-macro2 1.0.95",
  "quote 1.0.40",
  "syn 2.0.98",
-]
-
-[[package]]
-name = "cumulus-pallet-session-benchmarking"
-version = "9.0.0"
-dependencies = [
- "frame-benchmarking",
- "frame-support",
- "frame-system",
- "pallet-session",
- "parity-scale-codec",
- "sp-runtime",
-]
-
-[[package]]
-name = "cumulus-pallet-solo-to-para"
-version = "0.7.0"
-dependencies = [
- "cumulus-pallet-parachain-system",
- "frame-support",
- "frame-system",
- "pallet-sudo",
- "parity-scale-codec",
- "polkadot-primitives",
- "scale-info",
- "sp-runtime",
 ]
 
 [[package]]
@@ -4857,7 +4857,7 @@ dependencies = [
  "approx",
  "bounded-collections 0.3.2",
  "bp-xcm-bridge-hub-router",
- "cumulus-pallet-parachain-system",
+ "cumulus-pallet-teyrchain-system",
  "cumulus-primitives-core",
  "frame-benchmarking",
  "frame-support",
@@ -4865,8 +4865,8 @@ dependencies = [
  "pallet-balances",
  "pallet-message-queue",
  "parity-scale-codec",
- "polkadot-runtime-common",
- "polkadot-runtime-parachains",
+ "pezkuwi-runtime-common",
+ "pezkuwi-runtime-teyrchains",
  "scale-info",
  "sp-core 28.0.0",
  "sp-io",
@@ -4898,9 +4898,9 @@ dependencies = [
  "anyhow",
  "clap",
  "parity-scale-codec",
- "polkadot-node-primitives",
- "polkadot-parachain-primitives",
- "polkadot-primitives",
+ "pezkuwi-node-primitives",
+ "pezkuwi-primitives",
+ "pezkuwi-teyrchain-primitives",
  "sc-executor",
  "sp-core 28.0.0",
  "sp-io",
@@ -4922,28 +4922,15 @@ name = "cumulus-primitives-core"
 version = "0.7.0"
 dependencies = [
  "parity-scale-codec",
- "polkadot-core-primitives",
- "polkadot-parachain-primitives",
- "polkadot-primitives",
+ "pezkuwi-core-primitives",
+ "pezkuwi-primitives",
+ "pezkuwi-teyrchain-primitives",
  "scale-info",
  "sp-api",
  "sp-runtime",
  "sp-trie",
  "staging-xcm",
  "tracing",
-]
-
-[[package]]
-name = "cumulus-primitives-parachain-inherent"
-version = "0.7.0"
-dependencies = [
- "async-trait",
- "cumulus-primitives-core",
- "parity-scale-codec",
- "scale-info",
- "sp-core 28.0.0",
- "sp-inherents",
- "sp-trie",
 ]
 
 [[package]]
@@ -4978,6 +4965,19 @@ dependencies = [
 ]
 
 [[package]]
+name = "cumulus-primitives-teyrchain-inherent"
+version = "0.7.0"
+dependencies = [
+ "async-trait",
+ "cumulus-primitives-core",
+ "parity-scale-codec",
+ "scale-info",
+ "sp-core 28.0.0",
+ "sp-inherents",
+ "sp-trie",
+]
+
+[[package]]
 name = "cumulus-primitives-timestamp"
 version = "0.7.0"
 dependencies = [
@@ -4995,7 +4995,7 @@ dependencies = [
  "log",
  "pallet-asset-conversion",
  "parity-scale-codec",
- "polkadot-runtime-common",
+ "pezkuwi-runtime-common",
  "sp-runtime",
  "staging-xcm",
  "staging-xcm-builder",
@@ -5013,10 +5013,10 @@ dependencies = [
  "cumulus-relay-chain-interface",
  "futures",
  "futures-timer",
- "polkadot-cli",
- "polkadot-primitives",
- "polkadot-service",
- "polkadot-test-client",
+ "pezkuwi-cli",
+ "pezkuwi-primitives",
+ "pezkuwi-service",
+ "pezkuwi-test-client",
  "prioritized-metered-channel",
  "sc-cli",
  "sc-client-api",
@@ -5041,7 +5041,7 @@ dependencies = [
  "futures",
  "jsonrpsee-core",
  "parity-scale-codec",
- "polkadot-overseer",
+ "pezkuwi-overseer",
  "sc-client-api",
  "sc-network",
  "sp-api",
@@ -5063,13 +5063,13 @@ dependencies = [
  "cumulus-relay-chain-interface",
  "cumulus-relay-chain-rpc-interface",
  "futures",
- "polkadot-core-primitives",
- "polkadot-network-bridge",
- "polkadot-node-network-protocol",
- "polkadot-node-subsystem-util",
- "polkadot-overseer",
- "polkadot-primitives",
- "polkadot-service",
+ "pezkuwi-core-primitives",
+ "pezkuwi-network-bridge",
+ "pezkuwi-node-network-protocol",
+ "pezkuwi-node-subsystem-util",
+ "pezkuwi-overseer",
+ "pezkuwi-primitives",
+ "pezkuwi-service",
  "sc-authority-discovery",
  "sc-client-api",
  "sc-network",
@@ -5097,7 +5097,7 @@ dependencies = [
  "futures-timer",
  "jsonrpsee",
  "parity-scale-codec",
- "polkadot-overseer",
+ "pezkuwi-overseer",
  "portpicker",
  "prometheus",
  "sc-client-api",
@@ -5125,8 +5125,8 @@ version = "0.7.0"
 dependencies = [
  "cumulus-relay-chain-interface",
  "futures",
- "polkadot-node-subsystem",
- "polkadot-primitives",
+ "pezkuwi-node-subsystem",
+ "pezkuwi-primitives",
  "sp-api",
  "sp-consensus",
  "tracing",
@@ -5138,8 +5138,8 @@ version = "0.1.0"
 dependencies = [
  "cumulus-pallet-weight-reclaim",
  "cumulus-primitives-core",
- "cumulus-primitives-parachain-inherent",
  "cumulus-primitives-proof-size-hostfunction",
+ "cumulus-primitives-teyrchain-inherent",
  "cumulus-test-relay-sproof-builder",
  "cumulus-test-runtime",
  "cumulus-test-service",
@@ -5147,8 +5147,8 @@ dependencies = [
  "pallet-balances",
  "pallet-transaction-payment",
  "parity-scale-codec",
- "polkadot-parachain-primitives",
- "polkadot-primitives",
+ "pezkuwi-primitives",
+ "pezkuwi-teyrchain-primitives",
  "sc-block-builder",
  "sc-consensus",
  "sc-consensus-aura",
@@ -5175,7 +5175,7 @@ version = "0.7.0"
 dependencies = [
  "cumulus-primitives-core",
  "parity-scale-codec",
- "polkadot-primitives",
+ "pezkuwi-primitives",
  "sp-runtime",
  "sp-state-machine",
  "sp-trie",
@@ -5186,7 +5186,7 @@ name = "cumulus-test-runtime"
 version = "0.1.0"
 dependencies = [
  "cumulus-pallet-aura-ext",
- "cumulus-pallet-parachain-system",
+ "cumulus-pallet-teyrchain-system",
  "cumulus-pallet-weight-reclaim",
  "cumulus-primitives-aura",
  "cumulus-primitives-core",
@@ -5219,7 +5219,7 @@ dependencies = [
  "sp-session",
  "sp-transaction-pool",
  "sp-version",
- "staging-parachain-info",
+ "staging-teyrchain-info",
  "substrate-wasm-builder",
 ]
 
@@ -5235,10 +5235,10 @@ dependencies = [
  "cumulus-client-consensus-aura",
  "cumulus-client-consensus-common",
  "cumulus-client-consensus-proposer",
- "cumulus-client-parachain-inherent",
  "cumulus-client-pov-recovery",
  "cumulus-client-service",
- "cumulus-pallet-parachain-system",
+ "cumulus-client-teyrchain-inherent",
+ "cumulus-pallet-teyrchain-system",
  "cumulus-pallet-weight-reclaim",
  "cumulus-primitives-core",
  "cumulus-relay-chain-inprocess-interface",
@@ -5254,12 +5254,12 @@ dependencies = [
  "pallet-timestamp",
  "pallet-transaction-payment",
  "parity-scale-codec",
- "polkadot-cli",
- "polkadot-node-subsystem",
- "polkadot-overseer",
- "polkadot-primitives",
- "polkadot-service",
- "polkadot-test-service",
+ "pezkuwi-cli",
+ "pezkuwi-node-subsystem",
+ "pezkuwi-overseer",
+ "pezkuwi-primitives",
+ "pezkuwi-service",
+ "pezkuwi-test-service",
  "prometheus",
  "rand 0.8.5",
  "sc-basic-authorship",
@@ -5308,7 +5308,7 @@ dependencies = [
  "futures",
  "log",
  "parity-scale-codec",
- "polkadot-primitives",
+ "pezkuwi-primitives",
  "tokio",
  "zombienet-configuration",
  "zombienet-sdk",
@@ -5324,7 +5324,7 @@ dependencies = [
  "futures",
  "log",
  "parity-scale-codec",
- "polkadot-primitives",
+ "pezkuwi-primitives",
  "rstest",
  "sc-statement-store",
  "serde",
@@ -6063,7 +6063,7 @@ dependencies = [
  "asset-test-utils",
  "bp-messages",
  "bp-xcm-bridge-hub",
- "cumulus-pallet-parachain-system",
+ "cumulus-pallet-teyrchain-system",
  "cumulus-pallet-xcmp-queue",
  "cumulus-primitives-core",
  "frame-support",
@@ -6077,12 +6077,11 @@ dependencies = [
  "pallet-whitelist",
  "pallet-xcm",
  "pallet-xcm-bridge-hub",
- "parachains-common",
  "parity-scale-codec",
  "paste",
- "polkadot-parachain-primitives",
- "polkadot-primitives",
- "polkadot-runtime-parachains",
+ "pezkuwi-primitives",
+ "pezkuwi-runtime-teyrchains",
+ "pezkuwi-teyrchain-primitives",
  "sc-consensus-grandpa",
  "sp-authority-discovery",
  "sp-consensus-babe",
@@ -6093,6 +6092,7 @@ dependencies = [
  "staging-xcm",
  "staging-xcm-builder",
  "staging-xcm-executor",
+ "teyrchains-common",
  "xcm-emulator",
  "xcm-runtime-apis",
  "xcm-simulator",
@@ -6282,9 +6282,9 @@ name = "erasure_coding_fuzzer"
 version = "1.0.0"
 dependencies = [
  "honggfuzz",
- "polkadot-erasure-coding",
- "polkadot-node-primitives",
- "polkadot-primitives",
+ "pezkuwi-erasure-coding",
+ "pezkuwi-node-primitives",
+ "pezkuwi-primitives",
 ]
 
 [[package]]
@@ -6782,7 +6782,7 @@ dependencies = [
  "chrono",
  "clap",
  "comfy-table",
- "cumulus-client-parachain-inherent",
+ "cumulus-client-teyrchain-inherent",
  "cumulus-primitives-proof-size-hostfunction",
  "cumulus-test-runtime",
  "env_filter",
@@ -6796,8 +6796,8 @@ dependencies = [
  "linked-hash-map",
  "log",
  "parity-scale-codec",
- "polkadot-parachain-primitives",
- "polkadot-primitives",
+ "pezkuwi-primitives",
+ "pezkuwi-teyrchain-primitives",
  "rand 0.8.5",
  "rand_pcg",
  "sc-block-builder",
@@ -6837,7 +6837,7 @@ dependencies = [
  "subxt-signer 0.43.0",
  "thiserror 1.0.65",
  "thousands",
- "westend-runtime",
+ "zagros-runtime",
 ]
 
 [[package]]
@@ -7041,7 +7041,7 @@ dependencies = [
 name = "frame-storage-access-test-runtime"
 version = "0.1.0"
 dependencies = [
- "cumulus-pallet-parachain-system",
+ "cumulus-pallet-teyrchain-system",
  "parity-scale-codec",
  "sp-core 28.0.0",
  "sp-runtime",
@@ -7201,7 +7201,7 @@ name = "frame-support-test-stg-frame-crate"
 version = "0.1.0"
 dependencies = [
  "parity-scale-codec",
- "polkadot-sdk-frame",
+ "pezkuwi-sdk-frame",
  "scale-info",
 ]
 
@@ -7670,11 +7670,11 @@ dependencies = [
 ]
 
 [[package]]
-name = "glutton-westend-runtime"
+name = "glutton-zagros-runtime"
 version = "3.0.0"
 dependencies = [
  "cumulus-pallet-aura-ext",
- "cumulus-pallet-parachain-system",
+ "cumulus-pallet-teyrchain-system",
  "cumulus-pallet-xcm",
  "cumulus-primitives-aura",
  "cumulus-primitives-core",
@@ -7690,7 +7690,6 @@ dependencies = [
  "pallet-message-queue",
  "pallet-sudo",
  "pallet-timestamp",
- "parachains-common",
  "parity-scale-codec",
  "scale-info",
  "serde_json",
@@ -7707,12 +7706,13 @@ dependencies = [
  "sp-storage 19.0.0",
  "sp-transaction-pool",
  "sp-version",
- "staging-parachain-info",
+ "staging-teyrchain-info",
  "staging-xcm",
  "staging-xcm-builder",
  "staging-xcm-executor",
  "substrate-wasm-builder",
- "testnet-parachains-constants",
+ "testnet-teyrchains-constants",
+ "teyrchains-common",
 ]
 
 [[package]]
@@ -7726,11 +7726,11 @@ dependencies = [
 ]
 
 [[package]]
-name = "governance-westend-integration-tests"
+name = "governance-zagros-integration-tests"
 version = "0.0.0"
 dependencies = [
- "asset-hub-westend-runtime",
- "collectives-westend-runtime",
+ "asset-hub-zagros-runtime",
+ "collectives-zagros-runtime",
  "emulated-integration-tests-common",
  "frame-support",
  "frame-system",
@@ -7741,8 +7741,8 @@ dependencies = [
  "sp-core 28.0.0",
  "sp-runtime",
  "staging-xcm",
- "westend-runtime",
- "westend-system-emulated-network",
+ "zagros-runtime",
+ "zagros-system-emulated-network",
 ]
 
 [[package]]
@@ -9220,7 +9220,7 @@ dependencies = [
  "pallet-example-mbm",
  "pallet-example-tasks",
  "parity-scale-codec",
- "polkadot-sdk",
+ "pezkuwi-sdk",
  "primitive-types 0.13.1",
  "rand 0.8.5",
  "rand_pcg",
@@ -10424,7 +10424,7 @@ dependencies = [
  "futures-timer",
  "jsonrpsee",
  "minimal-template-runtime",
- "polkadot-sdk",
+ "pezkuwi-sdk",
 ]
 
 [[package]]
@@ -10433,7 +10433,7 @@ version = "0.0.0"
 dependencies = [
  "pallet-minimal-template",
  "parity-scale-codec",
- "polkadot-sdk",
+ "pezkuwi-sdk",
  "scale-info",
  "serde_json",
 ]
@@ -11472,7 +11472,7 @@ dependencies = [
  "pallet-staking-async-rc-client",
  "pallet-timestamp",
  "parity-scale-codec",
- "polkadot-sdk-frame",
+ "pezkuwi-sdk-frame",
  "scale-info",
  "sp-core 28.0.0",
  "sp-session",
@@ -11636,7 +11636,7 @@ dependencies = [
  "pallet-assets",
  "pallet-balances",
  "parity-scale-codec",
- "polkadot-sdk-frame",
+ "pezkuwi-sdk-frame",
  "scale-info",
 ]
 
@@ -11680,7 +11680,7 @@ version = "28.0.0"
 dependencies = [
  "pallet-balances",
  "parity-scale-codec",
- "polkadot-sdk-frame",
+ "pezkuwi-sdk-frame",
  "scale-info",
 ]
 
@@ -11906,7 +11906,7 @@ dependencies = [
  "pallet-beefy-mmr",
  "pallet-mmr",
  "parity-scale-codec",
- "polkadot-ckb-merkle-mountain-range",
+ "pezkuwi-ckb-merkle-mountain-range",
  "rand 0.8.5",
  "scale-info",
  "serde",
@@ -11962,14 +11962,43 @@ dependencies = [
 ]
 
 [[package]]
-name = "pallet-bridge-parachains"
+name = "pallet-bridge-relayers"
 version = "0.7.0"
 dependencies = [
  "bp-header-chain",
- "bp-parachains",
- "bp-polkadot-core",
+ "bp-messages",
+ "bp-pezkuwi-core",
+ "bp-relayers",
  "bp-runtime",
  "bp-test-utils",
+ "bp-teyrchains",
+ "frame-benchmarking",
+ "frame-support",
+ "frame-system",
+ "pallet-balances",
+ "pallet-bridge-grandpa",
+ "pallet-bridge-messages",
+ "pallet-bridge-teyrchains",
+ "pallet-transaction-payment",
+ "pallet-utility",
+ "parity-scale-codec",
+ "scale-info",
+ "sp-arithmetic",
+ "sp-core 28.0.0",
+ "sp-io",
+ "sp-runtime",
+ "tracing",
+]
+
+[[package]]
+name = "pallet-bridge-teyrchains"
+version = "0.7.0"
+dependencies = [
+ "bp-header-chain",
+ "bp-pezkuwi-core",
+ "bp-runtime",
+ "bp-test-utils",
+ "bp-teyrchains",
  "frame-benchmarking",
  "frame-support",
  "frame-system",
@@ -11980,35 +12009,6 @@ dependencies = [
  "sp-io",
  "sp-runtime",
  "sp-std 14.0.0",
- "tracing",
-]
-
-[[package]]
-name = "pallet-bridge-relayers"
-version = "0.7.0"
-dependencies = [
- "bp-header-chain",
- "bp-messages",
- "bp-parachains",
- "bp-polkadot-core",
- "bp-relayers",
- "bp-runtime",
- "bp-test-utils",
- "frame-benchmarking",
- "frame-support",
- "frame-system",
- "pallet-balances",
- "pallet-bridge-grandpa",
- "pallet-bridge-messages",
- "pallet-bridge-parachains",
- "pallet-transaction-payment",
- "pallet-utility",
- "parity-scale-codec",
- "scale-info",
- "sp-arithmetic",
- "sp-core 28.0.0",
- "sp-io",
- "sp-runtime",
  "tracing",
 ]
 
@@ -12173,9 +12173,9 @@ dependencies = [
  "pallet-timestamp",
  "pallet-xcm",
  "parity-scale-codec",
- "polkadot-parachain-primitives",
- "polkadot-primitives",
- "polkadot-runtime-parachains",
+ "pezkuwi-primitives",
+ "pezkuwi-runtime-teyrchains",
+ "pezkuwi-teyrchain-primitives",
  "scale-info",
  "sp-api",
  "sp-core 28.0.0",
@@ -12497,7 +12497,7 @@ name = "pallet-example-frame-crate"
 version = "0.0.1"
 dependencies = [
  "parity-scale-codec",
- "polkadot-sdk-frame",
+ "pezkuwi-sdk-frame",
  "scale-info",
 ]
 
@@ -12755,7 +12755,7 @@ name = "pallet-insecure-randomness-collective-flip"
 version = "16.0.0"
 dependencies = [
  "parity-scale-codec",
- "polkadot-sdk-frame",
+ "pezkuwi-sdk-frame",
  "safe-mix",
  "scale-info",
 ]
@@ -12848,7 +12848,7 @@ dependencies = [
  "impl-trait-for-tuples",
  "log",
  "parity-scale-codec",
- "polkadot-sdk-frame",
+ "pezkuwi-sdk-frame",
  "pretty_assertions",
  "scale-info",
  "sp-core 28.0.0",
@@ -12862,7 +12862,7 @@ name = "pallet-minimal-template"
 version = "0.0.0"
 dependencies = [
  "parity-scale-codec",
- "polkadot-sdk",
+ "pezkuwi-sdk",
  "scale-info",
 ]
 
@@ -12872,7 +12872,7 @@ version = "0.4.0"
 dependencies = [
  "log",
  "parity-scale-codec",
- "polkadot-sdk-frame",
+ "pezkuwi-sdk-frame",
  "scale-info",
  "serde",
  "sp-application-crypto",
@@ -12886,7 +12886,7 @@ dependencies = [
  "itertools 0.11.0",
  "log",
  "parity-scale-codec",
- "polkadot-sdk-frame",
+ "pezkuwi-sdk-frame",
  "scale-info",
  "sp-mmr-primitives",
  "sp-tracing 16.0.0",
@@ -12918,7 +12918,7 @@ dependencies = [
  "log",
  "pallet-balances",
  "parity-scale-codec",
- "polkadot-sdk-frame",
+ "pezkuwi-sdk-frame",
  "scale-info",
 ]
 
@@ -12931,7 +12931,7 @@ dependencies = [
  "pallet-balances",
  "pallet-nfts",
  "parity-scale-codec",
- "polkadot-sdk-frame",
+ "pezkuwi-sdk-frame",
  "scale-info",
 ]
 
@@ -12967,7 +12967,7 @@ version = "28.0.0"
 dependencies = [
  "pallet-balances",
  "parity-scale-codec",
- "polkadot-sdk-frame",
+ "pezkuwi-sdk-frame",
  "scale-info",
  "sp-io",
 ]
@@ -12978,7 +12978,7 @@ version = "28.0.0"
 dependencies = [
  "log",
  "parity-scale-codec",
- "polkadot-sdk-frame",
+ "pezkuwi-sdk-frame",
  "scale-info",
 ]
 
@@ -13164,7 +13164,7 @@ version = "0.6.0"
 dependencies = [
  "docify",
  "parity-scale-codec",
- "polkadot-sdk-frame",
+ "pezkuwi-sdk-frame",
  "scale-info",
  "sp-metadata-ir",
 ]
@@ -13176,16 +13176,7 @@ dependencies = [
  "arbitrary",
  "honggfuzz",
  "pallet-paged-list",
- "polkadot-sdk-frame",
-]
-
-[[package]]
-name = "pallet-parachain-template"
-version = "0.0.0"
-dependencies = [
- "parity-scale-codec",
- "polkadot-sdk-frame",
- "scale-info",
+ "pezkuwi-sdk-frame",
 ]
 
 [[package]]
@@ -13247,7 +13238,7 @@ dependencies = [
  "pallet-balances",
  "pallet-utility",
  "parity-scale-codec",
- "polkadot-sdk-frame",
+ "pezkuwi-sdk-frame",
  "scale-info",
 ]
 
@@ -13274,7 +13265,7 @@ version = "28.0.0"
 dependencies = [
  "pallet-balances",
  "parity-scale-codec",
- "polkadot-sdk-frame",
+ "pezkuwi-sdk-frame",
  "scale-info",
 ]
 
@@ -13499,7 +13490,7 @@ dependencies = [
  "pallet-proxy",
  "pallet-utility",
  "parity-scale-codec",
- "polkadot-sdk-frame",
+ "pezkuwi-sdk-frame",
  "scale-info",
 ]
 
@@ -13510,7 +13501,7 @@ dependencies = [
  "log",
  "pallet-ranked-collective",
  "parity-scale-codec",
- "polkadot-sdk-frame",
+ "pezkuwi-sdk-frame",
  "scale-info",
 ]
 
@@ -13716,127 +13707,12 @@ dependencies = [
 ]
 
 [[package]]
-name = "pallet-staking-async-parachain-runtime"
-version = "0.15.0"
-dependencies = [
- "asset-test-utils",
- "assets-common",
- "bp-asset-hub-rococo",
- "bp-bridge-hub-rococo",
- "bp-bridge-hub-westend",
- "cumulus-pallet-aura-ext",
- "cumulus-pallet-parachain-system",
- "cumulus-pallet-session-benchmarking",
- "cumulus-pallet-weight-reclaim",
- "cumulus-pallet-xcm",
- "cumulus-pallet-xcmp-queue",
- "cumulus-primitives-aura",
- "cumulus-primitives-core",
- "cumulus-primitives-utility",
- "frame-benchmarking",
- "frame-election-provider-support",
- "frame-executive",
- "frame-metadata-hash-extension",
- "frame-remote-externalities",
- "frame-support",
- "frame-system",
- "frame-system-benchmarking",
- "frame-system-rpc-runtime-api",
- "frame-try-runtime",
- "hex-literal",
- "log",
- "pallet-asset-conversion",
- "pallet-asset-conversion-ops",
- "pallet-asset-conversion-tx-payment",
- "pallet-asset-rate",
- "pallet-asset-rewards",
- "pallet-assets",
- "pallet-assets-freezer",
- "pallet-aura",
- "pallet-authorship",
- "pallet-bags-list",
- "pallet-bags-list-remote-tests",
- "pallet-balances",
- "pallet-collator-selection",
- "pallet-conviction-voting",
- "pallet-delegated-staking",
- "pallet-election-provider-multi-block",
- "pallet-fast-unstake",
- "pallet-message-queue",
- "pallet-migrations",
- "pallet-multisig",
- "pallet-nft-fractionalization",
- "pallet-nfts",
- "pallet-nfts-runtime-api",
- "pallet-nomination-pools",
- "pallet-nomination-pools-runtime-api",
- "pallet-preimage",
- "pallet-proxy",
- "pallet-referenda",
- "pallet-scheduler",
- "pallet-session",
- "pallet-staking-async",
- "pallet-staking-async-preset-store",
- "pallet-staking-async-rc-client",
- "pallet-staking-async-runtime-api",
- "pallet-state-trie-migration",
- "pallet-sudo",
- "pallet-timestamp",
- "pallet-transaction-payment",
- "pallet-transaction-payment-rpc-runtime-api",
- "pallet-treasury",
- "pallet-uniques",
- "pallet-utility",
- "pallet-vesting",
- "pallet-whitelist",
- "pallet-xcm",
- "pallet-xcm-benchmarks",
- "pallet-xcm-bridge-hub-router",
- "parachains-common",
- "parachains-runtimes-test-utils",
- "parity-scale-codec",
- "polkadot-parachain-primitives",
- "polkadot-runtime-common",
- "primitive-types 0.13.1",
- "scale-info",
- "serde_json",
- "sp-api",
- "sp-arithmetic",
- "sp-block-builder",
- "sp-consensus-aura",
- "sp-core 28.0.0",
- "sp-genesis-builder",
- "sp-inherents",
- "sp-io",
- "sp-keyring",
- "sp-npos-elections",
- "sp-offchain",
- "sp-runtime",
- "sp-session",
- "sp-staking",
- "sp-std 14.0.0",
- "sp-storage 19.0.0",
- "sp-tracing 16.0.0",
- "sp-transaction-pool",
- "sp-version",
- "staging-parachain-info",
- "staging-xcm",
- "staging-xcm-builder",
- "staging-xcm-executor",
- "substrate-wasm-builder",
- "testnet-parachains-constants",
- "tokio",
- "westend-runtime-constants",
- "xcm-runtime-apis",
-]
-
-[[package]]
 name = "pallet-staking-async-preset-store"
 version = "0.1.0"
 dependencies = [
  "pallet-staking-async-ah-client",
  "parity-scale-codec",
- "polkadot-sdk-frame",
+ "pezkuwi-sdk-frame",
  "scale-info",
 ]
 
@@ -13922,10 +13798,10 @@ dependencies = [
  "pallet-xcm",
  "pallet-xcm-benchmarks",
  "parity-scale-codec",
- "polkadot-parachain-primitives",
- "polkadot-primitives",
- "polkadot-runtime-common",
- "polkadot-runtime-parachains",
+ "pezkuwi-primitives",
+ "pezkuwi-runtime-common",
+ "pezkuwi-runtime-teyrchains",
+ "pezkuwi-teyrchain-primitives",
  "scale-info",
  "serde",
  "serde_derive",
@@ -13968,8 +13844,8 @@ name = "pallet-staking-async-rc-runtime-constants"
 version = "7.0.0"
 dependencies = [
  "frame-support",
- "polkadot-primitives",
- "polkadot-runtime-common",
+ "pezkuwi-primitives",
+ "pezkuwi-runtime-common",
  "smallvec",
  "sp-core 28.0.0",
  "sp-runtime",
@@ -13993,6 +13869,121 @@ dependencies = [
  "parity-scale-codec",
  "sp-api",
  "sp-staking",
+]
+
+[[package]]
+name = "pallet-staking-async-teyrchain-runtime"
+version = "0.15.0"
+dependencies = [
+ "asset-test-utils",
+ "assets-common",
+ "bp-asset-hub-pezkuwichain",
+ "bp-bridge-hub-pezkuwichain",
+ "bp-bridge-hub-zagros",
+ "cumulus-pallet-aura-ext",
+ "cumulus-pallet-session-benchmarking",
+ "cumulus-pallet-teyrchain-system",
+ "cumulus-pallet-weight-reclaim",
+ "cumulus-pallet-xcm",
+ "cumulus-pallet-xcmp-queue",
+ "cumulus-primitives-aura",
+ "cumulus-primitives-core",
+ "cumulus-primitives-utility",
+ "frame-benchmarking",
+ "frame-election-provider-support",
+ "frame-executive",
+ "frame-metadata-hash-extension",
+ "frame-remote-externalities",
+ "frame-support",
+ "frame-system",
+ "frame-system-benchmarking",
+ "frame-system-rpc-runtime-api",
+ "frame-try-runtime",
+ "hex-literal",
+ "log",
+ "pallet-asset-conversion",
+ "pallet-asset-conversion-ops",
+ "pallet-asset-conversion-tx-payment",
+ "pallet-asset-rate",
+ "pallet-asset-rewards",
+ "pallet-assets",
+ "pallet-assets-freezer",
+ "pallet-aura",
+ "pallet-authorship",
+ "pallet-bags-list",
+ "pallet-bags-list-remote-tests",
+ "pallet-balances",
+ "pallet-collator-selection",
+ "pallet-conviction-voting",
+ "pallet-delegated-staking",
+ "pallet-election-provider-multi-block",
+ "pallet-fast-unstake",
+ "pallet-message-queue",
+ "pallet-migrations",
+ "pallet-multisig",
+ "pallet-nft-fractionalization",
+ "pallet-nfts",
+ "pallet-nfts-runtime-api",
+ "pallet-nomination-pools",
+ "pallet-nomination-pools-runtime-api",
+ "pallet-preimage",
+ "pallet-proxy",
+ "pallet-referenda",
+ "pallet-scheduler",
+ "pallet-session",
+ "pallet-staking-async",
+ "pallet-staking-async-preset-store",
+ "pallet-staking-async-rc-client",
+ "pallet-staking-async-runtime-api",
+ "pallet-state-trie-migration",
+ "pallet-sudo",
+ "pallet-timestamp",
+ "pallet-transaction-payment",
+ "pallet-transaction-payment-rpc-runtime-api",
+ "pallet-treasury",
+ "pallet-uniques",
+ "pallet-utility",
+ "pallet-vesting",
+ "pallet-whitelist",
+ "pallet-xcm",
+ "pallet-xcm-benchmarks",
+ "pallet-xcm-bridge-hub-router",
+ "parity-scale-codec",
+ "pezkuwi-runtime-common",
+ "pezkuwi-teyrchain-primitives",
+ "primitive-types 0.13.1",
+ "scale-info",
+ "serde_json",
+ "sp-api",
+ "sp-arithmetic",
+ "sp-block-builder",
+ "sp-consensus-aura",
+ "sp-core 28.0.0",
+ "sp-genesis-builder",
+ "sp-inherents",
+ "sp-io",
+ "sp-keyring",
+ "sp-npos-elections",
+ "sp-offchain",
+ "sp-runtime",
+ "sp-session",
+ "sp-staking",
+ "sp-std 14.0.0",
+ "sp-storage 19.0.0",
+ "sp-tracing 16.0.0",
+ "sp-transaction-pool",
+ "sp-version",
+ "staging-teyrchain-info",
+ "staging-xcm",
+ "staging-xcm-builder",
+ "staging-xcm-executor",
+ "substrate-wasm-builder",
+ "testnet-teyrchains-constants",
+ "teyrchains-common",
+ "teyrchains-runtimes-test-utils",
+ "tokio",
+ "xcm-runtime-apis",
+ "zagros-runtime-constants",
 ]
 
 [[package]]
@@ -14089,6 +14080,15 @@ dependencies = [
  "sp-core 28.0.0",
  "sp-io",
  "sp-runtime",
+]
+
+[[package]]
+name = "pallet-teyrchain-template"
+version = "0.0.0"
+dependencies = [
+ "parity-scale-codec",
+ "pezkuwi-sdk-frame",
+ "scale-info",
 ]
 
 [[package]]
@@ -14219,7 +14219,7 @@ dependencies = [
  "pallet-proxy",
  "pallet-utility",
  "parity-scale-codec",
- "polkadot-sdk-frame",
+ "pezkuwi-sdk-frame",
  "scale-info",
 ]
 
@@ -14292,7 +14292,7 @@ dependencies = [
  "pallet-balances",
  "pallet-preimage",
  "parity-scale-codec",
- "polkadot-sdk-frame",
+ "pezkuwi-sdk-frame",
  "scale-info",
 ]
 
@@ -14308,8 +14308,8 @@ dependencies = [
  "pallet-assets",
  "pallet-balances",
  "parity-scale-codec",
- "polkadot-parachain-primitives",
- "polkadot-runtime-parachains",
+ "pezkuwi-runtime-teyrchains",
+ "pezkuwi-teyrchain-primitives",
  "scale-info",
  "serde",
  "sp-core 28.0.0",
@@ -14357,7 +14357,7 @@ dependencies = [
  "pallet-bridge-messages",
  "pallet-xcm-bridge-hub-router",
  "parity-scale-codec",
- "polkadot-parachain-primitives",
+ "pezkuwi-teyrchain-primitives",
  "scale-info",
  "sp-core 28.0.0",
  "sp-io",
@@ -14378,7 +14378,7 @@ dependencies = [
  "frame-support",
  "frame-system",
  "parity-scale-codec",
- "polkadot-runtime-parachains",
+ "pezkuwi-runtime-teyrchains",
  "scale-info",
  "sp-core 28.0.0",
  "sp-io",
@@ -14401,7 +14401,7 @@ dependencies = [
  "pallet-timestamp",
  "pallet-xcm",
  "parity-scale-codec",
- "polkadot-parachain-primitives",
+ "pezkuwi-teyrchain-primitives",
  "scale-info",
  "sp-io",
  "sp-runtime",
@@ -14410,121 +14410,6 @@ dependencies = [
  "staging-xcm-executor",
  "tracing",
  "xcm-simulator",
-]
-
-[[package]]
-name = "parachain-template"
-version = "0.0.0"
-dependencies = [
- "docify",
-]
-
-[[package]]
-name = "parachain-template-node"
-version = "0.0.0"
-dependencies = [
- "clap",
- "color-print",
- "docify",
- "futures",
- "jsonrpsee",
- "log",
- "parachain-template-runtime",
- "parity-scale-codec",
- "polkadot-sdk",
- "serde",
- "substrate-prometheus-endpoint",
-]
-
-[[package]]
-name = "parachain-template-runtime"
-version = "0.0.0"
-dependencies = [
- "cumulus-pallet-parachain-system",
- "docify",
- "hex-literal",
- "log",
- "pallet-parachain-template",
- "parity-scale-codec",
- "polkadot-sdk",
- "scale-info",
- "serde_json",
- "smallvec",
- "substrate-wasm-builder",
-]
-
-[[package]]
-name = "parachains-common"
-version = "7.0.0"
-dependencies = [
- "cumulus-primitives-core",
- "cumulus-primitives-utility",
- "frame-support",
- "frame-system",
- "pallet-asset-tx-payment",
- "pallet-assets",
- "pallet-authorship",
- "pallet-balances",
- "pallet-collator-selection",
- "pallet-message-queue",
- "pallet-treasury",
- "pallet-xcm",
- "parity-scale-codec",
- "polkadot-primitives",
- "polkadot-runtime-common",
- "scale-info",
- "sp-consensus-aura",
- "sp-core 28.0.0",
- "sp-io",
- "sp-runtime",
- "staging-parachain-info",
- "staging-xcm",
- "staging-xcm-executor",
- "tracing",
-]
-
-[[package]]
-name = "parachains-relay"
-version = "0.1.0"
-dependencies = [
- "async-std",
- "async-trait",
- "bp-polkadot-core",
- "futures",
- "relay-substrate-client",
- "relay-utils",
- "sp-core 28.0.0",
- "tracing",
-]
-
-[[package]]
-name = "parachains-runtimes-test-utils"
-version = "7.0.0"
-dependencies = [
- "cumulus-pallet-parachain-system",
- "cumulus-pallet-xcmp-queue",
- "cumulus-primitives-core",
- "cumulus-primitives-parachain-inherent",
- "cumulus-test-relay-sproof-builder",
- "frame-support",
- "frame-system",
- "pallet-balances",
- "pallet-collator-selection",
- "pallet-session",
- "pallet-timestamp",
- "pallet-xcm",
- "parachains-common",
- "parity-scale-codec",
- "polkadot-parachain-primitives",
- "sp-consensus-aura",
- "sp-core 28.0.0",
- "sp-io",
- "sp-runtime",
- "sp-tracing 16.0.0",
- "staging-parachain-info",
- "staging-xcm",
- "staging-xcm-executor",
- "xcm-runtime-apis",
 ]
 
 [[package]]
@@ -14715,11 +14600,11 @@ dependencies = [
  "cumulus-primitives-core",
  "emulated-integration-tests-common",
  "frame-support",
- "parachains-common",
  "penpal-runtime",
  "sp-core 28.0.0",
  "sp-keyring",
  "staging-xcm",
+ "teyrchains-common",
 ]
 
 [[package]]
@@ -14728,8 +14613,8 @@ version = "0.14.0"
 dependencies = [
  "assets-common",
  "cumulus-pallet-aura-ext",
- "cumulus-pallet-parachain-system",
  "cumulus-pallet-session-benchmarking",
+ "cumulus-pallet-teyrchain-system",
  "cumulus-pallet-xcm",
  "cumulus-pallet-xcmp-queue",
  "cumulus-primitives-aura",
@@ -14760,11 +14645,10 @@ dependencies = [
  "pallet-transaction-payment-rpc-runtime-api",
  "pallet-utility",
  "pallet-xcm",
- "parachains-common",
  "parity-scale-codec",
- "polkadot-parachain-primitives",
- "polkadot-primitives",
- "polkadot-runtime-common",
+ "pezkuwi-primitives",
+ "pezkuwi-runtime-common",
+ "pezkuwi-teyrchain-primitives",
  "primitive-types 0.13.1",
  "scale-info",
  "serde_json",
@@ -14782,51 +14666,52 @@ dependencies = [
  "sp-storage 19.0.0",
  "sp-transaction-pool",
  "sp-version",
- "staging-parachain-info",
+ "staging-teyrchain-info",
  "staging-xcm",
  "staging-xcm-builder",
  "staging-xcm-executor",
  "substrate-wasm-builder",
- "testnet-parachains-constants",
+ "testnet-teyrchains-constants",
+ "teyrchains-common",
  "tracing",
  "xcm-runtime-apis",
 ]
 
 [[package]]
-name = "people-rococo-emulated-chain"
+name = "people-pezkuwichain-emulated-chain"
 version = "0.1.0"
 dependencies = [
  "cumulus-primitives-core",
  "emulated-integration-tests-common",
  "frame-support",
- "parachains-common",
- "people-rococo-runtime",
+ "people-pezkuwichain-runtime",
  "sp-core 28.0.0",
- "testnet-parachains-constants",
+ "testnet-teyrchains-constants",
+ "teyrchains-common",
 ]
 
 [[package]]
-name = "people-rococo-integration-tests"
+name = "people-pezkuwichain-integration-tests"
 version = "0.1.0"
 dependencies = [
  "asset-test-utils",
  "emulated-integration-tests-common",
  "frame-support",
  "pallet-balances",
- "parachains-common",
- "rococo-system-emulated-network",
+ "pezkuwichain-system-emulated-network",
  "sp-runtime",
  "staging-xcm",
  "staging-xcm-executor",
+ "teyrchains-common",
 ]
 
 [[package]]
-name = "people-rococo-runtime"
+name = "people-pezkuwichain-runtime"
 version = "0.1.0"
 dependencies = [
  "cumulus-pallet-aura-ext",
- "cumulus-pallet-parachain-system",
  "cumulus-pallet-session-benchmarking",
+ "cumulus-pallet-teyrchain-system",
  "cumulus-pallet-weight-reclaim",
  "cumulus-pallet-xcm",
  "cumulus-pallet-xcmp-queue",
@@ -14857,12 +14742,10 @@ dependencies = [
  "pallet-utility",
  "pallet-xcm",
  "pallet-xcm-benchmarks",
- "parachains-common",
- "parachains-runtimes-test-utils",
  "parity-scale-codec",
- "polkadot-parachain-primitives",
- "polkadot-runtime-common",
- "rococo-runtime-constants",
+ "pezkuwi-runtime-common",
+ "pezkuwi-teyrchain-primitives",
+ "pezkuwichain-runtime-constants",
  "scale-info",
  "serde",
  "serde_json",
@@ -14879,31 +14762,33 @@ dependencies = [
  "sp-storage 19.0.0",
  "sp-transaction-pool",
  "sp-version",
- "staging-parachain-info",
+ "staging-teyrchain-info",
  "staging-xcm",
  "staging-xcm-builder",
  "staging-xcm-executor",
  "substrate-wasm-builder",
- "testnet-parachains-constants",
+ "testnet-teyrchains-constants",
+ "teyrchains-common",
+ "teyrchains-runtimes-test-utils",
  "tracing",
  "xcm-runtime-apis",
 ]
 
 [[package]]
-name = "people-westend-emulated-chain"
+name = "people-zagros-emulated-chain"
 version = "0.1.0"
 dependencies = [
  "cumulus-primitives-core",
  "emulated-integration-tests-common",
  "frame-support",
- "parachains-common",
- "people-westend-runtime",
+ "people-zagros-runtime",
  "sp-core 28.0.0",
- "testnet-parachains-constants",
+ "testnet-teyrchains-constants",
+ "teyrchains-common",
 ]
 
 [[package]]
-name = "people-westend-integration-tests"
+name = "people-zagros-integration-tests"
 version = "0.1.0"
 dependencies = [
  "emulated-integration-tests-common",
@@ -14912,22 +14797,22 @@ dependencies = [
  "pallet-identity",
  "pallet-message-queue",
  "pallet-xcm",
- "parachains-common",
  "parity-scale-codec",
  "sp-runtime",
  "staging-xcm",
  "staging-xcm-executor",
- "westend-runtime",
- "westend-system-emulated-network",
+ "teyrchains-common",
+ "zagros-runtime",
+ "zagros-system-emulated-network",
 ]
 
 [[package]]
-name = "people-westend-runtime"
+name = "people-zagros-runtime"
 version = "0.1.0"
 dependencies = [
  "cumulus-pallet-aura-ext",
- "cumulus-pallet-parachain-system",
  "cumulus-pallet-session-benchmarking",
+ "cumulus-pallet-teyrchain-system",
  "cumulus-pallet-weight-reclaim",
  "cumulus-pallet-xcm",
  "cumulus-pallet-xcmp-queue",
@@ -14958,11 +14843,9 @@ dependencies = [
  "pallet-utility",
  "pallet-xcm",
  "pallet-xcm-benchmarks",
- "parachains-common",
- "parachains-runtimes-test-utils",
  "parity-scale-codec",
- "polkadot-parachain-primitives",
- "polkadot-runtime-common",
+ "pezkuwi-runtime-common",
+ "pezkuwi-teyrchain-primitives",
  "scale-info",
  "serde",
  "serde_json",
@@ -14980,15 +14863,17 @@ dependencies = [
  "sp-storage 19.0.0",
  "sp-transaction-pool",
  "sp-version",
- "staging-parachain-info",
+ "staging-teyrchain-info",
  "staging-xcm",
  "staging-xcm-builder",
  "staging-xcm-executor",
  "substrate-wasm-builder",
- "testnet-parachains-constants",
+ "testnet-teyrchains-constants",
+ "teyrchains-common",
+ "teyrchains-runtimes-test-utils",
  "tracing",
- "westend-runtime-constants",
  "xcm-runtime-apis",
+ "zagros-runtime-constants",
 ]
 
 [[package]]
@@ -15049,6 +14934,2513 @@ checksum = "e1d3afd2628e69da2be385eb6f2fd57c8ac7977ceeff6dc166ff1657b0e386a9"
 dependencies = [
  "fixedbitset",
  "indexmap 2.9.0",
+]
+
+[[package]]
+name = "pezkuwi"
+version = "6.0.0"
+dependencies = [
+ "assert_cmd",
+ "color-eyre",
+ "nix 0.29.0",
+ "pezkuwi-cli",
+ "pezkuwi-core-primitives",
+ "pezkuwi-node-core-pvf",
+ "pezkuwi-node-core-pvf-common",
+ "pezkuwi-node-core-pvf-execute-worker",
+ "pezkuwi-node-core-pvf-prepare-worker",
+ "pezkuwi-overseer",
+ "substrate-build-script-utils",
+ "substrate-rpc-client",
+ "tempfile",
+ "tikv-jemallocator",
+ "tokio",
+]
+
+[[package]]
+name = "pezkuwi-approval-distribution"
+version = "7.0.0"
+dependencies = [
+ "assert_matches",
+ "futures",
+ "futures-timer",
+ "itertools 0.11.0",
+ "pezkuwi-node-metrics",
+ "pezkuwi-node-network-protocol",
+ "pezkuwi-node-primitives",
+ "pezkuwi-node-subsystem",
+ "pezkuwi-node-subsystem-test-helpers",
+ "pezkuwi-node-subsystem-util",
+ "pezkuwi-primitives",
+ "pezkuwi-primitives-test-helpers",
+ "rand 0.8.5",
+ "rand_chacha 0.3.1",
+ "rand_core 0.6.4",
+ "sc-keystore",
+ "schnorrkel 0.11.4",
+ "sp-application-crypto",
+ "sp-authority-discovery",
+ "sp-core 28.0.0",
+ "sp-tracing 16.0.0",
+ "tracing-gum",
+]
+
+[[package]]
+name = "pezkuwi-availability-bitfield-distribution"
+version = "7.0.0"
+dependencies = [
+ "assert_matches",
+ "bitvec",
+ "futures",
+ "futures-timer",
+ "maplit",
+ "pezkuwi-node-network-protocol",
+ "pezkuwi-node-subsystem",
+ "pezkuwi-node-subsystem-test-helpers",
+ "pezkuwi-node-subsystem-util",
+ "pezkuwi-primitives",
+ "rand 0.8.5",
+ "rand_chacha 0.3.1",
+ "sp-application-crypto",
+ "sp-authority-discovery",
+ "sp-core 28.0.0",
+ "sp-keyring",
+ "sp-keystore",
+ "sp-tracing 16.0.0",
+ "tracing-gum",
+]
+
+[[package]]
+name = "pezkuwi-availability-distribution"
+version = "7.0.0"
+dependencies = [
+ "assert_matches",
+ "fatality",
+ "futures",
+ "futures-timer",
+ "parity-scale-codec",
+ "pezkuwi-erasure-coding",
+ "pezkuwi-node-network-protocol",
+ "pezkuwi-node-primitives",
+ "pezkuwi-node-subsystem",
+ "pezkuwi-node-subsystem-test-helpers",
+ "pezkuwi-node-subsystem-util",
+ "pezkuwi-primitives",
+ "pezkuwi-primitives-test-helpers",
+ "pezkuwi-subsystem-bench",
+ "rand 0.8.5",
+ "rstest",
+ "sc-network",
+ "schnellru",
+ "sp-core 28.0.0",
+ "sp-keyring",
+ "sp-keystore",
+ "sp-tracing 16.0.0",
+ "thiserror 1.0.65",
+ "tracing-gum",
+]
+
+[[package]]
+name = "pezkuwi-availability-recovery"
+version = "7.0.0"
+dependencies = [
+ "assert_matches",
+ "async-trait",
+ "fatality",
+ "futures",
+ "futures-timer",
+ "parity-scale-codec",
+ "pezkuwi-erasure-coding",
+ "pezkuwi-node-network-protocol",
+ "pezkuwi-node-primitives",
+ "pezkuwi-node-subsystem",
+ "pezkuwi-node-subsystem-test-helpers",
+ "pezkuwi-node-subsystem-util",
+ "pezkuwi-primitives",
+ "pezkuwi-primitives-test-helpers",
+ "pezkuwi-subsystem-bench",
+ "rand 0.8.5",
+ "rstest",
+ "sc-network",
+ "schnellru",
+ "sp-core 28.0.0",
+ "sp-keyring",
+ "sp-tracing 16.0.0",
+ "thiserror 1.0.65",
+ "tokio",
+ "tracing-gum",
+]
+
+[[package]]
+name = "pezkuwi-ckb-merkle-mountain-range"
+version = "0.8.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f628a53e241eca70045218a61204fe993286b10ad216ab47a1e85c4fb1b46b7f"
+dependencies = [
+ "cfg-if",
+ "itertools 0.10.5",
+]
+
+[[package]]
+name = "pezkuwi-cli"
+version = "7.0.0"
+dependencies = [
+ "clap",
+ "frame-benchmarking-cli",
+ "futures",
+ "log",
+ "pezkuwi-node-metrics",
+ "pezkuwi-node-primitives",
+ "pezkuwi-service",
+ "pyroscope",
+ "pyroscope_pprofrs",
+ "sc-cli",
+ "sc-network-types",
+ "sc-service",
+ "sc-storage-monitor",
+ "sc-sysinfo",
+ "sc-tracing",
+ "sp-core 28.0.0",
+ "sp-keyring",
+ "sp-runtime",
+ "substrate-build-script-utils",
+ "thiserror 1.0.65",
+]
+
+[[package]]
+name = "pezkuwi-collator-protocol"
+version = "7.0.0"
+dependencies = [
+ "assert_matches",
+ "async-trait",
+ "bitvec",
+ "fatality",
+ "futures",
+ "futures-timer",
+ "itertools 0.11.0",
+ "parity-scale-codec",
+ "pezkuwi-node-network-protocol",
+ "pezkuwi-node-primitives",
+ "pezkuwi-node-subsystem",
+ "pezkuwi-node-subsystem-test-helpers",
+ "pezkuwi-node-subsystem-util",
+ "pezkuwi-primitives",
+ "pezkuwi-primitives-test-helpers",
+ "rstest",
+ "sc-keystore",
+ "sc-network",
+ "schnellru",
+ "sp-core 28.0.0",
+ "sp-keyring",
+ "sp-keystore",
+ "sp-runtime",
+ "sp-tracing 16.0.0",
+ "thiserror 1.0.65",
+ "tokio",
+ "tokio-util",
+ "tracing-gum",
+]
+
+[[package]]
+name = "pezkuwi-core-primitives"
+version = "7.0.0"
+dependencies = [
+ "parity-scale-codec",
+ "scale-info",
+ "sp-core 28.0.0",
+ "sp-runtime",
+]
+
+[[package]]
+name = "pezkuwi-dispute-distribution"
+version = "7.0.0"
+dependencies = [
+ "assert_matches",
+ "async-channel 1.9.0",
+ "async-trait",
+ "fatality",
+ "futures",
+ "futures-timer",
+ "indexmap 2.9.0",
+ "parity-scale-codec",
+ "pezkuwi-node-network-protocol",
+ "pezkuwi-node-primitives",
+ "pezkuwi-node-subsystem",
+ "pezkuwi-node-subsystem-test-helpers",
+ "pezkuwi-node-subsystem-util",
+ "pezkuwi-primitives",
+ "pezkuwi-primitives-test-helpers",
+ "sc-keystore",
+ "sc-network",
+ "sp-application-crypto",
+ "sp-keyring",
+ "sp-keystore",
+ "sp-tracing 16.0.0",
+ "thiserror 1.0.65",
+ "tracing-gum",
+]
+
+[[package]]
+name = "pezkuwi-erasure-coding"
+version = "7.0.0"
+dependencies = [
+ "criterion",
+ "parity-scale-codec",
+ "pezkuwi-node-primitives",
+ "pezkuwi-primitives",
+ "quickcheck",
+ "reed-solomon-novelpoly",
+ "sp-core 28.0.0",
+ "sp-trie",
+ "thiserror 1.0.65",
+]
+
+[[package]]
+name = "pezkuwi-gossip-support"
+version = "7.0.0"
+dependencies = [
+ "assert_matches",
+ "async-trait",
+ "futures",
+ "futures-timer",
+ "parking_lot 0.12.3",
+ "pezkuwi-node-network-protocol",
+ "pezkuwi-node-subsystem",
+ "pezkuwi-node-subsystem-test-helpers",
+ "pezkuwi-node-subsystem-util",
+ "pezkuwi-primitives",
+ "quickcheck",
+ "rand 0.8.5",
+ "rand_chacha 0.3.1",
+ "sc-network",
+ "sp-application-crypto",
+ "sp-authority-discovery",
+ "sp-consensus-babe",
+ "sp-core 28.0.0",
+ "sp-crypto-hashing 0.1.0",
+ "sp-keyring",
+ "sp-keystore",
+ "sp-tracing 16.0.0",
+ "tracing-gum",
+]
+
+[[package]]
+name = "pezkuwi-network-bridge"
+version = "7.0.0"
+dependencies = [
+ "always-assert",
+ "assert_matches",
+ "async-trait",
+ "bytes",
+ "fatality",
+ "futures",
+ "futures-timer",
+ "parity-scale-codec",
+ "parking_lot 0.12.3",
+ "pezkuwi-node-metrics",
+ "pezkuwi-node-network-protocol",
+ "pezkuwi-node-subsystem",
+ "pezkuwi-node-subsystem-test-helpers",
+ "pezkuwi-node-subsystem-util",
+ "pezkuwi-overseer",
+ "pezkuwi-primitives",
+ "pezkuwi-primitives-test-helpers",
+ "sc-network",
+ "sp-consensus",
+ "sp-core 28.0.0",
+ "sp-keyring",
+ "thiserror 1.0.65",
+ "tracing-gum",
+]
+
+[[package]]
+name = "pezkuwi-node-collation-generation"
+version = "7.0.0"
+dependencies = [
+ "assert_matches",
+ "futures",
+ "parity-scale-codec",
+ "pezkuwi-erasure-coding",
+ "pezkuwi-node-primitives",
+ "pezkuwi-node-subsystem",
+ "pezkuwi-node-subsystem-test-helpers",
+ "pezkuwi-node-subsystem-util",
+ "pezkuwi-primitives",
+ "pezkuwi-primitives-test-helpers",
+ "rstest",
+ "schnellru",
+ "sp-core 28.0.0",
+ "sp-keyring",
+ "thiserror 1.0.65",
+ "tracing-gum",
+]
+
+[[package]]
+name = "pezkuwi-node-core-approval-voting"
+version = "7.0.0"
+dependencies = [
+ "assert_matches",
+ "async-trait",
+ "bitvec",
+ "derive_more 0.99.17",
+ "futures",
+ "futures-timer",
+ "itertools 0.11.0",
+ "kvdb-memorydb",
+ "merlin",
+ "parity-scale-codec",
+ "parking_lot 0.12.3",
+ "pezkuwi-node-primitives",
+ "pezkuwi-node-subsystem",
+ "pezkuwi-node-subsystem-test-helpers",
+ "pezkuwi-node-subsystem-util",
+ "pezkuwi-overseer",
+ "pezkuwi-primitives",
+ "pezkuwi-primitives-test-helpers",
+ "pezkuwi-subsystem-bench",
+ "rand 0.8.5",
+ "rand_chacha 0.3.1",
+ "rand_core 0.6.4",
+ "sc-keystore",
+ "schnellru",
+ "schnorrkel 0.11.4",
+ "sp-application-crypto",
+ "sp-consensus",
+ "sp-consensus-babe",
+ "sp-consensus-slots",
+ "sp-core 28.0.0",
+ "sp-keyring",
+ "sp-keystore",
+ "sp-runtime",
+ "sp-tracing 16.0.0",
+ "thiserror 1.0.65",
+ "tracing-gum",
+]
+
+[[package]]
+name = "pezkuwi-node-core-approval-voting-parallel"
+version = "7.0.0"
+dependencies = [
+ "assert_matches",
+ "async-trait",
+ "futures",
+ "itertools 0.11.0",
+ "kvdb-memorydb",
+ "pezkuwi-approval-distribution",
+ "pezkuwi-node-core-approval-voting",
+ "pezkuwi-node-metrics",
+ "pezkuwi-node-network-protocol",
+ "pezkuwi-node-primitives",
+ "pezkuwi-node-subsystem",
+ "pezkuwi-node-subsystem-test-helpers",
+ "pezkuwi-node-subsystem-util",
+ "pezkuwi-overseer",
+ "pezkuwi-primitives",
+ "rand 0.8.5",
+ "rand_core 0.6.4",
+ "sc-keystore",
+ "schnorrkel 0.11.4",
+ "sp-consensus",
+ "sp-consensus-babe",
+ "sp-core 28.0.0",
+ "sp-keyring",
+ "sp-tracing 16.0.0",
+ "tracing-gum",
+]
+
+[[package]]
+name = "pezkuwi-node-core-av-store"
+version = "7.0.0"
+dependencies = [
+ "assert_matches",
+ "bitvec",
+ "futures",
+ "futures-timer",
+ "kvdb-memorydb",
+ "parity-scale-codec",
+ "parking_lot 0.12.3",
+ "pezkuwi-erasure-coding",
+ "pezkuwi-node-primitives",
+ "pezkuwi-node-subsystem",
+ "pezkuwi-node-subsystem-test-helpers",
+ "pezkuwi-node-subsystem-util",
+ "pezkuwi-primitives",
+ "pezkuwi-primitives-test-helpers",
+ "sp-consensus",
+ "sp-core 28.0.0",
+ "sp-keyring",
+ "sp-tracing 16.0.0",
+ "thiserror 1.0.65",
+ "tracing-gum",
+]
+
+[[package]]
+name = "pezkuwi-node-core-backing"
+version = "7.0.0"
+dependencies = [
+ "assert_matches",
+ "bitvec",
+ "fatality",
+ "futures",
+ "pezkuwi-erasure-coding",
+ "pezkuwi-node-primitives",
+ "pezkuwi-node-subsystem",
+ "pezkuwi-node-subsystem-test-helpers",
+ "pezkuwi-node-subsystem-util",
+ "pezkuwi-primitives",
+ "pezkuwi-primitives-test-helpers",
+ "pezkuwi-statement-table",
+ "pezkuwi-teyrchain-primitives",
+ "sc-keystore",
+ "schnellru",
+ "sp-application-crypto",
+ "sp-core 28.0.0",
+ "sp-keyring",
+ "sp-keystore",
+ "sp-tracing 16.0.0",
+ "thiserror 1.0.65",
+ "tracing-gum",
+]
+
+[[package]]
+name = "pezkuwi-node-core-bitfield-signing"
+version = "7.0.0"
+dependencies = [
+ "futures",
+ "pezkuwi-node-subsystem",
+ "pezkuwi-node-subsystem-test-helpers",
+ "pezkuwi-node-subsystem-util",
+ "pezkuwi-primitives",
+ "pezkuwi-primitives-test-helpers",
+ "sp-keystore",
+ "thiserror 1.0.65",
+ "tracing-gum",
+ "wasm-timer",
+]
+
+[[package]]
+name = "pezkuwi-node-core-candidate-validation"
+version = "7.0.0"
+dependencies = [
+ "assert_matches",
+ "async-trait",
+ "futures",
+ "futures-timer",
+ "parity-scale-codec",
+ "pezkuwi-node-core-pvf",
+ "pezkuwi-node-metrics",
+ "pezkuwi-node-primitives",
+ "pezkuwi-node-subsystem",
+ "pezkuwi-node-subsystem-test-helpers",
+ "pezkuwi-node-subsystem-util",
+ "pezkuwi-overseer",
+ "pezkuwi-primitives",
+ "pezkuwi-primitives-test-helpers",
+ "pezkuwi-teyrchain-primitives",
+ "rstest",
+ "sp-application-crypto",
+ "sp-core 28.0.0",
+ "sp-keyring",
+ "sp-keystore",
+ "sp-maybe-compressed-blob",
+ "tracing-gum",
+]
+
+[[package]]
+name = "pezkuwi-node-core-chain-api"
+version = "7.0.0"
+dependencies = [
+ "futures",
+ "maplit",
+ "parity-scale-codec",
+ "pezkuwi-node-metrics",
+ "pezkuwi-node-primitives",
+ "pezkuwi-node-subsystem",
+ "pezkuwi-node-subsystem-test-helpers",
+ "pezkuwi-node-subsystem-types",
+ "pezkuwi-primitives",
+ "sc-client-api",
+ "sc-consensus-babe",
+ "sp-blockchain",
+ "sp-core 28.0.0",
+ "tracing-gum",
+]
+
+[[package]]
+name = "pezkuwi-node-core-chain-selection"
+version = "7.0.0"
+dependencies = [
+ "assert_matches",
+ "futures",
+ "futures-timer",
+ "kvdb-memorydb",
+ "parity-scale-codec",
+ "parking_lot 0.12.3",
+ "pezkuwi-node-primitives",
+ "pezkuwi-node-subsystem",
+ "pezkuwi-node-subsystem-test-helpers",
+ "pezkuwi-node-subsystem-util",
+ "pezkuwi-primitives",
+ "sp-core 28.0.0",
+ "thiserror 1.0.65",
+ "tracing-gum",
+]
+
+[[package]]
+name = "pezkuwi-node-core-dispute-coordinator"
+version = "7.0.0"
+dependencies = [
+ "assert_matches",
+ "fatality",
+ "futures",
+ "futures-timer",
+ "kvdb-memorydb",
+ "parity-scale-codec",
+ "pezkuwi-node-primitives",
+ "pezkuwi-node-subsystem",
+ "pezkuwi-node-subsystem-test-helpers",
+ "pezkuwi-node-subsystem-util",
+ "pezkuwi-primitives",
+ "pezkuwi-primitives-test-helpers",
+ "pezkuwi-subsystem-bench",
+ "sc-keystore",
+ "schnellru",
+ "sp-application-crypto",
+ "sp-core 28.0.0",
+ "sp-keyring",
+ "sp-keystore",
+ "sp-tracing 16.0.0",
+ "thiserror 1.0.65",
+ "tracing-gum",
+]
+
+[[package]]
+name = "pezkuwi-node-core-prospective-teyrchains"
+version = "6.0.0"
+dependencies = [
+ "assert_matches",
+ "fatality",
+ "futures",
+ "pezkuwi-node-subsystem",
+ "pezkuwi-node-subsystem-test-helpers",
+ "pezkuwi-node-subsystem-util",
+ "pezkuwi-primitives",
+ "pezkuwi-primitives-test-helpers",
+ "rand 0.8.5",
+ "rstest",
+ "sp-core 28.0.0",
+ "sp-tracing 16.0.0",
+ "thiserror 1.0.65",
+ "tracing-gum",
+]
+
+[[package]]
+name = "pezkuwi-node-core-provisioner"
+version = "7.0.0"
+dependencies = [
+ "bitvec",
+ "fatality",
+ "futures",
+ "futures-timer",
+ "pezkuwi-node-primitives",
+ "pezkuwi-node-subsystem",
+ "pezkuwi-node-subsystem-test-helpers",
+ "pezkuwi-node-subsystem-util",
+ "pezkuwi-primitives",
+ "pezkuwi-primitives-test-helpers",
+ "sc-consensus-slots",
+ "schnellru",
+ "sp-application-crypto",
+ "sp-keystore",
+ "thiserror 1.0.65",
+ "tracing-gum",
+]
+
+[[package]]
+name = "pezkuwi-node-core-pvf"
+version = "7.0.0"
+dependencies = [
+ "always-assert",
+ "array-bytes 6.2.2",
+ "assert_matches",
+ "criterion",
+ "futures",
+ "futures-timer",
+ "is_executable",
+ "libc",
+ "parity-scale-codec",
+ "pezkuwi-node-core-pvf",
+ "pezkuwi-node-core-pvf-common",
+ "pezkuwi-node-core-pvf-execute-worker",
+ "pezkuwi-node-core-pvf-prepare-worker",
+ "pezkuwi-node-metrics",
+ "pezkuwi-node-primitives",
+ "pezkuwi-node-subsystem",
+ "pezkuwi-node-subsystem-test-helpers",
+ "pezkuwi-primitives",
+ "pezkuwi-teyrchain-primitives",
+ "pezkuwichain-runtime",
+ "pin-project",
+ "procfs",
+ "rand 0.8.5",
+ "rusty-fork",
+ "sc-sysinfo",
+ "sc-tracing",
+ "slotmap",
+ "sp-core 28.0.0",
+ "sp-maybe-compressed-blob",
+ "strum 0.26.3",
+ "tempfile",
+ "test-teyrchain-adder",
+ "test-teyrchain-halt",
+ "thiserror 1.0.65",
+ "tokio",
+ "tracing-gum",
+]
+
+[[package]]
+name = "pezkuwi-node-core-pvf-checker"
+version = "7.0.0"
+dependencies = [
+ "futures",
+ "futures-timer",
+ "pezkuwi-node-subsystem",
+ "pezkuwi-node-subsystem-test-helpers",
+ "pezkuwi-node-subsystem-util",
+ "pezkuwi-primitives",
+ "pezkuwi-primitives-test-helpers",
+ "sc-keystore",
+ "sp-application-crypto",
+ "sp-core 28.0.0",
+ "sp-keyring",
+ "sp-keystore",
+ "sp-runtime",
+ "tracing-gum",
+]
+
+[[package]]
+name = "pezkuwi-node-core-pvf-common"
+version = "7.0.0"
+dependencies = [
+ "assert_matches",
+ "cpu-time",
+ "futures",
+ "landlock",
+ "libc",
+ "nix 0.29.0",
+ "parity-scale-codec",
+ "pezkuwi-node-primitives",
+ "pezkuwi-primitives",
+ "pezkuwi-teyrchain-primitives",
+ "sc-executor",
+ "sc-executor-common",
+ "sc-executor-wasmtime",
+ "seccompiler",
+ "sp-core 28.0.0",
+ "sp-crypto-hashing 0.1.0",
+ "sp-externalities 0.25.0",
+ "sp-io",
+ "sp-tracing 16.0.0",
+ "tempfile",
+ "thiserror 1.0.65",
+ "tracing-gum",
+ "wat",
+]
+
+[[package]]
+name = "pezkuwi-node-core-pvf-execute-worker"
+version = "7.0.0"
+dependencies = [
+ "cfg-if",
+ "cpu-time",
+ "libc",
+ "nix 0.29.0",
+ "parity-scale-codec",
+ "pezkuwi-node-core-pvf-common",
+ "pezkuwi-node-primitives",
+ "pezkuwi-primitives",
+ "pezkuwi-teyrchain-primitives",
+ "sp-maybe-compressed-blob",
+ "tracing-gum",
+]
+
+[[package]]
+name = "pezkuwi-node-core-pvf-prepare-worker"
+version = "7.0.0"
+dependencies = [
+ "cfg-if",
+ "criterion",
+ "libc",
+ "nix 0.29.0",
+ "parity-scale-codec",
+ "pezkuwi-node-core-pvf-common",
+ "pezkuwi-primitives",
+ "pezkuwichain-runtime",
+ "sp-maybe-compressed-blob",
+ "staging-tracking-allocator",
+ "tikv-jemalloc-ctl",
+ "tikv-jemallocator",
+ "tracing-gum",
+]
+
+[[package]]
+name = "pezkuwi-node-core-runtime-api"
+version = "7.0.0"
+dependencies = [
+ "async-trait",
+ "futures",
+ "pezkuwi-node-metrics",
+ "pezkuwi-node-primitives",
+ "pezkuwi-node-subsystem",
+ "pezkuwi-node-subsystem-test-helpers",
+ "pezkuwi-node-subsystem-types",
+ "pezkuwi-primitives",
+ "pezkuwi-primitives-test-helpers",
+ "schnellru",
+ "sp-api",
+ "sp-consensus-babe",
+ "sp-core 28.0.0",
+ "sp-keyring",
+ "tracing-gum",
+]
+
+[[package]]
+name = "pezkuwi-node-core-teyrchains-inherent"
+version = "7.0.0"
+dependencies = [
+ "async-trait",
+ "futures",
+ "futures-timer",
+ "pezkuwi-node-subsystem",
+ "pezkuwi-overseer",
+ "pezkuwi-primitives",
+ "sp-blockchain",
+ "sp-inherents",
+ "thiserror 1.0.65",
+ "tracing-gum",
+]
+
+[[package]]
+name = "pezkuwi-node-metrics"
+version = "7.0.0"
+dependencies = [
+ "bs58",
+ "futures",
+ "futures-timer",
+ "http-body-util",
+ "hyper 1.6.0",
+ "hyper-util",
+ "parity-scale-codec",
+ "pezkuwi-primitives",
+ "pezkuwi-test-service",
+ "prioritized-metered-channel",
+ "prometheus-parse",
+ "sc-cli",
+ "sc-service",
+ "sc-tracing",
+ "sp-keyring",
+ "substrate-prometheus-endpoint",
+ "tokio",
+]
+
+[[package]]
+name = "pezkuwi-node-network-protocol"
+version = "7.0.0"
+dependencies = [
+ "async-channel 1.9.0",
+ "async-trait",
+ "bitvec",
+ "derive_more 0.99.17",
+ "fatality",
+ "futures",
+ "hex",
+ "parity-scale-codec",
+ "pezkuwi-node-primitives",
+ "pezkuwi-primitives",
+ "rand 0.8.5",
+ "rand_chacha 0.3.1",
+ "sc-authority-discovery",
+ "sc-network",
+ "sc-network-types",
+ "sp-runtime",
+ "strum 0.26.3",
+ "thiserror 1.0.65",
+ "tracing-gum",
+]
+
+[[package]]
+name = "pezkuwi-node-primitives"
+version = "7.0.0"
+dependencies = [
+ "bitvec",
+ "bounded-vec",
+ "futures",
+ "futures-timer",
+ "parity-scale-codec",
+ "pezkuwi-primitives",
+ "pezkuwi-teyrchain-primitives",
+ "sc-keystore",
+ "schnorrkel 0.11.4",
+ "serde",
+ "sp-application-crypto",
+ "sp-consensus-babe",
+ "sp-consensus-slots",
+ "sp-keystore",
+ "sp-maybe-compressed-blob",
+ "thiserror 1.0.65",
+ "zstd 0.12.4",
+]
+
+[[package]]
+name = "pezkuwi-node-subsystem"
+version = "7.0.0"
+dependencies = [
+ "pezkuwi-node-subsystem-types",
+ "pezkuwi-overseer",
+]
+
+[[package]]
+name = "pezkuwi-node-subsystem-test-helpers"
+version = "1.0.0"
+dependencies = [
+ "async-trait",
+ "futures",
+ "parking_lot 0.12.3",
+ "pezkuwi-erasure-coding",
+ "pezkuwi-node-primitives",
+ "pezkuwi-node-subsystem",
+ "pezkuwi-node-subsystem-util",
+ "pezkuwi-primitives",
+ "sc-client-api",
+ "sc-keystore",
+ "sc-utils",
+ "sp-application-crypto",
+ "sp-core 28.0.0",
+ "sp-keyring",
+ "sp-keystore",
+]
+
+[[package]]
+name = "pezkuwi-node-subsystem-types"
+version = "7.0.0"
+dependencies = [
+ "async-trait",
+ "derive_more 0.99.17",
+ "fatality",
+ "futures",
+ "orchestra",
+ "pezkuwi-node-network-protocol",
+ "pezkuwi-node-primitives",
+ "pezkuwi-primitives",
+ "pezkuwi-statement-table",
+ "sc-client-api",
+ "sc-network",
+ "sc-network-types",
+ "sc-transaction-pool-api",
+ "smallvec",
+ "sp-api",
+ "sp-authority-discovery",
+ "sp-blockchain",
+ "sp-consensus-babe",
+ "sp-runtime",
+ "substrate-prometheus-endpoint",
+ "thiserror 1.0.65",
+]
+
+[[package]]
+name = "pezkuwi-node-subsystem-util"
+version = "7.0.0"
+dependencies = [
+ "assert_matches",
+ "fatality",
+ "futures",
+ "itertools 0.11.0",
+ "kvdb",
+ "kvdb-shared-tests",
+ "parity-db",
+ "parity-scale-codec",
+ "parking_lot 0.12.3",
+ "pezkuwi-erasure-coding",
+ "pezkuwi-node-metrics",
+ "pezkuwi-node-network-protocol",
+ "pezkuwi-node-primitives",
+ "pezkuwi-node-subsystem",
+ "pezkuwi-node-subsystem-test-helpers",
+ "pezkuwi-node-subsystem-types",
+ "pezkuwi-overseer",
+ "pezkuwi-primitives",
+ "pezkuwi-primitives-test-helpers",
+ "prioritized-metered-channel",
+ "rand 0.8.5",
+ "schnellru",
+ "sp-application-crypto",
+ "sp-core 28.0.0",
+ "sp-keystore",
+ "tempfile",
+ "thiserror 1.0.65",
+ "tracing-gum",
+]
+
+[[package]]
+name = "pezkuwi-omni-node"
+version = "0.1.0"
+dependencies = [
+ "assert_cmd",
+ "color-eyre",
+ "pezkuwi-omni-node-lib",
+ "substrate-build-script-utils",
+]
+
+[[package]]
+name = "pezkuwi-omni-node-lib"
+version = "0.1.0"
+dependencies = [
+ "assert_cmd",
+ "async-trait",
+ "clap",
+ "color-print",
+ "cumulus-client-bootnodes",
+ "cumulus-client-cli",
+ "cumulus-client-collator",
+ "cumulus-client-consensus-aura",
+ "cumulus-client-consensus-common",
+ "cumulus-client-consensus-proposer",
+ "cumulus-client-consensus-relay-chain",
+ "cumulus-client-service",
+ "cumulus-client-teyrchain-inherent",
+ "cumulus-primitives-aura",
+ "cumulus-primitives-core",
+ "cumulus-relay-chain-interface",
+ "cumulus-test-runtime",
+ "docify",
+ "frame-benchmarking",
+ "frame-benchmarking-cli",
+ "frame-support",
+ "frame-system-rpc-runtime-api",
+ "frame-try-runtime",
+ "futures",
+ "futures-timer",
+ "jsonrpsee",
+ "log",
+ "nix 0.29.0",
+ "pallet-transaction-payment",
+ "pallet-transaction-payment-rpc",
+ "pallet-transaction-payment-rpc-runtime-api",
+ "parity-scale-codec",
+ "pezkuwi-cli",
+ "pezkuwi-primitives",
+ "sc-basic-authorship",
+ "sc-chain-spec",
+ "sc-cli",
+ "sc-client-api",
+ "sc-client-db",
+ "sc-consensus",
+ "sc-consensus-aura",
+ "sc-consensus-manual-seal",
+ "sc-executor",
+ "sc-keystore",
+ "sc-network",
+ "sc-network-statement",
+ "sc-network-sync",
+ "sc-offchain",
+ "sc-rpc",
+ "sc-runtime-utilities",
+ "sc-service",
+ "sc-statement-store",
+ "sc-storage-monitor",
+ "sc-sysinfo",
+ "sc-telemetry",
+ "sc-tracing",
+ "sc-transaction-pool",
+ "sc-transaction-pool-api",
+ "scale-info",
+ "serde",
+ "serde_json",
+ "sp-api",
+ "sp-block-builder",
+ "sp-consensus",
+ "sp-consensus-aura",
+ "sp-core 28.0.0",
+ "sp-genesis-builder",
+ "sp-inherents",
+ "sp-keystore",
+ "sp-offchain",
+ "sp-runtime",
+ "sp-session",
+ "sp-statement-store",
+ "sp-storage 19.0.0",
+ "sp-timestamp",
+ "sp-transaction-pool",
+ "sp-version",
+ "sp-weights",
+ "staging-chain-spec-builder",
+ "substrate-frame-rpc-system",
+ "substrate-prometheus-endpoint",
+ "substrate-state-trie-migration-rpc",
+ "subxt-metadata 0.43.0",
+ "teyrchains-common",
+ "tokio",
+ "wait-timeout",
+]
+
+[[package]]
+name = "pezkuwi-overseer"
+version = "7.0.0"
+dependencies = [
+ "assert_matches",
+ "async-trait",
+ "femme",
+ "futures",
+ "futures-timer",
+ "orchestra",
+ "pezkuwi-node-metrics",
+ "pezkuwi-node-network-protocol",
+ "pezkuwi-node-primitives",
+ "pezkuwi-node-subsystem-test-helpers",
+ "pezkuwi-node-subsystem-types",
+ "pezkuwi-primitives",
+ "pezkuwi-primitives-test-helpers",
+ "prioritized-metered-channel",
+ "sc-client-api",
+ "sp-core 28.0.0",
+ "tikv-jemalloc-ctl",
+ "tracing-gum",
+]
+
+[[package]]
+name = "pezkuwi-primitives"
+version = "7.0.0"
+dependencies = [
+ "bitvec",
+ "bounded-collections 0.3.2",
+ "hex-literal",
+ "log",
+ "parity-scale-codec",
+ "pezkuwi-core-primitives",
+ "pezkuwi-teyrchain-primitives",
+ "scale-info",
+ "serde",
+ "sp-api",
+ "sp-application-crypto",
+ "sp-arithmetic",
+ "sp-authority-discovery",
+ "sp-consensus-slots",
+ "sp-core 28.0.0",
+ "sp-inherents",
+ "sp-io",
+ "sp-keystore",
+ "sp-runtime",
+ "sp-staking",
+ "sp-std 14.0.0",
+ "thiserror 1.0.65",
+]
+
+[[package]]
+name = "pezkuwi-primitives-test-helpers"
+version = "1.0.0"
+dependencies = [
+ "bitvec",
+ "parity-scale-codec",
+ "pezkuwi-primitives",
+ "rand 0.8.5",
+ "scale-info",
+ "sp-application-crypto",
+ "sp-core 28.0.0",
+ "sp-keyring",
+ "sp-runtime",
+]
+
+[[package]]
+name = "pezkuwi-rpc"
+version = "7.0.0"
+dependencies = [
+ "jsonrpsee",
+ "mmr-rpc",
+ "pallet-transaction-payment-rpc",
+ "pezkuwi-primitives",
+ "sc-chain-spec",
+ "sc-client-api",
+ "sc-consensus-babe",
+ "sc-consensus-babe-rpc",
+ "sc-consensus-beefy",
+ "sc-consensus-beefy-rpc",
+ "sc-consensus-grandpa",
+ "sc-consensus-grandpa-rpc",
+ "sc-rpc",
+ "sc-sync-state-rpc",
+ "sc-transaction-pool-api",
+ "sp-api",
+ "sp-application-crypto",
+ "sp-block-builder",
+ "sp-blockchain",
+ "sp-consensus",
+ "sp-consensus-babe",
+ "sp-consensus-beefy",
+ "sp-keystore",
+ "sp-runtime",
+ "substrate-frame-rpc-system",
+ "substrate-state-trie-migration-rpc",
+]
+
+[[package]]
+name = "pezkuwi-runtime-common"
+version = "7.0.0"
+dependencies = [
+ "bitvec",
+ "frame-benchmarking",
+ "frame-election-provider-support",
+ "frame-support",
+ "frame-support-test",
+ "frame-system",
+ "hex-literal",
+ "impl-trait-for-tuples",
+ "libsecp256k1",
+ "log",
+ "pallet-asset-rate",
+ "pallet-authorship",
+ "pallet-babe",
+ "pallet-balances",
+ "pallet-broker",
+ "pallet-election-provider-multi-phase",
+ "pallet-fast-unstake",
+ "pallet-identity",
+ "pallet-session",
+ "pallet-staking",
+ "pallet-staking-reward-fn",
+ "pallet-timestamp",
+ "pallet-transaction-payment",
+ "pallet-treasury",
+ "pallet-vesting",
+ "parity-scale-codec",
+ "pezkuwi-primitives",
+ "pezkuwi-primitives-test-helpers",
+ "pezkuwi-runtime-teyrchains",
+ "rustc-hex",
+ "scale-info",
+ "serde",
+ "serde_json",
+ "slot-range-helper",
+ "sp-api",
+ "sp-core 28.0.0",
+ "sp-inherents",
+ "sp-io",
+ "sp-keyring",
+ "sp-keystore",
+ "sp-npos-elections",
+ "sp-runtime",
+ "sp-session",
+ "sp-staking",
+ "staging-xcm",
+ "staging-xcm-builder",
+ "staging-xcm-executor",
+ "static_assertions",
+]
+
+[[package]]
+name = "pezkuwi-runtime-metrics"
+version = "7.0.0"
+dependencies = [
+ "bs58",
+ "frame-benchmarking",
+ "parity-scale-codec",
+ "pezkuwi-primitives",
+ "sp-tracing 16.0.0",
+]
+
+[[package]]
+name = "pezkuwi-runtime-teyrchains"
+version = "7.0.0"
+dependencies = [
+ "assert_matches",
+ "bitflags 1.3.2",
+ "bitvec",
+ "frame-benchmarking",
+ "frame-election-provider-support",
+ "frame-support",
+ "frame-support-test",
+ "frame-system",
+ "hex-literal",
+ "impl-trait-for-tuples",
+ "log",
+ "pallet-authority-discovery",
+ "pallet-authorship",
+ "pallet-babe",
+ "pallet-balances",
+ "pallet-broker",
+ "pallet-message-queue",
+ "pallet-mmr",
+ "pallet-session",
+ "pallet-staking",
+ "pallet-timestamp",
+ "parity-scale-codec",
+ "pezkuwi-core-primitives",
+ "pezkuwi-primitives",
+ "pezkuwi-primitives-test-helpers",
+ "pezkuwi-runtime-metrics",
+ "pezkuwi-teyrchain-primitives",
+ "pretty_assertions",
+ "rand 0.8.5",
+ "rand_chacha 0.3.1",
+ "rstest",
+ "sc-keystore",
+ "scale-info",
+ "serde",
+ "serde_json",
+ "sp-api",
+ "sp-application-crypto",
+ "sp-arithmetic",
+ "sp-core 28.0.0",
+ "sp-crypto-hashing 0.1.0",
+ "sp-inherents",
+ "sp-io",
+ "sp-keyring",
+ "sp-keystore",
+ "sp-runtime",
+ "sp-session",
+ "sp-staking",
+ "sp-std 14.0.0",
+ "sp-tracing 16.0.0",
+ "staging-xcm",
+ "staging-xcm-executor",
+ "static_assertions",
+ "thousands",
+]
+
+[[package]]
+name = "pezkuwi-sdk"
+version = "0.1.0"
+dependencies = [
+ "asset-test-utils",
+ "assets-common",
+ "binary-merkle-tree",
+ "bp-header-chain",
+ "bp-messages",
+ "bp-pezkuwi-core",
+ "bp-relayers",
+ "bp-runtime",
+ "bp-test-utils",
+ "bp-teyrchains",
+ "bp-xcm-bridge-hub",
+ "bp-xcm-bridge-hub-router",
+ "bridge-hub-common",
+ "bridge-hub-test-utils",
+ "bridge-runtime-common",
+ "cumulus-client-bootnodes",
+ "cumulus-client-cli",
+ "cumulus-client-collator",
+ "cumulus-client-consensus-aura",
+ "cumulus-client-consensus-common",
+ "cumulus-client-consensus-proposer",
+ "cumulus-client-consensus-relay-chain",
+ "cumulus-client-network",
+ "cumulus-client-pov-recovery",
+ "cumulus-client-service",
+ "cumulus-client-teyrchain-inherent",
+ "cumulus-pallet-aura-ext",
+ "cumulus-pallet-dmp-queue",
+ "cumulus-pallet-session-benchmarking",
+ "cumulus-pallet-solo-to-para",
+ "cumulus-pallet-teyrchain-system",
+ "cumulus-pallet-teyrchain-system-proc-macro",
+ "cumulus-pallet-weight-reclaim",
+ "cumulus-pallet-xcm",
+ "cumulus-pallet-xcmp-queue",
+ "cumulus-ping",
+ "cumulus-primitives-aura",
+ "cumulus-primitives-core",
+ "cumulus-primitives-proof-size-hostfunction",
+ "cumulus-primitives-storage-weight-reclaim",
+ "cumulus-primitives-teyrchain-inherent",
+ "cumulus-primitives-timestamp",
+ "cumulus-primitives-utility",
+ "cumulus-relay-chain-inprocess-interface",
+ "cumulus-relay-chain-interface",
+ "cumulus-relay-chain-minimal-node",
+ "cumulus-relay-chain-rpc-interface",
+ "cumulus-relay-chain-streams",
+ "cumulus-test-relay-sproof-builder",
+ "emulated-integration-tests-common",
+ "ethereum-standards",
+ "fork-tree",
+ "frame-benchmarking",
+ "frame-benchmarking-cli",
+ "frame-benchmarking-pallet-pov",
+ "frame-election-provider-solution-type",
+ "frame-election-provider-support",
+ "frame-executive",
+ "frame-metadata-hash-extension",
+ "frame-remote-externalities",
+ "frame-support",
+ "frame-support-procedural",
+ "frame-support-procedural-tools",
+ "frame-support-procedural-tools-derive",
+ "frame-system",
+ "frame-system-benchmarking",
+ "frame-system-rpc-runtime-api",
+ "frame-try-runtime",
+ "generate-bags",
+ "mmr-gadget",
+ "mmr-rpc",
+ "pallet-alliance",
+ "pallet-asset-conversion",
+ "pallet-asset-conversion-ops",
+ "pallet-asset-conversion-tx-payment",
+ "pallet-asset-rate",
+ "pallet-asset-rewards",
+ "pallet-asset-tx-payment",
+ "pallet-assets",
+ "pallet-assets-freezer",
+ "pallet-assets-holder",
+ "pallet-assets-precompiles",
+ "pallet-atomic-swap",
+ "pallet-aura",
+ "pallet-authority-discovery",
+ "pallet-authorship",
+ "pallet-babe",
+ "pallet-bags-list",
+ "pallet-balances",
+ "pallet-beefy",
+ "pallet-beefy-mmr",
+ "pallet-bounties",
+ "pallet-bridge-grandpa",
+ "pallet-bridge-messages",
+ "pallet-bridge-relayers",
+ "pallet-bridge-teyrchains",
+ "pallet-broker",
+ "pallet-child-bounties",
+ "pallet-collator-selection",
+ "pallet-collective",
+ "pallet-collective-content",
+ "pallet-contracts",
+ "pallet-contracts-mock-network",
+ "pallet-contracts-proc-macro",
+ "pallet-contracts-uapi",
+ "pallet-conviction-voting",
+ "pallet-core-fellowship",
+ "pallet-delegated-staking",
+ "pallet-democracy",
+ "pallet-derivatives",
+ "pallet-dev-mode",
+ "pallet-dummy-dim",
+ "pallet-election-provider-multi-block",
+ "pallet-election-provider-multi-phase",
+ "pallet-election-provider-support-benchmarking",
+ "pallet-elections-phragmen",
+ "pallet-fast-unstake",
+ "pallet-glutton",
+ "pallet-grandpa",
+ "pallet-identity",
+ "pallet-im-online",
+ "pallet-indices",
+ "pallet-insecure-randomness-collective-flip",
+ "pallet-lottery",
+ "pallet-membership",
+ "pallet-message-queue",
+ "pallet-meta-tx",
+ "pallet-migrations",
+ "pallet-mixnet",
+ "pallet-mmr",
+ "pallet-multi-asset-bounties",
+ "pallet-multisig",
+ "pallet-nft-fractionalization",
+ "pallet-nfts",
+ "pallet-nfts-runtime-api",
+ "pallet-nis",
+ "pallet-node-authorization",
+ "pallet-nomination-pools",
+ "pallet-nomination-pools-benchmarking",
+ "pallet-nomination-pools-runtime-api",
+ "pallet-offences",
+ "pallet-offences-benchmarking",
+ "pallet-oracle",
+ "pallet-oracle-runtime-api",
+ "pallet-origin-restriction",
+ "pallet-paged-list",
+ "pallet-parameters",
+ "pallet-people",
+ "pallet-preimage",
+ "pallet-proxy",
+ "pallet-ranked-collective",
+ "pallet-recovery",
+ "pallet-referenda",
+ "pallet-remark",
+ "pallet-revive",
+ "pallet-revive-proc-macro",
+ "pallet-revive-uapi",
+ "pallet-root-offences",
+ "pallet-root-testing",
+ "pallet-safe-mode",
+ "pallet-salary",
+ "pallet-scheduler",
+ "pallet-scored-pool",
+ "pallet-session",
+ "pallet-session-benchmarking",
+ "pallet-skip-feeless-payment",
+ "pallet-society",
+ "pallet-staking",
+ "pallet-staking-async",
+ "pallet-staking-async-ah-client",
+ "pallet-staking-async-rc-client",
+ "pallet-staking-async-reward-fn",
+ "pallet-staking-async-runtime-api",
+ "pallet-staking-reward-curve",
+ "pallet-staking-reward-fn",
+ "pallet-staking-runtime-api",
+ "pallet-state-trie-migration",
+ "pallet-statement",
+ "pallet-sudo",
+ "pallet-timestamp",
+ "pallet-tips",
+ "pallet-transaction-payment",
+ "pallet-transaction-payment-rpc",
+ "pallet-transaction-payment-rpc-runtime-api",
+ "pallet-transaction-storage",
+ "pallet-treasury",
+ "pallet-tx-pause",
+ "pallet-uniques",
+ "pallet-utility",
+ "pallet-verify-signature",
+ "pallet-vesting",
+ "pallet-whitelist",
+ "pallet-xcm",
+ "pallet-xcm-benchmarks",
+ "pallet-xcm-bridge-hub",
+ "pallet-xcm-bridge-hub-router",
+ "pallet-xcm-precompiles",
+ "pezkuwi-approval-distribution",
+ "pezkuwi-availability-bitfield-distribution",
+ "pezkuwi-availability-distribution",
+ "pezkuwi-availability-recovery",
+ "pezkuwi-cli",
+ "pezkuwi-collator-protocol",
+ "pezkuwi-core-primitives",
+ "pezkuwi-dispute-distribution",
+ "pezkuwi-erasure-coding",
+ "pezkuwi-gossip-support",
+ "pezkuwi-network-bridge",
+ "pezkuwi-node-collation-generation",
+ "pezkuwi-node-core-approval-voting",
+ "pezkuwi-node-core-approval-voting-parallel",
+ "pezkuwi-node-core-av-store",
+ "pezkuwi-node-core-backing",
+ "pezkuwi-node-core-bitfield-signing",
+ "pezkuwi-node-core-candidate-validation",
+ "pezkuwi-node-core-chain-api",
+ "pezkuwi-node-core-chain-selection",
+ "pezkuwi-node-core-dispute-coordinator",
+ "pezkuwi-node-core-prospective-teyrchains",
+ "pezkuwi-node-core-provisioner",
+ "pezkuwi-node-core-pvf",
+ "pezkuwi-node-core-pvf-checker",
+ "pezkuwi-node-core-pvf-common",
+ "pezkuwi-node-core-pvf-execute-worker",
+ "pezkuwi-node-core-pvf-prepare-worker",
+ "pezkuwi-node-core-runtime-api",
+ "pezkuwi-node-core-teyrchains-inherent",
+ "pezkuwi-node-metrics",
+ "pezkuwi-node-network-protocol",
+ "pezkuwi-node-primitives",
+ "pezkuwi-node-subsystem",
+ "pezkuwi-node-subsystem-types",
+ "pezkuwi-node-subsystem-util",
+ "pezkuwi-omni-node-lib",
+ "pezkuwi-overseer",
+ "pezkuwi-primitives",
+ "pezkuwi-primitives-test-helpers",
+ "pezkuwi-rpc",
+ "pezkuwi-runtime-common",
+ "pezkuwi-runtime-metrics",
+ "pezkuwi-runtime-teyrchains",
+ "pezkuwi-sdk-frame",
+ "pezkuwi-service",
+ "pezkuwi-statement-distribution",
+ "pezkuwi-statement-table",
+ "pezkuwi-teyrchain-primitives",
+ "sc-allocator",
+ "sc-authority-discovery",
+ "sc-basic-authorship",
+ "sc-block-builder",
+ "sc-chain-spec",
+ "sc-chain-spec-derive",
+ "sc-cli",
+ "sc-client-api",
+ "sc-client-db",
+ "sc-consensus",
+ "sc-consensus-aura",
+ "sc-consensus-babe",
+ "sc-consensus-babe-rpc",
+ "sc-consensus-beefy",
+ "sc-consensus-beefy-rpc",
+ "sc-consensus-epochs",
+ "sc-consensus-grandpa",
+ "sc-consensus-grandpa-rpc",
+ "sc-consensus-manual-seal",
+ "sc-consensus-pow",
+ "sc-consensus-slots",
+ "sc-executor",
+ "sc-executor-common",
+ "sc-executor-polkavm",
+ "sc-executor-wasmtime",
+ "sc-informant",
+ "sc-keystore",
+ "sc-mixnet",
+ "sc-network",
+ "sc-network-common",
+ "sc-network-gossip",
+ "sc-network-light",
+ "sc-network-statement",
+ "sc-network-sync",
+ "sc-network-transactions",
+ "sc-network-types",
+ "sc-offchain",
+ "sc-proposer-metrics",
+ "sc-rpc",
+ "sc-rpc-api",
+ "sc-rpc-server",
+ "sc-rpc-spec-v2",
+ "sc-runtime-utilities",
+ "sc-service",
+ "sc-state-db",
+ "sc-statement-store",
+ "sc-storage-monitor",
+ "sc-sync-state-rpc",
+ "sc-sysinfo",
+ "sc-telemetry",
+ "sc-tracing",
+ "sc-tracing-proc-macro",
+ "sc-transaction-pool",
+ "sc-transaction-pool-api",
+ "sc-utils",
+ "slot-range-helper",
+ "sp-api",
+ "sp-api-proc-macro",
+ "sp-application-crypto",
+ "sp-arithmetic",
+ "sp-authority-discovery",
+ "sp-block-builder",
+ "sp-blockchain",
+ "sp-consensus",
+ "sp-consensus-aura",
+ "sp-consensus-babe",
+ "sp-consensus-beefy",
+ "sp-consensus-grandpa",
+ "sp-consensus-pow",
+ "sp-consensus-slots",
+ "sp-core 28.0.0",
+ "sp-core-hashing",
+ "sp-core-hashing-proc-macro",
+ "sp-crypto-ec-utils",
+ "sp-crypto-hashing 0.1.0",
+ "sp-crypto-hashing-proc-macro",
+ "sp-database",
+ "sp-debug-derive 14.0.0",
+ "sp-externalities 0.25.0",
+ "sp-genesis-builder",
+ "sp-inherents",
+ "sp-io",
+ "sp-keyring",
+ "sp-keystore",
+ "sp-maybe-compressed-blob",
+ "sp-metadata-ir",
+ "sp-mixnet",
+ "sp-mmr-primitives",
+ "sp-npos-elections",
+ "sp-offchain",
+ "sp-panic-handler",
+ "sp-rpc",
+ "sp-runtime",
+ "sp-runtime-interface 24.0.0",
+ "sp-runtime-interface-proc-macro 17.0.0",
+ "sp-session",
+ "sp-staking",
+ "sp-state-machine",
+ "sp-statement-store",
+ "sp-std 14.0.0",
+ "sp-storage 19.0.0",
+ "sp-timestamp",
+ "sp-tracing 16.0.0",
+ "sp-transaction-pool",
+ "sp-transaction-storage-proof",
+ "sp-trie",
+ "sp-version",
+ "sp-version-proc-macro",
+ "sp-wasm-interface 20.0.0",
+ "sp-weights",
+ "staging-chain-spec-builder",
+ "staging-node-inspect",
+ "staging-teyrchain-info",
+ "staging-tracking-allocator",
+ "staging-xcm",
+ "staging-xcm-builder",
+ "staging-xcm-executor",
+ "subkey",
+ "substrate-bip39 0.4.7",
+ "substrate-build-script-utils",
+ "substrate-frame-rpc-support",
+ "substrate-frame-rpc-system",
+ "substrate-prometheus-endpoint",
+ "substrate-rpc-client",
+ "substrate-state-trie-migration-rpc",
+ "substrate-wasm-builder",
+ "testnet-teyrchains-constants",
+ "teyrchains-common",
+ "teyrchains-runtimes-test-utils",
+ "tracing-gum",
+ "tracing-gum-proc-macro",
+ "xcm-emulator",
+ "xcm-procedural",
+ "xcm-runtime-apis",
+ "xcm-simulator",
+]
+
+[[package]]
+name = "pezkuwi-sdk-docs"
+version = "0.0.1"
+dependencies = [
+ "assert_cmd",
+ "chain-spec-guide-runtime",
+ "cmd_lib",
+ "cumulus-client-service",
+ "cumulus-pallet-aura-ext",
+ "cumulus-pallet-teyrchain-system",
+ "cumulus-pallet-weight-reclaim",
+ "cumulus-primitives-proof-size-hostfunction",
+ "docify",
+ "frame-benchmarking",
+ "frame-executive",
+ "frame-metadata-hash-extension",
+ "frame-support",
+ "frame-system",
+ "kitchensink-runtime",
+ "log",
+ "minimal-template-runtime",
+ "pallet-asset-conversion-tx-payment",
+ "pallet-asset-tx-payment",
+ "pallet-assets",
+ "pallet-aura",
+ "pallet-babe",
+ "pallet-balances",
+ "pallet-collective",
+ "pallet-contracts",
+ "pallet-default-config-example",
+ "pallet-democracy",
+ "pallet-example-authorization-tx-extension",
+ "pallet-example-offchain-worker",
+ "pallet-example-single-block-migrations",
+ "pallet-examples",
+ "pallet-grandpa",
+ "pallet-nfts",
+ "pallet-preimage",
+ "pallet-scheduler",
+ "pallet-skip-feeless-payment",
+ "pallet-timestamp",
+ "pallet-transaction-payment",
+ "pallet-uniques",
+ "pallet-xcm",
+ "parity-scale-codec",
+ "pezkuwi-omni-node-lib",
+ "pezkuwi-sdk",
+ "pezkuwi-sdk-docs-first-runtime",
+ "pezkuwi-sdk-frame",
+ "rand 0.8.5",
+ "sc-chain-spec",
+ "sc-cli",
+ "sc-client-db",
+ "sc-consensus-aura",
+ "sc-consensus-babe",
+ "sc-consensus-beefy",
+ "sc-consensus-grandpa",
+ "sc-consensus-manual-seal",
+ "sc-consensus-pow",
+ "sc-executor",
+ "sc-network",
+ "sc-rpc",
+ "sc-rpc-api",
+ "sc-service",
+ "scale-info",
+ "serde_json",
+ "simple-mermaid",
+ "solochain-template-runtime",
+ "sp-api",
+ "sp-arithmetic",
+ "sp-core 28.0.0",
+ "sp-genesis-builder",
+ "sp-io",
+ "sp-keyring",
+ "sp-offchain",
+ "sp-runtime",
+ "sp-runtime-interface 24.0.0",
+ "sp-std 14.0.0",
+ "sp-storage 19.0.0",
+ "sp-tracing 16.0.0",
+ "sp-version",
+ "sp-weights",
+ "staging-chain-spec-builder",
+ "staging-node-cli",
+ "staging-teyrchain-info",
+ "staging-xcm",
+ "staging-xcm-builder",
+ "staging-xcm-executor",
+ "subkey",
+ "substrate-wasm-builder",
+ "tokio",
+ "xcm-docs",
+ "xcm-simulator",
+]
+
+[[package]]
+name = "pezkuwi-sdk-docs-first-pallet"
+version = "0.0.0"
+dependencies = [
+ "docify",
+ "parity-scale-codec",
+ "pezkuwi-sdk-frame",
+ "scale-info",
+]
+
+[[package]]
+name = "pezkuwi-sdk-docs-first-runtime"
+version = "0.0.0"
+dependencies = [
+ "docify",
+ "pallet-balances",
+ "pallet-sudo",
+ "pallet-timestamp",
+ "pallet-transaction-payment",
+ "pallet-transaction-payment-rpc-runtime-api",
+ "parity-scale-codec",
+ "pezkuwi-sdk-docs-first-pallet",
+ "pezkuwi-sdk-frame",
+ "scale-info",
+ "serde_json",
+ "sp-keyring",
+ "substrate-wasm-builder",
+]
+
+[[package]]
+name = "pezkuwi-sdk-frame"
+version = "0.1.0"
+dependencies = [
+ "docify",
+ "frame-benchmarking",
+ "frame-executive",
+ "frame-support",
+ "frame-system",
+ "frame-system-benchmarking",
+ "frame-system-rpc-runtime-api",
+ "frame-try-runtime",
+ "log",
+ "parity-scale-codec",
+ "scale-info",
+ "serde",
+ "sp-api",
+ "sp-arithmetic",
+ "sp-block-builder",
+ "sp-consensus-aura",
+ "sp-consensus-grandpa",
+ "sp-core 28.0.0",
+ "sp-genesis-builder",
+ "sp-inherents",
+ "sp-io",
+ "sp-keyring",
+ "sp-offchain",
+ "sp-runtime",
+ "sp-session",
+ "sp-storage 19.0.0",
+ "sp-transaction-pool",
+ "sp-version",
+]
+
+[[package]]
+name = "pezkuwi-service"
+version = "7.0.1"
+dependencies = [
+ "assert_matches",
+ "async-trait",
+ "frame-benchmarking",
+ "frame-benchmarking-cli",
+ "frame-metadata-hash-extension",
+ "frame-system",
+ "frame-system-rpc-runtime-api",
+ "futures",
+ "is_executable",
+ "kvdb",
+ "kvdb-rocksdb",
+ "log",
+ "mmr-gadget",
+ "pallet-transaction-payment",
+ "pallet-transaction-payment-rpc-runtime-api",
+ "parity-db",
+ "parity-scale-codec",
+ "parking_lot 0.12.3",
+ "pezkuwi-approval-distribution",
+ "pezkuwi-availability-bitfield-distribution",
+ "pezkuwi-availability-distribution",
+ "pezkuwi-availability-recovery",
+ "pezkuwi-collator-protocol",
+ "pezkuwi-core-primitives",
+ "pezkuwi-dispute-distribution",
+ "pezkuwi-gossip-support",
+ "pezkuwi-network-bridge",
+ "pezkuwi-node-collation-generation",
+ "pezkuwi-node-core-approval-voting",
+ "pezkuwi-node-core-approval-voting-parallel",
+ "pezkuwi-node-core-av-store",
+ "pezkuwi-node-core-backing",
+ "pezkuwi-node-core-bitfield-signing",
+ "pezkuwi-node-core-candidate-validation",
+ "pezkuwi-node-core-chain-api",
+ "pezkuwi-node-core-chain-selection",
+ "pezkuwi-node-core-dispute-coordinator",
+ "pezkuwi-node-core-prospective-teyrchains",
+ "pezkuwi-node-core-provisioner",
+ "pezkuwi-node-core-pvf",
+ "pezkuwi-node-core-pvf-checker",
+ "pezkuwi-node-core-runtime-api",
+ "pezkuwi-node-core-teyrchains-inherent",
+ "pezkuwi-node-network-protocol",
+ "pezkuwi-node-primitives",
+ "pezkuwi-node-subsystem",
+ "pezkuwi-node-subsystem-test-helpers",
+ "pezkuwi-node-subsystem-types",
+ "pezkuwi-node-subsystem-util",
+ "pezkuwi-overseer",
+ "pezkuwi-primitives",
+ "pezkuwi-primitives-test-helpers",
+ "pezkuwi-rpc",
+ "pezkuwi-runtime-teyrchains",
+ "pezkuwi-statement-distribution",
+ "pezkuwi-test-client",
+ "pezkuwichain-runtime",
+ "pezkuwichain-runtime-constants",
+ "sc-authority-discovery",
+ "sc-basic-authorship",
+ "sc-chain-spec",
+ "sc-client-api",
+ "sc-consensus",
+ "sc-consensus-babe",
+ "sc-consensus-beefy",
+ "sc-consensus-grandpa",
+ "sc-consensus-slots",
+ "sc-executor",
+ "sc-keystore",
+ "sc-network",
+ "sc-network-sync",
+ "sc-offchain",
+ "sc-service",
+ "sc-sync-state-rpc",
+ "sc-sysinfo",
+ "sc-telemetry",
+ "sc-transaction-pool",
+ "sc-transaction-pool-api",
+ "serde",
+ "serde_json",
+ "sp-api",
+ "sp-authority-discovery",
+ "sp-block-builder",
+ "sp-blockchain",
+ "sp-consensus",
+ "sp-consensus-babe",
+ "sp-consensus-beefy",
+ "sp-consensus-grandpa",
+ "sp-core 28.0.0",
+ "sp-genesis-builder",
+ "sp-inherents",
+ "sp-io",
+ "sp-keyring",
+ "sp-mmr-primitives",
+ "sp-offchain",
+ "sp-runtime",
+ "sp-session",
+ "sp-timestamp",
+ "sp-tracing 16.0.0",
+ "sp-transaction-pool",
+ "sp-version",
+ "sp-weights",
+ "staging-xcm",
+ "substrate-prometheus-endpoint",
+ "tempfile",
+ "thiserror 1.0.65",
+ "tracing-gum",
+ "xcm-runtime-apis",
+ "zagros-runtime",
+ "zagros-runtime-constants",
+]
+
+[[package]]
+name = "pezkuwi-ss58-registry"
+version = "1.51.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "0dbff578f42fbfe2b88a5b958893c68ef59a1cef5ecd8e70d8cfc55399401413"
+dependencies = [
+ "Inflector",
+ "num-format",
+ "proc-macro2 1.0.95",
+ "quote 1.0.40",
+ "serde",
+ "serde_json",
+ "unicode-xid 0.2.4",
+]
+
+[[package]]
+name = "pezkuwi-statement-distribution"
+version = "7.0.0"
+dependencies = [
+ "assert_matches",
+ "async-channel 1.9.0",
+ "bitvec",
+ "fatality",
+ "futures",
+ "futures-timer",
+ "parity-scale-codec",
+ "pezkuwi-node-network-protocol",
+ "pezkuwi-node-primitives",
+ "pezkuwi-node-subsystem",
+ "pezkuwi-node-subsystem-test-helpers",
+ "pezkuwi-node-subsystem-util",
+ "pezkuwi-primitives",
+ "pezkuwi-primitives-test-helpers",
+ "pezkuwi-subsystem-bench",
+ "rand_chacha 0.3.1",
+ "rstest",
+ "sc-keystore",
+ "sc-network",
+ "sp-application-crypto",
+ "sp-authority-discovery",
+ "sp-core 28.0.0",
+ "sp-keyring",
+ "sp-keystore",
+ "sp-tracing 16.0.0",
+ "thiserror 1.0.65",
+ "tracing-gum",
+]
+
+[[package]]
+name = "pezkuwi-statement-table"
+version = "7.0.0"
+dependencies = [
+ "parity-scale-codec",
+ "pezkuwi-primitives",
+ "tracing-gum",
+]
+
+[[package]]
+name = "pezkuwi-subsystem-bench"
+version = "1.0.0"
+dependencies = [
+ "async-trait",
+ "bincode",
+ "bitvec",
+ "clap",
+ "color-eyre",
+ "colored",
+ "futures",
+ "hex",
+ "itertools 0.11.0",
+ "kvdb-memorydb",
+ "orchestra",
+ "parity-scale-codec",
+ "paste",
+ "pezkuwi-approval-distribution",
+ "pezkuwi-availability-bitfield-distribution",
+ "pezkuwi-availability-distribution",
+ "pezkuwi-availability-recovery",
+ "pezkuwi-dispute-distribution",
+ "pezkuwi-node-core-approval-voting",
+ "pezkuwi-node-core-approval-voting-parallel",
+ "pezkuwi-node-core-av-store",
+ "pezkuwi-node-core-dispute-coordinator",
+ "pezkuwi-node-metrics",
+ "pezkuwi-node-network-protocol",
+ "pezkuwi-node-primitives",
+ "pezkuwi-node-subsystem",
+ "pezkuwi-node-subsystem-test-helpers",
+ "pezkuwi-node-subsystem-types",
+ "pezkuwi-node-subsystem-util",
+ "pezkuwi-overseer",
+ "pezkuwi-primitives",
+ "pezkuwi-primitives-test-helpers",
+ "pezkuwi-statement-distribution",
+ "prometheus",
+ "pyroscope",
+ "pyroscope_pprofrs",
+ "rand 0.8.5",
+ "rand_chacha 0.3.1",
+ "rand_distr",
+ "sc-keystore",
+ "sc-network",
+ "sc-network-types",
+ "sc-service",
+ "serde",
+ "serde_json",
+ "serde_yaml",
+ "sha1",
+ "sp-application-crypto",
+ "sp-consensus",
+ "sp-consensus-babe",
+ "sp-core 28.0.0",
+ "sp-keyring",
+ "sp-keystore",
+ "sp-runtime",
+ "sp-timestamp",
+ "sp-tracing 16.0.0",
+ "strum 0.26.3",
+ "substrate-prometheus-endpoint",
+ "tikv-jemallocator",
+ "tokio",
+ "tracing-gum",
+]
+
+[[package]]
+name = "pezkuwi-test-client"
+version = "1.0.0"
+dependencies = [
+ "frame-benchmarking",
+ "futures",
+ "parity-scale-codec",
+ "pezkuwi-primitives",
+ "pezkuwi-test-runtime",
+ "pezkuwi-test-service",
+ "sc-block-builder",
+ "sc-consensus",
+ "sc-service",
+ "sp-api",
+ "sp-blockchain",
+ "sp-consensus",
+ "sp-consensus-babe",
+ "sp-inherents",
+ "sp-io",
+ "sp-keyring",
+ "sp-runtime",
+ "sp-state-machine",
+ "sp-timestamp",
+ "substrate-test-client",
+]
+
+[[package]]
+name = "pezkuwi-test-malus"
+version = "1.0.0"
+dependencies = [
+ "assert_matches",
+ "async-trait",
+ "clap",
+ "color-eyre",
+ "futures",
+ "pezkuwi-cli",
+ "pezkuwi-erasure-coding",
+ "pezkuwi-node-core-pvf-common",
+ "pezkuwi-node-core-pvf-execute-worker",
+ "pezkuwi-node-core-pvf-prepare-worker",
+ "pezkuwi-node-network-protocol",
+ "pezkuwi-node-primitives",
+ "pezkuwi-node-subsystem",
+ "pezkuwi-node-subsystem-test-helpers",
+ "pezkuwi-node-subsystem-types",
+ "pezkuwi-node-subsystem-util",
+ "pezkuwi-primitives",
+ "rand 0.8.5",
+ "sp-core 28.0.0",
+ "substrate-build-script-utils",
+ "tracing-gum",
+]
+
+[[package]]
+name = "pezkuwi-test-runtime"
+version = "1.0.0"
+dependencies = [
+ "frame-election-provider-support",
+ "frame-executive",
+ "frame-support",
+ "frame-system",
+ "frame-system-rpc-runtime-api",
+ "log",
+ "pallet-authority-discovery",
+ "pallet-authorship",
+ "pallet-babe",
+ "pallet-balances",
+ "pallet-grandpa",
+ "pallet-indices",
+ "pallet-offences",
+ "pallet-session",
+ "pallet-staking",
+ "pallet-staking-reward-curve",
+ "pallet-sudo",
+ "pallet-timestamp",
+ "pallet-transaction-payment",
+ "pallet-transaction-payment-rpc-runtime-api",
+ "pallet-vesting",
+ "pallet-xcm",
+ "parity-scale-codec",
+ "pezkuwi-primitives",
+ "pezkuwi-runtime-common",
+ "pezkuwi-runtime-teyrchains",
+ "scale-info",
+ "serde",
+ "sp-api",
+ "sp-authority-discovery",
+ "sp-block-builder",
+ "sp-consensus-babe",
+ "sp-consensus-beefy",
+ "sp-core 28.0.0",
+ "sp-genesis-builder",
+ "sp-inherents",
+ "sp-io",
+ "sp-mmr-primitives",
+ "sp-offchain",
+ "sp-runtime",
+ "sp-session",
+ "sp-staking",
+ "sp-transaction-pool",
+ "sp-version",
+ "staging-xcm",
+ "staging-xcm-builder",
+ "staging-xcm-executor",
+ "substrate-wasm-builder",
+ "test-runtime-constants",
+]
+
+[[package]]
+name = "pezkuwi-test-service"
+version = "1.0.0"
+dependencies = [
+ "frame-system",
+ "futures",
+ "pallet-balances",
+ "pallet-staking",
+ "pallet-transaction-payment",
+ "pezkuwi-node-primitives",
+ "pezkuwi-node-subsystem",
+ "pezkuwi-overseer",
+ "pezkuwi-primitives",
+ "pezkuwi-runtime-common",
+ "pezkuwi-runtime-teyrchains",
+ "pezkuwi-service",
+ "pezkuwi-test-runtime",
+ "pezkuwi-teyrchain-primitives",
+ "rand 0.8.5",
+ "sc-chain-spec",
+ "sc-cli",
+ "sc-client-api",
+ "sc-consensus",
+ "sc-consensus-grandpa",
+ "sc-network",
+ "sc-service",
+ "sc-tracing",
+ "serde_json",
+ "sp-arithmetic",
+ "sp-authority-discovery",
+ "sp-blockchain",
+ "sp-consensus",
+ "sp-consensus-babe",
+ "sp-core 28.0.0",
+ "sp-keyring",
+ "sp-runtime",
+ "sp-state-machine",
+ "substrate-test-client",
+ "test-runtime-constants",
+ "tokio",
+]
+
+[[package]]
+name = "pezkuwi-teyrchain-bin"
+version = "4.0.0"
+dependencies = [
+ "assert_cmd",
+ "asset-hub-pezkuwichain-runtime",
+ "asset-hub-zagros-runtime",
+ "bridge-hub-pezkuwichain-runtime",
+ "bridge-hub-zagros-runtime",
+ "collectives-zagros-runtime",
+ "color-eyre",
+ "coretime-pezkuwichain-runtime",
+ "coretime-zagros-runtime",
+ "cumulus-client-consensus-aura",
+ "cumulus-primitives-core",
+ "glutton-zagros-runtime",
+ "hex-literal",
+ "log",
+ "penpal-runtime",
+ "people-pezkuwichain-runtime",
+ "people-zagros-runtime",
+ "pezkuwi-omni-node-lib",
+ "pezkuwichain-teyrchain-runtime",
+ "sc-chain-spec",
+ "sc-cli",
+ "sc-service",
+ "serde",
+ "serde_json",
+ "sp-core 28.0.0",
+ "sp-genesis-builder",
+ "sp-keyring",
+ "staging-xcm",
+ "substrate-build-script-utils",
+ "teyrchains-common",
+ "yet-another-teyrchain-runtime",
+]
+
+[[package]]
+name = "pezkuwi-teyrchain-primitives"
+version = "6.0.0"
+dependencies = [
+ "array-bytes 6.2.2",
+ "bounded-collections 0.3.2",
+ "derive_more 0.99.17",
+ "parity-scale-codec",
+ "pezkuwi-core-primitives",
+ "scale-info",
+ "serde",
+ "sp-core 28.0.0",
+ "sp-runtime",
+ "sp-weights",
+]
+
+[[package]]
+name = "pezkuwi-voter-bags"
+version = "7.0.0"
+dependencies = [
+ "clap",
+ "generate-bags",
+ "zagros-runtime",
+]
+
+[[package]]
+name = "pezkuwi-zombienet-sdk-tests"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "asset-hub-zagros-runtime",
+ "cumulus-zombienet-sdk-helpers",
+ "env_logger 0.11.3",
+ "ethabi-decode",
+ "futures",
+ "log",
+ "pallet-revive",
+ "parity-scale-codec",
+ "pezkuwi-primitives",
+ "rand 0.8.5",
+ "sc-executor",
+ "sc-runtime-utilities",
+ "serde",
+ "serde_json",
+ "sp-core 28.0.0",
+ "sp-io",
+ "substrate-build-script-utils",
+ "subxt 0.43.0",
+ "tokio",
+ "tokio-util",
+ "zombienet-orchestrator",
+ "zombienet-sdk",
+]
+
+[[package]]
+name = "pezkuwichain-emulated-chain"
+version = "0.0.0"
+dependencies = [
+ "emulated-integration-tests-common",
+ "pezkuwi-primitives",
+ "pezkuwichain-runtime",
+ "pezkuwichain-runtime-constants",
+ "sc-consensus-grandpa",
+ "sp-authority-discovery",
+ "sp-consensus-babe",
+ "sp-consensus-beefy",
+ "sp-core 28.0.0",
+ "sp-keyring",
+ "teyrchains-common",
+]
+
+[[package]]
+name = "pezkuwichain-runtime"
+version = "7.0.0"
+dependencies = [
+ "binary-merkle-tree",
+ "bitvec",
+ "frame-benchmarking",
+ "frame-executive",
+ "frame-metadata-hash-extension",
+ "frame-remote-externalities",
+ "frame-support",
+ "frame-system",
+ "frame-system-benchmarking",
+ "frame-system-rpc-runtime-api",
+ "frame-try-runtime",
+ "hex-literal",
+ "log",
+ "pallet-asset-rate",
+ "pallet-authority-discovery",
+ "pallet-authorship",
+ "pallet-babe",
+ "pallet-balances",
+ "pallet-beefy",
+ "pallet-beefy-mmr",
+ "pallet-bounties",
+ "pallet-child-bounties",
+ "pallet-conviction-voting",
+ "pallet-democracy",
+ "pallet-elections-phragmen",
+ "pallet-grandpa",
+ "pallet-identity",
+ "pallet-indices",
+ "pallet-message-queue",
+ "pallet-migrations",
+ "pallet-mmr",
+ "pallet-multisig",
+ "pallet-nis",
+ "pallet-offences",
+ "pallet-parameters",
+ "pallet-preimage",
+ "pallet-proxy",
+ "pallet-ranked-collective",
+ "pallet-recovery",
+ "pallet-referenda",
+ "pallet-root-testing",
+ "pallet-scheduler",
+ "pallet-session",
+ "pallet-society",
+ "pallet-staking",
+ "pallet-state-trie-migration",
+ "pallet-sudo",
+ "pallet-timestamp",
+ "pallet-tips",
+ "pallet-transaction-payment",
+ "pallet-transaction-payment-rpc-runtime-api",
+ "pallet-treasury",
+ "pallet-utility",
+ "pallet-vesting",
+ "pallet-whitelist",
+ "pallet-xcm",
+ "pallet-xcm-benchmarks",
+ "parity-scale-codec",
+ "pezkuwi-primitives",
+ "pezkuwi-runtime-common",
+ "pezkuwi-runtime-teyrchains",
+ "pezkuwi-teyrchain-primitives",
+ "pezkuwichain-runtime-constants",
+ "scale-info",
+ "serde",
+ "serde_derive",
+ "serde_json",
+ "sp-api",
+ "sp-arithmetic",
+ "sp-authority-discovery",
+ "sp-block-builder",
+ "sp-consensus-babe",
+ "sp-consensus-beefy",
+ "sp-consensus-grandpa",
+ "sp-core 28.0.0",
+ "sp-genesis-builder",
+ "sp-inherents",
+ "sp-io",
+ "sp-keyring",
+ "sp-mmr-primitives",
+ "sp-offchain",
+ "sp-runtime",
+ "sp-session",
+ "sp-staking",
+ "sp-storage 19.0.0",
+ "sp-tracing 16.0.0",
+ "sp-transaction-pool",
+ "sp-version",
+ "staging-xcm",
+ "staging-xcm-builder",
+ "staging-xcm-executor",
+ "substrate-wasm-builder",
+ "tokio",
+ "xcm-runtime-apis",
+]
+
+[[package]]
+name = "pezkuwichain-runtime-constants"
+version = "7.0.0"
+dependencies = [
+ "frame-support",
+ "pezkuwi-primitives",
+ "pezkuwi-runtime-common",
+ "smallvec",
+ "sp-core 28.0.0",
+ "sp-runtime",
+ "sp-weights",
+ "staging-xcm",
+ "staging-xcm-builder",
+]
+
+[[package]]
+name = "pezkuwichain-system-emulated-network"
+version = "0.0.0"
+dependencies = [
+ "asset-hub-pezkuwichain-emulated-chain",
+ "bridge-hub-pezkuwichain-emulated-chain",
+ "coretime-pezkuwichain-emulated-chain",
+ "emulated-integration-tests-common",
+ "penpal-emulated-chain",
+ "people-pezkuwichain-emulated-chain",
+ "pezkuwichain-emulated-chain",
+]
+
+[[package]]
+name = "pezkuwichain-teyrchain-runtime"
+version = "0.6.0"
+dependencies = [
+ "cumulus-pallet-aura-ext",
+ "cumulus-pallet-teyrchain-system",
+ "cumulus-pallet-weight-reclaim",
+ "cumulus-pallet-xcm",
+ "cumulus-pallet-xcmp-queue",
+ "cumulus-ping",
+ "cumulus-primitives-aura",
+ "cumulus-primitives-core",
+ "cumulus-primitives-utility",
+ "frame-benchmarking",
+ "frame-executive",
+ "frame-support",
+ "frame-system",
+ "frame-system-rpc-runtime-api",
+ "pallet-assets",
+ "pallet-aura",
+ "pallet-balances",
+ "pallet-message-queue",
+ "pallet-sudo",
+ "pallet-timestamp",
+ "pallet-transaction-payment",
+ "pallet-transaction-payment-rpc-runtime-api",
+ "pallet-xcm",
+ "parity-scale-codec",
+ "pezkuwi-runtime-common",
+ "pezkuwi-teyrchain-primitives",
+ "scale-info",
+ "serde_json",
+ "sp-api",
+ "sp-block-builder",
+ "sp-consensus-aura",
+ "sp-core 28.0.0",
+ "sp-genesis-builder",
+ "sp-inherents",
+ "sp-keyring",
+ "sp-offchain",
+ "sp-runtime",
+ "sp-session",
+ "sp-transaction-pool",
+ "sp-version",
+ "staging-teyrchain-info",
+ "staging-xcm",
+ "staging-xcm-builder",
+ "staging-xcm-executor",
+ "substrate-wasm-builder",
+ "teyrchains-common",
+]
+
+[[package]]
+name = "pezkuwichain-zagros-system-emulated-network"
+version = "0.0.0"
+dependencies = [
+ "asset-hub-pezkuwichain-emulated-chain",
+ "asset-hub-zagros-emulated-chain",
+ "bridge-hub-pezkuwichain-emulated-chain",
+ "bridge-hub-zagros-emulated-chain",
+ "emulated-integration-tests-common",
+ "penpal-emulated-chain",
+ "pezkuwichain-emulated-chain",
+ "zagros-emulated-chain",
 ]
 
 [[package]]
@@ -15178,2287 +17570,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "38f6d39893cca0701371e3c27294f09797214b86f1fb951b89ade8ec04e2abab"
 dependencies = [
  "plotters-backend",
-]
-
-[[package]]
-name = "polkadot"
-version = "6.0.0"
-dependencies = [
- "assert_cmd",
- "color-eyre",
- "nix 0.29.0",
- "polkadot-cli",
- "polkadot-core-primitives",
- "polkadot-node-core-pvf",
- "polkadot-node-core-pvf-common",
- "polkadot-node-core-pvf-execute-worker",
- "polkadot-node-core-pvf-prepare-worker",
- "polkadot-overseer",
- "substrate-build-script-utils",
- "substrate-rpc-client",
- "tempfile",
- "tikv-jemallocator",
- "tokio",
-]
-
-[[package]]
-name = "polkadot-approval-distribution"
-version = "7.0.0"
-dependencies = [
- "assert_matches",
- "futures",
- "futures-timer",
- "itertools 0.11.0",
- "polkadot-node-metrics",
- "polkadot-node-network-protocol",
- "polkadot-node-primitives",
- "polkadot-node-subsystem",
- "polkadot-node-subsystem-test-helpers",
- "polkadot-node-subsystem-util",
- "polkadot-primitives",
- "polkadot-primitives-test-helpers",
- "rand 0.8.5",
- "rand_chacha 0.3.1",
- "rand_core 0.6.4",
- "sc-keystore",
- "schnorrkel 0.11.4",
- "sp-application-crypto",
- "sp-authority-discovery",
- "sp-core 28.0.0",
- "sp-tracing 16.0.0",
- "tracing-gum",
-]
-
-[[package]]
-name = "polkadot-availability-bitfield-distribution"
-version = "7.0.0"
-dependencies = [
- "assert_matches",
- "bitvec",
- "futures",
- "futures-timer",
- "maplit",
- "polkadot-node-network-protocol",
- "polkadot-node-subsystem",
- "polkadot-node-subsystem-test-helpers",
- "polkadot-node-subsystem-util",
- "polkadot-primitives",
- "rand 0.8.5",
- "rand_chacha 0.3.1",
- "sp-application-crypto",
- "sp-authority-discovery",
- "sp-core 28.0.0",
- "sp-keyring",
- "sp-keystore",
- "sp-tracing 16.0.0",
- "tracing-gum",
-]
-
-[[package]]
-name = "polkadot-availability-distribution"
-version = "7.0.0"
-dependencies = [
- "assert_matches",
- "fatality",
- "futures",
- "futures-timer",
- "parity-scale-codec",
- "polkadot-erasure-coding",
- "polkadot-node-network-protocol",
- "polkadot-node-primitives",
- "polkadot-node-subsystem",
- "polkadot-node-subsystem-test-helpers",
- "polkadot-node-subsystem-util",
- "polkadot-primitives",
- "polkadot-primitives-test-helpers",
- "polkadot-subsystem-bench",
- "rand 0.8.5",
- "rstest",
- "sc-network",
- "schnellru",
- "sp-core 28.0.0",
- "sp-keyring",
- "sp-keystore",
- "sp-tracing 16.0.0",
- "thiserror 1.0.65",
- "tracing-gum",
-]
-
-[[package]]
-name = "polkadot-availability-recovery"
-version = "7.0.0"
-dependencies = [
- "assert_matches",
- "async-trait",
- "fatality",
- "futures",
- "futures-timer",
- "parity-scale-codec",
- "polkadot-erasure-coding",
- "polkadot-node-network-protocol",
- "polkadot-node-primitives",
- "polkadot-node-subsystem",
- "polkadot-node-subsystem-test-helpers",
- "polkadot-node-subsystem-util",
- "polkadot-primitives",
- "polkadot-primitives-test-helpers",
- "polkadot-subsystem-bench",
- "rand 0.8.5",
- "rstest",
- "sc-network",
- "schnellru",
- "sp-core 28.0.0",
- "sp-keyring",
- "sp-tracing 16.0.0",
- "thiserror 1.0.65",
- "tokio",
- "tracing-gum",
-]
-
-[[package]]
-name = "polkadot-ckb-merkle-mountain-range"
-version = "0.8.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "221c71b432b38e494a0fdedb5f720e4cb974edf03a0af09e5b2238dbac7e6947"
-dependencies = [
- "cfg-if",
- "itertools 0.10.5",
-]
-
-[[package]]
-name = "polkadot-cli"
-version = "7.0.0"
-dependencies = [
- "clap",
- "frame-benchmarking-cli",
- "futures",
- "log",
- "polkadot-node-metrics",
- "polkadot-node-primitives",
- "polkadot-service",
- "pyroscope",
- "pyroscope_pprofrs",
- "sc-cli",
- "sc-network-types",
- "sc-service",
- "sc-storage-monitor",
- "sc-sysinfo",
- "sc-tracing",
- "sp-core 28.0.0",
- "sp-keyring",
- "sp-runtime",
- "substrate-build-script-utils",
- "thiserror 1.0.65",
-]
-
-[[package]]
-name = "polkadot-collator-protocol"
-version = "7.0.0"
-dependencies = [
- "assert_matches",
- "async-trait",
- "bitvec",
- "fatality",
- "futures",
- "futures-timer",
- "itertools 0.11.0",
- "parity-scale-codec",
- "polkadot-node-network-protocol",
- "polkadot-node-primitives",
- "polkadot-node-subsystem",
- "polkadot-node-subsystem-test-helpers",
- "polkadot-node-subsystem-util",
- "polkadot-primitives",
- "polkadot-primitives-test-helpers",
- "rstest",
- "sc-keystore",
- "sc-network",
- "schnellru",
- "sp-core 28.0.0",
- "sp-keyring",
- "sp-keystore",
- "sp-runtime",
- "sp-tracing 16.0.0",
- "thiserror 1.0.65",
- "tokio",
- "tokio-util",
- "tracing-gum",
-]
-
-[[package]]
-name = "polkadot-core-primitives"
-version = "7.0.0"
-dependencies = [
- "parity-scale-codec",
- "scale-info",
- "sp-core 28.0.0",
- "sp-runtime",
-]
-
-[[package]]
-name = "polkadot-dispute-distribution"
-version = "7.0.0"
-dependencies = [
- "assert_matches",
- "async-channel 1.9.0",
- "async-trait",
- "fatality",
- "futures",
- "futures-timer",
- "indexmap 2.9.0",
- "parity-scale-codec",
- "polkadot-node-network-protocol",
- "polkadot-node-primitives",
- "polkadot-node-subsystem",
- "polkadot-node-subsystem-test-helpers",
- "polkadot-node-subsystem-util",
- "polkadot-primitives",
- "polkadot-primitives-test-helpers",
- "sc-keystore",
- "sc-network",
- "sp-application-crypto",
- "sp-keyring",
- "sp-keystore",
- "sp-tracing 16.0.0",
- "thiserror 1.0.65",
- "tracing-gum",
-]
-
-[[package]]
-name = "polkadot-erasure-coding"
-version = "7.0.0"
-dependencies = [
- "criterion",
- "parity-scale-codec",
- "polkadot-node-primitives",
- "polkadot-primitives",
- "quickcheck",
- "reed-solomon-novelpoly",
- "sp-core 28.0.0",
- "sp-trie",
- "thiserror 1.0.65",
-]
-
-[[package]]
-name = "polkadot-gossip-support"
-version = "7.0.0"
-dependencies = [
- "assert_matches",
- "async-trait",
- "futures",
- "futures-timer",
- "parking_lot 0.12.3",
- "polkadot-node-network-protocol",
- "polkadot-node-subsystem",
- "polkadot-node-subsystem-test-helpers",
- "polkadot-node-subsystem-util",
- "polkadot-primitives",
- "quickcheck",
- "rand 0.8.5",
- "rand_chacha 0.3.1",
- "sc-network",
- "sp-application-crypto",
- "sp-authority-discovery",
- "sp-consensus-babe",
- "sp-core 28.0.0",
- "sp-crypto-hashing 0.1.0",
- "sp-keyring",
- "sp-keystore",
- "sp-tracing 16.0.0",
- "tracing-gum",
-]
-
-[[package]]
-name = "polkadot-network-bridge"
-version = "7.0.0"
-dependencies = [
- "always-assert",
- "assert_matches",
- "async-trait",
- "bytes",
- "fatality",
- "futures",
- "futures-timer",
- "parity-scale-codec",
- "parking_lot 0.12.3",
- "polkadot-node-metrics",
- "polkadot-node-network-protocol",
- "polkadot-node-subsystem",
- "polkadot-node-subsystem-test-helpers",
- "polkadot-node-subsystem-util",
- "polkadot-overseer",
- "polkadot-primitives",
- "polkadot-primitives-test-helpers",
- "sc-network",
- "sp-consensus",
- "sp-core 28.0.0",
- "sp-keyring",
- "thiserror 1.0.65",
- "tracing-gum",
-]
-
-[[package]]
-name = "polkadot-node-collation-generation"
-version = "7.0.0"
-dependencies = [
- "assert_matches",
- "futures",
- "parity-scale-codec",
- "polkadot-erasure-coding",
- "polkadot-node-primitives",
- "polkadot-node-subsystem",
- "polkadot-node-subsystem-test-helpers",
- "polkadot-node-subsystem-util",
- "polkadot-primitives",
- "polkadot-primitives-test-helpers",
- "rstest",
- "schnellru",
- "sp-core 28.0.0",
- "sp-keyring",
- "thiserror 1.0.65",
- "tracing-gum",
-]
-
-[[package]]
-name = "polkadot-node-core-approval-voting"
-version = "7.0.0"
-dependencies = [
- "assert_matches",
- "async-trait",
- "bitvec",
- "derive_more 0.99.17",
- "futures",
- "futures-timer",
- "itertools 0.11.0",
- "kvdb-memorydb",
- "merlin",
- "parity-scale-codec",
- "parking_lot 0.12.3",
- "polkadot-node-primitives",
- "polkadot-node-subsystem",
- "polkadot-node-subsystem-test-helpers",
- "polkadot-node-subsystem-util",
- "polkadot-overseer",
- "polkadot-primitives",
- "polkadot-primitives-test-helpers",
- "polkadot-subsystem-bench",
- "rand 0.8.5",
- "rand_chacha 0.3.1",
- "rand_core 0.6.4",
- "sc-keystore",
- "schnellru",
- "schnorrkel 0.11.4",
- "sp-application-crypto",
- "sp-consensus",
- "sp-consensus-babe",
- "sp-consensus-slots",
- "sp-core 28.0.0",
- "sp-keyring",
- "sp-keystore",
- "sp-runtime",
- "sp-tracing 16.0.0",
- "thiserror 1.0.65",
- "tracing-gum",
-]
-
-[[package]]
-name = "polkadot-node-core-approval-voting-parallel"
-version = "7.0.0"
-dependencies = [
- "assert_matches",
- "async-trait",
- "futures",
- "itertools 0.11.0",
- "kvdb-memorydb",
- "polkadot-approval-distribution",
- "polkadot-node-core-approval-voting",
- "polkadot-node-metrics",
- "polkadot-node-network-protocol",
- "polkadot-node-primitives",
- "polkadot-node-subsystem",
- "polkadot-node-subsystem-test-helpers",
- "polkadot-node-subsystem-util",
- "polkadot-overseer",
- "polkadot-primitives",
- "rand 0.8.5",
- "rand_core 0.6.4",
- "sc-keystore",
- "schnorrkel 0.11.4",
- "sp-consensus",
- "sp-consensus-babe",
- "sp-core 28.0.0",
- "sp-keyring",
- "sp-tracing 16.0.0",
- "tracing-gum",
-]
-
-[[package]]
-name = "polkadot-node-core-av-store"
-version = "7.0.0"
-dependencies = [
- "assert_matches",
- "bitvec",
- "futures",
- "futures-timer",
- "kvdb-memorydb",
- "parity-scale-codec",
- "parking_lot 0.12.3",
- "polkadot-erasure-coding",
- "polkadot-node-primitives",
- "polkadot-node-subsystem",
- "polkadot-node-subsystem-test-helpers",
- "polkadot-node-subsystem-util",
- "polkadot-primitives",
- "polkadot-primitives-test-helpers",
- "sp-consensus",
- "sp-core 28.0.0",
- "sp-keyring",
- "sp-tracing 16.0.0",
- "thiserror 1.0.65",
- "tracing-gum",
-]
-
-[[package]]
-name = "polkadot-node-core-backing"
-version = "7.0.0"
-dependencies = [
- "assert_matches",
- "bitvec",
- "fatality",
- "futures",
- "polkadot-erasure-coding",
- "polkadot-node-primitives",
- "polkadot-node-subsystem",
- "polkadot-node-subsystem-test-helpers",
- "polkadot-node-subsystem-util",
- "polkadot-parachain-primitives",
- "polkadot-primitives",
- "polkadot-primitives-test-helpers",
- "polkadot-statement-table",
- "sc-keystore",
- "schnellru",
- "sp-application-crypto",
- "sp-core 28.0.0",
- "sp-keyring",
- "sp-keystore",
- "sp-tracing 16.0.0",
- "thiserror 1.0.65",
- "tracing-gum",
-]
-
-[[package]]
-name = "polkadot-node-core-bitfield-signing"
-version = "7.0.0"
-dependencies = [
- "futures",
- "polkadot-node-subsystem",
- "polkadot-node-subsystem-test-helpers",
- "polkadot-node-subsystem-util",
- "polkadot-primitives",
- "polkadot-primitives-test-helpers",
- "sp-keystore",
- "thiserror 1.0.65",
- "tracing-gum",
- "wasm-timer",
-]
-
-[[package]]
-name = "polkadot-node-core-candidate-validation"
-version = "7.0.0"
-dependencies = [
- "assert_matches",
- "async-trait",
- "futures",
- "futures-timer",
- "parity-scale-codec",
- "polkadot-node-core-pvf",
- "polkadot-node-metrics",
- "polkadot-node-primitives",
- "polkadot-node-subsystem",
- "polkadot-node-subsystem-test-helpers",
- "polkadot-node-subsystem-util",
- "polkadot-overseer",
- "polkadot-parachain-primitives",
- "polkadot-primitives",
- "polkadot-primitives-test-helpers",
- "rstest",
- "sp-application-crypto",
- "sp-core 28.0.0",
- "sp-keyring",
- "sp-keystore",
- "sp-maybe-compressed-blob",
- "tracing-gum",
-]
-
-[[package]]
-name = "polkadot-node-core-chain-api"
-version = "7.0.0"
-dependencies = [
- "futures",
- "maplit",
- "parity-scale-codec",
- "polkadot-node-metrics",
- "polkadot-node-primitives",
- "polkadot-node-subsystem",
- "polkadot-node-subsystem-test-helpers",
- "polkadot-node-subsystem-types",
- "polkadot-primitives",
- "sc-client-api",
- "sc-consensus-babe",
- "sp-blockchain",
- "sp-core 28.0.0",
- "tracing-gum",
-]
-
-[[package]]
-name = "polkadot-node-core-chain-selection"
-version = "7.0.0"
-dependencies = [
- "assert_matches",
- "futures",
- "futures-timer",
- "kvdb-memorydb",
- "parity-scale-codec",
- "parking_lot 0.12.3",
- "polkadot-node-primitives",
- "polkadot-node-subsystem",
- "polkadot-node-subsystem-test-helpers",
- "polkadot-node-subsystem-util",
- "polkadot-primitives",
- "sp-core 28.0.0",
- "thiserror 1.0.65",
- "tracing-gum",
-]
-
-[[package]]
-name = "polkadot-node-core-dispute-coordinator"
-version = "7.0.0"
-dependencies = [
- "assert_matches",
- "fatality",
- "futures",
- "futures-timer",
- "kvdb-memorydb",
- "parity-scale-codec",
- "polkadot-node-primitives",
- "polkadot-node-subsystem",
- "polkadot-node-subsystem-test-helpers",
- "polkadot-node-subsystem-util",
- "polkadot-primitives",
- "polkadot-primitives-test-helpers",
- "polkadot-subsystem-bench",
- "sc-keystore",
- "schnellru",
- "sp-application-crypto",
- "sp-core 28.0.0",
- "sp-keyring",
- "sp-keystore",
- "sp-tracing 16.0.0",
- "thiserror 1.0.65",
- "tracing-gum",
-]
-
-[[package]]
-name = "polkadot-node-core-parachains-inherent"
-version = "7.0.0"
-dependencies = [
- "async-trait",
- "futures",
- "futures-timer",
- "polkadot-node-subsystem",
- "polkadot-overseer",
- "polkadot-primitives",
- "sp-blockchain",
- "sp-inherents",
- "thiserror 1.0.65",
- "tracing-gum",
-]
-
-[[package]]
-name = "polkadot-node-core-prospective-parachains"
-version = "6.0.0"
-dependencies = [
- "assert_matches",
- "fatality",
- "futures",
- "polkadot-node-subsystem",
- "polkadot-node-subsystem-test-helpers",
- "polkadot-node-subsystem-util",
- "polkadot-primitives",
- "polkadot-primitives-test-helpers",
- "rand 0.8.5",
- "rstest",
- "sp-core 28.0.0",
- "sp-tracing 16.0.0",
- "thiserror 1.0.65",
- "tracing-gum",
-]
-
-[[package]]
-name = "polkadot-node-core-provisioner"
-version = "7.0.0"
-dependencies = [
- "bitvec",
- "fatality",
- "futures",
- "futures-timer",
- "polkadot-node-primitives",
- "polkadot-node-subsystem",
- "polkadot-node-subsystem-test-helpers",
- "polkadot-node-subsystem-util",
- "polkadot-primitives",
- "polkadot-primitives-test-helpers",
- "sc-consensus-slots",
- "schnellru",
- "sp-application-crypto",
- "sp-keystore",
- "thiserror 1.0.65",
- "tracing-gum",
-]
-
-[[package]]
-name = "polkadot-node-core-pvf"
-version = "7.0.0"
-dependencies = [
- "always-assert",
- "array-bytes 6.2.2",
- "assert_matches",
- "criterion",
- "futures",
- "futures-timer",
- "is_executable",
- "libc",
- "parity-scale-codec",
- "pin-project",
- "polkadot-node-core-pvf",
- "polkadot-node-core-pvf-common",
- "polkadot-node-core-pvf-execute-worker",
- "polkadot-node-core-pvf-prepare-worker",
- "polkadot-node-metrics",
- "polkadot-node-primitives",
- "polkadot-node-subsystem",
- "polkadot-node-subsystem-test-helpers",
- "polkadot-parachain-primitives",
- "polkadot-primitives",
- "procfs",
- "rand 0.8.5",
- "rococo-runtime",
- "rusty-fork",
- "sc-sysinfo",
- "sc-tracing",
- "slotmap",
- "sp-core 28.0.0",
- "sp-maybe-compressed-blob",
- "strum 0.26.3",
- "tempfile",
- "test-parachain-adder",
- "test-parachain-halt",
- "thiserror 1.0.65",
- "tokio",
- "tracing-gum",
-]
-
-[[package]]
-name = "polkadot-node-core-pvf-checker"
-version = "7.0.0"
-dependencies = [
- "futures",
- "futures-timer",
- "polkadot-node-subsystem",
- "polkadot-node-subsystem-test-helpers",
- "polkadot-node-subsystem-util",
- "polkadot-primitives",
- "polkadot-primitives-test-helpers",
- "sc-keystore",
- "sp-application-crypto",
- "sp-core 28.0.0",
- "sp-keyring",
- "sp-keystore",
- "sp-runtime",
- "tracing-gum",
-]
-
-[[package]]
-name = "polkadot-node-core-pvf-common"
-version = "7.0.0"
-dependencies = [
- "assert_matches",
- "cpu-time",
- "futures",
- "landlock",
- "libc",
- "nix 0.29.0",
- "parity-scale-codec",
- "polkadot-node-primitives",
- "polkadot-parachain-primitives",
- "polkadot-primitives",
- "sc-executor",
- "sc-executor-common",
- "sc-executor-wasmtime",
- "seccompiler",
- "sp-core 28.0.0",
- "sp-crypto-hashing 0.1.0",
- "sp-externalities 0.25.0",
- "sp-io",
- "sp-tracing 16.0.0",
- "tempfile",
- "thiserror 1.0.65",
- "tracing-gum",
- "wat",
-]
-
-[[package]]
-name = "polkadot-node-core-pvf-execute-worker"
-version = "7.0.0"
-dependencies = [
- "cfg-if",
- "cpu-time",
- "libc",
- "nix 0.29.0",
- "parity-scale-codec",
- "polkadot-node-core-pvf-common",
- "polkadot-node-primitives",
- "polkadot-parachain-primitives",
- "polkadot-primitives",
- "sp-maybe-compressed-blob",
- "tracing-gum",
-]
-
-[[package]]
-name = "polkadot-node-core-pvf-prepare-worker"
-version = "7.0.0"
-dependencies = [
- "cfg-if",
- "criterion",
- "libc",
- "nix 0.29.0",
- "parity-scale-codec",
- "polkadot-node-core-pvf-common",
- "polkadot-primitives",
- "rococo-runtime",
- "sp-maybe-compressed-blob",
- "staging-tracking-allocator",
- "tikv-jemalloc-ctl",
- "tikv-jemallocator",
- "tracing-gum",
-]
-
-[[package]]
-name = "polkadot-node-core-runtime-api"
-version = "7.0.0"
-dependencies = [
- "async-trait",
- "futures",
- "polkadot-node-metrics",
- "polkadot-node-primitives",
- "polkadot-node-subsystem",
- "polkadot-node-subsystem-test-helpers",
- "polkadot-node-subsystem-types",
- "polkadot-primitives",
- "polkadot-primitives-test-helpers",
- "schnellru",
- "sp-api",
- "sp-consensus-babe",
- "sp-core 28.0.0",
- "sp-keyring",
- "tracing-gum",
-]
-
-[[package]]
-name = "polkadot-node-metrics"
-version = "7.0.0"
-dependencies = [
- "bs58",
- "futures",
- "futures-timer",
- "http-body-util",
- "hyper 1.6.0",
- "hyper-util",
- "parity-scale-codec",
- "polkadot-primitives",
- "polkadot-test-service",
- "prioritized-metered-channel",
- "prometheus-parse",
- "sc-cli",
- "sc-service",
- "sc-tracing",
- "sp-keyring",
- "substrate-prometheus-endpoint",
- "tokio",
-]
-
-[[package]]
-name = "polkadot-node-network-protocol"
-version = "7.0.0"
-dependencies = [
- "async-channel 1.9.0",
- "async-trait",
- "bitvec",
- "derive_more 0.99.17",
- "fatality",
- "futures",
- "hex",
- "parity-scale-codec",
- "polkadot-node-primitives",
- "polkadot-primitives",
- "rand 0.8.5",
- "rand_chacha 0.3.1",
- "sc-authority-discovery",
- "sc-network",
- "sc-network-types",
- "sp-runtime",
- "strum 0.26.3",
- "thiserror 1.0.65",
- "tracing-gum",
-]
-
-[[package]]
-name = "polkadot-node-primitives"
-version = "7.0.0"
-dependencies = [
- "bitvec",
- "bounded-vec",
- "futures",
- "futures-timer",
- "parity-scale-codec",
- "polkadot-parachain-primitives",
- "polkadot-primitives",
- "sc-keystore",
- "schnorrkel 0.11.4",
- "serde",
- "sp-application-crypto",
- "sp-consensus-babe",
- "sp-consensus-slots",
- "sp-keystore",
- "sp-maybe-compressed-blob",
- "thiserror 1.0.65",
- "zstd 0.12.4",
-]
-
-[[package]]
-name = "polkadot-node-subsystem"
-version = "7.0.0"
-dependencies = [
- "polkadot-node-subsystem-types",
- "polkadot-overseer",
-]
-
-[[package]]
-name = "polkadot-node-subsystem-test-helpers"
-version = "1.0.0"
-dependencies = [
- "async-trait",
- "futures",
- "parking_lot 0.12.3",
- "polkadot-erasure-coding",
- "polkadot-node-primitives",
- "polkadot-node-subsystem",
- "polkadot-node-subsystem-util",
- "polkadot-primitives",
- "sc-client-api",
- "sc-keystore",
- "sc-utils",
- "sp-application-crypto",
- "sp-core 28.0.0",
- "sp-keyring",
- "sp-keystore",
-]
-
-[[package]]
-name = "polkadot-node-subsystem-types"
-version = "7.0.0"
-dependencies = [
- "async-trait",
- "derive_more 0.99.17",
- "fatality",
- "futures",
- "orchestra",
- "polkadot-node-network-protocol",
- "polkadot-node-primitives",
- "polkadot-primitives",
- "polkadot-statement-table",
- "sc-client-api",
- "sc-network",
- "sc-network-types",
- "sc-transaction-pool-api",
- "smallvec",
- "sp-api",
- "sp-authority-discovery",
- "sp-blockchain",
- "sp-consensus-babe",
- "sp-runtime",
- "substrate-prometheus-endpoint",
- "thiserror 1.0.65",
-]
-
-[[package]]
-name = "polkadot-node-subsystem-util"
-version = "7.0.0"
-dependencies = [
- "assert_matches",
- "fatality",
- "futures",
- "itertools 0.11.0",
- "kvdb",
- "kvdb-shared-tests",
- "parity-db",
- "parity-scale-codec",
- "parking_lot 0.12.3",
- "polkadot-erasure-coding",
- "polkadot-node-metrics",
- "polkadot-node-network-protocol",
- "polkadot-node-primitives",
- "polkadot-node-subsystem",
- "polkadot-node-subsystem-test-helpers",
- "polkadot-node-subsystem-types",
- "polkadot-overseer",
- "polkadot-primitives",
- "polkadot-primitives-test-helpers",
- "prioritized-metered-channel",
- "rand 0.8.5",
- "schnellru",
- "sp-application-crypto",
- "sp-core 28.0.0",
- "sp-keystore",
- "tempfile",
- "thiserror 1.0.65",
- "tracing-gum",
-]
-
-[[package]]
-name = "polkadot-omni-node"
-version = "0.1.0"
-dependencies = [
- "assert_cmd",
- "color-eyre",
- "polkadot-omni-node-lib",
- "substrate-build-script-utils",
-]
-
-[[package]]
-name = "polkadot-omni-node-lib"
-version = "0.1.0"
-dependencies = [
- "assert_cmd",
- "async-trait",
- "clap",
- "color-print",
- "cumulus-client-bootnodes",
- "cumulus-client-cli",
- "cumulus-client-collator",
- "cumulus-client-consensus-aura",
- "cumulus-client-consensus-common",
- "cumulus-client-consensus-proposer",
- "cumulus-client-consensus-relay-chain",
- "cumulus-client-parachain-inherent",
- "cumulus-client-service",
- "cumulus-primitives-aura",
- "cumulus-primitives-core",
- "cumulus-relay-chain-interface",
- "cumulus-test-runtime",
- "docify",
- "frame-benchmarking",
- "frame-benchmarking-cli",
- "frame-support",
- "frame-system-rpc-runtime-api",
- "frame-try-runtime",
- "futures",
- "futures-timer",
- "jsonrpsee",
- "log",
- "nix 0.29.0",
- "pallet-transaction-payment",
- "pallet-transaction-payment-rpc",
- "pallet-transaction-payment-rpc-runtime-api",
- "parachains-common",
- "parity-scale-codec",
- "polkadot-cli",
- "polkadot-primitives",
- "sc-basic-authorship",
- "sc-chain-spec",
- "sc-cli",
- "sc-client-api",
- "sc-client-db",
- "sc-consensus",
- "sc-consensus-aura",
- "sc-consensus-manual-seal",
- "sc-executor",
- "sc-keystore",
- "sc-network",
- "sc-network-statement",
- "sc-network-sync",
- "sc-offchain",
- "sc-rpc",
- "sc-runtime-utilities",
- "sc-service",
- "sc-statement-store",
- "sc-storage-monitor",
- "sc-sysinfo",
- "sc-telemetry",
- "sc-tracing",
- "sc-transaction-pool",
- "sc-transaction-pool-api",
- "scale-info",
- "serde",
- "serde_json",
- "sp-api",
- "sp-block-builder",
- "sp-consensus",
- "sp-consensus-aura",
- "sp-core 28.0.0",
- "sp-genesis-builder",
- "sp-inherents",
- "sp-keystore",
- "sp-offchain",
- "sp-runtime",
- "sp-session",
- "sp-statement-store",
- "sp-storage 19.0.0",
- "sp-timestamp",
- "sp-transaction-pool",
- "sp-version",
- "sp-weights",
- "staging-chain-spec-builder",
- "substrate-frame-rpc-system",
- "substrate-prometheus-endpoint",
- "substrate-state-trie-migration-rpc",
- "subxt-metadata 0.43.0",
- "tokio",
- "wait-timeout",
-]
-
-[[package]]
-name = "polkadot-overseer"
-version = "7.0.0"
-dependencies = [
- "assert_matches",
- "async-trait",
- "femme",
- "futures",
- "futures-timer",
- "orchestra",
- "polkadot-node-metrics",
- "polkadot-node-network-protocol",
- "polkadot-node-primitives",
- "polkadot-node-subsystem-test-helpers",
- "polkadot-node-subsystem-types",
- "polkadot-primitives",
- "polkadot-primitives-test-helpers",
- "prioritized-metered-channel",
- "sc-client-api",
- "sp-core 28.0.0",
- "tikv-jemalloc-ctl",
- "tracing-gum",
-]
-
-[[package]]
-name = "polkadot-parachain-bin"
-version = "4.0.0"
-dependencies = [
- "assert_cmd",
- "asset-hub-rococo-runtime",
- "asset-hub-westend-runtime",
- "bridge-hub-rococo-runtime",
- "bridge-hub-westend-runtime",
- "collectives-westend-runtime",
- "color-eyre",
- "coretime-rococo-runtime",
- "coretime-westend-runtime",
- "cumulus-client-consensus-aura",
- "cumulus-primitives-core",
- "glutton-westend-runtime",
- "hex-literal",
- "log",
- "parachains-common",
- "penpal-runtime",
- "people-rococo-runtime",
- "people-westend-runtime",
- "polkadot-omni-node-lib",
- "rococo-parachain-runtime",
- "sc-chain-spec",
- "sc-cli",
- "sc-service",
- "serde",
- "serde_json",
- "sp-core 28.0.0",
- "sp-genesis-builder",
- "sp-keyring",
- "staging-xcm",
- "substrate-build-script-utils",
- "yet-another-parachain-runtime",
-]
-
-[[package]]
-name = "polkadot-parachain-primitives"
-version = "6.0.0"
-dependencies = [
- "array-bytes 6.2.2",
- "bounded-collections 0.3.2",
- "derive_more 0.99.17",
- "parity-scale-codec",
- "polkadot-core-primitives",
- "scale-info",
- "serde",
- "sp-core 28.0.0",
- "sp-runtime",
- "sp-weights",
-]
-
-[[package]]
-name = "polkadot-primitives"
-version = "7.0.0"
-dependencies = [
- "bitvec",
- "bounded-collections 0.3.2",
- "hex-literal",
- "log",
- "parity-scale-codec",
- "polkadot-core-primitives",
- "polkadot-parachain-primitives",
- "scale-info",
- "serde",
- "sp-api",
- "sp-application-crypto",
- "sp-arithmetic",
- "sp-authority-discovery",
- "sp-consensus-slots",
- "sp-core 28.0.0",
- "sp-inherents",
- "sp-io",
- "sp-keystore",
- "sp-runtime",
- "sp-staking",
- "sp-std 14.0.0",
- "thiserror 1.0.65",
-]
-
-[[package]]
-name = "polkadot-primitives-test-helpers"
-version = "1.0.0"
-dependencies = [
- "bitvec",
- "parity-scale-codec",
- "polkadot-primitives",
- "rand 0.8.5",
- "scale-info",
- "sp-application-crypto",
- "sp-core 28.0.0",
- "sp-keyring",
- "sp-runtime",
-]
-
-[[package]]
-name = "polkadot-rpc"
-version = "7.0.0"
-dependencies = [
- "jsonrpsee",
- "mmr-rpc",
- "pallet-transaction-payment-rpc",
- "polkadot-primitives",
- "sc-chain-spec",
- "sc-client-api",
- "sc-consensus-babe",
- "sc-consensus-babe-rpc",
- "sc-consensus-beefy",
- "sc-consensus-beefy-rpc",
- "sc-consensus-grandpa",
- "sc-consensus-grandpa-rpc",
- "sc-rpc",
- "sc-sync-state-rpc",
- "sc-transaction-pool-api",
- "sp-api",
- "sp-application-crypto",
- "sp-block-builder",
- "sp-blockchain",
- "sp-consensus",
- "sp-consensus-babe",
- "sp-consensus-beefy",
- "sp-keystore",
- "sp-runtime",
- "substrate-frame-rpc-system",
- "substrate-state-trie-migration-rpc",
-]
-
-[[package]]
-name = "polkadot-runtime-common"
-version = "7.0.0"
-dependencies = [
- "bitvec",
- "frame-benchmarking",
- "frame-election-provider-support",
- "frame-support",
- "frame-support-test",
- "frame-system",
- "hex-literal",
- "impl-trait-for-tuples",
- "libsecp256k1",
- "log",
- "pallet-asset-rate",
- "pallet-authorship",
- "pallet-babe",
- "pallet-balances",
- "pallet-broker",
- "pallet-election-provider-multi-phase",
- "pallet-fast-unstake",
- "pallet-identity",
- "pallet-session",
- "pallet-staking",
- "pallet-staking-reward-fn",
- "pallet-timestamp",
- "pallet-transaction-payment",
- "pallet-treasury",
- "pallet-vesting",
- "parity-scale-codec",
- "polkadot-primitives",
- "polkadot-primitives-test-helpers",
- "polkadot-runtime-parachains",
- "rustc-hex",
- "scale-info",
- "serde",
- "serde_json",
- "slot-range-helper",
- "sp-api",
- "sp-core 28.0.0",
- "sp-inherents",
- "sp-io",
- "sp-keyring",
- "sp-keystore",
- "sp-npos-elections",
- "sp-runtime",
- "sp-session",
- "sp-staking",
- "staging-xcm",
- "staging-xcm-builder",
- "staging-xcm-executor",
- "static_assertions",
-]
-
-[[package]]
-name = "polkadot-runtime-metrics"
-version = "7.0.0"
-dependencies = [
- "bs58",
- "frame-benchmarking",
- "parity-scale-codec",
- "polkadot-primitives",
- "sp-tracing 16.0.0",
-]
-
-[[package]]
-name = "polkadot-runtime-parachains"
-version = "7.0.0"
-dependencies = [
- "assert_matches",
- "bitflags 1.3.2",
- "bitvec",
- "frame-benchmarking",
- "frame-election-provider-support",
- "frame-support",
- "frame-support-test",
- "frame-system",
- "hex-literal",
- "impl-trait-for-tuples",
- "log",
- "pallet-authority-discovery",
- "pallet-authorship",
- "pallet-babe",
- "pallet-balances",
- "pallet-broker",
- "pallet-message-queue",
- "pallet-mmr",
- "pallet-session",
- "pallet-staking",
- "pallet-timestamp",
- "parity-scale-codec",
- "polkadot-core-primitives",
- "polkadot-parachain-primitives",
- "polkadot-primitives",
- "polkadot-primitives-test-helpers",
- "polkadot-runtime-metrics",
- "pretty_assertions",
- "rand 0.8.5",
- "rand_chacha 0.3.1",
- "rstest",
- "sc-keystore",
- "scale-info",
- "serde",
- "serde_json",
- "sp-api",
- "sp-application-crypto",
- "sp-arithmetic",
- "sp-core 28.0.0",
- "sp-crypto-hashing 0.1.0",
- "sp-inherents",
- "sp-io",
- "sp-keyring",
- "sp-keystore",
- "sp-runtime",
- "sp-session",
- "sp-staking",
- "sp-std 14.0.0",
- "sp-tracing 16.0.0",
- "staging-xcm",
- "staging-xcm-executor",
- "static_assertions",
- "thousands",
-]
-
-[[package]]
-name = "polkadot-sdk"
-version = "0.1.0"
-dependencies = [
- "asset-test-utils",
- "assets-common",
- "binary-merkle-tree",
- "bp-header-chain",
- "bp-messages",
- "bp-parachains",
- "bp-polkadot-core",
- "bp-relayers",
- "bp-runtime",
- "bp-test-utils",
- "bp-xcm-bridge-hub",
- "bp-xcm-bridge-hub-router",
- "bridge-hub-common",
- "bridge-hub-test-utils",
- "bridge-runtime-common",
- "cumulus-client-bootnodes",
- "cumulus-client-cli",
- "cumulus-client-collator",
- "cumulus-client-consensus-aura",
- "cumulus-client-consensus-common",
- "cumulus-client-consensus-proposer",
- "cumulus-client-consensus-relay-chain",
- "cumulus-client-network",
- "cumulus-client-parachain-inherent",
- "cumulus-client-pov-recovery",
- "cumulus-client-service",
- "cumulus-pallet-aura-ext",
- "cumulus-pallet-dmp-queue",
- "cumulus-pallet-parachain-system",
- "cumulus-pallet-parachain-system-proc-macro",
- "cumulus-pallet-session-benchmarking",
- "cumulus-pallet-solo-to-para",
- "cumulus-pallet-weight-reclaim",
- "cumulus-pallet-xcm",
- "cumulus-pallet-xcmp-queue",
- "cumulus-ping",
- "cumulus-primitives-aura",
- "cumulus-primitives-core",
- "cumulus-primitives-parachain-inherent",
- "cumulus-primitives-proof-size-hostfunction",
- "cumulus-primitives-storage-weight-reclaim",
- "cumulus-primitives-timestamp",
- "cumulus-primitives-utility",
- "cumulus-relay-chain-inprocess-interface",
- "cumulus-relay-chain-interface",
- "cumulus-relay-chain-minimal-node",
- "cumulus-relay-chain-rpc-interface",
- "cumulus-relay-chain-streams",
- "cumulus-test-relay-sproof-builder",
- "emulated-integration-tests-common",
- "ethereum-standards",
- "fork-tree",
- "frame-benchmarking",
- "frame-benchmarking-cli",
- "frame-benchmarking-pallet-pov",
- "frame-election-provider-solution-type",
- "frame-election-provider-support",
- "frame-executive",
- "frame-metadata-hash-extension",
- "frame-remote-externalities",
- "frame-support",
- "frame-support-procedural",
- "frame-support-procedural-tools",
- "frame-support-procedural-tools-derive",
- "frame-system",
- "frame-system-benchmarking",
- "frame-system-rpc-runtime-api",
- "frame-try-runtime",
- "generate-bags",
- "mmr-gadget",
- "mmr-rpc",
- "pallet-alliance",
- "pallet-asset-conversion",
- "pallet-asset-conversion-ops",
- "pallet-asset-conversion-tx-payment",
- "pallet-asset-rate",
- "pallet-asset-rewards",
- "pallet-asset-tx-payment",
- "pallet-assets",
- "pallet-assets-freezer",
- "pallet-assets-holder",
- "pallet-assets-precompiles",
- "pallet-atomic-swap",
- "pallet-aura",
- "pallet-authority-discovery",
- "pallet-authorship",
- "pallet-babe",
- "pallet-bags-list",
- "pallet-balances",
- "pallet-beefy",
- "pallet-beefy-mmr",
- "pallet-bounties",
- "pallet-bridge-grandpa",
- "pallet-bridge-messages",
- "pallet-bridge-parachains",
- "pallet-bridge-relayers",
- "pallet-broker",
- "pallet-child-bounties",
- "pallet-collator-selection",
- "pallet-collective",
- "pallet-collective-content",
- "pallet-contracts",
- "pallet-contracts-mock-network",
- "pallet-contracts-proc-macro",
- "pallet-contracts-uapi",
- "pallet-conviction-voting",
- "pallet-core-fellowship",
- "pallet-delegated-staking",
- "pallet-democracy",
- "pallet-derivatives",
- "pallet-dev-mode",
- "pallet-dummy-dim",
- "pallet-election-provider-multi-block",
- "pallet-election-provider-multi-phase",
- "pallet-election-provider-support-benchmarking",
- "pallet-elections-phragmen",
- "pallet-fast-unstake",
- "pallet-glutton",
- "pallet-grandpa",
- "pallet-identity",
- "pallet-im-online",
- "pallet-indices",
- "pallet-insecure-randomness-collective-flip",
- "pallet-lottery",
- "pallet-membership",
- "pallet-message-queue",
- "pallet-meta-tx",
- "pallet-migrations",
- "pallet-mixnet",
- "pallet-mmr",
- "pallet-multi-asset-bounties",
- "pallet-multisig",
- "pallet-nft-fractionalization",
- "pallet-nfts",
- "pallet-nfts-runtime-api",
- "pallet-nis",
- "pallet-node-authorization",
- "pallet-nomination-pools",
- "pallet-nomination-pools-benchmarking",
- "pallet-nomination-pools-runtime-api",
- "pallet-offences",
- "pallet-offences-benchmarking",
- "pallet-oracle",
- "pallet-oracle-runtime-api",
- "pallet-origin-restriction",
- "pallet-paged-list",
- "pallet-parameters",
- "pallet-people",
- "pallet-preimage",
- "pallet-proxy",
- "pallet-ranked-collective",
- "pallet-recovery",
- "pallet-referenda",
- "pallet-remark",
- "pallet-revive",
- "pallet-revive-proc-macro",
- "pallet-revive-uapi",
- "pallet-root-offences",
- "pallet-root-testing",
- "pallet-safe-mode",
- "pallet-salary",
- "pallet-scheduler",
- "pallet-scored-pool",
- "pallet-session",
- "pallet-session-benchmarking",
- "pallet-skip-feeless-payment",
- "pallet-society",
- "pallet-staking",
- "pallet-staking-async",
- "pallet-staking-async-ah-client",
- "pallet-staking-async-rc-client",
- "pallet-staking-async-reward-fn",
- "pallet-staking-async-runtime-api",
- "pallet-staking-reward-curve",
- "pallet-staking-reward-fn",
- "pallet-staking-runtime-api",
- "pallet-state-trie-migration",
- "pallet-statement",
- "pallet-sudo",
- "pallet-timestamp",
- "pallet-tips",
- "pallet-transaction-payment",
- "pallet-transaction-payment-rpc",
- "pallet-transaction-payment-rpc-runtime-api",
- "pallet-transaction-storage",
- "pallet-treasury",
- "pallet-tx-pause",
- "pallet-uniques",
- "pallet-utility",
- "pallet-verify-signature",
- "pallet-vesting",
- "pallet-whitelist",
- "pallet-xcm",
- "pallet-xcm-benchmarks",
- "pallet-xcm-bridge-hub",
- "pallet-xcm-bridge-hub-router",
- "pallet-xcm-precompiles",
- "parachains-common",
- "parachains-runtimes-test-utils",
- "polkadot-approval-distribution",
- "polkadot-availability-bitfield-distribution",
- "polkadot-availability-distribution",
- "polkadot-availability-recovery",
- "polkadot-cli",
- "polkadot-collator-protocol",
- "polkadot-core-primitives",
- "polkadot-dispute-distribution",
- "polkadot-erasure-coding",
- "polkadot-gossip-support",
- "polkadot-network-bridge",
- "polkadot-node-collation-generation",
- "polkadot-node-core-approval-voting",
- "polkadot-node-core-approval-voting-parallel",
- "polkadot-node-core-av-store",
- "polkadot-node-core-backing",
- "polkadot-node-core-bitfield-signing",
- "polkadot-node-core-candidate-validation",
- "polkadot-node-core-chain-api",
- "polkadot-node-core-chain-selection",
- "polkadot-node-core-dispute-coordinator",
- "polkadot-node-core-parachains-inherent",
- "polkadot-node-core-prospective-parachains",
- "polkadot-node-core-provisioner",
- "polkadot-node-core-pvf",
- "polkadot-node-core-pvf-checker",
- "polkadot-node-core-pvf-common",
- "polkadot-node-core-pvf-execute-worker",
- "polkadot-node-core-pvf-prepare-worker",
- "polkadot-node-core-runtime-api",
- "polkadot-node-metrics",
- "polkadot-node-network-protocol",
- "polkadot-node-primitives",
- "polkadot-node-subsystem",
- "polkadot-node-subsystem-types",
- "polkadot-node-subsystem-util",
- "polkadot-omni-node-lib",
- "polkadot-overseer",
- "polkadot-parachain-primitives",
- "polkadot-primitives",
- "polkadot-primitives-test-helpers",
- "polkadot-rpc",
- "polkadot-runtime-common",
- "polkadot-runtime-metrics",
- "polkadot-runtime-parachains",
- "polkadot-sdk-frame",
- "polkadot-service",
- "polkadot-statement-distribution",
- "polkadot-statement-table",
- "sc-allocator",
- "sc-authority-discovery",
- "sc-basic-authorship",
- "sc-block-builder",
- "sc-chain-spec",
- "sc-chain-spec-derive",
- "sc-cli",
- "sc-client-api",
- "sc-client-db",
- "sc-consensus",
- "sc-consensus-aura",
- "sc-consensus-babe",
- "sc-consensus-babe-rpc",
- "sc-consensus-beefy",
- "sc-consensus-beefy-rpc",
- "sc-consensus-epochs",
- "sc-consensus-grandpa",
- "sc-consensus-grandpa-rpc",
- "sc-consensus-manual-seal",
- "sc-consensus-pow",
- "sc-consensus-slots",
- "sc-executor",
- "sc-executor-common",
- "sc-executor-polkavm",
- "sc-executor-wasmtime",
- "sc-informant",
- "sc-keystore",
- "sc-mixnet",
- "sc-network",
- "sc-network-common",
- "sc-network-gossip",
- "sc-network-light",
- "sc-network-statement",
- "sc-network-sync",
- "sc-network-transactions",
- "sc-network-types",
- "sc-offchain",
- "sc-proposer-metrics",
- "sc-rpc",
- "sc-rpc-api",
- "sc-rpc-server",
- "sc-rpc-spec-v2",
- "sc-runtime-utilities",
- "sc-service",
- "sc-state-db",
- "sc-statement-store",
- "sc-storage-monitor",
- "sc-sync-state-rpc",
- "sc-sysinfo",
- "sc-telemetry",
- "sc-tracing",
- "sc-tracing-proc-macro",
- "sc-transaction-pool",
- "sc-transaction-pool-api",
- "sc-utils",
- "slot-range-helper",
- "sp-api",
- "sp-api-proc-macro",
- "sp-application-crypto",
- "sp-arithmetic",
- "sp-authority-discovery",
- "sp-block-builder",
- "sp-blockchain",
- "sp-consensus",
- "sp-consensus-aura",
- "sp-consensus-babe",
- "sp-consensus-beefy",
- "sp-consensus-grandpa",
- "sp-consensus-pow",
- "sp-consensus-slots",
- "sp-core 28.0.0",
- "sp-core-hashing",
- "sp-core-hashing-proc-macro",
- "sp-crypto-ec-utils",
- "sp-crypto-hashing 0.1.0",
- "sp-crypto-hashing-proc-macro",
- "sp-database",
- "sp-debug-derive 14.0.0",
- "sp-externalities 0.25.0",
- "sp-genesis-builder",
- "sp-inherents",
- "sp-io",
- "sp-keyring",
- "sp-keystore",
- "sp-maybe-compressed-blob",
- "sp-metadata-ir",
- "sp-mixnet",
- "sp-mmr-primitives",
- "sp-npos-elections",
- "sp-offchain",
- "sp-panic-handler",
- "sp-rpc",
- "sp-runtime",
- "sp-runtime-interface 24.0.0",
- "sp-runtime-interface-proc-macro 17.0.0",
- "sp-session",
- "sp-staking",
- "sp-state-machine",
- "sp-statement-store",
- "sp-std 14.0.0",
- "sp-storage 19.0.0",
- "sp-timestamp",
- "sp-tracing 16.0.0",
- "sp-transaction-pool",
- "sp-transaction-storage-proof",
- "sp-trie",
- "sp-version",
- "sp-version-proc-macro",
- "sp-wasm-interface 20.0.0",
- "sp-weights",
- "staging-chain-spec-builder",
- "staging-node-inspect",
- "staging-parachain-info",
- "staging-tracking-allocator",
- "staging-xcm",
- "staging-xcm-builder",
- "staging-xcm-executor",
- "subkey",
- "substrate-bip39 0.4.7",
- "substrate-build-script-utils",
- "substrate-frame-rpc-support",
- "substrate-frame-rpc-system",
- "substrate-prometheus-endpoint",
- "substrate-rpc-client",
- "substrate-state-trie-migration-rpc",
- "substrate-wasm-builder",
- "testnet-parachains-constants",
- "tracing-gum",
- "tracing-gum-proc-macro",
- "xcm-emulator",
- "xcm-procedural",
- "xcm-runtime-apis",
- "xcm-simulator",
-]
-
-[[package]]
-name = "polkadot-sdk-docs"
-version = "0.0.1"
-dependencies = [
- "assert_cmd",
- "chain-spec-guide-runtime",
- "cmd_lib",
- "cumulus-client-service",
- "cumulus-pallet-aura-ext",
- "cumulus-pallet-parachain-system",
- "cumulus-pallet-weight-reclaim",
- "cumulus-primitives-proof-size-hostfunction",
- "docify",
- "frame-benchmarking",
- "frame-executive",
- "frame-metadata-hash-extension",
- "frame-support",
- "frame-system",
- "kitchensink-runtime",
- "log",
- "minimal-template-runtime",
- "pallet-asset-conversion-tx-payment",
- "pallet-asset-tx-payment",
- "pallet-assets",
- "pallet-aura",
- "pallet-babe",
- "pallet-balances",
- "pallet-collective",
- "pallet-contracts",
- "pallet-default-config-example",
- "pallet-democracy",
- "pallet-example-authorization-tx-extension",
- "pallet-example-offchain-worker",
- "pallet-example-single-block-migrations",
- "pallet-examples",
- "pallet-grandpa",
- "pallet-nfts",
- "pallet-preimage",
- "pallet-scheduler",
- "pallet-skip-feeless-payment",
- "pallet-timestamp",
- "pallet-transaction-payment",
- "pallet-uniques",
- "pallet-xcm",
- "parity-scale-codec",
- "polkadot-omni-node-lib",
- "polkadot-sdk",
- "polkadot-sdk-docs-first-runtime",
- "polkadot-sdk-frame",
- "rand 0.8.5",
- "sc-chain-spec",
- "sc-cli",
- "sc-client-db",
- "sc-consensus-aura",
- "sc-consensus-babe",
- "sc-consensus-beefy",
- "sc-consensus-grandpa",
- "sc-consensus-manual-seal",
- "sc-consensus-pow",
- "sc-executor",
- "sc-network",
- "sc-rpc",
- "sc-rpc-api",
- "sc-service",
- "scale-info",
- "serde_json",
- "simple-mermaid",
- "solochain-template-runtime",
- "sp-api",
- "sp-arithmetic",
- "sp-core 28.0.0",
- "sp-genesis-builder",
- "sp-io",
- "sp-keyring",
- "sp-offchain",
- "sp-runtime",
- "sp-runtime-interface 24.0.0",
- "sp-std 14.0.0",
- "sp-storage 19.0.0",
- "sp-tracing 16.0.0",
- "sp-version",
- "sp-weights",
- "staging-chain-spec-builder",
- "staging-node-cli",
- "staging-parachain-info",
- "staging-xcm",
- "staging-xcm-builder",
- "staging-xcm-executor",
- "subkey",
- "substrate-wasm-builder",
- "tokio",
- "xcm-docs",
- "xcm-simulator",
-]
-
-[[package]]
-name = "polkadot-sdk-docs-first-pallet"
-version = "0.0.0"
-dependencies = [
- "docify",
- "parity-scale-codec",
- "polkadot-sdk-frame",
- "scale-info",
-]
-
-[[package]]
-name = "polkadot-sdk-docs-first-runtime"
-version = "0.0.0"
-dependencies = [
- "docify",
- "pallet-balances",
- "pallet-sudo",
- "pallet-timestamp",
- "pallet-transaction-payment",
- "pallet-transaction-payment-rpc-runtime-api",
- "parity-scale-codec",
- "polkadot-sdk-docs-first-pallet",
- "polkadot-sdk-frame",
- "scale-info",
- "serde_json",
- "sp-keyring",
- "substrate-wasm-builder",
-]
-
-[[package]]
-name = "polkadot-sdk-frame"
-version = "0.1.0"
-dependencies = [
- "docify",
- "frame-benchmarking",
- "frame-executive",
- "frame-support",
- "frame-system",
- "frame-system-benchmarking",
- "frame-system-rpc-runtime-api",
- "frame-try-runtime",
- "log",
- "parity-scale-codec",
- "scale-info",
- "serde",
- "sp-api",
- "sp-arithmetic",
- "sp-block-builder",
- "sp-consensus-aura",
- "sp-consensus-grandpa",
- "sp-core 28.0.0",
- "sp-genesis-builder",
- "sp-inherents",
- "sp-io",
- "sp-keyring",
- "sp-offchain",
- "sp-runtime",
- "sp-session",
- "sp-storage 19.0.0",
- "sp-transaction-pool",
- "sp-version",
-]
-
-[[package]]
-name = "polkadot-service"
-version = "7.0.1"
-dependencies = [
- "assert_matches",
- "async-trait",
- "frame-benchmarking",
- "frame-benchmarking-cli",
- "frame-metadata-hash-extension",
- "frame-system",
- "frame-system-rpc-runtime-api",
- "futures",
- "is_executable",
- "kvdb",
- "kvdb-rocksdb",
- "log",
- "mmr-gadget",
- "pallet-transaction-payment",
- "pallet-transaction-payment-rpc-runtime-api",
- "parity-db",
- "parity-scale-codec",
- "parking_lot 0.12.3",
- "polkadot-approval-distribution",
- "polkadot-availability-bitfield-distribution",
- "polkadot-availability-distribution",
- "polkadot-availability-recovery",
- "polkadot-collator-protocol",
- "polkadot-core-primitives",
- "polkadot-dispute-distribution",
- "polkadot-gossip-support",
- "polkadot-network-bridge",
- "polkadot-node-collation-generation",
- "polkadot-node-core-approval-voting",
- "polkadot-node-core-approval-voting-parallel",
- "polkadot-node-core-av-store",
- "polkadot-node-core-backing",
- "polkadot-node-core-bitfield-signing",
- "polkadot-node-core-candidate-validation",
- "polkadot-node-core-chain-api",
- "polkadot-node-core-chain-selection",
- "polkadot-node-core-dispute-coordinator",
- "polkadot-node-core-parachains-inherent",
- "polkadot-node-core-prospective-parachains",
- "polkadot-node-core-provisioner",
- "polkadot-node-core-pvf",
- "polkadot-node-core-pvf-checker",
- "polkadot-node-core-runtime-api",
- "polkadot-node-network-protocol",
- "polkadot-node-primitives",
- "polkadot-node-subsystem",
- "polkadot-node-subsystem-test-helpers",
- "polkadot-node-subsystem-types",
- "polkadot-node-subsystem-util",
- "polkadot-overseer",
- "polkadot-primitives",
- "polkadot-primitives-test-helpers",
- "polkadot-rpc",
- "polkadot-runtime-parachains",
- "polkadot-statement-distribution",
- "polkadot-test-client",
- "rococo-runtime",
- "rococo-runtime-constants",
- "sc-authority-discovery",
- "sc-basic-authorship",
- "sc-chain-spec",
- "sc-client-api",
- "sc-consensus",
- "sc-consensus-babe",
- "sc-consensus-beefy",
- "sc-consensus-grandpa",
- "sc-consensus-slots",
- "sc-executor",
- "sc-keystore",
- "sc-network",
- "sc-network-sync",
- "sc-offchain",
- "sc-service",
- "sc-sync-state-rpc",
- "sc-sysinfo",
- "sc-telemetry",
- "sc-transaction-pool",
- "sc-transaction-pool-api",
- "serde",
- "serde_json",
- "sp-api",
- "sp-authority-discovery",
- "sp-block-builder",
- "sp-blockchain",
- "sp-consensus",
- "sp-consensus-babe",
- "sp-consensus-beefy",
- "sp-consensus-grandpa",
- "sp-core 28.0.0",
- "sp-genesis-builder",
- "sp-inherents",
- "sp-io",
- "sp-keyring",
- "sp-mmr-primitives",
- "sp-offchain",
- "sp-runtime",
- "sp-session",
- "sp-timestamp",
- "sp-tracing 16.0.0",
- "sp-transaction-pool",
- "sp-version",
- "sp-weights",
- "staging-xcm",
- "substrate-prometheus-endpoint",
- "tempfile",
- "thiserror 1.0.65",
- "tracing-gum",
- "westend-runtime",
- "westend-runtime-constants",
- "xcm-runtime-apis",
-]
-
-[[package]]
-name = "polkadot-statement-distribution"
-version = "7.0.0"
-dependencies = [
- "assert_matches",
- "async-channel 1.9.0",
- "bitvec",
- "fatality",
- "futures",
- "futures-timer",
- "parity-scale-codec",
- "polkadot-node-network-protocol",
- "polkadot-node-primitives",
- "polkadot-node-subsystem",
- "polkadot-node-subsystem-test-helpers",
- "polkadot-node-subsystem-util",
- "polkadot-primitives",
- "polkadot-primitives-test-helpers",
- "polkadot-subsystem-bench",
- "rand_chacha 0.3.1",
- "rstest",
- "sc-keystore",
- "sc-network",
- "sp-application-crypto",
- "sp-authority-discovery",
- "sp-core 28.0.0",
- "sp-keyring",
- "sp-keystore",
- "sp-tracing 16.0.0",
- "thiserror 1.0.65",
- "tracing-gum",
-]
-
-[[package]]
-name = "polkadot-statement-table"
-version = "7.0.0"
-dependencies = [
- "parity-scale-codec",
- "polkadot-primitives",
- "tracing-gum",
-]
-
-[[package]]
-name = "polkadot-subsystem-bench"
-version = "1.0.0"
-dependencies = [
- "async-trait",
- "bincode",
- "bitvec",
- "clap",
- "color-eyre",
- "colored",
- "futures",
- "hex",
- "itertools 0.11.0",
- "kvdb-memorydb",
- "orchestra",
- "parity-scale-codec",
- "paste",
- "polkadot-approval-distribution",
- "polkadot-availability-bitfield-distribution",
- "polkadot-availability-distribution",
- "polkadot-availability-recovery",
- "polkadot-dispute-distribution",
- "polkadot-node-core-approval-voting",
- "polkadot-node-core-approval-voting-parallel",
- "polkadot-node-core-av-store",
- "polkadot-node-core-dispute-coordinator",
- "polkadot-node-metrics",
- "polkadot-node-network-protocol",
- "polkadot-node-primitives",
- "polkadot-node-subsystem",
- "polkadot-node-subsystem-test-helpers",
- "polkadot-node-subsystem-types",
- "polkadot-node-subsystem-util",
- "polkadot-overseer",
- "polkadot-primitives",
- "polkadot-primitives-test-helpers",
- "polkadot-statement-distribution",
- "prometheus",
- "pyroscope",
- "pyroscope_pprofrs",
- "rand 0.8.5",
- "rand_chacha 0.3.1",
- "rand_distr",
- "sc-keystore",
- "sc-network",
- "sc-network-types",
- "sc-service",
- "serde",
- "serde_json",
- "serde_yaml",
- "sha1",
- "sp-application-crypto",
- "sp-consensus",
- "sp-consensus-babe",
- "sp-core 28.0.0",
- "sp-keyring",
- "sp-keystore",
- "sp-runtime",
- "sp-timestamp",
- "sp-tracing 16.0.0",
- "strum 0.26.3",
- "substrate-prometheus-endpoint",
- "tikv-jemallocator",
- "tokio",
- "tracing-gum",
-]
-
-[[package]]
-name = "polkadot-test-client"
-version = "1.0.0"
-dependencies = [
- "frame-benchmarking",
- "futures",
- "parity-scale-codec",
- "polkadot-primitives",
- "polkadot-test-runtime",
- "polkadot-test-service",
- "sc-block-builder",
- "sc-consensus",
- "sc-service",
- "sp-api",
- "sp-blockchain",
- "sp-consensus",
- "sp-consensus-babe",
- "sp-inherents",
- "sp-io",
- "sp-keyring",
- "sp-runtime",
- "sp-state-machine",
- "sp-timestamp",
- "substrate-test-client",
-]
-
-[[package]]
-name = "polkadot-test-malus"
-version = "1.0.0"
-dependencies = [
- "assert_matches",
- "async-trait",
- "clap",
- "color-eyre",
- "futures",
- "polkadot-cli",
- "polkadot-erasure-coding",
- "polkadot-node-core-pvf-common",
- "polkadot-node-core-pvf-execute-worker",
- "polkadot-node-core-pvf-prepare-worker",
- "polkadot-node-network-protocol",
- "polkadot-node-primitives",
- "polkadot-node-subsystem",
- "polkadot-node-subsystem-test-helpers",
- "polkadot-node-subsystem-types",
- "polkadot-node-subsystem-util",
- "polkadot-primitives",
- "rand 0.8.5",
- "sp-core 28.0.0",
- "substrate-build-script-utils",
- "tracing-gum",
-]
-
-[[package]]
-name = "polkadot-test-runtime"
-version = "1.0.0"
-dependencies = [
- "frame-election-provider-support",
- "frame-executive",
- "frame-support",
- "frame-system",
- "frame-system-rpc-runtime-api",
- "log",
- "pallet-authority-discovery",
- "pallet-authorship",
- "pallet-babe",
- "pallet-balances",
- "pallet-grandpa",
- "pallet-indices",
- "pallet-offences",
- "pallet-session",
- "pallet-staking",
- "pallet-staking-reward-curve",
- "pallet-sudo",
- "pallet-timestamp",
- "pallet-transaction-payment",
- "pallet-transaction-payment-rpc-runtime-api",
- "pallet-vesting",
- "pallet-xcm",
- "parity-scale-codec",
- "polkadot-primitives",
- "polkadot-runtime-common",
- "polkadot-runtime-parachains",
- "scale-info",
- "serde",
- "sp-api",
- "sp-authority-discovery",
- "sp-block-builder",
- "sp-consensus-babe",
- "sp-consensus-beefy",
- "sp-core 28.0.0",
- "sp-genesis-builder",
- "sp-inherents",
- "sp-io",
- "sp-mmr-primitives",
- "sp-offchain",
- "sp-runtime",
- "sp-session",
- "sp-staking",
- "sp-transaction-pool",
- "sp-version",
- "staging-xcm",
- "staging-xcm-builder",
- "staging-xcm-executor",
- "substrate-wasm-builder",
- "test-runtime-constants",
-]
-
-[[package]]
-name = "polkadot-test-service"
-version = "1.0.0"
-dependencies = [
- "frame-system",
- "futures",
- "pallet-balances",
- "pallet-staking",
- "pallet-transaction-payment",
- "polkadot-node-primitives",
- "polkadot-node-subsystem",
- "polkadot-overseer",
- "polkadot-parachain-primitives",
- "polkadot-primitives",
- "polkadot-runtime-common",
- "polkadot-runtime-parachains",
- "polkadot-service",
- "polkadot-test-runtime",
- "rand 0.8.5",
- "sc-chain-spec",
- "sc-cli",
- "sc-client-api",
- "sc-consensus",
- "sc-consensus-grandpa",
- "sc-network",
- "sc-service",
- "sc-tracing",
- "serde_json",
- "sp-arithmetic",
- "sp-authority-discovery",
- "sp-blockchain",
- "sp-consensus",
- "sp-consensus-babe",
- "sp-core 28.0.0",
- "sp-keyring",
- "sp-runtime",
- "sp-state-machine",
- "substrate-test-client",
- "test-runtime-constants",
- "tokio",
-]
-
-[[package]]
-name = "polkadot-voter-bags"
-version = "7.0.0"
-dependencies = [
- "clap",
- "generate-bags",
- "westend-runtime",
-]
-
-[[package]]
-name = "polkadot-zombienet-sdk-tests"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "asset-hub-westend-runtime",
- "cumulus-zombienet-sdk-helpers",
- "env_logger 0.11.3",
- "ethabi-decode",
- "futures",
- "log",
- "pallet-revive",
- "parity-scale-codec",
- "polkadot-primitives",
- "rand 0.8.5",
- "sc-executor",
- "sc-runtime-utilities",
- "serde",
- "serde_json",
- "sp-core 28.0.0",
- "sp-io",
- "substrate-build-script-utils",
- "subxt 0.43.0",
- "tokio",
- "tokio-util",
- "zombienet-orchestrator",
- "zombienet-sdk",
 ]
 
 [[package]]
@@ -18123,7 +18234,7 @@ checksum = "f8650aabb6c35b860610e9cff5dc1af886c9e25073b7b1712a68972af4281302"
 dependencies = [
  "bytes",
  "heck 0.5.0",
- "itertools 0.10.5",
+ "itertools 0.13.0",
  "log",
  "multimap",
  "once_cell",
@@ -18738,7 +18849,7 @@ dependencies = [
  "async-trait",
  "bp-header-chain",
  "bp-messages",
- "bp-polkadot-core",
+ "bp-pezkuwi-core",
  "bp-runtime",
  "finality-relay",
  "frame-support",
@@ -18806,8 +18917,8 @@ dependencies = [
  "sp-core 28.0.0",
  "sp-tracing 16.0.0",
  "tokio",
- "westend-runtime",
- "westend-runtime-constants",
+ "zagros-runtime",
+ "zagros-runtime-constants",
 ]
 
 [[package]]
@@ -18878,7 +18989,7 @@ dependencies = [
  "futures",
  "futures-timer",
  "jsonrpsee",
- "polkadot-sdk",
+ "pezkuwi-sdk",
  "revive-dev-runtime",
 ]
 
@@ -18888,7 +18999,7 @@ version = "0.1.0"
 dependencies = [
  "array-bytes 6.2.2",
  "parity-scale-codec",
- "polkadot-sdk",
+ "pezkuwi-sdk",
  "scale-info",
  "serde_json",
  "sp-debug-derive 14.0.0",
@@ -19165,217 +19276,6 @@ checksum = "ddb7af00d2b17dbd07d82c0063e25411959748ff03e8d4f96134c2ff41fce34f"
 dependencies = [
  "libc",
  "librocksdb-sys",
-]
-
-[[package]]
-name = "rococo-emulated-chain"
-version = "0.0.0"
-dependencies = [
- "emulated-integration-tests-common",
- "parachains-common",
- "polkadot-primitives",
- "rococo-runtime",
- "rococo-runtime-constants",
- "sc-consensus-grandpa",
- "sp-authority-discovery",
- "sp-consensus-babe",
- "sp-consensus-beefy",
- "sp-core 28.0.0",
- "sp-keyring",
-]
-
-[[package]]
-name = "rococo-parachain-runtime"
-version = "0.6.0"
-dependencies = [
- "cumulus-pallet-aura-ext",
- "cumulus-pallet-parachain-system",
- "cumulus-pallet-weight-reclaim",
- "cumulus-pallet-xcm",
- "cumulus-pallet-xcmp-queue",
- "cumulus-ping",
- "cumulus-primitives-aura",
- "cumulus-primitives-core",
- "cumulus-primitives-utility",
- "frame-benchmarking",
- "frame-executive",
- "frame-support",
- "frame-system",
- "frame-system-rpc-runtime-api",
- "pallet-assets",
- "pallet-aura",
- "pallet-balances",
- "pallet-message-queue",
- "pallet-sudo",
- "pallet-timestamp",
- "pallet-transaction-payment",
- "pallet-transaction-payment-rpc-runtime-api",
- "pallet-xcm",
- "parachains-common",
- "parity-scale-codec",
- "polkadot-parachain-primitives",
- "polkadot-runtime-common",
- "scale-info",
- "serde_json",
- "sp-api",
- "sp-block-builder",
- "sp-consensus-aura",
- "sp-core 28.0.0",
- "sp-genesis-builder",
- "sp-inherents",
- "sp-keyring",
- "sp-offchain",
- "sp-runtime",
- "sp-session",
- "sp-transaction-pool",
- "sp-version",
- "staging-parachain-info",
- "staging-xcm",
- "staging-xcm-builder",
- "staging-xcm-executor",
- "substrate-wasm-builder",
-]
-
-[[package]]
-name = "rococo-runtime"
-version = "7.0.0"
-dependencies = [
- "binary-merkle-tree",
- "bitvec",
- "frame-benchmarking",
- "frame-executive",
- "frame-metadata-hash-extension",
- "frame-remote-externalities",
- "frame-support",
- "frame-system",
- "frame-system-benchmarking",
- "frame-system-rpc-runtime-api",
- "frame-try-runtime",
- "hex-literal",
- "log",
- "pallet-asset-rate",
- "pallet-authority-discovery",
- "pallet-authorship",
- "pallet-babe",
- "pallet-balances",
- "pallet-beefy",
- "pallet-beefy-mmr",
- "pallet-bounties",
- "pallet-child-bounties",
- "pallet-conviction-voting",
- "pallet-democracy",
- "pallet-elections-phragmen",
- "pallet-grandpa",
- "pallet-identity",
- "pallet-indices",
- "pallet-message-queue",
- "pallet-migrations",
- "pallet-mmr",
- "pallet-multisig",
- "pallet-nis",
- "pallet-offences",
- "pallet-parameters",
- "pallet-preimage",
- "pallet-proxy",
- "pallet-ranked-collective",
- "pallet-recovery",
- "pallet-referenda",
- "pallet-root-testing",
- "pallet-scheduler",
- "pallet-session",
- "pallet-society",
- "pallet-staking",
- "pallet-state-trie-migration",
- "pallet-sudo",
- "pallet-timestamp",
- "pallet-tips",
- "pallet-transaction-payment",
- "pallet-transaction-payment-rpc-runtime-api",
- "pallet-treasury",
- "pallet-utility",
- "pallet-vesting",
- "pallet-whitelist",
- "pallet-xcm",
- "pallet-xcm-benchmarks",
- "parity-scale-codec",
- "polkadot-parachain-primitives",
- "polkadot-primitives",
- "polkadot-runtime-common",
- "polkadot-runtime-parachains",
- "rococo-runtime-constants",
- "scale-info",
- "serde",
- "serde_derive",
- "serde_json",
- "sp-api",
- "sp-arithmetic",
- "sp-authority-discovery",
- "sp-block-builder",
- "sp-consensus-babe",
- "sp-consensus-beefy",
- "sp-consensus-grandpa",
- "sp-core 28.0.0",
- "sp-genesis-builder",
- "sp-inherents",
- "sp-io",
- "sp-keyring",
- "sp-mmr-primitives",
- "sp-offchain",
- "sp-runtime",
- "sp-session",
- "sp-staking",
- "sp-storage 19.0.0",
- "sp-tracing 16.0.0",
- "sp-transaction-pool",
- "sp-version",
- "staging-xcm",
- "staging-xcm-builder",
- "staging-xcm-executor",
- "substrate-wasm-builder",
- "tokio",
- "xcm-runtime-apis",
-]
-
-[[package]]
-name = "rococo-runtime-constants"
-version = "7.0.0"
-dependencies = [
- "frame-support",
- "polkadot-primitives",
- "polkadot-runtime-common",
- "smallvec",
- "sp-core 28.0.0",
- "sp-runtime",
- "sp-weights",
- "staging-xcm",
- "staging-xcm-builder",
-]
-
-[[package]]
-name = "rococo-system-emulated-network"
-version = "0.0.0"
-dependencies = [
- "asset-hub-rococo-emulated-chain",
- "bridge-hub-rococo-emulated-chain",
- "coretime-rococo-emulated-chain",
- "emulated-integration-tests-common",
- "penpal-emulated-chain",
- "people-rococo-emulated-chain",
- "rococo-emulated-chain",
-]
-
-[[package]]
-name = "rococo-westend-system-emulated-network"
-version = "0.0.0"
-dependencies = [
- "asset-hub-rococo-emulated-chain",
- "asset-hub-westend-emulated-chain",
- "bridge-hub-rococo-emulated-chain",
- "bridge-hub-westend-emulated-chain",
- "emulated-integration-tests-common",
- "penpal-emulated-chain",
- "rococo-emulated-chain",
- "westend-emulated-chain",
 ]
 
 [[package]]
@@ -22390,7 +22290,7 @@ dependencies = [
  "frame-system",
  "hex-literal",
  "parity-scale-codec",
- "polkadot-parachain-primitives",
+ "pezkuwi-teyrchain-primitives",
  "scale-info",
  "serde",
  "sp-arithmetic",
@@ -22492,7 +22392,7 @@ dependencies = [
  "frame-system",
  "hex-literal",
  "parity-scale-codec",
- "polkadot-parachain-primitives",
+ "pezkuwi-teyrchain-primitives",
  "scale-info",
  "snowbridge-core",
  "snowbridge-verification-primitives",
@@ -22717,7 +22617,7 @@ dependencies = [
  "pallet-balances",
  "pallet-message-queue",
  "parity-scale-codec",
- "polkadot-primitives",
+ "pezkuwi-primitives",
  "scale-info",
  "snowbridge-core",
  "snowbridge-outbound-queue-primitives",
@@ -22799,7 +22699,7 @@ dependencies = [
 name = "snowbridge-runtime-test-common"
 version = "0.2.0"
 dependencies = [
- "cumulus-pallet-parachain-system",
+ "cumulus-pallet-teyrchain-system",
  "frame-support",
  "frame-system",
  "pallet-balances",
@@ -22809,7 +22709,6 @@ dependencies = [
  "pallet-timestamp",
  "pallet-utility",
  "pallet-xcm",
- "parachains-runtimes-test-utils",
  "parity-scale-codec",
  "snowbridge-core",
  "snowbridge-pallet-ethereum-client",
@@ -22820,9 +22719,10 @@ dependencies = [
  "sp-io",
  "sp-keyring",
  "sp-runtime",
- "staging-parachain-info",
+ "staging-teyrchain-info",
  "staging-xcm",
  "staging-xcm-executor",
+ "teyrchains-runtimes-test-utils",
 ]
 
 [[package]]
@@ -23287,6 +23187,7 @@ dependencies = [
  "parity-scale-codec",
  "parking_lot 0.12.3",
  "paste",
+ "pezkuwi-ss58-registry",
  "primitive-types 0.13.1",
  "rand 0.8.5",
  "regex",
@@ -23302,7 +23203,6 @@ dependencies = [
  "sp-externalities 0.25.0",
  "sp-std 14.0.0",
  "sp-storage 19.0.0",
- "ss58-registry",
  "substrate-bip39 0.4.7",
  "thiserror 1.0.65",
  "tracing",
@@ -23587,7 +23487,7 @@ dependencies = [
  "array-bytes 6.2.2",
  "log",
  "parity-scale-codec",
- "polkadot-ckb-merkle-mountain-range",
+ "pezkuwi-ckb-merkle-mountain-range",
  "scale-info",
  "serde",
  "sp-api",
@@ -24297,9 +24197,9 @@ dependencies = [
 
 [[package]]
 name = "ss58-registry"
-version = "1.43.0"
+version = "1.51.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5e6915280e2d0db8911e5032a5c275571af6bdded2916abd691a659be25d3439"
+checksum = "19409f13998e55816d1c728395af0b52ec066206341d939e22e7766df9b494b8"
 dependencies = [
  "Inflector",
  "num-format",
@@ -24372,7 +24272,7 @@ dependencies = [
  "node-rpc",
  "node-testing",
  "parity-scale-codec",
- "polkadot-sdk",
+ "pezkuwi-sdk",
  "pretty_assertions",
  "rand 0.8.5",
  "regex",
@@ -24409,7 +24309,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "staging-parachain-info"
+name = "staging-teyrchain-info"
 version = "0.7.0"
 dependencies = [
  "cumulus-primitives-core",
@@ -24461,10 +24361,10 @@ dependencies = [
  "pallet-transaction-payment",
  "pallet-xcm",
  "parity-scale-codec",
- "polkadot-parachain-primitives",
- "polkadot-primitives",
- "polkadot-runtime-parachains",
- "polkadot-test-runtime",
+ "pezkuwi-primitives",
+ "pezkuwi-runtime-teyrchains",
+ "pezkuwi-test-runtime",
+ "pezkuwi-teyrchain-primitives",
  "primitive-types 0.13.1",
  "scale-info",
  "sp-arithmetic",
@@ -24735,10 +24635,10 @@ dependencies = [
  "async-trait",
  "bp-header-chain",
  "bp-messages",
- "bp-parachains",
- "bp-polkadot-core",
+ "bp-pezkuwi-core",
  "bp-relayers",
  "bp-runtime",
+ "bp-teyrchains",
  "clap",
  "equivocation-detector",
  "finality-relay",
@@ -24751,9 +24651,8 @@ dependencies = [
  "pallet-balances",
  "pallet-bridge-grandpa",
  "pallet-bridge-messages",
- "pallet-bridge-parachains",
+ "pallet-bridge-teyrchains",
  "pallet-grandpa",
- "parachains-relay",
  "parity-scale-codec",
  "rbtag",
  "relay-substrate-client",
@@ -24764,6 +24663,7 @@ dependencies = [
  "sp-runtime",
  "sp-trie",
  "strum 0.26.3",
+ "teyrchains-relay",
  "thiserror 1.0.65",
  "tracing",
 ]
@@ -25766,19 +25666,29 @@ dependencies = [
 ]
 
 [[package]]
-name = "test-parachain-adder"
+name = "test-runtime-constants"
+version = "1.0.0"
+dependencies = [
+ "frame-support",
+ "pezkuwi-primitives",
+ "smallvec",
+ "sp-runtime",
+]
+
+[[package]]
+name = "test-teyrchain-adder"
 version = "1.0.0"
 dependencies = [
  "dlmalloc",
  "parity-scale-codec",
- "polkadot-parachain-primitives",
+ "pezkuwi-teyrchain-primitives",
  "sp-io",
  "substrate-wasm-builder",
  "tiny-keccak",
 ]
 
 [[package]]
-name = "test-parachain-adder-collator"
+name = "test-teyrchain-adder-collator"
 version = "1.0.0"
 dependencies = [
  "clap",
@@ -25786,24 +25696,24 @@ dependencies = [
  "futures-timer",
  "log",
  "parity-scale-codec",
- "polkadot-cli",
- "polkadot-node-core-pvf",
- "polkadot-node-primitives",
- "polkadot-node-subsystem",
- "polkadot-parachain-primitives",
- "polkadot-primitives",
- "polkadot-service",
- "polkadot-test-service",
+ "pezkuwi-cli",
+ "pezkuwi-node-core-pvf",
+ "pezkuwi-node-primitives",
+ "pezkuwi-node-subsystem",
+ "pezkuwi-primitives",
+ "pezkuwi-service",
+ "pezkuwi-test-service",
+ "pezkuwi-teyrchain-primitives",
  "sc-cli",
  "sc-service",
  "sp-core 28.0.0",
  "sp-keyring",
- "test-parachain-adder",
+ "test-teyrchain-adder",
  "tokio",
 ]
 
 [[package]]
-name = "test-parachain-halt"
+name = "test-teyrchain-halt"
 version = "1.0.0"
 dependencies = [
  "rustversion",
@@ -25811,21 +25721,21 @@ dependencies = [
 ]
 
 [[package]]
-name = "test-parachain-undying"
+name = "test-teyrchain-undying"
 version = "1.0.0"
 dependencies = [
  "dlmalloc",
  "log",
  "parity-scale-codec",
- "polkadot-parachain-primitives",
- "polkadot-primitives",
+ "pezkuwi-primitives",
+ "pezkuwi-teyrchain-primitives",
  "sp-io",
  "substrate-wasm-builder",
  "tiny-keccak",
 ]
 
 [[package]]
-name = "test-parachain-undying-collator"
+name = "test-teyrchain-undying-collator"
 version = "1.0.0"
 dependencies = [
  "clap",
@@ -25833,46 +25743,151 @@ dependencies = [
  "futures-timer",
  "log",
  "parity-scale-codec",
- "polkadot-cli",
- "polkadot-erasure-coding",
- "polkadot-node-core-pvf",
- "polkadot-node-primitives",
- "polkadot-node-subsystem",
- "polkadot-parachain-primitives",
- "polkadot-primitives",
- "polkadot-service",
- "polkadot-test-service",
+ "pezkuwi-cli",
+ "pezkuwi-erasure-coding",
+ "pezkuwi-node-core-pvf",
+ "pezkuwi-node-primitives",
+ "pezkuwi-node-subsystem",
+ "pezkuwi-primitives",
+ "pezkuwi-service",
+ "pezkuwi-test-service",
+ "pezkuwi-teyrchain-primitives",
  "sc-cli",
  "sc-client-api",
  "sc-service",
  "sp-core 28.0.0",
  "sp-keyring",
- "test-parachain-undying",
+ "test-teyrchain-undying",
  "tokio",
 ]
 
 [[package]]
-name = "test-runtime-constants"
-version = "1.0.0"
-dependencies = [
- "frame-support",
- "polkadot-primitives",
- "smallvec",
- "sp-runtime",
-]
-
-[[package]]
-name = "testnet-parachains-constants"
+name = "testnet-teyrchains-constants"
 version = "1.0.0"
 dependencies = [
  "cumulus-primitives-core",
  "frame-support",
- "polkadot-core-primitives",
- "rococo-runtime-constants",
+ "pezkuwi-core-primitives",
+ "pezkuwichain-runtime-constants",
  "smallvec",
  "sp-runtime",
  "staging-xcm",
- "westend-runtime-constants",
+ "zagros-runtime-constants",
+]
+
+[[package]]
+name = "teyrchain-template"
+version = "0.0.0"
+dependencies = [
+ "docify",
+]
+
+[[package]]
+name = "teyrchain-template-node"
+version = "0.0.0"
+dependencies = [
+ "clap",
+ "color-print",
+ "docify",
+ "futures",
+ "jsonrpsee",
+ "log",
+ "parity-scale-codec",
+ "pezkuwi-sdk",
+ "serde",
+ "substrate-prometheus-endpoint",
+ "teyrchain-template-runtime",
+]
+
+[[package]]
+name = "teyrchain-template-runtime"
+version = "0.0.0"
+dependencies = [
+ "cumulus-pallet-teyrchain-system",
+ "docify",
+ "hex-literal",
+ "log",
+ "pallet-teyrchain-template",
+ "parity-scale-codec",
+ "pezkuwi-sdk",
+ "scale-info",
+ "serde_json",
+ "smallvec",
+ "substrate-wasm-builder",
+]
+
+[[package]]
+name = "teyrchains-common"
+version = "7.0.0"
+dependencies = [
+ "cumulus-primitives-core",
+ "cumulus-primitives-utility",
+ "frame-support",
+ "frame-system",
+ "pallet-asset-tx-payment",
+ "pallet-assets",
+ "pallet-authorship",
+ "pallet-balances",
+ "pallet-collator-selection",
+ "pallet-message-queue",
+ "pallet-treasury",
+ "pallet-xcm",
+ "parity-scale-codec",
+ "pezkuwi-primitives",
+ "pezkuwi-runtime-common",
+ "scale-info",
+ "sp-consensus-aura",
+ "sp-core 28.0.0",
+ "sp-io",
+ "sp-runtime",
+ "staging-teyrchain-info",
+ "staging-xcm",
+ "staging-xcm-executor",
+ "tracing",
+]
+
+[[package]]
+name = "teyrchains-relay"
+version = "0.1.0"
+dependencies = [
+ "async-std",
+ "async-trait",
+ "bp-pezkuwi-core",
+ "futures",
+ "relay-substrate-client",
+ "relay-utils",
+ "sp-core 28.0.0",
+ "tracing",
+]
+
+[[package]]
+name = "teyrchains-runtimes-test-utils"
+version = "7.0.0"
+dependencies = [
+ "cumulus-pallet-teyrchain-system",
+ "cumulus-pallet-xcmp-queue",
+ "cumulus-primitives-core",
+ "cumulus-primitives-teyrchain-inherent",
+ "cumulus-test-relay-sproof-builder",
+ "frame-support",
+ "frame-system",
+ "pallet-balances",
+ "pallet-collator-selection",
+ "pallet-session",
+ "pallet-timestamp",
+ "pallet-xcm",
+ "parity-scale-codec",
+ "pezkuwi-teyrchain-primitives",
+ "sp-consensus-aura",
+ "sp-core 28.0.0",
+ "sp-io",
+ "sp-runtime",
+ "sp-tracing 16.0.0",
+ "staging-teyrchain-info",
+ "staging-xcm",
+ "staging-xcm-executor",
+ "teyrchains-common",
+ "xcm-runtime-apis",
 ]
 
 [[package]]
@@ -26379,7 +26394,7 @@ name = "tracing-gum"
 version = "7.0.0"
 dependencies = [
  "coarsetime",
- "polkadot-primitives",
+ "pezkuwi-primitives",
  "tracing",
  "tracing-gum-proc-macro",
 ]
@@ -27572,164 +27587,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "westend-emulated-chain"
-version = "0.0.0"
-dependencies = [
- "emulated-integration-tests-common",
- "pallet-staking",
- "parachains-common",
- "polkadot-primitives",
- "sc-consensus-grandpa",
- "sp-authority-discovery",
- "sp-consensus-babe",
- "sp-consensus-beefy",
- "sp-core 28.0.0",
- "sp-runtime",
- "westend-runtime",
- "westend-runtime-constants",
-]
-
-[[package]]
-name = "westend-runtime"
-version = "7.0.0"
-dependencies = [
- "approx",
- "binary-merkle-tree",
- "bitvec",
- "frame-benchmarking",
- "frame-election-provider-support",
- "frame-executive",
- "frame-metadata-hash-extension",
- "frame-remote-externalities",
- "frame-support",
- "frame-system",
- "frame-system-benchmarking",
- "frame-system-rpc-runtime-api",
- "frame-try-runtime",
- "hex-literal",
- "log",
- "pallet-asset-rate",
- "pallet-authority-discovery",
- "pallet-authorship",
- "pallet-babe",
- "pallet-bags-list",
- "pallet-balances",
- "pallet-beefy",
- "pallet-beefy-mmr",
- "pallet-conviction-voting",
- "pallet-delegated-staking",
- "pallet-election-provider-multi-phase",
- "pallet-election-provider-support-benchmarking",
- "pallet-fast-unstake",
- "pallet-grandpa",
- "pallet-identity",
- "pallet-indices",
- "pallet-message-queue",
- "pallet-meta-tx",
- "pallet-migrations",
- "pallet-mmr",
- "pallet-multisig",
- "pallet-nomination-pools",
- "pallet-nomination-pools-benchmarking",
- "pallet-nomination-pools-runtime-api",
- "pallet-offences",
- "pallet-offences-benchmarking",
- "pallet-parameters",
- "pallet-preimage",
- "pallet-proxy",
- "pallet-recovery",
- "pallet-referenda",
- "pallet-root-offences",
- "pallet-root-testing",
- "pallet-scheduler",
- "pallet-session",
- "pallet-session-benchmarking",
- "pallet-staking",
- "pallet-staking-async-ah-client",
- "pallet-staking-async-rc-client",
- "pallet-staking-runtime-api",
- "pallet-sudo",
- "pallet-timestamp",
- "pallet-transaction-payment",
- "pallet-transaction-payment-rpc-runtime-api",
- "pallet-treasury",
- "pallet-utility",
- "pallet-verify-signature",
- "pallet-vesting",
- "pallet-whitelist",
- "pallet-xcm",
- "pallet-xcm-benchmarks",
- "parity-scale-codec",
- "polkadot-parachain-primitives",
- "polkadot-primitives",
- "polkadot-runtime-common",
- "polkadot-runtime-parachains",
- "scale-info",
- "serde",
- "serde_derive",
- "serde_json",
- "sp-api",
- "sp-application-crypto",
- "sp-arithmetic",
- "sp-authority-discovery",
- "sp-block-builder",
- "sp-consensus-babe",
- "sp-consensus-beefy",
- "sp-consensus-grandpa",
- "sp-core 28.0.0",
- "sp-genesis-builder",
- "sp-inherents",
- "sp-io",
- "sp-keyring",
- "sp-mmr-primitives",
- "sp-npos-elections",
- "sp-offchain",
- "sp-runtime",
- "sp-session",
- "sp-staking",
- "sp-storage 19.0.0",
- "sp-tracing 16.0.0",
- "sp-transaction-pool",
- "sp-version",
- "staging-xcm",
- "staging-xcm-builder",
- "staging-xcm-executor",
- "substrate-wasm-builder",
- "tokio",
- "westend-runtime-constants",
- "xcm-runtime-apis",
-]
-
-[[package]]
-name = "westend-runtime-constants"
-version = "7.0.0"
-dependencies = [
- "frame-support",
- "polkadot-primitives",
- "polkadot-runtime-common",
- "smallvec",
- "sp-core 28.0.0",
- "sp-runtime",
- "sp-weights",
- "staging-xcm",
- "staging-xcm-builder",
-]
-
-[[package]]
-name = "westend-system-emulated-network"
-version = "0.0.0"
-dependencies = [
- "asset-hub-westend-emulated-chain",
- "bridge-hub-westend-emulated-chain",
- "collectives-westend-emulated-chain",
- "coretime-westend-emulated-chain",
- "emulated-integration-tests-common",
- "penpal-emulated-chain",
- "people-westend-emulated-chain",
- "westend-emulated-chain",
-]
-
-[[package]]
 name = "whoami"
 version = "1.5.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -28352,8 +28209,8 @@ dependencies = [
  "pallet-message-queue",
  "pallet-xcm",
  "parity-scale-codec",
- "polkadot-runtime-parachains",
- "polkadot-sdk-frame",
+ "pezkuwi-runtime-teyrchains",
+ "pezkuwi-sdk-frame",
  "scale-info",
  "simple-mermaid",
  "sp-io",
@@ -28370,9 +28227,9 @@ name = "xcm-emulator"
 version = "0.5.0"
 dependencies = [
  "array-bytes 6.2.2",
- "cumulus-pallet-parachain-system",
+ "cumulus-pallet-teyrchain-system",
  "cumulus-primitives-core",
- "cumulus-primitives-parachain-inherent",
+ "cumulus-primitives-teyrchain-inherent",
  "cumulus-test-relay-sproof-builder",
  "frame-support",
  "frame-system",
@@ -28381,12 +28238,11 @@ dependencies = [
  "pallet-balances",
  "pallet-message-queue",
  "pallet-timestamp",
- "parachains-common",
  "parity-scale-codec",
  "paste",
- "polkadot-parachain-primitives",
- "polkadot-primitives",
- "polkadot-runtime-parachains",
+ "pezkuwi-primitives",
+ "pezkuwi-runtime-teyrchains",
+ "pezkuwi-teyrchain-primitives",
  "sp-arithmetic",
  "sp-consensus-aura",
  "sp-core 28.0.0",
@@ -28396,6 +28252,7 @@ dependencies = [
  "sp-tracing 16.0.0",
  "staging-xcm",
  "staging-xcm-executor",
+ "teyrchains-common",
  "tracing",
  "xcm-simulator",
 ]
@@ -28411,10 +28268,10 @@ dependencies = [
  "pallet-transaction-payment",
  "pallet-xcm",
  "parity-scale-codec",
- "polkadot-runtime-parachains",
- "polkadot-test-client",
- "polkadot-test-runtime",
- "polkadot-test-service",
+ "pezkuwi-runtime-teyrchains",
+ "pezkuwi-test-client",
+ "pezkuwi-test-runtime",
+ "pezkuwi-test-service",
  "sp-consensus",
  "sp-keyring",
  "sp-runtime",
@@ -28468,10 +28325,10 @@ dependencies = [
  "frame-system",
  "parity-scale-codec",
  "paste",
- "polkadot-core-primitives",
- "polkadot-parachain-primitives",
- "polkadot-primitives",
- "polkadot-runtime-parachains",
+ "pezkuwi-core-primitives",
+ "pezkuwi-primitives",
+ "pezkuwi-runtime-teyrchains",
+ "pezkuwi-teyrchain-primitives",
  "scale-info",
  "sp-io",
  "sp-runtime",
@@ -28491,8 +28348,8 @@ dependencies = [
  "pallet-uniques",
  "pallet-xcm",
  "parity-scale-codec",
- "polkadot-parachain-primitives",
- "polkadot-runtime-parachains",
+ "pezkuwi-runtime-teyrchains",
+ "pezkuwi-teyrchain-primitives",
  "scale-info",
  "sp-core 28.0.0",
  "sp-io",
@@ -28519,9 +28376,9 @@ dependencies = [
  "pallet-message-queue",
  "pallet-xcm",
  "parity-scale-codec",
- "polkadot-core-primitives",
- "polkadot-parachain-primitives",
- "polkadot-runtime-parachains",
+ "pezkuwi-core-primitives",
+ "pezkuwi-runtime-teyrchains",
+ "pezkuwi-teyrchain-primitives",
  "scale-info",
  "sp-core 28.0.0",
  "sp-io",
@@ -28600,12 +28457,12 @@ dependencies = [
 ]
 
 [[package]]
-name = "yet-another-parachain-runtime"
+name = "yet-another-teyrchain-runtime"
 version = "0.6.0"
 dependencies = [
- "cumulus-pallet-parachain-system",
+ "cumulus-pallet-teyrchain-system",
  "parity-scale-codec",
- "polkadot-sdk",
+ "pezkuwi-sdk",
  "scale-info",
  "serde_json",
  "substrate-wasm-builder",
@@ -28633,6 +28490,164 @@ dependencies = [
  "quote 1.0.40",
  "syn 2.0.98",
  "synstructure 0.13.1",
+]
+
+[[package]]
+name = "zagros-emulated-chain"
+version = "0.0.0"
+dependencies = [
+ "emulated-integration-tests-common",
+ "pallet-staking",
+ "pezkuwi-primitives",
+ "sc-consensus-grandpa",
+ "sp-authority-discovery",
+ "sp-consensus-babe",
+ "sp-consensus-beefy",
+ "sp-core 28.0.0",
+ "sp-runtime",
+ "teyrchains-common",
+ "zagros-runtime",
+ "zagros-runtime-constants",
+]
+
+[[package]]
+name = "zagros-runtime"
+version = "7.0.0"
+dependencies = [
+ "approx",
+ "binary-merkle-tree",
+ "bitvec",
+ "frame-benchmarking",
+ "frame-election-provider-support",
+ "frame-executive",
+ "frame-metadata-hash-extension",
+ "frame-remote-externalities",
+ "frame-support",
+ "frame-system",
+ "frame-system-benchmarking",
+ "frame-system-rpc-runtime-api",
+ "frame-try-runtime",
+ "hex-literal",
+ "log",
+ "pallet-asset-rate",
+ "pallet-authority-discovery",
+ "pallet-authorship",
+ "pallet-babe",
+ "pallet-bags-list",
+ "pallet-balances",
+ "pallet-beefy",
+ "pallet-beefy-mmr",
+ "pallet-conviction-voting",
+ "pallet-delegated-staking",
+ "pallet-election-provider-multi-phase",
+ "pallet-election-provider-support-benchmarking",
+ "pallet-fast-unstake",
+ "pallet-grandpa",
+ "pallet-identity",
+ "pallet-indices",
+ "pallet-message-queue",
+ "pallet-meta-tx",
+ "pallet-migrations",
+ "pallet-mmr",
+ "pallet-multisig",
+ "pallet-nomination-pools",
+ "pallet-nomination-pools-benchmarking",
+ "pallet-nomination-pools-runtime-api",
+ "pallet-offences",
+ "pallet-offences-benchmarking",
+ "pallet-parameters",
+ "pallet-preimage",
+ "pallet-proxy",
+ "pallet-recovery",
+ "pallet-referenda",
+ "pallet-root-offences",
+ "pallet-root-testing",
+ "pallet-scheduler",
+ "pallet-session",
+ "pallet-session-benchmarking",
+ "pallet-staking",
+ "pallet-staking-async-ah-client",
+ "pallet-staking-async-rc-client",
+ "pallet-staking-runtime-api",
+ "pallet-sudo",
+ "pallet-timestamp",
+ "pallet-transaction-payment",
+ "pallet-transaction-payment-rpc-runtime-api",
+ "pallet-treasury",
+ "pallet-utility",
+ "pallet-verify-signature",
+ "pallet-vesting",
+ "pallet-whitelist",
+ "pallet-xcm",
+ "pallet-xcm-benchmarks",
+ "parity-scale-codec",
+ "pezkuwi-primitives",
+ "pezkuwi-runtime-common",
+ "pezkuwi-runtime-teyrchains",
+ "pezkuwi-teyrchain-primitives",
+ "scale-info",
+ "serde",
+ "serde_derive",
+ "serde_json",
+ "sp-api",
+ "sp-application-crypto",
+ "sp-arithmetic",
+ "sp-authority-discovery",
+ "sp-block-builder",
+ "sp-consensus-babe",
+ "sp-consensus-beefy",
+ "sp-consensus-grandpa",
+ "sp-core 28.0.0",
+ "sp-genesis-builder",
+ "sp-inherents",
+ "sp-io",
+ "sp-keyring",
+ "sp-mmr-primitives",
+ "sp-npos-elections",
+ "sp-offchain",
+ "sp-runtime",
+ "sp-session",
+ "sp-staking",
+ "sp-storage 19.0.0",
+ "sp-tracing 16.0.0",
+ "sp-transaction-pool",
+ "sp-version",
+ "staging-xcm",
+ "staging-xcm-builder",
+ "staging-xcm-executor",
+ "substrate-wasm-builder",
+ "tokio",
+ "xcm-runtime-apis",
+ "zagros-runtime-constants",
+]
+
+[[package]]
+name = "zagros-runtime-constants"
+version = "7.0.0"
+dependencies = [
+ "frame-support",
+ "pezkuwi-primitives",
+ "pezkuwi-runtime-common",
+ "smallvec",
+ "sp-core 28.0.0",
+ "sp-runtime",
+ "sp-weights",
+ "staging-xcm",
+ "staging-xcm-builder",
+]
+
+[[package]]
+name = "zagros-system-emulated-network"
+version = "0.0.0"
+dependencies = [
+ "asset-hub-zagros-emulated-chain",
+ "bridge-hub-zagros-emulated-chain",
+ "collectives-zagros-emulated-chain",
+ "coretime-zagros-emulated-chain",
+ "emulated-integration-tests-common",
+ "penpal-emulated-chain",
+ "people-zagros-emulated-chain",
+ "zagros-emulated-chain",
 ]
 
 [[package]]

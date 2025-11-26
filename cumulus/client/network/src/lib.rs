@@ -15,9 +15,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Cumulus. If not, see <https://www.gnu.org/licenses/>.
 
-//! Parachain specific networking
+//! Teyrchain specific networking
 //!
-//! Provides a custom block announcement implementation for parachains
+//! Provides a custom block announcement implementation for teyrchains
 //! that use the relay chain provided consensus. See [`RequireSecondedInBlockAnnounce`]
 //! and [`WaitToAnnounce`] for more information about this implementation.
 
@@ -29,10 +29,10 @@ use sp_core::traits::SpawnNamed;
 use sp_runtime::traits::{Block as BlockT, Header as HeaderT};
 
 use cumulus_relay_chain_interface::RelayChainInterface;
-use polkadot_node_primitives::{CollationSecondedSignal, Statement};
-use polkadot_node_subsystem::messages::RuntimeApiRequest;
-use polkadot_parachain_primitives::primitives::HeadData;
-use polkadot_primitives::{
+use pezkuwi_node_primitives::{CollationSecondedSignal, Statement};
+use pezkuwi_node_subsystem::messages::RuntimeApiRequest;
+use pezkuwi_teyrchain_primitives::primitives::HeadData;
+use pezkuwi_primitives::{
 	CandidateReceiptV2 as CandidateReceipt, CompactStatement, Hash as PHash, Id as ParaId,
 	OccupiedCoreAssumption, SigningContext, UncheckedSigned,
 };
@@ -194,13 +194,13 @@ impl TryFrom<&'_ CollationSecondedSignal> for BlockAnnounceData {
 pub type BlockAnnounceValidator<Block, RCInterface> =
 	RequireSecondedInBlockAnnounce<Block, RCInterface>;
 
-/// Parachain specific block announce validator.
+/// Teyrchain specific block announce validator.
 ///
 /// This is not required when the collation mechanism itself is sybil-resistant, as it is a spam
 /// protection mechanism used to prevent nodes from dealing with unbounded numbers of blocks. For
 /// sybil-resistant collation mechanisms, this will only slow things down.
 ///
-/// This block announce validator is required if the parachain is running
+/// This block announce validator is required if the teyrchain is running
 /// with the relay chain provided consensus to make sure each node only
 /// imports a reasonable number of blocks per round. The relay chain provided
 /// consensus doesn't have any authorities and so it could happen that without
@@ -209,7 +209,7 @@ pub type BlockAnnounceValidator<Block, RCInterface> =
 ///
 /// To solve this problem, each block announcement is delayed until a collator
 /// has received a [`Statement::Seconded`] for its `PoV`. This message tells the
-/// collator that its `PoV` was validated successfully by a parachain validator and
+/// collator that its `PoV` was validated successfully by a teyrchain validator and
 /// that it is very likely that this `PoV` will be included in the relay chain. Every
 /// collator that doesn't receive the message for its `PoV` will not announce its block.
 /// For more information on the block announcement, see [`WaitToAnnounce`].
@@ -219,7 +219,7 @@ pub type BlockAnnounceValidator<Block, RCInterface> =
 /// We call this extra data `justification`.
 /// It is expected that the attached data is a SCALE encoded [`BlockAnnounceData`]. The
 /// statement is checked to be a [`CompactStatement::Seconded`] and that it is signed by an active
-/// parachain validator.
+/// teyrchain validator.
 ///
 /// If no justification was provided we check if the block announcement is at the tip of the known
 /// chain. If it is at the tip, it is required to provide a justification or otherwise we reject
@@ -246,7 +246,7 @@ impl<Block: BlockT, RCInterface> RequireSecondedInBlockAnnounce<Block, RCInterfa
 where
 	RCInterface: RelayChainInterface + Clone,
 {
-	/// Get the included block of the given parachain in the relay chain.
+	/// Get the included block of the given teyrchain in the relay chain.
 	async fn included_block(
 		relay_chain_interface: &RCInterface,
 		hash: PHash,
@@ -257,19 +257,19 @@ where
 			.await
 			.map_err(|e| Box::new(BlockAnnounceError(format!("{:?}", e))) as Box<_>)?
 			.ok_or_else(|| {
-				Box::new(BlockAnnounceError("Could not find parachain head in relay chain".into()))
+				Box::new(BlockAnnounceError("Could not find teyrchain head in relay chain".into()))
 					as Box<_>
 			})?;
 		let para_head =
 			Block::Header::decode(&mut &validation_data.parent_head.0[..]).map_err(|e| {
-				Box::new(BlockAnnounceError(format!("Failed to decode parachain head: {:?}", e)))
+				Box::new(BlockAnnounceError(format!("Failed to decode teyrchain head: {:?}", e)))
 					as Box<_>
 			})?;
 
 		Ok(para_head)
 	}
 
-	/// Get the backed block hashes of the given parachain in the relay chain.
+	/// Get the backed block hashes of the given teyrchain in the relay chain.
 	async fn backed_block_hashes(
 		relay_chain_interface: &RCInterface,
 		hash: PHash,
@@ -279,18 +279,18 @@ where
 			.version(hash)
 			.await
 			.map_err(|e| Box::new(BlockAnnounceError(format!("{:?}", e))) as Box<_>)?;
-		let parachain_host_runtime_api_version =
+		let teyrchain_host_runtime_api_version =
 			runtime_api_version
 				.api_version(
-					&<dyn polkadot_primitives::runtime_api::ParachainHost<
-						polkadot_primitives::Block,
+					&<dyn pezkuwi_primitives::runtime_api::TeyrchainHost<
+						pezkuwi_primitives::Block,
 					>>::ID,
 				)
 				.unwrap_or_default();
 
 		// If the relay chain runtime does not support the new runtime API, fallback to the
 		// deprecated one.
-		let candidate_receipts = if parachain_host_runtime_api_version <
+		let candidate_receipts = if teyrchain_host_runtime_api_version <
 			RuntimeApiRequest::CANDIDATES_PENDING_AVAILABILITY_RUNTIME_REQUIREMENT
 		{
 			#[allow(deprecated)]

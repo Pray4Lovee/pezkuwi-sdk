@@ -248,7 +248,7 @@ pub mod pallet {
 		/// Note that this can return after the **first** migration tick that causes exhaustion,
 		/// specifically in the case of the `size` constrain. The reason for this is that before
 		/// reading a key, we simply cannot know how many bytes it is. In other words, this should
-		/// not be used in any environment where resources are strictly bounded (e.g. a parachain),
+		/// not be used in any environment where resources are strictly bounded (e.g. a teyrchain),
 		/// but it is acceptable otherwise (relay chain, offchain workers).
 		pub fn migrate_until_exhaustion(
 			&mut self,
@@ -845,7 +845,7 @@ pub mod pallet {
 		/// Forcefully set the progress the running migration.
 		///
 		/// This is only useful in one case: the next key to migrate is too big to be migrated with
-		/// a signed account, in a parachain context, and we simply want to skip it. A reasonable
+		/// a signed account, in a teyrchain context, and we simply want to skip it. A reasonable
 		/// example of this would be `:code:`, which is both very expensive to migrate, and commonly
 		/// used, so probably it is already migrated.
 		///

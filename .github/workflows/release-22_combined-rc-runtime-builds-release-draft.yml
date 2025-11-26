@@ -10,32 +10,32 @@ on:
         type: choice
         options:
           - all
-          - westend
-          - asset-hub-westend
-          - bridge-hub-westend
-          - collectives-westend
-          - coretime-westend
-          - glutton-westend
-          - people-westend
+          - zagros
+          - asset-hub-zagros
+          - bridge-hub-zagros
+          - collectives-zagros
+          - coretime-zagros
+          - glutton-zagros
+          - people-zagros
       runtime_dir:
         description: The runtime dir to be used (⚠️ this parameter is optional and needed only in case of the single runtime build, set it accordingly to the runtime you want to build)
-        default: polkadot/runtime/westend
+        default: polkadot/runtime/zagros
         type: choice
         options:
-          - polkadot/runtime/westend
-          - cumulus/parachains/runtimes/assets/asset-hub-westend
-          - cumulus/parachains/runtimes/bridge-hubs/bridge-hub-westend
-          - cumulus/parachains/runtimes/collectives/collectives-westend
-          - cumulus/parachains/runtimes/coretime/coretime-westend
-          - cumulus/parachains/runtimes/people/people-westend
-          - cumulus/parachains/runtimes/glutton/glutton-westend
+          - polkadot/runtime/zagros
+          - cumulus/teyrchains/runtimes/assets/asset-hub-zagros
+          - cumulus/teyrchains/runtimes/bridge-hubs/bridge-hub-zagros
+          - cumulus/teyrchains/runtimes/collectives/collectives-zagros
+          - cumulus/teyrchains/runtimes/coretime/coretime-zagros
+          - cumulus/teyrchains/runtimes/people/people-zagros
+          - cumulus/teyrchains/runtimes/glutton/glutton-zagros
       binary:
         description: Binary to be built for the release candidate
         default: all
         type: choice
         options:
           - polkadot
-          - polkadot-parachain
+          - polkadot-teyrchain
           - polkadot-omni-node
           - frame-omni-bencher
           - chain-spec-builder

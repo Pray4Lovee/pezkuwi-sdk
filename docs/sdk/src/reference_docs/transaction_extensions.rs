@@ -51,7 +51,7 @@
 //!   that reclaims unused weight after executing a transaction.
 //!
 //! - [`StorageWeightReclaim`](cumulus_pallet_weight_reclaim::StorageWeightReclaim): A transaction
-//!   extension for parachains that reclaims unused storage weight after executing a transaction.
+//!   extension for teyrchains that reclaims unused storage weight after executing a transaction.
 //!
 //! For more information about these extensions, follow the link to the type documentation.
 //!

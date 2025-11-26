@@ -17,7 +17,7 @@
 //! Core primitives for Aura in Cumulus.
 //!
 //! In particular, this exposes the [`AuraUnincludedSegmentApi`] which is used to regulate
-//! the behavior of Aura within a parachain context.
+//! the behavior of Aura within a teyrchain context.
 
 #![cfg_attr(not(feature = "std"), no_std)]
 
@@ -27,7 +27,7 @@ sp_api::decl_runtime_apis! {
 	/// This runtime API is used to inform potential block authors whether they will
 	/// have the right to author at a slot, assuming they have claimed the slot.
 	///
-	/// In particular, this API allows Aura-based parachains to regulate their "unincluded segment",
+	/// In particular, this API allows Aura-based teyrchains to regulate their "unincluded segment",
 	/// which is the section of the head of the chain which has not yet been made available in the
 	/// relay chain.
 	///
@@ -36,7 +36,7 @@ sp_api::decl_runtime_apis! {
 	/// the amount of blocks that can be created.
 	///
 	/// Changes:
-	/// - Version 2: Update to `can_build_upon` to take a relay chain `Slot` instead of a parachain `Slot`.
+	/// - Version 2: Update to `can_build_upon` to take a relay chain `Slot` instead of a teyrchain `Slot`.
 	#[api_version(2)]
 	pub trait AuraUnincludedSegmentApi {
 		/// Whether it is legal to extend the chain, assuming the given block is the most

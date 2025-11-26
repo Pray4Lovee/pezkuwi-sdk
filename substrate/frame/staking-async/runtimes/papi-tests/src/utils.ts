@@ -1,4 +1,4 @@
-import { parachain, rc } from "@polkadot-api/descriptors";
+import { teyrchain, rc } from "@polkadot-api/descriptors";
 import {
 	Binary,
 	createClient,
@@ -53,11 +53,11 @@ export type ApiDeclarations = {
 	rcClient: PolkadotClient;
 	paraClient: PolkadotClient;
 	rcApi: TypedApi<typeof rc>;
-	paraApi: TypedApi<typeof parachain>;
+	paraApi: TypedApi<typeof teyrchain>;
 };
 
 export async function nullifySigned(
-	paraApi: TypedApi<typeof parachain>,
+	paraApi: TypedApi<typeof teyrchain>,
 	signer: PolkadotSigner = alice
 ): Promise<boolean> {
 	// signed and signed validation phase to 0
@@ -88,7 +88,7 @@ export async function nullifySigned(
 }
 
 export async function nullifyUnsigned(
-	paraApi: TypedApi<typeof parachain>,
+	paraApi: TypedApi<typeof teyrchain>,
 	signer: PolkadotSigner = alice
 ): Promise<boolean> {
 	// signed and signed validation phase to 0
@@ -114,7 +114,7 @@ export async function getApis(): Promise<ApiDeclarations> {
 	const rcApi = rcClient.getTypedApi(rc);
 
 	const paraClient = createClient(withPolkadotSdkCompat(getWsProvider("ws://localhost:9946")));
-	const paraApi = paraClient.getTypedApi(parachain);
+	const paraApi = paraClient.getTypedApi(teyrchain);
 
 	logger.info(`Connected to ${(await rcApi.constants.System.Version()).spec_name}`);
 	logger.info(`Connected to ${(await paraApi.constants.System.Version()).spec_name}`);

@@ -1,0 +1,29 @@
+[package]
+name = "pezkuwichain-emulated-chain"
+version = "0.0.0"
+authors.workspace = true
+edition.workspace = true
+license = "Apache-2.0"
+description = "Pezkuwichain emulated chain"
+publish = false
+
+[lints]
+workspace = true
+
+[dependencies]
+# Substrate
+sc-consensus-grandpa = { workspace = true }
+sp-authority-discovery = { workspace = true }
+sp-consensus-babe = { workspace = true }
+sp-consensus-beefy = { workspace = true, default-features = true }
+sp-core = { workspace = true }
+sp-keyring = { workspace = true }
+
+# Pezkuwi
+pezkuwi-primitives = { workspace = true }
+pezkuwichain-runtime = { workspace = true }
+pezkuwichain-runtime-constants = { workspace = true }
+
+# Cumulus
+emulated-integration-tests-common = { workspace = true }
+teyrchains-common = { workspace = true, default-features = true }

@@ -83,7 +83,7 @@ jobs:
       - uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6.0.0
         if: ${{ matrix.test.needs-wasm-binary }}
         with:
-          name: build-test-parachain-${{ needs.preflight.outputs.SOURCE_REF_SLUG }}
+          name: build-test-teyrchain-${{ needs.preflight.outputs.SOURCE_REF_SLUG }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
           run-id: ${{ needs.preflight.outputs.BUILD_RUN_ID }}
 

@@ -1,6 +1,6 @@
 # Installation
 
-This guide is for reference only, please check the latest information on getting started with Substrate [here](https://docs.substrate.io/main-docs/install/).
+This guide is for reference only, please check the latest information on getting started with Substrate [here](https://github.com/pezkuwichain/docs.pezkuwichain.io/main-docs/install/).
 
 This page will guide you through the **2 steps** needed to prepare a computer for **Substrate** development. Since
 Substrate is built with [the Rust programming language](https://www.rust-lang.org/), the first thing you will need to do
@@ -11,7 +11,7 @@ the same for all supported, Unix-based operating systems.
 ## Build dependencies
 
 Substrate development is easiest on Unix-based operating systems like macOS or Linux. The examples in the [Substrate
-Docs](https://docs.substrate.io) use Unix-style terminals to demonstrate how to interact with Substrate from the command
+Docs](https://github.com/pezkuwichain/docs.pezkuwichain.io) use Unix-style terminals to demonstrate how to interact with Substrate from the command
 line.
 
 ### Ubuntu/Debian
@@ -72,7 +72,7 @@ brew install openssl
 recommended to use [Windows Subsystem Linux](https://docs.microsoft.com/en-us/windows/wsl/install-win10)
 (WSL) and follow the instructions for [Ubuntu/Debian](#ubuntudebian).
 Please refer to the separate
-[guide for native Windows development](https://docs.substrate.io/main-docs/install/windows/).
+[guide for native Windows development](https://github.com/pezkuwichain/docs.pezkuwichain.io/main-docs/install/windows/).
 
 ## Rust developer environment
 
@@ -98,7 +98,7 @@ rustup target add wasm32-unknown-unknown --toolchain nightly
 ## Test your set-up
 
 Now the best way to ensure that you have successfully prepared a computer for Substrate development is to follow the
-steps in [our first Substrate tutorial](https://docs.substrate.io/tutorials/v3/create-your-first-substrate-chain/).
+steps in [our first Substrate tutorial](https://github.com/pezkuwichain/docs.pezkuwichain.io/tutorials/v3/create-your-first-substrate-chain/).
 
 ## Troubleshooting Substrate builds
 
@@ -178,8 +178,8 @@ rustup target add wasm32-unknown-unknown --toolchain nightly
 If you want to guarantee that your build works on your computer as you update Rust and other dependencies, you should
 use a specific Rust nightly version that is known to be compatible with the version of Substrate they are using; this
 version will vary from project to project and different projects may use different mechanisms to communicate this
-version to developers. For instance, the Polkadot client specifies this information in its [release
-notes](https://github.com/paritytech/polkadot-sdk/releases).
+version to developers. For instance, the Pezkuwi client specifies this information in its [release
+notes](https://github.com/pezkuwichain/pezkuwichain-sdk/releases).
 
 ```bash
 # Specify the specific nightly toolchain in the date below:

@@ -27,13 +27,13 @@
 // v1
 // benchmark
 // pallet
-// --runtime=target/production/wbuild/asset-hub-polkadot-runtime/asset_hub_polkadot_runtime.wasm
+// --runtime=target/production/wbuild/asset-hub-pezkuwi-runtime/asset_hub_pezkuwi_runtime.wasm
 // --pallet
 // pallet-ah-ops
 // --extrinsic
 // *
 // --output=./pallets/ah-ops/src/weights_1.rs
-// --template=./../../paritytech/polkadot-sdk/substrate/.maintain/frame-weight-template.hbs
+// --template=./../../paritytech/pezkuwi-sdk/substrate/.maintain/frame-weight-template.hbs
 // --no-median-slopes
 // --no-min-squares
 // --repeat=2
@@ -58,10 +58,10 @@ pub trait WeightInfo {
 /// Weights for `pallet_ah_ops` using the Substrate node and recommended hardware.
 pub struct SubstrateWeight<T>(PhantomData<T>);
 impl<T: frame_system::Config> WeightInfo for SubstrateWeight<T> {
-	/// Storage: `ParachainSystem::ValidationData` (r:1 w:0)
-	/// Proof: `ParachainSystem::ValidationData` (`max_values`: Some(1), `max_size`: None, mode: `Measured`)
-	/// Storage: `ParachainSystem::LastRelayChainBlockNumber` (r:1 w:0)
-	/// Proof: `ParachainSystem::LastRelayChainBlockNumber` (`max_values`: Some(1), `max_size`: None, mode: `Measured`)
+	/// Storage: `TeyrchainSystem::ValidationData` (r:1 w:0)
+	/// Proof: `TeyrchainSystem::ValidationData` (`max_values`: Some(1), `max_size`: None, mode: `Measured`)
+	/// Storage: `TeyrchainSystem::LastRelayChainBlockNumber` (r:1 w:0)
+	/// Proof: `TeyrchainSystem::LastRelayChainBlockNumber` (`max_values`: Some(1), `max_size`: None, mode: `Measured`)
 	/// Storage: `AhOps::RcLeaseReserve` (r:1 w:1)
 	/// Proof: `AhOps::RcLeaseReserve` (`max_values`: None, `max_size`: Some(80), added: 2555, mode: `MaxEncodedLen`)
 	/// Storage: `System::Account` (r:1 w:1)
@@ -75,10 +75,10 @@ impl<T: frame_system::Config> WeightInfo for SubstrateWeight<T> {
 			.saturating_add(T::DbWeight::get().reads(4_u64))
 			.saturating_add(T::DbWeight::get().writes(2_u64))
 	}
-	/// Storage: `ParachainSystem::ValidationData` (r:1 w:0)
-	/// Proof: `ParachainSystem::ValidationData` (`max_values`: Some(1), `max_size`: None, mode: `Measured`)
-	/// Storage: `ParachainSystem::LastRelayChainBlockNumber` (r:1 w:0)
-	/// Proof: `ParachainSystem::LastRelayChainBlockNumber` (`max_values`: Some(1), `max_size`: None, mode: `Measured`)
+	/// Storage: `TeyrchainSystem::ValidationData` (r:1 w:0)
+	/// Proof: `TeyrchainSystem::ValidationData` (`max_values`: Some(1), `max_size`: None, mode: `Measured`)
+	/// Storage: `TeyrchainSystem::LastRelayChainBlockNumber` (r:1 w:0)
+	/// Proof: `TeyrchainSystem::LastRelayChainBlockNumber` (`max_values`: Some(1), `max_size`: None, mode: `Measured`)
 	/// Storage: `AhOps::RcCrowdloanContribution` (r:1 w:1)
 	/// Proof: `AhOps::RcCrowdloanContribution` (`max_values`: None, `max_size`: Some(112), added: 2587, mode: `MaxEncodedLen`)
 	/// Storage: `AhOps::RcLeaseReserve` (r:1 w:1)
@@ -94,10 +94,10 @@ impl<T: frame_system::Config> WeightInfo for SubstrateWeight<T> {
 			.saturating_add(T::DbWeight::get().reads(6_u64))
 			.saturating_add(T::DbWeight::get().writes(4_u64))
 	}
-	/// Storage: `ParachainSystem::ValidationData` (r:1 w:0)
-	/// Proof: `ParachainSystem::ValidationData` (`max_values`: Some(1), `max_size`: None, mode: `Measured`)
-	/// Storage: `ParachainSystem::LastRelayChainBlockNumber` (r:1 w:0)
-	/// Proof: `ParachainSystem::LastRelayChainBlockNumber` (`max_values`: Some(1), `max_size`: None, mode: `Measured`)
+	/// Storage: `TeyrchainSystem::ValidationData` (r:1 w:0)
+	/// Proof: `TeyrchainSystem::ValidationData` (`max_values`: Some(1), `max_size`: None, mode: `Measured`)
+	/// Storage: `TeyrchainSystem::LastRelayChainBlockNumber` (r:1 w:0)
+	/// Proof: `TeyrchainSystem::LastRelayChainBlockNumber` (`max_values`: Some(1), `max_size`: None, mode: `Measured`)
 	/// Storage: `AhOps::RcCrowdloanContribution` (r:1 w:0)
 	/// Proof: `AhOps::RcCrowdloanContribution` (`max_values`: None, `max_size`: Some(112), added: 2587, mode: `MaxEncodedLen`)
 	/// Storage: `AhOps::RcCrowdloanReserve` (r:1 w:1)
@@ -117,10 +117,10 @@ impl<T: frame_system::Config> WeightInfo for SubstrateWeight<T> {
 
 // For backwards compatibility and tests.
 impl WeightInfo for () {
-	/// Storage: `ParachainSystem::ValidationData` (r:1 w:0)
-	/// Proof: `ParachainSystem::ValidationData` (`max_values`: Some(1), `max_size`: None, mode: `Measured`)
-	/// Storage: `ParachainSystem::LastRelayChainBlockNumber` (r:1 w:0)
-	/// Proof: `ParachainSystem::LastRelayChainBlockNumber` (`max_values`: Some(1), `max_size`: None, mode: `Measured`)
+	/// Storage: `TeyrchainSystem::ValidationData` (r:1 w:0)
+	/// Proof: `TeyrchainSystem::ValidationData` (`max_values`: Some(1), `max_size`: None, mode: `Measured`)
+	/// Storage: `TeyrchainSystem::LastRelayChainBlockNumber` (r:1 w:0)
+	/// Proof: `TeyrchainSystem::LastRelayChainBlockNumber` (`max_values`: Some(1), `max_size`: None, mode: `Measured`)
 	/// Storage: `AhOps::RcLeaseReserve` (r:1 w:1)
 	/// Proof: `AhOps::RcLeaseReserve` (`max_values`: None, `max_size`: Some(80), added: 2555, mode: `MaxEncodedLen`)
 	/// Storage: `System::Account` (r:1 w:1)
@@ -134,10 +134,10 @@ impl WeightInfo for () {
 			.saturating_add(RocksDbWeight::get().reads(4_u64))
 			.saturating_add(RocksDbWeight::get().writes(2_u64))
 	}
-	/// Storage: `ParachainSystem::ValidationData` (r:1 w:0)
-	/// Proof: `ParachainSystem::ValidationData` (`max_values`: Some(1), `max_size`: None, mode: `Measured`)
-	/// Storage: `ParachainSystem::LastRelayChainBlockNumber` (r:1 w:0)
-	/// Proof: `ParachainSystem::LastRelayChainBlockNumber` (`max_values`: Some(1), `max_size`: None, mode: `Measured`)
+	/// Storage: `TeyrchainSystem::ValidationData` (r:1 w:0)
+	/// Proof: `TeyrchainSystem::ValidationData` (`max_values`: Some(1), `max_size`: None, mode: `Measured`)
+	/// Storage: `TeyrchainSystem::LastRelayChainBlockNumber` (r:1 w:0)
+	/// Proof: `TeyrchainSystem::LastRelayChainBlockNumber` (`max_values`: Some(1), `max_size`: None, mode: `Measured`)
 	/// Storage: `AhOps::RcCrowdloanContribution` (r:1 w:1)
 	/// Proof: `AhOps::RcCrowdloanContribution` (`max_values`: None, `max_size`: Some(112), added: 2587, mode: `MaxEncodedLen`)
 	/// Storage: `AhOps::RcLeaseReserve` (r:1 w:1)
@@ -153,10 +153,10 @@ impl WeightInfo for () {
 			.saturating_add(RocksDbWeight::get().reads(6_u64))
 			.saturating_add(RocksDbWeight::get().writes(4_u64))
 	}
-	/// Storage: `ParachainSystem::ValidationData` (r:1 w:0)
-	/// Proof: `ParachainSystem::ValidationData` (`max_values`: Some(1), `max_size`: None, mode: `Measured`)
-	/// Storage: `ParachainSystem::LastRelayChainBlockNumber` (r:1 w:0)
-	/// Proof: `ParachainSystem::LastRelayChainBlockNumber` (`max_values`: Some(1), `max_size`: None, mode: `Measured`)
+	/// Storage: `TeyrchainSystem::ValidationData` (r:1 w:0)
+	/// Proof: `TeyrchainSystem::ValidationData` (`max_values`: Some(1), `max_size`: None, mode: `Measured`)
+	/// Storage: `TeyrchainSystem::LastRelayChainBlockNumber` (r:1 w:0)
+	/// Proof: `TeyrchainSystem::LastRelayChainBlockNumber` (`max_values`: Some(1), `max_size`: None, mode: `Measured`)
 	/// Storage: `AhOps::RcCrowdloanContribution` (r:1 w:0)
 	/// Proof: `AhOps::RcCrowdloanContribution` (`max_values`: None, `max_size`: Some(112), added: 2587, mode: `MaxEncodedLen`)
 	/// Storage: `AhOps::RcCrowdloanReserve` (r:1 w:1)

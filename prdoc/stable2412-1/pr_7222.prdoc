@@ -12,7 +12,7 @@ doc:
       Although the issue has been fixed in libp2p, there might be other cases where this may happen.
       For example, https://github.com/libp2p/rust-libp2p/pull/5417.
 
-      For more context see https://github.com/paritytech/polkadot-sdk/issues/7076#issuecomment-2596085096.
+      For more context see https://github.com/pezkuwichain/pezkuwichain-sdk/issues/7076#issuecomment-2596085096.
 
 crates:
 - name: sc-network

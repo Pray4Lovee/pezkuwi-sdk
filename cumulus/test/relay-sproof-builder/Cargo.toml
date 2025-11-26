@@ -19,8 +19,8 @@ sp-runtime = { workspace = true }
 sp-state-machine = { workspace = true }
 sp-trie = { workspace = true }
 
-# Polkadot
-polkadot-primitives = { workspace = true }
+# Pezkuwi
+pezkuwi-primitives = { workspace = true }
 
 # Cumulus
 cumulus-primitives-core = { workspace = true }
@@ -30,7 +30,7 @@ default = ["std"]
 std = [
 	"codec/std",
 	"cumulus-primitives-core/std",
-	"polkadot-primitives/std",
+	"pezkuwi-primitives/std",
 	"sp-runtime/std",
 	"sp-state-machine/std",
 	"sp-trie/std",

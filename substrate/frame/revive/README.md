@@ -20,7 +20,7 @@ Finally, when an account is reaped, its associated code and storage of the smart
 
 ### Weight
 
-Senders must specify a [`Weight`](https://paritytech.github.io/substrate/master/sp_weights/struct.Weight.html) limit
+Senders must specify a [`Weight`](https://docs.pezkuwichain.io/substrate/master/sp_weights/struct.Weight.html) limit
 with every call, as all instructions invoked by the smart-contract require weight. Unused weight is refunded after the
 call, regardless of the execution outcome.
 
@@ -79,7 +79,7 @@ to handle that failure, either proceeding or reverting A's changes.
 ### Dispatchable functions
 
 Those are documented in the [reference
-documentation](https://paritytech.github.io/polkadot-sdk/master/pallet_revive/pallet/dispatchables/index.html).
+documentation](https://docs.pezkuwichain.io/sdk/master/pallet_revive/pallet/dispatchables/index.html).
 
 ## Usage
 

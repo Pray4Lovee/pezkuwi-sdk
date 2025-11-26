@@ -27,12 +27,12 @@ use cumulus_relay_chain_interface::{
 };
 use cumulus_test_client::runtime::{Block, Header};
 use futures::{channel::mpsc, SinkExt, Stream};
-use polkadot_node_primitives::AvailableData;
-use polkadot_node_subsystem::{
+use pezkuwi_node_primitives::AvailableData;
+use pezkuwi_node_subsystem::{
 	messages::{AvailabilityRecoveryMessage, RuntimeApiRequest},
 	RecoveryError, TimeoutExt,
 };
-use polkadot_primitives::CandidateEvent;
+use pezkuwi_primitives::CandidateEvent;
 use rstest::rstest;
 use sc_client_api::{
 	BlockImportNotification, ClientInfo, CompactProof, FinalityNotification, FinalityNotifications,
@@ -78,14 +78,14 @@ impl RecoveryHandle for AvailabilityRecoverySubsystemHandle {
 	}
 }
 
-struct ParachainClientInner<Block: BlockT> {
+struct TeyrchainClientInner<Block: BlockT> {
 	import_notifications_rx: Option<TracingUnboundedReceiver<BlockImportNotification<Block>>>,
 	finality_notifications_rx: Option<TracingUnboundedReceiver<FinalityNotification<Block>>>,
 	usage_infos: Vec<ClientInfo<Block>>,
 	block_statuses: Arc<Mutex<HashMap<Block::Hash, BlockStatus>>>,
 }
 
-impl<Block: BlockT> ParachainClientInner<Block> {
+impl<Block: BlockT> TeyrchainClientInner<Block> {
 	fn new(
 		usage_infos: Vec<ClientInfo<Block>>,
 		block_statuses: Arc<Mutex<HashMap<Block::Hash, BlockStatus>>>,
@@ -110,11 +110,11 @@ impl<Block: BlockT> ParachainClientInner<Block> {
 		)
 	}
 }
-struct ParachainClient<Block: BlockT> {
-	inner: Arc<Mutex<ParachainClientInner<Block>>>,
+struct TeyrchainClient<Block: BlockT> {
+	inner: Arc<Mutex<TeyrchainClientInner<Block>>>,
 }
 
-impl<Block: BlockT> ParachainClient<Block> {
+impl<Block: BlockT> TeyrchainClient<Block> {
 	fn new(
 		usage_infos: Vec<ClientInfo<Block>>,
 		block_statuses: Arc<Mutex<HashMap<Block::Hash, BlockStatus>>>,
@@ -124,7 +124,7 @@ impl<Block: BlockT> ParachainClient<Block> {
 		TracingUnboundedSender<FinalityNotification<Block>>,
 	) {
 		let (inner, import_notifications_tx, finality_notifications_tx) =
-			ParachainClientInner::new(usage_infos, block_statuses);
+			TeyrchainClientInner::new(usage_infos, block_statuses);
 		(
 			Self { inner: Arc::new(Mutex::new(inner)) },
 			import_notifications_tx,
@@ -133,7 +133,7 @@ impl<Block: BlockT> ParachainClient<Block> {
 	}
 }
 
-impl<Block: BlockT> BlockchainEvents<Block> for ParachainClient<Block> {
+impl<Block: BlockT> BlockchainEvents<Block> for TeyrchainClient<Block> {
 	fn import_notification_stream(&self) -> ImportNotifications<Block> {
 		self.inner
 			.lock()
@@ -165,7 +165,7 @@ impl<Block: BlockT> BlockchainEvents<Block> for ParachainClient<Block> {
 	}
 }
 
-impl<Block: BlockT> BlockBackend<Block> for ParachainClient<Block> {
+impl<Block: BlockT> BlockBackend<Block> for TeyrchainClient<Block> {
 	fn block_body(
 		&self,
 		_: Block::Hash,
@@ -215,7 +215,7 @@ impl<Block: BlockT> BlockBackend<Block> for ParachainClient<Block> {
 	}
 }
 
-impl<Block: BlockT> UsageProvider<Block> for ParachainClient<Block> {
+impl<Block: BlockT> UsageProvider<Block> for TeyrchainClient<Block> {
 	fn usage_info(&self) -> ClientInfo<Block> {
 		let infos = &mut self.inner.lock().expect("Poisoned lock").usage_infos;
 		assert!(!infos.is_empty());
@@ -228,11 +228,11 @@ impl<Block: BlockT> UsageProvider<Block> for ParachainClient<Block> {
 	}
 }
 
-struct ParachainImportQueue<Block: BlockT> {
+struct TeyrchainImportQueue<Block: BlockT> {
 	import_requests_tx: TracingUnboundedSender<Vec<IncomingBlock<Block>>>,
 }
 
-impl<Block: BlockT> ParachainImportQueue<Block> {
+impl<Block: BlockT> TeyrchainImportQueue<Block> {
 	fn new() -> (Self, TracingUnboundedReceiver<Vec<IncomingBlock<Block>>>) {
 		let (import_requests_tx, import_requests_rx) =
 			sc_utils::mpsc::tracing_unbounded("test_import_req_forwarding", 10);
@@ -240,7 +240,7 @@ impl<Block: BlockT> ParachainImportQueue<Block> {
 	}
 }
 
-impl<Block: BlockT> ImportQueueService<Block> for ParachainImportQueue<Block> {
+impl<Block: BlockT> ImportQueueService<Block> for TeyrchainImportQueue<Block> {
 	fn import_blocks(&mut self, origin: BlockOrigin, blocks: Vec<IncomingBlock<Block>>) {
 		assert_matches!(origin, BlockOrigin::ConsensusBroadcast);
 		self.import_requests_tx.unbounded_send(blocks).unwrap();
@@ -318,7 +318,7 @@ impl RelayChainInterface for Relaychain {
 		let version = self.inner.lock().expect("Poisoned lock").runtime_version;
 
 		let apis = sp_version::create_apis_vec!([(
-			<dyn polkadot_primitives::runtime_api::ParachainHost<polkadot_primitives::Block>>::ID,
+			<dyn pezkuwi_primitives::runtime_api::TeyrchainHost<pezkuwi_primitives::Block>>::ID,
 			version
 		)])
 		.into_owned()
@@ -604,9 +604,9 @@ async fn pending_candidate_height_lower_than_latest_finalized() {
 			},
 			candidates,
 		)]);
-		let (parachain_client, _import_notifications_tx, _finality_notifications_tx) =
-			ParachainClient::new(vec![dummy_usage_info(finalized_number)], Default::default());
-		let (parachain_import_queue, mut import_requests_rx) = ParachainImportQueue::new();
+		let (teyrchain_client, _import_notifications_tx, _finality_notifications_tx) =
+			TeyrchainClient::new(vec![dummy_usage_info(finalized_number)], Default::default());
+		let (teyrchain_import_queue, mut import_requests_rx) = TeyrchainImportQueue::new();
 
 		// If the latest finalized block has a larger height compared to the pending candidate, the
 		// new candidate won't be recovered. Candidates have heights is 1, 2 and 3. Latest finalized
@@ -614,8 +614,8 @@ async fn pending_candidate_height_lower_than_latest_finalized() {
 		let pov_recovery = PoVRecovery::<Block, _, _>::new(
 			Box::new(recovery_subsystem_tx),
 			recovery_delay_range,
-			Arc::new(parachain_client),
-			Box::new(parachain_import_queue),
+			Arc::new(teyrchain_client),
+			Box::new(teyrchain_import_queue),
 			relay_chain_client,
 			ParaId::new(1000),
 			explicit_recovery_chan_rx,
@@ -668,15 +668,15 @@ async fn single_pending_candidate_recovery_success(
 
 	let mut known_blocks = HashMap::new();
 	known_blocks.insert(GENESIS_HASH, BlockStatus::InChainWithState);
-	let (parachain_client, _import_notifications_tx, _finality_notifications_tx) =
-		ParachainClient::new(vec![dummy_usage_info(0)], Arc::new(Mutex::new(known_blocks)));
-	let (parachain_import_queue, mut import_requests_rx) = ParachainImportQueue::new();
+	let (teyrchain_client, _import_notifications_tx, _finality_notifications_tx) =
+		TeyrchainClient::new(vec![dummy_usage_info(0)], Arc::new(Mutex::new(known_blocks)));
+	let (teyrchain_import_queue, mut import_requests_rx) = TeyrchainImportQueue::new();
 
 	let pov_recovery = PoVRecovery::<Block, _, _>::new(
 		Box::new(recovery_subsystem_tx),
 		recovery_delay_range,
-		Arc::new(parachain_client),
-		Box::new(parachain_import_queue),
+		Arc::new(teyrchain_client),
+		Box::new(teyrchain_import_queue),
 		relay_chain_client,
 		ParaId::new(1000),
 		explicit_recovery_chan_rx,
@@ -697,7 +697,7 @@ async fn single_pending_candidate_recovery_success(
 			assert_eq!(receipt.hash(), candidate_hash);
 			assert_eq!(session_index, TEST_SESSION_INDEX);
 			let block_data =
-					ParachainBlockData::<Block>::new(
+					TeyrchainBlockData::<Block>::new(
 						vec![Block::new(header.clone(), vec![])], CompactProof { encoded_nodes: vec![] }
 					);
 
@@ -756,15 +756,15 @@ async fn single_pending_candidate_recovery_retry_succeeds() {
 	)]);
 	let mut known_blocks = HashMap::new();
 	known_blocks.insert(GENESIS_HASH, BlockStatus::InChainWithState);
-	let (parachain_client, _import_notifications_tx, _finality_notifications_tx) =
-		ParachainClient::new(vec![dummy_usage_info(0)], Arc::new(Mutex::new(known_blocks)));
-	let (parachain_import_queue, mut import_requests_rx) = ParachainImportQueue::new();
+	let (teyrchain_client, _import_notifications_tx, _finality_notifications_tx) =
+		TeyrchainClient::new(vec![dummy_usage_info(0)], Arc::new(Mutex::new(known_blocks)));
+	let (teyrchain_import_queue, mut import_requests_rx) = TeyrchainImportQueue::new();
 
 	let pov_recovery = PoVRecovery::<Block, _, _>::new(
 		Box::new(recovery_subsystem_tx),
 		recovery_delay_range,
-		Arc::new(parachain_client),
-		Box::new(parachain_import_queue),
+		Arc::new(teyrchain_client),
+		Box::new(teyrchain_import_queue),
 		relay_chain_client,
 		ParaId::new(1000),
 		explicit_recovery_chan_rx,
@@ -809,7 +809,7 @@ async fn single_pending_candidate_recovery_retry_succeeds() {
 				Ok(
 					AvailableData {
 						pov: Arc::new(PoV {
-							block_data: ParachainBlockData::<Block>::new(
+							block_data: TeyrchainBlockData::<Block>::new(
 								vec![Block::new(header.clone(), Vec::new())], CompactProof { encoded_nodes: vec![] }
 							).encode().into()
 						}),
@@ -857,15 +857,15 @@ async fn single_pending_candidate_recovery_retry_fails() {
 	)]);
 	let mut known_blocks = HashMap::new();
 	known_blocks.insert(GENESIS_HASH, BlockStatus::InChainWithState);
-	let (parachain_client, _import_notifications_tx, _finality_notifications_tx) =
-		ParachainClient::new(vec![dummy_usage_info(0)], Arc::new(Mutex::new(known_blocks)));
-	let (parachain_import_queue, mut import_requests_rx) = ParachainImportQueue::new();
+	let (teyrchain_client, _import_notifications_tx, _finality_notifications_tx) =
+		TeyrchainClient::new(vec![dummy_usage_info(0)], Arc::new(Mutex::new(known_blocks)));
+	let (teyrchain_import_queue, mut import_requests_rx) = TeyrchainImportQueue::new();
 
 	let pov_recovery = PoVRecovery::<Block, _, _>::new(
 		Box::new(recovery_subsystem_tx),
 		recovery_delay_range,
-		Arc::new(parachain_client),
-		Box::new(parachain_import_queue),
+		Arc::new(teyrchain_client),
+		Box::new(teyrchain_import_queue),
 		relay_chain_client,
 		ParaId::new(1000),
 		explicit_recovery_chan_rx,
@@ -943,15 +943,15 @@ async fn single_pending_candidate_recovery_irrecoverable_error() {
 	)]);
 	let mut known_blocks = HashMap::new();
 	known_blocks.insert(GENESIS_HASH, BlockStatus::InChainWithState);
-	let (parachain_client, _import_notifications_tx, _finality_notifications_tx) =
-		ParachainClient::new(vec![dummy_usage_info(0)], Arc::new(Mutex::new(known_blocks)));
-	let (parachain_import_queue, mut import_requests_rx) = ParachainImportQueue::new();
+	let (teyrchain_client, _import_notifications_tx, _finality_notifications_tx) =
+		TeyrchainClient::new(vec![dummy_usage_info(0)], Arc::new(Mutex::new(known_blocks)));
+	let (teyrchain_import_queue, mut import_requests_rx) = TeyrchainImportQueue::new();
 
 	let pov_recovery = PoVRecovery::<Block, _, _>::new(
 		Box::new(recovery_subsystem_tx),
 		recovery_delay_range,
-		Arc::new(parachain_client),
-		Box::new(parachain_import_queue),
+		Arc::new(teyrchain_client),
+		Box::new(teyrchain_import_queue),
 		relay_chain_client,
 		ParaId::new(1000),
 		explicit_recovery_chan_rx,
@@ -1015,15 +1015,15 @@ async fn pending_candidates_recovery_skipped_while_syncing() {
 	)]);
 	let mut known_blocks = HashMap::new();
 	known_blocks.insert(GENESIS_HASH, BlockStatus::InChainWithState);
-	let (parachain_client, _import_notifications_tx, _finality_notifications_tx) =
-		ParachainClient::new(vec![dummy_usage_info(0)], Arc::new(Mutex::new(known_blocks)));
-	let (parachain_import_queue, mut import_requests_rx) = ParachainImportQueue::new();
+	let (teyrchain_client, _import_notifications_tx, _finality_notifications_tx) =
+		TeyrchainClient::new(vec![dummy_usage_info(0)], Arc::new(Mutex::new(known_blocks)));
+	let (teyrchain_import_queue, mut import_requests_rx) = TeyrchainImportQueue::new();
 
 	let pov_recovery = PoVRecovery::<Block, _, _>::new(
 		Box::new(recovery_subsystem_tx),
 		recovery_delay_range,
-		Arc::new(parachain_client),
-		Box::new(parachain_import_queue),
+		Arc::new(teyrchain_client),
+		Box::new(teyrchain_import_queue),
 		relay_chain_client,
 		ParaId::new(1000),
 		explicit_recovery_chan_rx,
@@ -1064,15 +1064,15 @@ async fn candidate_is_imported_while_awaiting_recovery() {
 	)]);
 	let mut known_blocks = HashMap::new();
 	known_blocks.insert(GENESIS_HASH, BlockStatus::InChainWithState);
-	let (parachain_client, import_notifications_tx, _finality_notifications_tx) =
-		ParachainClient::new(vec![dummy_usage_info(0)], Arc::new(Mutex::new(known_blocks)));
-	let (parachain_import_queue, mut import_requests_rx) = ParachainImportQueue::new();
+	let (teyrchain_client, import_notifications_tx, _finality_notifications_tx) =
+		TeyrchainClient::new(vec![dummy_usage_info(0)], Arc::new(Mutex::new(known_blocks)));
+	let (teyrchain_import_queue, mut import_requests_rx) = TeyrchainImportQueue::new();
 
 	let pov_recovery = PoVRecovery::<Block, _, _>::new(
 		Box::new(recovery_subsystem_tx),
 		recovery_delay_range,
-		Arc::new(parachain_client),
-		Box::new(parachain_import_queue),
+		Arc::new(teyrchain_client),
+		Box::new(teyrchain_import_queue),
 		relay_chain_client,
 		ParaId::new(1000),
 		explicit_recovery_chan_rx,
@@ -1114,7 +1114,7 @@ async fn candidate_is_imported_while_awaiting_recovery() {
 	recovery_response_tx
 		.send(Ok(AvailableData {
 			pov: Arc::new(PoV {
-				block_data: ParachainBlockData::<Block>::new(
+				block_data: TeyrchainBlockData::<Block>::new(
 					vec![Block::new(header.clone(), vec![])],
 					CompactProof { encoded_nodes: vec![] },
 				)
@@ -1164,15 +1164,15 @@ async fn candidate_is_finalized_while_awaiting_recovery() {
 	)]);
 	let mut known_blocks = HashMap::new();
 	known_blocks.insert(GENESIS_HASH, BlockStatus::InChainWithState);
-	let (parachain_client, _import_notifications_tx, finality_notifications_tx) =
-		ParachainClient::new(vec![dummy_usage_info(0)], Arc::new(Mutex::new(known_blocks)));
-	let (parachain_import_queue, mut import_requests_rx) = ParachainImportQueue::new();
+	let (teyrchain_client, _import_notifications_tx, finality_notifications_tx) =
+		TeyrchainClient::new(vec![dummy_usage_info(0)], Arc::new(Mutex::new(known_blocks)));
+	let (teyrchain_import_queue, mut import_requests_rx) = TeyrchainImportQueue::new();
 
 	let pov_recovery = PoVRecovery::<Block, _, _>::new(
 		Box::new(recovery_subsystem_tx),
 		recovery_delay_range,
-		Arc::new(parachain_client),
-		Box::new(parachain_import_queue),
+		Arc::new(teyrchain_client),
+		Box::new(teyrchain_import_queue),
 		relay_chain_client,
 		ParaId::new(1000),
 		explicit_recovery_chan_rx,
@@ -1211,7 +1211,7 @@ async fn candidate_is_finalized_while_awaiting_recovery() {
 	recovery_response_tx
 		.send(Ok(AvailableData {
 			pov: Arc::new(PoV {
-				block_data: ParachainBlockData::<Block>::new(
+				block_data: TeyrchainBlockData::<Block>::new(
 					vec![Block::new(header.clone(), vec![])],
 					CompactProof { encoded_nodes: vec![] },
 				)
@@ -1265,15 +1265,15 @@ async fn chained_recovery_success() {
 	let mut known_blocks = HashMap::new();
 	known_blocks.insert(GENESIS_HASH, BlockStatus::InChainWithState);
 	let known_blocks = Arc::new(Mutex::new(known_blocks));
-	let (parachain_client, import_notifications_tx, _finality_notifications_tx) =
-		ParachainClient::new(vec![dummy_usage_info(0)], known_blocks.clone());
-	let (parachain_import_queue, mut import_requests_rx) = ParachainImportQueue::new();
+	let (teyrchain_client, import_notifications_tx, _finality_notifications_tx) =
+		TeyrchainClient::new(vec![dummy_usage_info(0)], known_blocks.clone());
+	let (teyrchain_import_queue, mut import_requests_rx) = TeyrchainImportQueue::new();
 
 	let pov_recovery = PoVRecovery::<Block, _, _>::new(
 		Box::new(recovery_subsystem_tx),
 		recovery_delay_range,
-		Arc::new(parachain_client),
-		Box::new(parachain_import_queue),
+		Arc::new(teyrchain_client),
+		Box::new(teyrchain_import_queue),
 		relay_chain_client,
 		ParaId::new(1000),
 		explicit_recovery_chan_rx,
@@ -1298,7 +1298,7 @@ async fn chained_recovery_success() {
 				response_tx
 					.send(Ok(AvailableData {
 						pov: Arc::new(PoV {
-							block_data: ParachainBlockData::<Block>::new(
+							block_data: TeyrchainBlockData::<Block>::new(
 								vec![Block::new(header.clone(), vec![])], CompactProof { encoded_nodes: vec![] }
 							)
 							.encode()
@@ -1370,15 +1370,15 @@ async fn chained_recovery_child_succeeds_before_parent() {
 	let mut known_blocks = HashMap::new();
 	known_blocks.insert(GENESIS_HASH, BlockStatus::InChainWithState);
 	let known_blocks = Arc::new(Mutex::new(known_blocks));
-	let (parachain_client, _import_notifications_tx, _finality_notifications_tx) =
-		ParachainClient::new(vec![dummy_usage_info(0)], known_blocks.clone());
-	let (parachain_import_queue, mut import_requests_rx) = ParachainImportQueue::new();
+	let (teyrchain_client, _import_notifications_tx, _finality_notifications_tx) =
+		TeyrchainClient::new(vec![dummy_usage_info(0)], known_blocks.clone());
+	let (teyrchain_import_queue, mut import_requests_rx) = TeyrchainImportQueue::new();
 
 	let pov_recovery = PoVRecovery::<Block, _, _>::new(
 		Box::new(recovery_subsystem_tx),
 		recovery_delay_range,
-		Arc::new(parachain_client),
-		Box::new(parachain_import_queue),
+		Arc::new(teyrchain_client),
+		Box::new(teyrchain_import_queue),
 		relay_chain_client,
 		ParaId::new(1000),
 		explicit_recovery_chan_rx,
@@ -1413,7 +1413,7 @@ async fn chained_recovery_child_succeeds_before_parent() {
 		recovery_response_sender
 			.send(Ok(AvailableData {
 				pov: Arc::new(PoV {
-					block_data: ParachainBlockData::<Block>::new(
+					block_data: TeyrchainBlockData::<Block>::new(
 						vec![Block::new(header.clone(), vec![])],
 						CompactProof { encoded_nodes: vec![] },
 					)
@@ -1469,15 +1469,15 @@ async fn recovery_multiple_blocks_per_candidate() {
 	let mut known_blocks = HashMap::new();
 	known_blocks.insert(GENESIS_HASH, BlockStatus::InChainWithState);
 	let known_blocks = Arc::new(Mutex::new(known_blocks));
-	let (parachain_client, import_notifications_tx, _finality_notifications_tx) =
-		ParachainClient::new(vec![dummy_usage_info(0)], known_blocks.clone());
-	let (parachain_import_queue, mut import_requests_rx) = ParachainImportQueue::new();
+	let (teyrchain_client, import_notifications_tx, _finality_notifications_tx) =
+		TeyrchainClient::new(vec![dummy_usage_info(0)], known_blocks.clone());
+	let (teyrchain_import_queue, mut import_requests_rx) = TeyrchainImportQueue::new();
 
 	let pov_recovery = PoVRecovery::<Block, _, _>::new(
 		Box::new(recovery_subsystem_tx),
 		recovery_delay_range,
-		Arc::new(parachain_client),
-		Box::new(parachain_import_queue),
+		Arc::new(teyrchain_client),
+		Box::new(teyrchain_import_queue),
 		relay_chain_client,
 		ParaId::new(1000),
 		explicit_recovery_chan_rx,
@@ -1501,7 +1501,7 @@ async fn recovery_multiple_blocks_per_candidate() {
 			response_tx
 				.send(Ok(AvailableData {
 					pov: Arc::new(PoV {
-						block_data: ParachainBlockData::<Block>::new(
+						block_data: TeyrchainBlockData::<Block>::new(
 							headers.iter().map(|h| Block::new(h.clone(), vec![])).collect(),
 							CompactProof { encoded_nodes: vec![] },
 						)

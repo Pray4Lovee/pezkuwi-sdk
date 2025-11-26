@@ -8,7 +8,7 @@
 set -e
 
 SNOWBRIDGE_BRANCH="${SNOWBRIDGE_BRANCH:-main}"
-POLKADOT_SDK_BRANCH="${POLKADOT_SDK_BRANCH:-master}"
+PEZKUWI_SDK_BRANCH="${PEZKUWI_SDK_BRANCH:-master}"
 SNOWBRIDGE_TARGET_DIR="${TARGET_DIR:-bridges/snowbridge}"
 
 function fetch() {
@@ -35,8 +35,8 @@ function fetch() {
 
 function clean() {
     echo "Patching/removing unneeded stuff from subtree in target directory: '$SNOWBRIDGE_TARGET_DIR'"
-    chmod +x $SNOWBRIDGE_TARGET_DIR/parachain/scripts/verify-pallets-build.sh
-    $SNOWBRIDGE_TARGET_DIR/parachain/scripts/verify-pallets-build.sh --ignore-git-state --no-revert
+    chmod +x $SNOWBRIDGE_TARGET_DIR/teyrchain/scripts/verify-pallets-build.sh
+    $SNOWBRIDGE_TARGET_DIR/teyrchain/scripts/verify-pallets-build.sh --ignore-git-state --no-revert
 }
 
 function create_patch() {
@@ -46,7 +46,7 @@ function create_patch() {
         exit 1;
     }
     echo "Creating diff patch file to apply to snowbridge. No Cargo.toml files will be included in the patch."
-    git diff snowbridge/$SNOWBRIDGE_BRANCH $POLKADOT_SDK_BRANCH:bridges/snowbridge --diff-filter=ACM -- . ':(exclude)*/Cargo.toml' > snowbridge.patch
+    git diff snowbridge/$SNOWBRIDGE_BRANCH $PEZKUWI_SDK_BRANCH:bridges/snowbridge --diff-filter=ACM -- . ':(exclude)*/Cargo.toml' > snowbridge.patch
 }
 
 case "$1" in

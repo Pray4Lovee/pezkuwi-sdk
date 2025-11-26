@@ -173,7 +173,7 @@ jobs:
           else
             # going to run commands from master
             TMP_DIR=/tmp/polkadot-sdk
-            git clone --depth 1 --branch master https://github.com/paritytech/polkadot-sdk $TMP_DIR
+            git clone --depth 1 --branch master https://github.com/pezkuwichain/pezkuwichain-sdk $TMP_DIR
             BOT_PATH=$TMP_DIR/.github
           fi
 

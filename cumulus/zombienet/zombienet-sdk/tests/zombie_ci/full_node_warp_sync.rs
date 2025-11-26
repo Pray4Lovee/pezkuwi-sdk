@@ -19,17 +19,17 @@
 //! ## How to update this test?
 //!
 //! Usually, this action is required after changes suffered by `cumulus-test-runtime` or
-//! `rococo-local`. The test starts a relaychain + parachain network, where a few nodes are started
+//! `pezkuwichain-local`. The test starts a relaychain + teyrchain network, where a few nodes are started
 //! based on existing db snapshots, while the rest of the nodes are warp synced to the latest
 //! state. Updating the test means updating the chain specs used to start both relaychain and
-//! parachain nodes, but also the snapshots.
+//! teyrchain nodes, but also the snapshots.
 //!
 //! ### Updating chain specs
 //!
-//! Existing chain specs are found under [./warp-sync-parachain-spec.json] and
+//! Existing chain specs are found under [./warp-sync-teyrchain-spec.json] and
 //! [./warp-sync-relaychain-spec.json]. We need to replace them with the updated chain specs.
 //!
-//! #### For parachain
+//! #### For teyrchain
 //!
 //! 1. We need to rebuild `cumulus-test-runtime`:
 //!
@@ -50,19 +50,19 @@
 //!
 //! 4. Replace the chain spec:
 //! ```bash
-//! mv chain_spec.json cumulus/zombienet/zombienet-sdk/tests/zombie_ci/warp-sync-parachain-spec.json
+//! mv chain_spec.json cumulus/zombienet/zombienet-sdk/tests/zombie_ci/warp-sync-teyrchain-spec.json
 //! ```
 //!
 //! #### For relaychain
 //!
-//! 1. Build the `polkadot` binary
+//! 1. Build the `pezkuwi` binary
 //! ```bash
-//! cargo build -p polkadot --release
+//! cargo build -p pezkuwi --release
 //! ```
 //!
-//! 2. Export `rococo-local` chainspec:
+//! 2. Export `pezkuwichain-local` chainspec:
 //! ```bash
-//! polkadot export-chain-spec --chain rococo-local > chain_spec.json
+//! pezkuwi export-chain-spec --chain pezkuwichain-local > chain_spec.json
 //! ```
 //!
 //! 3. Replace the chain spec:
@@ -101,7 +101,7 @@
 //! tar -czf alice-db.tgz data/
 //! ```
 //!
-//! 2. For parachain:
+//! 2. For teyrchain:
 //!
 //! ```bash
 //! cd $ZOMBIENET_SDK_BASE_DIR/eve
@@ -113,19 +113,19 @@
 
 use anyhow::anyhow;
 
-use polkadot_primitives::Id as ParaId;
+use pezkuwi_primitives::Id as ParaId;
 
 use crate::utils::{initialize_network, BEST_BLOCK_METRIC};
 use cumulus_zombienet_sdk_helpers::assert_para_is_registered;
 use zombienet_sdk::{
-	subxt::{OnlineClient, PolkadotConfig},
+	subxt::{OnlineClient, PezkuwiConfig},
 	NetworkConfig, NetworkConfigBuilder,
 };
 
 const PARA_ID: u32 = 2000;
 
 const DB_SNAPSHOT_RELAYCHAIN: &str = "https://storage.googleapis.com/zombienet-db-snaps/zombienet/0007-full_node_warp_sync_db/alice-db.tgz";
-const DB_SNAPSHOT_PARACHAIN: &str = "https://storage.googleapis.com/zombienet-db-snaps/zombienet/0007-full_node_warp_sync_db/eve-db.tgz";
+const DB_SNAPSHOT_TEYRCHAIN: &str = "https://storage.googleapis.com/zombienet-db-snaps/zombienet/0007-full_node_warp_sync_db/eve-db.tgz";
 
 #[tokio::test(flavor = "multi_thread")]
 async fn full_node_warp_sync() -> Result<(), anyhow::Error> {
@@ -138,9 +138,9 @@ async fn full_node_warp_sync() -> Result<(), anyhow::Error> {
 	let network = initialize_network(config).await?;
 
 	let alice = network.get_node("alice")?;
-	let alice_client: OnlineClient<PolkadotConfig> = alice.wait_client().await?;
+	let alice_client: OnlineClient<PezkuwiConfig> = alice.wait_client().await?;
 
-	log::info!("Ensuring parachain is registered");
+	log::info!("Ensuring teyrchain is registered");
 	assert_para_is_registered(&alice_client, ParaId::from(PARA_ID), 10).await?;
 
 	for name in ["two", "three", "four"] {
@@ -166,7 +166,7 @@ async fn build_network_config() -> Result<NetworkConfig, anyhow::Error> {
 	//   - bob      - validator
 	//   - charlie  - validator
 	//   - dave     - validator
-	// - parachain nodes
+	// - teyrchain nodes
 	//   - eve      - collator
 	//   - ferdie   - collator
 	//   - one      - collator
@@ -175,11 +175,11 @@ async fn build_network_config() -> Result<NetworkConfig, anyhow::Error> {
 	//   - four     - full node
 	let config = NetworkConfigBuilder::new()
 		.with_relaychain(|r| {
-			r.with_chain("rococo-local")
-				.with_default_command("polkadot")
-				.with_default_image(images.polkadot.as_str())
+			r.with_chain("pezkuwichain-local")
+				.with_default_command("pezkuwi")
+				.with_default_image(images.pezkuwi.as_str())
 				.with_chain_spec_path("tests/zombie_ci/warp-sync-relaychain-spec.json")
-				.with_default_args(vec![("-lparachain=debug").into()])
+				.with_default_args(vec![("-lteyrchain=debug").into()])
 				.with_node(|node| node.with_name("alice").with_db_snapshot(DB_SNAPSHOT_RELAYCHAIN))
 				.with_node(|node| node.with_name("bob").with_db_snapshot(DB_SNAPSHOT_RELAYCHAIN))
 				.with_node(|node| {
@@ -187,7 +187,7 @@ async fn build_network_config() -> Result<NetworkConfig, anyhow::Error> {
 				})
 				.with_node(|node| {
 					node.with_name("dave").with_args(vec![
-						("-lparachain=debug").into(),
+						("-lteyrchain=debug").into(),
 						("--no-beefy").into(),
 						("--reserved-only").into(),
 						(
@@ -203,15 +203,15 @@ async fn build_network_config() -> Result<NetworkConfig, anyhow::Error> {
 					])
 				})
 		})
-		.with_parachain(|p| {
+		.with_teyrchain(|p| {
 			p.with_id(PARA_ID)
-				.with_default_command("test-parachain")
+				.with_default_command("test-teyrchain")
 				.with_default_image(images.cumulus.as_str())
-				.with_chain_spec_path("tests/zombie_ci/warp-sync-parachain-spec.json")
-				.with_default_args(vec![("-lparachain=debug").into()])
-				.with_collator(|n| n.with_name("eve").with_db_snapshot(DB_SNAPSHOT_PARACHAIN))
-				.with_collator(|n| n.with_name("ferdie").with_db_snapshot(DB_SNAPSHOT_PARACHAIN))
-				.with_collator(|n| n.with_name("one").with_db_snapshot(DB_SNAPSHOT_PARACHAIN))
+				.with_chain_spec_path("tests/zombie_ci/warp-sync-teyrchain-spec.json")
+				.with_default_args(vec![("-lteyrchain=debug").into()])
+				.with_collator(|n| n.with_name("eve").with_db_snapshot(DB_SNAPSHOT_TEYRCHAIN))
+				.with_collator(|n| n.with_name("ferdie").with_db_snapshot(DB_SNAPSHOT_TEYRCHAIN))
+				.with_collator(|n| n.with_name("one").with_db_snapshot(DB_SNAPSHOT_TEYRCHAIN))
 				.with_collator(|n| {
 					n.with_name("two").validator(false).with_args(vec![
 						("-lsync=debug").into(),

@@ -19,7 +19,7 @@ use sp_runtime::{
 	BuildStorage,
 };
 use sp_std::{convert::From, default::Default, marker::PhantomData};
-use xcm::{opaque::latest::WESTEND_GENESIS_HASH, prelude::*};
+use xcm::{opaque::latest::ZAGROS_GENESIS_HASH, prelude::*};
 type Block = frame_system::mocking::MockBlock<Test>;
 use snowbridge_test_utils::mock_rewards::{BridgeReward, MockRewardLedger};
 pub use snowbridge_test_utils::mock_xcm::{MockXcmExecutor, MockXcmSender};
@@ -108,7 +108,7 @@ parameter_types! {
 	pub const CreateAssetCallIndex: [u8;2] = [53, 0];
 	pub const SetReservesCallIndex: [u8;2] = [53, 33];
 	pub const CreateAssetDeposit: u128 = 10_000_000_000u128;
-	pub const LocalNetwork: NetworkId = ByGenesis(WESTEND_GENESIS_HASH);
+	pub const LocalNetwork: NetworkId = ByGenesis(ZAGROS_GENESIS_HASH);
 	pub CreateAssetCall: CreateAssetCallInfo = CreateAssetCallInfo {
 		create_call: CreateAssetCallIndex::get(),
 		deposit: CreateAssetDeposit::get(),

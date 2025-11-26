@@ -11,7 +11,7 @@ BEEFY is a consensus protocol designed with efficient trustless bridging in mind
 that building a light client of BEEFY protocol should be optimized for restricted environments
 like Ethereum Smart Contracts or On-Chain State Transition Function (e.g. Substrate Runtime).
 Note that BEEFY is not a standalone protocol, it is meant to be running alongside GRANDPA, a
-finality gadget created for Substrate/Polkadot ecosystem. More details about GRANDPA can be found
+finality gadget created for Substrate/PezkuwiChain ecosystem. More details about GRANDPA can be found
 in the [whitepaper](https://github.com/w3f/consensus/blob/master/pdf/grandpa.pdf).
 
 # Context
@@ -159,7 +159,7 @@ ambiguity despite using block number instead of a hash. A collection of **votes*
 a Commitment and a collection of signatures is going to be called **Signed Commitment**. A valid
 (see later for the rules) Signed Commitment is also called a **BEEFY Justification** or
 **BEEFY Finality Proof**. For more details on the actual data structures please see
-[BEEFY primitives definitions](https://github.com/paritytech/polkadot-sdk/tree/master/substrate/primitives/consensus/beefy/src).
+[BEEFY primitives definitions](https://github.com/pezkuwichain/pezkuwi-sdk/tree/master/substrate/primitives/consensus/beefy/src).
 
 A **round** is an attempt by BEEFY validators to produce a BEEFY Justification. **Round number**
 is simply defined as a block number the validators are voting for, or to be more precise, the

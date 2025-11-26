@@ -6,7 +6,7 @@
 //! 2. a state transition function.
 //!
 //! In Substrate-based blockchains, state transition functions are referred to as
-//! [runtimes](https://paritytech.github.io/polkadot-sdk/master/polkadot_sdk_docs/reference_docs/blockchain_state_machines/index.html).
+//! [runtimes](https://docs.pezkuwichain.io/sdk/master/polkadot_sdk_docs/reference_docs/blockchain_state_machines/index.html).
 //!
 //! Traditionally, before Substrate, upgrading state transition functions required node
 //! operators to download new software and restart their nodes in a process called
@@ -95,7 +95,7 @@
 //! inadvertently result in a bricked chain.
 //!
 //! It is recommended to run as part of your CI pipeline. See the
-//! [polkadot-sdk check-runtime-migration job](https://github.com/paritytech/polkadot-sdk/blob/4a293bc5a25be637c06ce950a34490706597615b/.gitlab/pipeline/check.yml#L103-L124)
+//! [pezkuwi-sdk check-runtime-migration job](https://github.com/pezkuwichain/pezkuwichain-sdk/blob/4a293bc5a25be637c06ce950a34490706597615b/.gitlab/pipeline/check.yml#L103-L124)
 //! for an example of how to configure this.
 //!
 //! ### Note on the Manipulability of PoV Size and Execution Time
@@ -125,7 +125,7 @@
 //! Suitable for migrations which could use arbitrary amounts of block weight.
 //!
 //! See the
-//! [multi-block-migrations example](https://github.com/paritytech/polkadot-sdk/tree/0d7d2177807ec6b3094f4491a45b0bc0d74d3c8b/substrate/frame/examples/multi-block-migrations)
+//! [multi-block-migrations example](https://github.com/pezkuwichain/pezkuwichain-sdk/tree/0d7d2177807ec6b3094f4491a45b0bc0d74d3c8b/substrate/frame/examples/multi-block-migrations)
 //! for reference.
 //!
 //! [`OnRuntimeUpgrade`]: frame_support::traits::OnRuntimeUpgrade

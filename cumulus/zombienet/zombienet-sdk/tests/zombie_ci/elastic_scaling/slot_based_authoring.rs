@@ -78,7 +78,7 @@ async fn build_network_config() -> Result<NetworkConfig, anyhow::Error> {
 	// 	 - validator[0-4]
 	// 	   - validator
 	// 	   - synchronize only with alice
-	// - parachain nodes
+	// - teyrchain nodes
 	//   - recovery-target
 	//     - full node
 	//   - collator-elastic
@@ -87,9 +87,9 @@ async fn build_network_config() -> Result<NetworkConfig, anyhow::Error> {
 	NetworkConfigBuilder::new()
 		.with_relaychain(|r| {
 			let r = r
-				.with_chain("rococo-local")
-				.with_default_command("polkadot")
-				.with_default_image(images.polkadot.as_str())
+				.with_chain("pezkuwichain-local")
+				.with_default_command("pezkuwi")
+				.with_default_image(images.pezkuwi.as_str())
 				.with_genesis_overrides(json!({
 					"configuration": {
 						"config": {
@@ -110,32 +110,32 @@ async fn build_network_config() -> Result<NetworkConfig, anyhow::Error> {
 			(0..5).fold(r, |acc, i| {
 				acc.with_node(|node| {
 					node.with_name(&format!("validator-{i}")).with_args(vec![
-						("-lruntime=debug,parachain=trace").into(),
+						("-lruntime=debug,teyrchain=trace").into(),
 					])
 				})
 			})
 		})
-		.with_parachain(|p| {
+		.with_teyrchain(|p| {
 			p.with_id(PARA_ID_1)
 				.with_chain("elastic-scaling")
-				.with_default_command("test-parachain")
+				.with_default_command("test-teyrchain")
 				.with_default_image(images.cumulus.as_str())
 				.with_collator(|n|
 					n.with_name("collator-elastic")
 						.with_args(vec![
-							("-laura=trace,runtime=info,cumulus-consensus=trace,consensus::common=trace,parachain::collation-generation=trace,parachain::collator-protocol=trace,parachain=debug").into(),
+							("-laura=trace,runtime=info,cumulus-consensus=trace,consensus::common=trace,teyrchain::collation-generation=trace,teyrchain::collator-protocol=trace,teyrchain=debug").into(),
 							("--force-authoring").into(),
 							("--authoring", "slot-based").into(),
 					]))
 		})
-		.with_parachain(|p| {
+		.with_teyrchain(|p| {
 			p.with_id(PARA_ID_2)
-				.with_default_command("test-parachain")
+				.with_default_command("test-teyrchain")
 				.with_default_image(images.cumulus.as_str())
 				.with_collator(|n|
 					n.with_name("collator-single-core")
 						.with_args(vec![
-							("-laura=trace,runtime=info,cumulus-consensus=trace,consensus::common=trace,parachain::collation-generation=trace,parachain::collator-protocol=trace,parachain=debug").into(),
+							("-laura=trace,runtime=info,cumulus-consensus=trace,consensus::common=trace,teyrchain::collation-generation=trace,teyrchain::collator-protocol=trace,teyrchain=debug").into(),
 							("--force-authoring").into(),
 							("--authoring", "slot-based").into(),
 					]))

@@ -21,7 +21,7 @@ on:
         options:
           - all
           - polkadot
-          - polkadot-parachain
+          - polkadot-teyrchain
           - polkadot-omni-node
           - frame-omni-bencher
           - chain-spec-builder
@@ -116,15 +116,15 @@ jobs:
       stable_tag: ${{ inputs.release_tag }}
     secrets: inherit
 
-  publish-docker-polkadot-parachain:
-    name: Publish Docker image - polkadot-parachain
+  publish-docker-polkadot-teyrchain:
+    name: Publish Docker image - polkadot-teyrchain
     # needs: [publish-deb-package, publish-rpm-package]
     needs: [check-synchronization]
-    if: ${{ inputs.binary == 'polkadot-parachain' || inputs.binary == 'all' }}
+    if: ${{ inputs.binary == 'polkadot-teyrchain' || inputs.binary == 'all' }}
     uses: ./.github/workflows/release-50_publish-docker.yml
     with:
       image_type: ${{ inputs.image_type }}
-      binary: polkadot-parachain
+      binary: polkadot-teyrchain
       registry: ${{ inputs.registry }}
       owner: ${{ inputs.owner }}
       version: ${{ inputs.version }}

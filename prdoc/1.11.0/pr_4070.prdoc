@@ -6,7 +6,7 @@ title: Avoid using `para_backing_state` if runtime doesn't support async backing
 doc:
   - audience: Node Operator
     description: |
-      Fixes https://github.com/paritytech/polkadot-sdk/issues/4067 which prevents collators to 
+      Fixes https://github.com/pezkuwichain/pezkuwichain-sdk/issues/4067 which prevents collators to 
       upgrade to latest release (v1.10.0)
 
 crates: [ ]

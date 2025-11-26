@@ -1,7 +1,7 @@
 title: '`fatxpool`: `report_invalid` is now aync'
 doc:
 - audience: Node Dev
-  description: '[`TransactionPool::report_invalid`](https://github.com/paritytech/polkadot-sdk/blob/74dafaee5c600fd2c8a59a280f647f94ccf0a755/substrate/client/transaction-pool/api/src/lib.rs#L314)
+  description: '[`TransactionPool::report_invalid`](https://github.com/pezkuwichain/pezkuwichain-sdk/blob/74dafaee5c600fd2c8a59a280f647f94ccf0a755/substrate/client/transaction-pool/api/src/lib.rs#L314)
     is now `async`, function was typically used in async context, seems right to be
     fully async.'
 crates:

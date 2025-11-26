@@ -24,7 +24,7 @@ of details behind that simple phrase - you could find more info in the
 [High-Level Bridge Overview](./high-level-overview.md) document.
 
 Reward that is paid to relayer has two parts. The first part static and is controlled by the governance.
-It is rather small initially - e.g. you need to deliver `10_000` Kusama -> Polkadot messages to gain single
+It is rather small initially - e.g. you need to deliver `10_000` Kusama -> Pezkuwi messages to gain single
 KSM token.
 
 The other reward part is dynamic. So to deliver an XCM message from one BridgeHub to another, we'll need to
@@ -45,7 +45,7 @@ information on how to deploy this software on your own node.
 ## Relayers Concurrency
 
 As it has been said above, we are not compensating cost of transactions that are not **useful**. For
-example, if message `100` has already been delivered from Kusama Bridge Hub to Polkadot Bridge Hub, then another
+example, if message `100` has already been delivered from Kusama Bridge Hub to Pezkuwi Bridge Hub, then another
 transaction that delivers the same message `100` won't be **useful**. Hence, no compensation to relayer that
 has submitted that second transaction.
 
@@ -61,7 +61,7 @@ included into the block. So at least you may be sure that you won't waste your f
 <summary>Some details?</summary>
 
 All **unuseful** transactions are rejected by our
-[transaction extension](https://github.com/paritytech/polkadot-sdk/blob/master/bridges/bin/runtime-common/src/refund_relayer_extension.rs),
+[transaction extension](https://github.com/pezkuwichain/pezkuwichain-sdk/blob/master/bridges/bin/runtime-common/src/refund_relayer_extension.rs),
 which also handles transaction fee compensations. You may find more info on unuseful (aka obsolete) transactions
 by lurking in the code.
 
@@ -74,7 +74,7 @@ That is planned for the future version of bridge and the progress is
 
 ## Prerequisites
 
-Let's focus on the bridge between Polkadot and Kusama Bridge Hubs. Let's also assume that we want to start
+Let's focus on the bridge between Pezkuwi and Kusama Bridge Hubs. Let's also assume that we want to start
 a relayer that "serves" an initial lane [`0x00000001`](https://github.com/polkadot-fellows/runtimes/blob/9ce1bbbbcd7843b3c76ba4d43c036bc311959e9f/system-parachains/bridge-hubs/bridge-hub-kusama/src/bridge_to_polkadot_config.rs#L54).
 
 <details>
@@ -93,15 +93,15 @@ So to start your relayer instance, you'll need to prepare:
 
 - an address of ws/wss RPC endpoint of the Kusama relay chain;
 
-- an address of ws/wss RPC endpoint of the Polkadot relay chain;
+- an address of ws/wss RPC endpoint of the Pezkuwi relay chain;
 
 - an address of ws/wss RPC endpoint of the Kusama Bridge Hub chain;
 
-- an address of ws/wss RPC endpoint of the Polkadot Bridge Hub chain;
+- an address of ws/wss RPC endpoint of the Pezkuwi Bridge Hub chain;
 
 - an account on Kusama Bridge Hub;
 
-- an account on Polkadot Bridge Hub.
+- an account on Pezkuwi Bridge Hub.
 
 For RPC endpoints, you could start your own nodes, or use some public community nodes. Nodes are not meant to be
 archive or provide access to insecure RPC calls.
@@ -109,7 +109,7 @@ archive or provide access to insecure RPC calls.
 To create an account on Bridge Hubs, you could use XCM teleport functionality. E.g. if you have an account on
 the relay chain, you could use the `teleportAssets` call of `xcmPallet` and send asset
 `V3 { id: Concrete(0, Here), Fungible: <your-amount> }` to beneficiary `V3(0, X1(AccountId32(<your-account>)))`
-on destination `V3(0, X1(Parachain(1002)))`. To estimate amounts you need, please refer to the [Costs](#costs)
+on destination `V3(0, X1(Teyrchain(1002)))`. To estimate amounts you need, please refer to the [Costs](#costs)
 section of the document.
 
 ## Registering your Relayer Account (Optional, But Please Read)
@@ -129,8 +129,8 @@ Before registering, you should know several things about your funds:
 - to register, you need to hold significant amount of funds on your relayer account. As of now, it is
   [100 KSM](https://github.com/polkadot-fellows/runtimes/blob/9ce1bbbbcd7843b3c76ba4d43c036bc311959e9f/system-parachains/bridge-hubs/bridge-hub-kusama/src/bridge_to_polkadot_config.rs#L71C14-L71C43)
   for registration on Kusama Bridge Hub and
-  [500 DOT](https://github.com/polkadot-fellows/runtimes/blob/9ce1bbbbcd7843b3c76ba4d43c036bc311959e9f/system-parachains/bridge-hubs/bridge-hub-polkadot/src/bridge_to_kusama_config.rs#L71C14-L71C43)
-  for registration on Polkadot Bridge Hub;
+  [500 HEZ](https://github.com/polkadot-fellows/runtimes/blob/9ce1bbbbcd7843b3c76ba4d43c036bc311959e9f/system-parachains/bridge-hubs/bridge-hub-polkadot/src/bridge_to_kusama_config.rs#L71C14-L71C43)
+  for registration on Pezkuwi Bridge Hub;
 
 - when you are registered, those funds are reserved on relayer account and you can't transfer them.
 
@@ -161,9 +161,9 @@ than the `LEASE`.
 </details>
 
 So once you have enough funds on your account and have selected the `validTill` parameter value, you
-could use the Polkadot JS apps to submit an extrinsic. If you want priority boost for your transactions
+could use the Pezkuwi JS apps to submit an extrinsic. If you want priority boost for your transactions
 on the Kusama Bridge Hub, open the
-[Polkadot JS Apps](https://polkadot.js.org/apps/?rpc=wss%3A%2F%2Fkusama-bridge-hub-rpc.polkadot.io#/extrinsics)
+[Pezkuwi JS Apps](https://polkadot.js.org/apps/?rpc=wss%3A%2F%2Fkusama-bridge-hub-rpc.polkadot.io#/extrinsics)
 and submit the `register` extrinsic from the `bridgeRelayers` pallet:
 
 ![Register Extrinsic](./bridge-relayers-register.png)
@@ -202,13 +202,13 @@ this data.
 </details>
 
 To deliver and get reward for a single message, the relayer needs to submit two transactions. One
-at the source Bridge Hub and one at the target Bridge Hub. Below are costs for Polkadot <> Kusama
+at the source Bridge Hub and one at the target Bridge Hub. Below are costs for Pezkuwi <> Kusama
 messages (as of today):
 
-- to deliver a single Polkadot -> Kusama message, you would need to pay around `0.06 KSM` at Kusama
-  Bridge Hub and around `1.62 DOT` at Polkadot Bridge Hub;
+- to deliver a single Pezkuwi -> Kusama message, you would need to pay around `0.06 KSM` at Kusama
+  Bridge Hub and around `1.62 HEZ` at Pezkuwi Bridge Hub;
 
-- to deliver a single Kusama -> Polkadot message, you would need to pay around `1.70 DOT` at Polkadot
+- to deliver a single Kusama -> Pezkuwi message, you would need to pay around `1.70 HEZ` at Pezkuwi
   Bridge Hub and around `0.05 KSM` at Kusama Bridge Hub.
 
 Those values are not constants - they depend on call weights (that may change from release to release),
@@ -222,7 +222,7 @@ This requires submitting several transactions. But first, let's check that you a
 claim. For that, let's check the state of the pallet that tracks all rewards.
 
 To check your rewards at the Kusama Bridge Hub, go to the
-[Polkadot JS Apps](https://polkadot.js.org/apps/?rpc=wss%3A%2F%2Fkusama-bridge-hub-rpc.polkadot.io#/chainstate)
+[Pezkuwi JS Apps](https://polkadot.js.org/apps/?rpc=wss%3A%2F%2Fkusama-bridge-hub-rpc.polkadot.io#/chainstate)
 targeting Kusama Bridge Hub, select the `bridgeRelayers` pallet, choose `relayerRewards` map and
 your relayer account. Then:
 
@@ -235,22 +235,22 @@ your relayer account. Then:
 
 If check shows that you have some rewards, you can craft the claim transaction, with similar parameters.
 For that, go to `Extrinsics` tab of the
-[Polkadot JS Apps](https://polkadot.js.org/apps/?rpc=wss%3A%2F%2Fkusama-bridge-hub-rpc.polkadot.io#/extrinsics)
+[Pezkuwi JS Apps](https://polkadot.js.org/apps/?rpc=wss%3A%2F%2Fkusama-bridge-hub-rpc.polkadot.io#/extrinsics)
 and submit the following transaction (make sure to change `owner` before):
 
 ![Claim Rewards Extrinsic](./bridge-relayers-claim-rewards.png)
 
-To claim rewards on Polkadot Bridge Hub you can follow the same process. The only difference is that you
+To claim rewards on Pezkuwi Bridge Hub you can follow the same process. The only difference is that you
 need to set value of the `bridgedChainId` to `bhks`.
 
 ## Starting your Relayer
 
-### Starting your Rococo <> Westend Relayer
+### Starting your Pezkuwichain <> Zagros Relayer
 
 You may find the relayer image reference in the
 [Releases](https://github.com/paritytech/parity-bridges-common/releases)
 of this repository. Make sure to check supported (bundled) versions
-of release there. For Rococo <> Westend bridge, normally you may use the
+of release there. For Pezkuwichain <> Zagros bridge, normally you may use the
 latest published release. The release notes always contain the docker
 image reference and source files, required to build relayer manually.
 
@@ -258,57 +258,57 @@ Once you have the docker image, update variables and run the following script:
 ```sh
 export DOCKER_IMAGE=<image-of-substrate-relay>
 
-export ROCOCO_HOST=<rococo-ws-rpc-host-here>
-export ROCOCO_PORT=<rococo-ws-rpc-port-here>
-# or set it to '--rococo-secure' if wss is used above
-export ROCOCO_IS_SECURE=
-export BRIDGE_HUB_ROCOCO_HOST=<bridge-hub-rococo-ws-rpc-host-here>
-export BRIDGE_HUB_ROCOCO_PORT=<bridge-hub-rococo-ws-rpc-port-here>
-# or set it to '--bridge-hub-rococo-secure' if wss is used above
-export BRIDGE_HUB_ROCOCO_IS_SECURE=
-export BRIDGE_HUB_ROCOCO_KEY_FILE=<absolute-path-to-file-with-account-key-at-bridge-hub-rococo>
+export PEZKUWICHAIN_HOST=<pezkuwichain-ws-rpc-host-here>
+export PEZKUWICHAIN_PORT=<pezkuwichain-ws-rpc-port-here>
+# or set it to '--pezkuwichain-secure' if wss is used above
+export PEZKUWICHAIN_IS_SECURE=
+export BRIDGE_HUB_PEZKUWICHAIN_HOST=<bridge-hub-pezkuwichain-ws-rpc-host-here>
+export BRIDGE_HUB_PEZKUWICHAIN_PORT=<bridge-hub-pezkuwichain-ws-rpc-port-here>
+# or set it to '--bridge-hub-pezkuwichain-secure' if wss is used above
+export BRIDGE_HUB_PEZKUWICHAIN_IS_SECURE=
+export BRIDGE_HUB_PEZKUWICHAIN_KEY_FILE=<absolute-path-to-file-with-account-key-at-bridge-hub-pezkuwichain>
 
-export WESTEND_HOST=<westend-wss-rpc-host-here>
-export WESTEND_PORT=<westend-wss-rpc-port-here>
-# or set it to '--westend-secure' if wss is used above
-export WESTEND_IS_SECURE=
-export BRIDGE_HUB_WESTEND_HOST=<bridge-hub-westend-ws-rpc-host-here>
-export BRIDGE_HUB_WESTEND_PORT=<bridge-hub-westend-ws-rpc-port-here>
-# or set it to '--bridge-hub-westend-secure ' if wss is used above
-export BRIDGE_HUB_WESTEND_IS_SECURE=
-export BRIDGE_HUB_WESTEND_KEY_FILE=<absolute-path-to-file-with-account-key-at-bridge-hub-westend>
+export ZAGROS_HOST=<zagros-wss-rpc-host-here>
+export ZAGROS_PORT=<zagros-wss-rpc-port-here>
+# or set it to '--zagros-secure' if wss is used above
+export ZAGROS_IS_SECURE=
+export BRIDGE_HUB_ZAGROS_HOST=<bridge-hub-zagros-ws-rpc-host-here>
+export BRIDGE_HUB_ZAGROS_PORT=<bridge-hub-zagros-ws-rpc-port-here>
+# or set it to '--bridge-hub-zagros-secure ' if wss is used above
+export BRIDGE_HUB_ZAGROS_IS_SECURE=
+export BRIDGE_HUB_ZAGROS_KEY_FILE=<absolute-path-to-file-with-account-key-at-bridge-hub-zagros>
 
 # you can get extended relay logs (e.g. for debugging issues) by passing `-e RUST_LOG=bridge=trace`
 # argument to the `docker` binary
 docker run \
-    -v $BRIDGE_HUB_ROCOCO_KEY_FILE:/bhr.key \
-    -v $BRIDGE_HUB_WESTEND_KEY_FILE:/bhw.key \
+    -v $BRIDGE_HUB_PEZKUWICHAIN_KEY_FILE:/bhr.key \
+    -v $BRIDGE_HUB_ZAGROS_KEY_FILE:/bhw.key \
     $DOCKER_IMAGE \
-    relay-headers-and-messages bridge-hub-rococo-bridge-hub-westend \
-    --rococo-host $ROCOCO_HOST \
-    --rococo-port $ROCOCO_PORT \
-    $ROCOCO_IS_SECURE \
-    --rococo-version-mode Auto \
-    --bridge-hub-rococo-host $BRIDGE_HUB_ROCOCO_HOST \
-    --bridge-hub-rococo-port $BRIDGE_HUB_ROCOCO_PORT \
-    $BRIDGE_HUB_ROCOCO_IS_SECURE \
-    --bridge-hub-rococo-version-mode Auto \
-    --bridge-hub-rococo-signer-file /bhr.key \
-    --bridge-hub-rococo-transactions-mortality 16 \
-    --westend-host $WESTEND_HOST \
-    --westend-port $WESTEND_PORT \
-    $WESTEND_IS_SECURE \
-    --westend-version-mode Auto \
-    --bridge-hub-westend-host $BRIDGE_HUB_WESTEND_HOST \
-    --bridge-hub-westend-port $BRIDGE_HUB_WESTEND_PORT \
-    $BRIDGE_HUB_WESTEND_IS_SECURE \
-    --bridge-hub-westend-version-mode Auto \
-    --bridge-hub-westend-signer-file /bhw.key \
-    --bridge-hub-westend-transactions-mortality 16 \
+    relay-headers-and-messages bridge-hub-pezkuwichain-bridge-hub-zagros \
+    --pezkuwichain-host $PEZKUWICHAIN_HOST \
+    --pezkuwichain-port $PEZKUWICHAIN_PORT \
+    $PEZKUWICHAIN_IS_SECURE \
+    --pezkuwichain-version-mode Auto \
+    --bridge-hub-pezkuwichain-host $BRIDGE_HUB_PEZKUWICHAIN_HOST \
+    --bridge-hub-pezkuwichain-port $BRIDGE_HUB_PEZKUWICHAIN_PORT \
+    $BRIDGE_HUB_PEZKUWICHAIN_IS_SECURE \
+    --bridge-hub-pezkuwichain-version-mode Auto \
+    --bridge-hub-pezkuwichain-signer-file /bhr.key \
+    --bridge-hub-pezkuwichain-transactions-mortality 16 \
+    --zagros-host $ZAGROS_HOST \
+    --zagros-port $ZAGROS_PORT \
+    $ZAGROS_IS_SECURE \
+    --zagros-version-mode Auto \
+    --bridge-hub-zagros-host $BRIDGE_HUB_ZAGROS_HOST \
+    --bridge-hub-zagros-port $BRIDGE_HUB_ZAGROS_PORT \
+    $BRIDGE_HUB_ZAGROS_IS_SECURE \
+    --bridge-hub-zagros-version-mode Auto \
+    --bridge-hub-zagros-signer-file /bhw.key \
+    --bridge-hub-zagros-transactions-mortality 16 \
     --lane 00000002
 ```
 
-### Starting your Polkadot <> Kusama Relayer
+### Starting your Pezkuwi <> Kusama Relayer
 
 *Work in progress, coming soon*
 
@@ -325,19 +325,19 @@ docker run \
                              # and listen for connections on the host' localhost interface
     ..
     $DOCKER_IMAGE \
-    relay-headers-and-messages bridge-hub-rococo-bridge-hub-westend \
+    relay-headers-and-messages bridge-hub-pezkuwichain-bridge-hub-zagros \
     --prometheus-host 0.0.0.0 \ # tell `substrate-relay` binary to accept Prometheus endpoint
                                 # connections from everywhere
     ..
 ```
 
 You can find more info on configuring Prometheus and Grafana in the
-[Monitor your node](https://docs.polkadot.com/infrastructure/running-a-validator/operational-tasks/general-management/#monitor-your-node)
-guide from Polkadot wiki.
+[Monitor your node](https://docs.pezkuwichain.io/infrastructure/running-a-validator/operational-tasks/general-management/#monitor-your-node)
+guide from Pezkuwi wiki.
 
 We have our own set of Grafana dashboards and alerts. You may use them for inspiration.
 Please find them in this folder:
 
-- for Rococo <> Westend bridge: [rococo-westend](https://github.com/paritytech/parity-bridges-common/tree/master/deployments/bridges/rococo-westend).
+- for Pezkuwichain <> Zagros bridge: [pezkuwichain-zagros](https://github.com/paritytech/parity-bridges-common/tree/master/deployments/bridges/rococo-westend).
 
-- for Polkadot <> Kusama bridge: *work in progress, coming soon*
+- for Pezkuwi <> Kusama bridge: *work in progress, coming soon*

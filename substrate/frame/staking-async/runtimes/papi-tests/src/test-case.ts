@@ -5,7 +5,7 @@ import chalk from "chalk";
 
 export enum Chain {
 	Relay = "Rely",
-	Parachain = "Para",
+	Teyrchain = "Para",
 }
 
 interface IEvent {
@@ -208,7 +208,7 @@ export class TestCase {
 		const number = `#${blockData.number}`;
 		const chain = blockData.chain === Chain.Relay
 			? chalk.blue(blockData.chain)     // Blue for Relay - works well in both modes
-			: chalk.green(blockData.chain);   // Green for Parachain - works well in both modes
+			: chalk.green(blockData.chain);   // Green for Teyrchain - works well in both modes
 		const weight = `⛓ ${this.formatWeight(blockData.weights)}`;
 		const authorship = blockData.authorship
 			? `[✍️ ${this.formatAuthorship(blockData.authorship)}]`
@@ -292,7 +292,7 @@ export class TestCase {
 
 // Extract information about the authoring of `block` number from the given `logFile`. This will
 // work in 3 steps:
-// 1. After filtering for `[Parachain]`, and looking at the log file from end to start, it will find
+// 1. After filtering for `[Teyrchain]`, and looking at the log file from end to start, it will find
 //    the line containing `Prepared block for proposing at ${block}`. From this, we extract the
 //    authoring time in ms
 // 2. Them, we only keep the rest of the log file (optimization). We find the first line thereafter
@@ -301,7 +301,7 @@ export class TestCase {
 // 3. Finally, we find the first line thereafter containing `Compressed PoV size: ...kb` and extract
 //    the compressed size.
 //
-// Note: `logFile` must always relate to a parachain.
+// Note: `logFile` must always relate to a teyrchain.
 function extractAuthorshipData(block: number, logFile: string): IAuthorshipData | null {
 	if (block == 0) {
 		return null;
@@ -310,7 +310,7 @@ function extractAuthorshipData(block: number, logFile: string): IAuthorshipData 
 	const log = readFileSync(logFile)
 		.toString()
 		.split("\n")
-		.filter((l) => l.includes("[Parachain]"))
+		.filter((l) => l.includes("[Teyrchain]"))
 		.reverse();
 	const target = `Prepared block for proposing at ${block}`;
 	const findTime = (log: string[]): { time: number; readStack: string[] } => {
@@ -423,7 +423,7 @@ export async function runTest(
 					data: e.event.value.value,
 				}));
 			test.onBlock({
-				chain: Chain.Parachain,
+				chain: Chain.Teyrchain,
 				number: block.number,
 				hash: block.hash,
 				events: interested,

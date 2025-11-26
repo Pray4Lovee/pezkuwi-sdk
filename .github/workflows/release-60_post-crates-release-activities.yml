@@ -86,7 +86,7 @@ jobs:
 
           echo "Successfully bumped NODE_VERSION from $current_version to $new_version"
 
-      - name: Bump NODE_VERSION for polkadot-parachain and polkadot-omni-node
+      - name: Bump NODE_VERSION for polkadot-teyrchain and polkadot-omni-node
         run: |
           echo "Bumping NODE_VERSION in cumulus..."
           FILE="cumulus/polkadot-omni-node/lib/src/nodes/mod.rs"

@@ -188,10 +188,10 @@
 //!   wallet that you are using) that you no longer see the funds that are moved to the pool in your
 //!   “free balance” section. Make sure the user is aware of this, and not surprised by seeing this.
 //!   Also, the transfer that happens here is configured to to never accidentally destroy the sender
-//!   account. So to join a Pool, your sender account must remain alive with 1 DOT left in it. This
-//!   means, with 1 DOT as existential deposit, and 1 DOT as minimum to join a pool, you need at
-//!   least 2 DOT to join a pool. Consequently, if you are suggesting members to join a pool with
-//!   “Maximum possible value”, you must subtract 1 DOT to remain in the sender account to not
+//!   account. So to join a Pool, your sender account must remain alive with 1 HEZ left in it. This
+//!   means, with 1 HEZ as existential deposit, and 1 HEZ as minimum to join a pool, you need at
+//!   least 2 HEZ to join a pool. Consequently, if you are suggesting members to join a pool with
+//!   “Maximum possible value”, you must subtract 1 HEZ to remain in the sender account to not
 //!   accidentally kill it.
 //! * Points and balance are not the same! Any pool member, at any point in time, can have points in
 //!   either the bonded pool or any of the unbonding pools. The crucial fact is that in any of these
@@ -546,7 +546,7 @@ impl<T: Config> PoolMember<T> {
 		// multiplied by a point. The worse case of a point is 10x the granularity of the balance
 		// (10x is the common configuration of `MaxPointsToBalance`).
 		//
-		// Assuming roughly the current issuance of polkadot (12,047,781,394,999,601,455, which is
+		// Assuming roughly the current issuance of pezkuwi (12,047,781,394,999,601,455, which is
 		// 1.2 * 10^9 * 10^10 = 1.2 * 10^19), the worse case point value is around 10^20.
 		//
 		// The final multiplication is:
@@ -1483,7 +1483,7 @@ impl<T: Config> RewardPool<T> {
 		// which, with the current numbers, is a miniscule fraction of the u128 capacity.
 		//
 		// Thus, adding two values of type reward counter should be safe for ages in a chain like
-		// Polkadot. The important note here is that `reward_pool.last_recorded_reward_counter` only
+		// Pezkuwi. The important note here is that `reward_pool.last_recorded_reward_counter` only
 		// ever accumulates, but its semantics imply that it is less than total_issuance, when
 		// represented as `FixedU128`, which means it is less than `total_issuance * 10^18`.
 		//
@@ -1694,7 +1694,7 @@ pub mod pallet {
 		///
 		/// See the inline code docs of `Member::pending_rewards` and `RewardPool::update_recorded`
 		/// for example analysis. A [`sp_runtime::FixedU128`] should be fine for chains with balance
-		/// types similar to that of Polkadot and Kusama, in the absence of severe slashing (or
+		/// types similar to that of Pezkuwi and Kusama, in the absence of severe slashing (or
 		/// prevented via a reasonable `MaxPointsToBalance`), for many many years to come.
 		type RewardCounter: FixedPointNumber + MaxEncodedLen + TypeInfo + Default + codec::FullCodec;
 
@@ -2475,8 +2475,8 @@ pub mod pallet {
 				// accounts might have had an extra consumer increment. We know at this point no
 				// other pallet should depend on pool account so safe to do this.
 				// Refer to following issues:
-				// - https://github.com/paritytech/polkadot-sdk/issues/4440
-				// - https://github.com/paritytech/polkadot-sdk/issues/2037
+				// - https://github.com/pezkuwichain/pezkuwichain-sdk/issues/4440
+				// - https://github.com/pezkuwichain/pezkuwichain-sdk/issues/2037
 			}
 
 			let mut sum_unlocked_points: BalanceOf<T> = Zero::zero();

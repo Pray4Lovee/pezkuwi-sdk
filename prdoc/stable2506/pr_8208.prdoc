@@ -5,7 +5,7 @@ doc:
     This enables the HTTP support for the OCW.
 
 
-    Closes: https://github.com/paritytech/polkadot-sdk/issues/8203
+    Closes: https://github.com/pezkuwichain/pezkuwichain-sdk/issues/8203
 crates:
 - name: polkadot-omni-node-lib
   bump: patch

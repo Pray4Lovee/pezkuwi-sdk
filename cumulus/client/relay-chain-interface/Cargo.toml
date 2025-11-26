@@ -12,7 +12,7 @@ repository.workspace = true
 workspace = true
 
 [dependencies]
-polkadot-overseer = { workspace = true, default-features = true }
+pezkuwi-overseer = { workspace = true, default-features = true }
 
 cumulus-primitives-core = { workspace = true, default-features = true }
 

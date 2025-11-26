@@ -20,7 +20,7 @@ doc:
     \ &KEY, &mut stored);\nassert_eq!(stored, VALUE_A);\n```\n\n*All existing tests\
     \ pass*\n\n# Checklist\n\n* [x] My PR includes a detailed description as outlined\
     \ in the \"Description\" and its two subsections above.\n* [ ] My PR follows the\
-    \ [labeling requirements](\nhttps://github.com/paritytech/polkadot-sdk/blob/master/docs/contributor/CONTRIBUTING.md#Process\n\
+    \ [labeling requirements](\nhttps://github.com/pezkuwichain/pezkuwichain-sdk/blob/master/docs/contributor/CONTRIBUTING.md#Process\n\
     ) of this project (at minimum one label for `T` required)\n    * External contributors:\
     \ ask maintainers to put the right label on your PR.\n* [x] I have made corresponding\
     \ changes to the documentation (if applicable)\n* [x] I have added tests that\

@@ -17,13 +17,13 @@
 //! Cumulus timestamp related primitives.
 //!
 //! Provides a [`InherentDataProvider`] that should be used in the validation phase of the
-//! parachain. It will be used to create the inherent data and that will be used to check the
-//! inherents inside the parachain block (in this case the timestamp inherent). As we don't have
+//! teyrchain. It will be used to create the inherent data and that will be used to check the
+//! inherents inside the teyrchain block (in this case the timestamp inherent). As we don't have
 //! access to any clock from the runtime the timestamp is always passed as an inherent into the
 //! runtime. To check this inherent when validating the block, we will use the relay chain slot. As
 //! the relay chain slot is derived from a timestamp, we can easily convert it back to a timestamp
 //! by multiplying it with the slot duration. By comparing the relay chain slot derived timestamp
-//! with the timestamp we can ensure that the parachain timestamp is reasonable.
+//! with the timestamp we can ensure that the teyrchain timestamp is reasonable.
 
 #![cfg_attr(not(feature = "std"), no_std)]
 
@@ -36,7 +36,7 @@ pub use sp_timestamp::{InherentType, INHERENT_IDENTIFIER};
 /// The inherent data provider for the timestamp.
 ///
 /// This should be used in the runtime when checking the inherents in the validation phase of the
-/// parachain.
+/// teyrchain.
 pub struct InherentDataProvider {
 	relay_chain_slot: Slot,
 	relay_chain_slot_duration: Duration,
@@ -59,7 +59,7 @@ impl InherentDataProvider {
 
 	/// Provide the inherent data into the given `inherent_data`.
 	pub fn provide_inherent_data(&self, inherent_data: &mut InherentData) -> Result<(), Error> {
-		// As the parachain starts building at around `relay_chain_slot + 1` we use that slot to
+		// As the teyrchain starts building at around `relay_chain_slot + 1` we use that slot to
 		// calculate the timestamp.
 		let data: InherentType = ((*self.relay_chain_slot + 1) *
 			self.relay_chain_slot_duration.as_millis() as u64)

@@ -22,13 +22,13 @@
 //! WASM-EXECUTION: `Compiled`, CHAIN: `None`, DB CACHE: `1024`
 
 // Executed Command:
-// ./target/release/polkadot-parachain
+// ./target/release/pezkuwi-teyrchain
 // benchmark
 // pallet
 // --pallet
 // cumulus-pallet-xcmp-queue
 // --chain
-// asset-hub-westend-dev
+// asset-hub-zagros-dev
 // --output
 // cumulus/pallets/xcmp-queue/src/weights.rs
 // --template

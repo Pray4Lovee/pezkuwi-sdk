@@ -12,11 +12,11 @@ test(
 	async () => {
 		/// We run the test with our defined preset.
 		const { killZn, paraLog } = await runPresetUntilLaunched(PRESET);
-		/// Grab PAPI Apis to both relay and parachain instance of the ZN.
+		/// Grab PAPI Apis to both relay and teyrchain instance of the ZN.
 		const apis = await getApis();
 
 		// Our test is defined here. We expect a sequence of events to be observed in RC or
-		// Parachain. The events that we can observe are defined in `test-case.ts`'s `runTest`. In
+		// Teyrchain. The events that we can observe are defined in `test-case.ts`'s `runTest`. In
 		// short, they are all of the events related to staking.
 		const testCase = new TestCase(
 			[

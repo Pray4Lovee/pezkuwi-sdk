@@ -43,11 +43,11 @@ sp-version = { workspace = true }
 
 # Cumulus
 cumulus-pallet-aura-ext = { workspace = true }
-cumulus-pallet-parachain-system = { workspace = true }
+cumulus-pallet-teyrchain-system = { workspace = true }
 cumulus-pallet-weight-reclaim = { workspace = true }
 cumulus-primitives-aura = { workspace = true }
 cumulus-primitives-core = { workspace = true }
-parachain-info = { workspace = true }
+teyrchain-info = { workspace = true }
 
 [build-dependencies]
 substrate-wasm-builder = { optional = true, workspace = true, default-features = true }
@@ -57,7 +57,7 @@ default = ["std"]
 std = [
 	"codec/std",
 	"cumulus-pallet-aura-ext/std",
-	"cumulus-pallet-parachain-system/std",
+	"cumulus-pallet-teyrchain-system/std",
 	"cumulus-pallet-weight-reclaim/std",
 	"cumulus-primitives-aura/std",
 	"cumulus-primitives-core/std",
@@ -74,7 +74,7 @@ std = [
 	"pallet-sudo/std",
 	"pallet-timestamp/std",
 	"pallet-transaction-payment/std",
-	"parachain-info/std",
+	"teyrchain-info/std",
 	"scale-info/std",
 	"serde_json/std",
 	"sp-api/std",

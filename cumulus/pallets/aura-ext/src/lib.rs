@@ -16,16 +16,16 @@
 
 //! Cumulus extension pallet for AuRa
 //!
-//! This pallet extends the Substrate AuRa pallet to make it compatible with parachains. It
+//! This pallet extends the Substrate AuRa pallet to make it compatible with teyrchains. It
 //! provides the [`Pallet`], the [`Config`] and the [`GenesisConfig`].
 //!
-//! It is also required that the parachain runtime uses the provided [`BlockExecutor`] to properly
+//! It is also required that the teyrchain runtime uses the provided [`BlockExecutor`] to properly
 //! check the constructed block on the relay chain.
 //!
 //! ```
 //! # struct Runtime;
 //! # struct Executive;
-//! cumulus_pallet_parachain_system::register_validate_block! {
+//! cumulus_pallet_teyrchain_system::register_validate_block! {
 //!     Runtime = Runtime,
 //!     BlockExecutor = cumulus_pallet_aura_ext::BlockExecutor::<Runtime, Executive>,
 //! }

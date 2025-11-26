@@ -863,8 +863,8 @@ mod tests {
 		}
 
 		// Kusama has the same configurations as of now.
-		const POLKADOT_MAX_DOWNWARD_MESSAGE_SIZE: u32 = 51200; // 50 Kib
-		const POLKADOT_MAX_UPWARD_MESSAGE_SIZE: u32 = 65531; // 64 Kib
+		const PEZKUWI_MAX_DOWNWARD_MESSAGE_SIZE: u32 = 51200; // 50 Kib
+		const PEZKUWI_MAX_UPWARD_MESSAGE_SIZE: u32 = 65531; // 64 Kib
 
 		#[test]
 		fn maximum_session_report() {
@@ -883,10 +883,10 @@ mod tests {
 				// indices and XCM instructions, but not significant.
 				let encoded_size = session_report.encoded_size() as u32;
 
-				if encoded_size > POLKADOT_MAX_DOWNWARD_MESSAGE_SIZE {
+				if encoded_size > PEZKUWI_MAX_DOWNWARD_MESSAGE_SIZE {
 					println!(
 						"SessionReport: num_validator_points: {}, encoded len: {}, max: {:?}, largest session report: {}",
-						num_validator_points, encoded_size, POLKADOT_MAX_DOWNWARD_MESSAGE_SIZE, num_validator_points - 1
+						num_validator_points, encoded_size, PEZKUWI_MAX_DOWNWARD_MESSAGE_SIZE, num_validator_points - 1
 					);
 					break;
 				}
@@ -914,10 +914,10 @@ mod tests {
 				// Note: the real encoded size of the message will be a few bytes more, due to call
 				// indices and XCM instructions, but not significant.
 				let encoded_size = validator_set_report.encoded_size() as u32;
-				if encoded_size > POLKADOT_MAX_DOWNWARD_MESSAGE_SIZE {
+				if encoded_size > PEZKUWI_MAX_DOWNWARD_MESSAGE_SIZE {
 					println!(
 						"ValidatorSetReport: num_validators: {}, encoded len: {}, max: {:?}, largest validator set: {}",
-						num_validators, encoded_size, POLKADOT_MAX_DOWNWARD_MESSAGE_SIZE, num_validators - 1
+						num_validators, encoded_size, PEZKUWI_MAX_DOWNWARD_MESSAGE_SIZE, num_validators - 1
 					);
 					break;
 				}
@@ -948,10 +948,10 @@ mod tests {
 					.collect::<Vec<_>>();
 				let encoded_size = offences.encoded_size();
 
-				if encoded_size as u32 > POLKADOT_MAX_UPWARD_MESSAGE_SIZE {
+				if encoded_size as u32 > PEZKUWI_MAX_UPWARD_MESSAGE_SIZE {
 					println!(
 						"Offence (batched): num_offences: {}, encoded len: {}, max: {:?}, largest offence batch: {}",
-						num_offences, encoded_size, POLKADOT_MAX_UPWARD_MESSAGE_SIZE, num_offences - 1
+						num_offences, encoded_size, PEZKUWI_MAX_UPWARD_MESSAGE_SIZE, num_offences - 1
 					);
 					break;
 				}

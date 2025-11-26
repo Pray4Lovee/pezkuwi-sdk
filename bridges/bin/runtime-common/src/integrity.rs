@@ -284,15 +284,15 @@ pub fn assert_complete_with_relay_chain_bridge_constants<R, GI, MI>(
 	});
 }
 
-/// All bridge-related constants tests for the complete standard parachain messages bridge
-/// (i.e. with bridge GRANDPA, parachains and messages pallets deployed).
-pub fn assert_complete_with_parachain_bridge_constants<R, PI, MI>(
+/// All bridge-related constants tests for the complete standard teyrchain messages bridge
+/// (i.e. with bridge GRANDPA, teyrchains and messages pallets deployed).
+pub fn assert_complete_with_teyrchain_bridge_constants<R, PI, MI>(
 	params: AssertCompleteBridgeConstants,
 ) where
 	R: frame_system::Config
-		+ pallet_bridge_parachains::Config<PI>
+		+ pallet_bridge_teyrchains::Config<PI>
 		+ pallet_bridge_messages::Config<MI>,
-	<R as pallet_bridge_parachains::BoundedBridgeGrandpaConfig<R::BridgesGrandpaPalletInstance>>::BridgedRelayChain: ChainWithGrandpa,
+	<R as pallet_bridge_teyrchains::BoundedBridgeGrandpaConfig<R::BridgesGrandpaPalletInstance>>::BridgedRelayChain: ChainWithGrandpa,
 	PI: 'static,
 	MI: 'static,
 {
@@ -302,7 +302,7 @@ pub fn assert_complete_with_parachain_bridge_constants<R, PI, MI>(
 	assert_bridge_grandpa_pallet_names::<R, R::BridgesGrandpaPalletInstance>(
 		AssertBridgeGrandpaPalletNames {
 			with_bridged_chain_grandpa_pallet_name:
-				<<R as pallet_bridge_parachains::BoundedBridgeGrandpaConfig<
+				<<R as pallet_bridge_teyrchains::BoundedBridgeGrandpaConfig<
 					R::BridgesGrandpaPalletInstance,
 				>>::BridgedRelayChain>::WITH_CHAIN_GRANDPA_PALLET_NAME,
 		},
@@ -337,7 +337,7 @@ pub fn check_message_lane_weights<
 	bridged_chain_extra_storage_proof_size: u32,
 	this_chain_max_unrewarded_relayers: MessageNonce,
 	this_chain_max_unconfirmed_messages: MessageNonce,
-	// whether `RefundBridgedParachainMessages` extension is deployed at runtime and is used for
+	// whether `RefundBridgedTeyrchainMessages` extension is deployed at runtime and is used for
 	// refunding this bridge transactions?
 	//
 	// in other words: pass true for all known production chains
@@ -379,7 +379,7 @@ pub fn check_message_lane_weights<
 	);
 
 	// check that extra weights of delivery/confirmation transactions include the weight
-	// of `RefundBridgedParachainMessages` operations. This signed extension assumes the worst case
+	// of `RefundBridgedTeyrchainMessages` operations. This signed extension assumes the worst case
 	// (i.e. slashing if delivery transaction was invalid) and refunds some weight if
 	// assumption was wrong (i.e. if we did refund instead of slashing). This check
 	// ensures the extension will not refund weight when it doesn't need to (i.e. if pallet

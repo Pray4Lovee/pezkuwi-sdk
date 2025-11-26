@@ -1,0 +1,27 @@
+[package]
+name = "people-pezkuwichain-integration-tests"
+version = "0.1.0"
+authors.workspace = true
+edition.workspace = true
+license = "Apache-2.0"
+description = "People Pezkuwichain runtime integration tests with xcm-emulator"
+publish = false
+
+[lints]
+workspace = true
+
+[dependencies]
+# Substrate
+frame-support = { workspace = true }
+pallet-balances = { workspace = true }
+sp-runtime = { workspace = true }
+
+# Pezkuwi
+xcm = { workspace = true }
+xcm-executor = { workspace = true }
+
+# Cumulus
+asset-test-utils = { workspace = true, default-features = true }
+emulated-integration-tests-common = { workspace = true }
+teyrchains-common = { workspace = true, default-features = true }
+pezkuwichain-system-emulated-network = { workspace = true }

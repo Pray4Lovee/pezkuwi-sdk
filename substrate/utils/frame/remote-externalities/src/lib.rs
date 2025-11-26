@@ -58,7 +58,7 @@ type ChildKeyValues = Vec<(ChildInfo, Vec<KeyValue>)>;
 type SnapshotVersion = Compact<u16>;
 
 const LOG_TARGET: &str = "remote-ext";
-const DEFAULT_HTTP_ENDPOINT: &str = "https://try-runtime.polkadot.io:443";
+const DEFAULT_HTTP_ENDPOINT: &str = "https://try-runtime.pezkuwichain.io:443";
 const SNAPSHOT_VERSION: SnapshotVersion = Compact(4);
 
 /// The snapshot that we store on disk.
@@ -676,7 +676,7 @@ where
 		let keys = logging::with_elapsed_async(
 			|| async {
 				// TODO: We could start downloading when having collected the first batch of keys.
-				// https://github.com/paritytech/polkadot-sdk/issues/2494
+				// https://github.com/pezkuwichain/pezkuwichain-sdk/issues/2494
 				let keys = self
 					.rpc_get_keys_parallel(&prefix, at, Self::PARALLEL_REQUESTS)
 					.await?

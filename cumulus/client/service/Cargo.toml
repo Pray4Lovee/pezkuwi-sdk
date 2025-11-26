@@ -4,7 +4,7 @@ name = "cumulus-client-service"
 version = "0.7.0"
 authors.workspace = true
 edition.workspace = true
-description = "Common functions used to assemble the components of a parachain node."
+description = "Common functions used to assemble the components of a teyrchain node."
 license = "GPL-3.0-or-later WITH Classpath-exception-2.0"
 homepage.workspace = true
 repository.workspace = true
@@ -39,9 +39,9 @@ sp-runtime = { workspace = true, default-features = true }
 sp-transaction-pool = { workspace = true, default-features = true }
 sp-trie = { workspace = true, default-features = true }
 
-# Polkadot
-polkadot-overseer = { workspace = true, default-features = true }
-polkadot-primitives = { workspace = true, default-features = true }
+# Pezkuwi
+pezkuwi-overseer = { workspace = true, default-features = true }
+pezkuwi-primitives = { workspace = true, default-features = true }
 
 # Cumulus
 cumulus-client-cli = { workspace = true, default-features = true }

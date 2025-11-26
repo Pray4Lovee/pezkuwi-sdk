@@ -8,14 +8,14 @@ use hex_literal::hex;
 use snowbridge_core::AgentIdOf;
 use sp_std::default::Default;
 use xcm::{
-	latest::{ROCOCO_GENESIS_HASH, WESTEND_GENESIS_HASH},
+	latest::{PEZKUWICHAIN_GENESIS_HASH, ZAGROS_GENESIS_HASH},
 	prelude::SendError as XcmSendError,
 };
 
 parameter_types! {
 	const MaxMessageSize: u32 = u32::MAX;
-	const RelayNetwork: NetworkId = Polkadot;
-	UniversalLocation: InteriorLocation = [GlobalConsensus(RelayNetwork::get()), Parachain(1013)].into();
+	const RelayNetwork: NetworkId = Pezkuwi;
+	UniversalLocation: InteriorLocation = [GlobalConsensus(RelayNetwork::get()), Teyrchain(1013)].into();
 	const BridgedNetwork: NetworkId =  Ethereum{ chain_id: 1 };
 	const NonBridgedNetwork: NetworkId =  Ethereum{ chain_id: 2 };
 }
@@ -64,7 +64,7 @@ impl SendMessageFeeProvider for MockErrOutboundQueue {
 pub struct MockTokenIdConvert;
 impl MaybeConvert<TokenId, Location> for MockTokenIdConvert {
 	fn maybe_convert(_id: TokenId) -> Option<Location> {
-		Some(Location::new(1, [GlobalConsensus(ByGenesis(WESTEND_GENESIS_HASH))]))
+		Some(Location::new(1, [GlobalConsensus(ByGenesis(ZAGROS_GENESIS_HASH))]))
 	}
 }
 
@@ -190,7 +190,7 @@ fn exporter_validate_with_remote_universal_source_yields_not_applicable() {
 	let network = BridgedNetwork::get();
 	let channel: u32 = 0;
 	let mut universal_source: Option<InteriorLocation> =
-		Some([GlobalConsensus(Kusama), Parachain(1000)].into());
+		Some([GlobalConsensus(Kusama), Teyrchain(1000)].into());
 	let mut destination: Option<InteriorLocation> = Here.into();
 	let mut message: Option<Xcm<()>> = None;
 
@@ -209,7 +209,7 @@ fn exporter_validate_with_remote_universal_source_yields_not_applicable() {
 fn exporter_validate_without_para_id_in_source_yields_not_applicable() {
 	let network = BridgedNetwork::get();
 	let channel: u32 = 0;
-	let mut universal_source: Option<InteriorLocation> = Some(GlobalConsensus(Polkadot).into());
+	let mut universal_source: Option<InteriorLocation> = Some(GlobalConsensus(Pezkuwi).into());
 	let mut destination: Option<InteriorLocation> = Here.into();
 	let mut message: Option<Xcm<()>> = None;
 
@@ -229,7 +229,7 @@ fn exporter_validate_complex_para_id_in_source_yields_not_applicable() {
 	let network = BridgedNetwork::get();
 	let channel: u32 = 0;
 	let mut universal_source: Option<InteriorLocation> =
-		Some([GlobalConsensus(Polkadot), Parachain(1000), PalletInstance(12)].into());
+		Some([GlobalConsensus(Pezkuwi), Teyrchain(1000), PalletInstance(12)].into());
 	let mut destination: Option<InteriorLocation> = Here.into();
 	let mut message: Option<Xcm<()>> = None;
 
@@ -249,7 +249,7 @@ fn exporter_validate_without_xcm_message_yields_missing_argument() {
 	let network = BridgedNetwork::get();
 	let channel: u32 = 0;
 	let mut universal_source: Option<InteriorLocation> =
-		Some([GlobalConsensus(Polkadot), Parachain(1000)].into());
+		Some([GlobalConsensus(Pezkuwi), Teyrchain(1000)].into());
 	let mut destination: Option<InteriorLocation> = Here.into();
 	let mut message: Option<Xcm<()>> = None;
 
@@ -270,7 +270,7 @@ fn exporter_validate_with_max_target_fee_yields_unroutable() {
 	let mut destination: Option<InteriorLocation> = Here.into();
 
 	let mut universal_source: Option<InteriorLocation> =
-		Some([GlobalConsensus(Polkadot), Parachain(1000)].into());
+		Some([GlobalConsensus(Pezkuwi), Teyrchain(1000)].into());
 
 	let token_address: [u8; 20] = hex!("1000000000000000000000000000000000000000");
 	let beneficiary_address: [u8; 20] = hex!("2000000000000000000000000000000000000000");
@@ -318,7 +318,7 @@ fn exporter_validate_with_unparsable_xcm_yields_unroutable() {
 	let mut destination: Option<InteriorLocation> = Here.into();
 
 	let mut universal_source: Option<InteriorLocation> =
-		Some([GlobalConsensus(Polkadot), Parachain(1000)].into());
+		Some([GlobalConsensus(Pezkuwi), Teyrchain(1000)].into());
 
 	let channel: u32 = 0;
 	let fee = Asset { id: AssetId(Here.into()), fun: Fungible(1000) };
@@ -345,7 +345,7 @@ fn exporter_validate_xcm_success_case_1() {
 	let mut destination: Option<InteriorLocation> = Here.into();
 
 	let mut universal_source: Option<InteriorLocation> =
-		Some([GlobalConsensus(Polkadot), Parachain(1000)].into());
+		Some([GlobalConsensus(Pezkuwi), Teyrchain(1000)].into());
 
 	let token_address: [u8; 20] = hex!("1000000000000000000000000000000000000000");
 	let beneficiary_address: [u8; 20] = hex!("2000000000000000000000000000000000000000");
@@ -939,7 +939,7 @@ fn xcm_converter_convert_non_ethereum_asset_yields_asset_resolution_failed() {
 	let beneficiary_address: [u8; 20] = hex!("2000000000000000000000000000000000000000");
 
 	let assets: Assets = vec![Asset {
-		id: AssetId([GlobalConsensus(Polkadot), Parachain(1000), GeneralIndex(0)].into()),
+		id: AssetId([GlobalConsensus(Pezkuwi), Teyrchain(1000), GeneralIndex(0)].into()),
 		fun: Fungible(1000),
 	}]
 	.into();
@@ -1053,9 +1053,9 @@ fn xcm_converter_convert_with_non_ethereum_beneficiary_yields_beneficiary_resolu
 		DepositAsset {
 			assets: filter,
 			beneficiary: [
-				GlobalConsensus(Polkadot),
-				Parachain(1000),
-				AccountId32 { network: Some(Polkadot), id: beneficiary_address },
+				GlobalConsensus(Pezkuwi),
+				Teyrchain(1000),
+				AccountId32 { network: Some(Pezkuwi), id: beneficiary_address },
 			]
 			.into(),
 		},
@@ -1108,13 +1108,13 @@ fn xcm_converter_convert_with_non_ethereum_chain_beneficiary_yields_beneficiary_
 
 #[test]
 fn test_describe_asset_hub() {
-	let legacy_location: Location = Location::new(0, [Parachain(1000)]);
+	let legacy_location: Location = Location::new(0, [Teyrchain(1000)]);
 	let legacy_agent_id = AgentIdOf::convert_location(&legacy_location).unwrap();
 	assert_eq!(
 		legacy_agent_id,
 		hex!("72456f48efed08af20e5b317abf8648ac66e86bb90a411d9b0b713f7364b75b4").into()
 	);
-	let location: Location = Location::new(1, [Parachain(1000)]);
+	let location: Location = Location::new(1, [Teyrchain(1000)]);
 	let agent_id = AgentIdOf::convert_location(&location).unwrap();
 	assert_eq!(
 		agent_id,
@@ -1139,7 +1139,7 @@ fn xcm_converter_transfer_native_token_success() {
 	let beneficiary_address: [u8; 20] = hex!("2000000000000000000000000000000000000000");
 
 	let amount = 1000000;
-	let asset_location = Location::new(1, [GlobalConsensus(ByGenesis(WESTEND_GENESIS_HASH))]);
+	let asset_location = Location::new(1, [GlobalConsensus(ByGenesis(ZAGROS_GENESIS_HASH))]);
 	let token_id = TokenIdOf::convert_location(&asset_location).unwrap();
 
 	let assets: Assets = vec![Asset { id: AssetId(asset_location), fun: Fungible(amount) }].into();
@@ -1173,7 +1173,7 @@ fn xcm_converter_transfer_native_token_with_invalid_location_will_fail() {
 	let amount = 1000000;
 	// Invalid asset location from a different consensus
 	let asset_location =
-		Location { parents: 2, interior: [GlobalConsensus(ByGenesis(ROCOCO_GENESIS_HASH))].into() };
+		Location { parents: 2, interior: [GlobalConsensus(ByGenesis(PEZKUWICHAIN_GENESIS_HASH))].into() };
 
 	let assets: Assets = vec![Asset { id: AssetId(asset_location), fun: Fungible(amount) }].into();
 	let filter: AssetFilter = assets.clone().into();
@@ -1198,9 +1198,9 @@ fn xcm_converter_transfer_native_token_with_invalid_location_will_fail() {
 #[test]
 fn exporter_validate_with_invalid_dest_does_not_alter_destination() {
 	let network = BridgedNetwork::get();
-	let destination: InteriorLocation = Parachain(1000).into();
+	let destination: InteriorLocation = Teyrchain(1000).into();
 
-	let universal_source: InteriorLocation = [GlobalConsensus(Polkadot), Parachain(1000)].into();
+	let universal_source: InteriorLocation = [GlobalConsensus(Pezkuwi), Teyrchain(1000)].into();
 
 	let token_address: [u8; 20] = hex!("1000000000000000000000000000000000000000");
 	let beneficiary_address: [u8; 20] = hex!("2000000000000000000000000000000000000000");
@@ -1253,7 +1253,7 @@ fn exporter_validate_with_invalid_universal_source_does_not_alter_universal_sour
 	let destination: InteriorLocation = Here.into();
 
 	let universal_source: InteriorLocation =
-		[GlobalConsensus(ByGenesis(WESTEND_GENESIS_HASH)), Parachain(1000)].into();
+		[GlobalConsensus(ByGenesis(ZAGROS_GENESIS_HASH)), Teyrchain(1000)].into();
 
 	let token_address: [u8; 20] = hex!("1000000000000000000000000000000000000000");
 	let beneficiary_address: [u8; 20] = hex!("2000000000000000000000000000000000000000");

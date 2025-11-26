@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Substrate.  If not, see <http://www.gnu.org/licenses/>.
 
-//! The Westend runtime. This can be compiled with `#[no_std]`, ready for Wasm.
+//! The Zagros runtime. This can be compiled with `#[no_std]`, ready for Wasm.
 
 #![cfg_attr(not(feature = "std"), no_std)]
 // `#[frame_support::runtime]!` does a lot of recursion and requires us to increase the limit.
@@ -58,7 +58,7 @@ use pallet_staking_async_ah_client::{self as ah_client};
 use pallet_staking_async_rc_client::{self as rc_client};
 pub use pallet_timestamp::Call as TimestampCall;
 use pallet_transaction_payment::{FeeDetails, FungibleAdapter, RuntimeDispatchInfo};
-use polkadot_primitives::{
+use pezkuwi_primitives::{
 	async_backing::Constraints, slashing, AccountId, AccountIndex, ApprovalVotingParams, Balance,
 	BlockNumber, CandidateEvent, CandidateHash,
 	CommittedCandidateReceiptV2 as CommittedCandidateReceipt, CoreIndex, CoreState, DisputeState,
@@ -66,9 +66,9 @@ use polkadot_primitives::{
 	InboundHrmpMessage, Moment, NodeFeatures, Nonce, OccupiedCoreAssumption,
 	PersistedValidationData, PvfCheckStatement, ScrapedOnChainVotes, SessionInfo, Signature,
 	ValidationCode, ValidationCodeHash, ValidatorId, ValidatorIndex, ValidatorSignature,
-	PARACHAIN_KEY_TYPE_ID,
+	TEYRCHAIN_KEY_TYPE_ID,
 };
-use polkadot_runtime_common::{
+use pezkuwi_runtime_common::{
 	assigned_slots, auctions, crowdloan, identity_migrator, impl_runtime_weights,
 	impls::{
 		ContainsParts, LocatableAssetConverter, ToAuthor, VersionedLocatableAsset,
@@ -78,21 +78,21 @@ use polkadot_runtime_common::{
 	traits::OnSwap,
 	BlockHashCount, BlockLength, SlowAdjustingFeeUpdate,
 };
-use polkadot_runtime_parachains::{
-	assigner_coretime as parachains_assigner_coretime, configuration as parachains_configuration,
+use pezkuwi_runtime_teyrchains::{
+	assigner_coretime as teyrchains_assigner_coretime, configuration as teyrchains_configuration,
 	configuration::ActiveConfigHrmpChannelSizeAndCapacityRatio,
-	coretime, disputes as parachains_disputes,
-	disputes::slashing as parachains_slashing,
-	dmp as parachains_dmp, hrmp as parachains_hrmp, inclusion as parachains_inclusion,
+	coretime, disputes as teyrchains_disputes,
+	disputes::slashing as teyrchains_slashing,
+	dmp as teyrchains_dmp, hrmp as teyrchains_hrmp, inclusion as teyrchains_inclusion,
 	inclusion::{AggregateMessageOrigin, UmpQueueId},
-	initializer as parachains_initializer, on_demand as parachains_on_demand,
-	origin as parachains_origin, paras as parachains_paras,
-	paras_inherent as parachains_paras_inherent, reward_points as parachains_reward_points,
+	initializer as teyrchains_initializer, on_demand as teyrchains_on_demand,
+	origin as teyrchains_origin, paras as teyrchains_paras,
+	paras_inherent as teyrchains_paras_inherent, reward_points as teyrchains_reward_points,
 	runtime_api_impl::{
-		v13 as parachains_runtime_api_impl, vstaging as parachains_staging_runtime_api_impl,
+		v13 as teyrchains_runtime_api_impl, vstaging as teyrchains_staging_runtime_api_impl,
 	},
-	scheduler as parachains_scheduler, session_info as parachains_session_info,
-	shared as parachains_shared,
+	scheduler as teyrchains_scheduler, session_info as teyrchains_session_info,
+	shared as teyrchains_shared,
 };
 use scale_info::TypeInfo;
 use sp_authority_discovery::AuthorityId as AuthorityDiscoveryId;
@@ -130,7 +130,7 @@ use xcm_runtime_apis::{
 use pallet_staking_async_rc_runtime_constants::{
 	currency::*,
 	fee::*,
-	system_parachain::{coretime::TIMESLICE_PERIOD, ASSET_HUB_ID, BROKER_ID},
+	system_teyrchain::{coretime::TIMESLICE_PERIOD, ASSET_HUB_ID, BROKER_ID},
 	time::*,
 };
 
@@ -187,7 +187,7 @@ pub mod xcm_config;
 
 // Implemented types.
 mod impls;
-use impls::ToParachainIdentityReaper;
+use impls::ToTeyrchainIdentityReaper;
 
 // Governance and configurations.
 pub mod governance;
@@ -210,7 +210,7 @@ pub mod fast_runtime_binary {
 	include!(concat!(env!("OUT_DIR"), "/fast_runtime_binary.rs"));
 }
 
-/// Runtime version (Westend).
+/// Runtime version (Zagros).
 #[sp_version::runtime_version]
 pub const VERSION: RuntimeVersion = RuntimeVersion {
 	spec_name: alloc::borrow::Cow::Borrowed("staking-async-rc"),
@@ -308,7 +308,7 @@ pub mod dynamic_params {
 	use super::*;
 
 	/// Parameters used to calculate era payouts, see
-	/// [`polkadot_runtime_common::impls::EraPayoutParams`].
+	/// [`pezkuwi_runtime_common::impls::EraPayoutParams`].
 	#[dynamic_pallet_params]
 	#[codec(index = 0)]
 	pub mod inflation {
@@ -478,7 +478,7 @@ impl pallet_mmr::Config for Runtime {
 	type BlockHashProvider = pallet_mmr::DefaultBlockHashProvider<Runtime>;
 	type WeightInfo = weights::pallet_mmr::WeightInfo<Runtime>;
 	#[cfg(feature = "runtime-benchmarks")]
-	type BenchmarkHelper = parachains_paras::benchmarking::mmr_setup::MmrSetup<Runtime>;
+	type BenchmarkHelper = teyrchains_paras::benchmarking::mmr_setup::MmrSetup<Runtime>;
 }
 
 /// MMR helper types.
@@ -495,13 +495,13 @@ parameter_types! {
 	pub LeafVersion: MmrLeafVersion = MmrLeafVersion::new(0, 0);
 }
 
-/// A BEEFY data provider that merkelizes all the parachain heads at the current block
-/// (sorted by their parachain id).
+/// A BEEFY data provider that merkelizes all the teyrchain heads at the current block
+/// (sorted by their teyrchain id).
 pub struct ParaHeadsRootProvider;
 impl BeefyDataProvider<H256> for ParaHeadsRootProvider {
 	fn extra_data() -> H256 {
 		let para_heads: Vec<(u32, Vec<u8>)> =
-			parachains_paras::Pallet::<Runtime>::sorted_para_heads();
+			teyrchains_paras::Pallet::<Runtime>::sorted_para_heads();
 		binary_merkle_tree::merkle_root::<mmr::Hashing, _>(
 			para_heads.into_iter().map(|pair| pair.encode()),
 		)
@@ -677,7 +677,7 @@ impl pallet_root_offences::Config for Runtime {
 pub struct AssetHubLocation;
 impl Get<Location> for AssetHubLocation {
 	fn get() -> Location {
-		Location::new(0, [Junction::Parachain(1100)])
+		Location::new(0, [Junction::Teyrchain(1100)])
 	}
 }
 
@@ -768,10 +768,10 @@ pub struct EnsureAssetHub;
 impl frame_support::traits::EnsureOrigin<RuntimeOrigin> for EnsureAssetHub {
 	type Success = ();
 	fn try_origin(o: RuntimeOrigin) -> Result<Self::Success, RuntimeOrigin> {
-		match <RuntimeOrigin as Into<Result<parachains_origin::Origin, RuntimeOrigin>>>::into(
+		match <RuntimeOrigin as Into<Result<teyrchains_origin::Origin, RuntimeOrigin>>>::into(
 			o.clone(),
 		) {
-			Ok(parachains_origin::Origin::Parachain(id)) if id == 1100.into() => Ok(()),
+			Ok(teyrchains_origin::Origin::Teyrchain(id)) if id == 1100.into() => Ok(()),
 			_ => Err(o),
 		}
 	}
@@ -820,7 +820,7 @@ parameter_types! {
 	pub const SignedFixedDeposit: Balance = deposit(2, 0);
 	pub const SignedDepositIncreaseFactor: Percent = Percent::from_percent(10);
 	pub const SignedDepositByte: Balance = deposit(0, 10) / 1024;
-	// Each good submission will get 1 WND as reward
+	// Each good submission will get 1 ZGR as reward
 	pub SignedRewardBase: Balance = 1 * UNITS;
 
 	// 1 hour session, 15 minutes unsigned phase, 4 offchain executions.
@@ -932,7 +932,7 @@ impl pallet_election_provider_multi_phase::Config for Runtime {
 		pallet_election_provider_multi_phase::SolutionAccuracyOf<Self>,
 		(),
 	>;
-	type BenchmarkingConfig = polkadot_runtime_common::elections::BenchmarkConfig;
+	type BenchmarkingConfig = pezkuwi_runtime_common::elections::BenchmarkConfig;
 	type ForceOrigin = EnsureRoot<AccountId>;
 	type WeightInfo = ();
 	type ElectionBounds = ElectionBounds;
@@ -975,7 +975,7 @@ impl pallet_staking::Config for Runtime {
 	type MaxUnlockingChunks = frame_support::traits::ConstU32<32>;
 	type HistoryDepth = frame_support::traits::ConstU32<84>;
 	type MaxControllersInDeprecationBatch = MaxControllersInDeprecationBatch;
-	type BenchmarkingConfig = polkadot_runtime_common::StakingBenchmarkingConfig;
+	type BenchmarkingConfig = pezkuwi_runtime_common::StakingBenchmarkingConfig;
 	type EventListeners = ();
 	type WeightInfo = ();
 	type Filter = Nothing;
@@ -1045,7 +1045,7 @@ impl pallet_treasury::Config for Runtime {
 	type BalanceConverter = UnityOrOuterConversion<
 		ContainsParts<
 			FromContains<
-				xcm_builder::IsChildSystemParachain<ParaId>,
+				xcm_builder::IsChildSystemTeyrchain<ParaId>,
 				xcm_builder::IsParentsOnly<ConstU8<1>>,
 			>,
 		>,
@@ -1054,7 +1054,7 @@ impl pallet_treasury::Config for Runtime {
 	type PayoutPeriod = PayoutSpendPeriod;
 	type BlockNumberProvider = System;
 	#[cfg(feature = "runtime-benchmarks")]
-	type BenchmarkHelper = polkadot_runtime_common::impls::benchmarks::TreasuryArguments;
+	type BenchmarkHelper = pezkuwi_runtime_common::impls::benchmarks::TreasuryArguments;
 }
 
 impl pallet_offences::Config for Runtime {
@@ -1439,36 +1439,36 @@ impl pallet_proxy::Config for Runtime {
 	type BlockNumberProvider = frame_system::Pallet<Runtime>;
 }
 
-impl parachains_origin::Config for Runtime {}
+impl teyrchains_origin::Config for Runtime {}
 
-impl parachains_configuration::Config for Runtime {
-	type WeightInfo = weights::polkadot_runtime_parachains_configuration::WeightInfo<Runtime>;
+impl teyrchains_configuration::Config for Runtime {
+	type WeightInfo = weights::pezkuwi_runtime_teyrchains_configuration::WeightInfo<Runtime>;
 }
 
-impl parachains_shared::Config for Runtime {
+impl teyrchains_shared::Config for Runtime {
 	type DisabledValidators = Session;
 }
 
-impl parachains_session_info::Config for Runtime {
+impl teyrchains_session_info::Config for Runtime {
 	type ValidatorSet = Historical;
 }
 
-impl parachains_inclusion::Config for Runtime {
+impl teyrchains_inclusion::Config for Runtime {
 	type RuntimeEvent = RuntimeEvent;
 	type DisputesHandler = ParasDisputes;
 	type RewardValidators =
-		parachains_reward_points::RewardValidatorsWithEraPoints<Runtime, StakingAhClient>;
+		teyrchains_reward_points::RewardValidatorsWithEraPoints<Runtime, StakingAhClient>;
 	type MessageQueue = MessageQueue;
-	type WeightInfo = weights::polkadot_runtime_parachains_inclusion::WeightInfo<Runtime>;
+	type WeightInfo = weights::pezkuwi_runtime_teyrchains_inclusion::WeightInfo<Runtime>;
 }
 
 parameter_types! {
 	pub const ParasUnsignedPriority: TransactionPriority = TransactionPriority::max_value();
 }
 
-impl parachains_paras::Config for Runtime {
+impl teyrchains_paras::Config for Runtime {
 	type RuntimeEvent = RuntimeEvent;
-	type WeightInfo = weights::polkadot_runtime_parachains_paras::WeightInfo<Runtime>;
+	type WeightInfo = weights::pezkuwi_runtime_teyrchains_paras::WeightInfo<Runtime>;
 	type UnsignedPriority = ParasUnsignedPriority;
 	type QueueFootprinter = ParaInclusion;
 	type NextSessionRotation = Babe;
@@ -1508,7 +1508,7 @@ impl ProcessMessage for MessageProcessor {
 			Junction,
 			xcm_executor::XcmExecutor<xcm_config::XcmConfig>,
 			RuntimeCall,
-		>::process_message(message, Junction::Parachain(para.into()), meter, id)
+		>::process_message(message, Junction::Teyrchain(para.into()), meter, id)
 	}
 }
 
@@ -1529,13 +1529,13 @@ impl pallet_message_queue::Config for Runtime {
 	type WeightInfo = weights::pallet_message_queue::WeightInfo<Runtime>;
 }
 
-impl parachains_dmp::Config for Runtime {}
+impl teyrchains_dmp::Config for Runtime {}
 
 parameter_types! {
 	pub const HrmpChannelSizeAndCapacityWithSystemRatio: Percent = Percent::from_percent(100);
 }
 
-impl parachains_hrmp::Config for Runtime {
+impl teyrchains_hrmp::Config for Runtime {
 	type RuntimeOrigin = RuntimeOrigin;
 	type RuntimeEvent = RuntimeEvent;
 	type ChannelManager = EnsureRoot<AccountId>;
@@ -1545,14 +1545,14 @@ impl parachains_hrmp::Config for Runtime {
 		HrmpChannelSizeAndCapacityWithSystemRatio,
 	>;
 	type VersionWrapper = crate::XcmPallet;
-	type WeightInfo = weights::polkadot_runtime_parachains_hrmp::WeightInfo<Self>;
+	type WeightInfo = weights::pezkuwi_runtime_teyrchains_hrmp::WeightInfo<Self>;
 }
 
-impl parachains_paras_inherent::Config for Runtime {
-	type WeightInfo = weights::polkadot_runtime_parachains_paras_inherent::WeightInfo<Runtime>;
+impl teyrchains_paras_inherent::Config for Runtime {
+	type WeightInfo = weights::pezkuwi_runtime_teyrchains_paras_inherent::WeightInfo<Runtime>;
 }
 
-impl parachains_scheduler::Config for Runtime {
+impl teyrchains_scheduler::Config for Runtime {
 	// If you change this, make sure the `Assignment` type of the new provider is binary compatible,
 	// otherwise provide a migration.
 	type AssignmentProvider = CoretimeAssignmentProvider;
@@ -1578,7 +1578,7 @@ impl coretime::Config for Runtime {
 	type RuntimeEvent = RuntimeEvent;
 	type BrokerId = BrokerId;
 	type BrokerPotLocation = AssetHubLocation;
-	type WeightInfo = weights::polkadot_runtime_parachains_coretime::WeightInfo<Runtime>;
+	type WeightInfo = weights::pezkuwi_runtime_teyrchains_coretime::WeightInfo<Runtime>;
 	type SendXcm = crate::xcm_config::XcmRouter;
 	type AssetTransactor = crate::xcm_config::LocalAssetTransactor;
 	type AccountToLocation = xcm_builder::AliasesIntoAccountId32<
@@ -1595,21 +1595,21 @@ parameter_types! {
 	pub const OnDemandPalletId: PalletId = PalletId(*b"py/ondmd");
 }
 
-impl parachains_on_demand::Config for Runtime {
+impl teyrchains_on_demand::Config for Runtime {
 	type RuntimeEvent = RuntimeEvent;
 	type Currency = Balances;
 	type TrafficDefaultValue = OnDemandTrafficDefaultValue;
-	type WeightInfo = weights::polkadot_runtime_parachains_on_demand::WeightInfo<Runtime>;
+	type WeightInfo = weights::pezkuwi_runtime_teyrchains_on_demand::WeightInfo<Runtime>;
 	type MaxHistoricalRevenue = MaxHistoricalRevenue;
 	type PalletId = OnDemandPalletId;
 }
 
-impl parachains_assigner_coretime::Config for Runtime {}
+impl teyrchains_assigner_coretime::Config for Runtime {}
 
-impl parachains_initializer::Config for Runtime {
+impl teyrchains_initializer::Config for Runtime {
 	type Randomness = pallet_babe::RandomnessFromOneEpochAgo<Runtime>;
 	type ForceOrigin = EnsureRoot<AccountId>;
-	type WeightInfo = weights::polkadot_runtime_parachains_initializer::WeightInfo<Runtime>;
+	type WeightInfo = weights::pezkuwi_runtime_teyrchains_initializer::WeightInfo<Runtime>;
 	type CoretimeOnNewSession = Coretime;
 }
 
@@ -1628,18 +1628,18 @@ impl assigned_slots::Config for Runtime {
 	type PermanentSlotLeasePeriodLength = PermanentSlotLeasePeriodLength;
 	type TemporarySlotLeasePeriodLength = TemporarySlotLeasePeriodLength;
 	type MaxTemporarySlotPerLeasePeriod = MaxTemporarySlotPerLeasePeriod;
-	type WeightInfo = weights::polkadot_runtime_common_assigned_slots::WeightInfo<Runtime>;
+	type WeightInfo = weights::pezkuwi_runtime_common_assigned_slots::WeightInfo<Runtime>;
 }
 
-impl parachains_disputes::Config for Runtime {
+impl teyrchains_disputes::Config for Runtime {
 	type RuntimeEvent = RuntimeEvent;
 	type RewardValidators =
-		parachains_reward_points::RewardValidatorsWithEraPoints<Runtime, StakingAhClient>;
-	type SlashingHandler = parachains_slashing::SlashValidatorsForDisputes<ParasSlashing>;
-	type WeightInfo = weights::polkadot_runtime_parachains_disputes::WeightInfo<Runtime>;
+		teyrchains_reward_points::RewardValidatorsWithEraPoints<Runtime, StakingAhClient>;
+	type SlashingHandler = teyrchains_slashing::SlashValidatorsForDisputes<ParasSlashing>;
+	type WeightInfo = weights::pezkuwi_runtime_teyrchains_disputes::WeightInfo<Runtime>;
 }
 
-impl parachains_slashing::Config for Runtime {
+impl teyrchains_slashing::Config for Runtime {
 	type KeyOwnerProofSystem = Historical;
 	type KeyOwnerProof =
 		<Self::KeyOwnerProofSystem as KeyOwnerProofSystem<(KeyTypeId, ValidatorId)>>::Proof;
@@ -1647,13 +1647,13 @@ impl parachains_slashing::Config for Runtime {
 		KeyTypeId,
 		ValidatorId,
 	)>>::IdentificationTuple;
-	type HandleReports = parachains_slashing::SlashingReportHandler<
+	type HandleReports = teyrchains_slashing::SlashingReportHandler<
 		Self::KeyOwnerIdentification,
 		Offences,
 		ReportLongevity,
 	>;
-	type WeightInfo = weights::polkadot_runtime_parachains_disputes_slashing::WeightInfo<Runtime>;
-	type BenchmarkingConfig = parachains_slashing::BenchConfig<300>;
+	type WeightInfo = weights::pezkuwi_runtime_teyrchains_disputes_slashing::WeightInfo<Runtime>;
+	type BenchmarkingConfig = teyrchains_slashing::BenchConfig<300>;
 }
 
 parameter_types! {
@@ -1668,7 +1668,7 @@ impl paras_registrar::Config for Runtime {
 	type OnSwap = (Crowdloan, Slots, SwapLeases);
 	type ParaDeposit = ParaDeposit;
 	type DataDepositPerByte = RegistrarDataDepositPerByte;
-	type WeightInfo = weights::polkadot_runtime_common_paras_registrar::WeightInfo<Runtime>;
+	type WeightInfo = weights::pezkuwi_runtime_common_paras_registrar::WeightInfo<Runtime>;
 }
 
 parameter_types! {
@@ -1682,7 +1682,7 @@ impl slots::Config for Runtime {
 	type LeasePeriod = LeasePeriod;
 	type LeaseOffset = ();
 	type ForceOrigin = EitherOf<EnsureRoot<Self::AccountId>, LeaseAdmin>;
-	type WeightInfo = weights::polkadot_runtime_common_slots::WeightInfo<Runtime>;
+	type WeightInfo = weights::pezkuwi_runtime_common_slots::WeightInfo<Runtime>;
 }
 
 parameter_types! {
@@ -1703,7 +1703,7 @@ impl crowdloan::Config for Runtime {
 	type Registrar = Registrar;
 	type Auctioneer = Auctions;
 	type MaxMemoLength = MaxMemoLength;
-	type WeightInfo = weights::polkadot_runtime_common_crowdloan::WeightInfo<Runtime>;
+	type WeightInfo = weights::pezkuwi_runtime_common_crowdloan::WeightInfo<Runtime>;
 }
 
 parameter_types! {
@@ -1722,14 +1722,14 @@ impl auctions::Config for Runtime {
 	type SampleLength = SampleLength;
 	type Randomness = pallet_babe::RandomnessFromOneEpochAgo<Runtime>;
 	type InitiateOrigin = EitherOf<EnsureRoot<Self::AccountId>, AuctionAdmin>;
-	type WeightInfo = weights::polkadot_runtime_common_auctions::WeightInfo<Runtime>;
+	type WeightInfo = weights::pezkuwi_runtime_common_auctions::WeightInfo<Runtime>;
 }
 
 impl identity_migrator::Config for Runtime {
 	type RuntimeEvent = RuntimeEvent;
 	type Reaper = EnsureSigned<AccountId>;
-	type ReapIdentityHandler = ToParachainIdentityReaper<Runtime, Self::AccountId>;
-	type WeightInfo = weights::polkadot_runtime_common_identity_migrator::WeightInfo<Runtime>;
+	type ReapIdentityHandler = ToTeyrchainIdentityReaper<Runtime, Self::AccountId>;
+	type WeightInfo = weights::pezkuwi_runtime_common_identity_migrator::WeightInfo<Runtime>;
 }
 
 impl pallet_root_testing::Config for Runtime {
@@ -1771,7 +1771,7 @@ impl pallet_asset_rate::Config for Runtime {
 	type Currency = Balances;
 	type AssetKind = <Runtime as pallet_treasury::Config>::AssetKind;
 	#[cfg(feature = "runtime-benchmarks")]
-	type BenchmarkHelper = polkadot_runtime_common::impls::benchmarks::AssetRateArguments;
+	type BenchmarkHelper = pezkuwi_runtime_common::impls::benchmarks::AssetRateArguments;
 }
 
 // Notify `coretime` pallet when a lease swap occurs
@@ -1895,40 +1895,40 @@ mod runtime {
 	#[runtime::pallet_index(37)]
 	pub type Treasury = pallet_treasury;
 
-	// Parachains pallets. Start indices at 40 to leave room.
+	// Teyrchains pallets. Start indices at 40 to leave room.
 	#[runtime::pallet_index(41)]
-	pub type ParachainsOrigin = parachains_origin;
+	pub type TeyrchainsOrigin = teyrchains_origin;
 	#[runtime::pallet_index(42)]
-	pub type Configuration = parachains_configuration;
+	pub type Configuration = teyrchains_configuration;
 	#[runtime::pallet_index(43)]
-	pub type ParasShared = parachains_shared;
+	pub type ParasShared = teyrchains_shared;
 	#[runtime::pallet_index(44)]
-	pub type ParaInclusion = parachains_inclusion;
+	pub type ParaInclusion = teyrchains_inclusion;
 	#[runtime::pallet_index(45)]
-	pub type ParaInherent = parachains_paras_inherent;
+	pub type ParaInherent = teyrchains_paras_inherent;
 	#[runtime::pallet_index(46)]
-	pub type ParaScheduler = parachains_scheduler;
+	pub type ParaScheduler = teyrchains_scheduler;
 	#[runtime::pallet_index(47)]
-	pub type Paras = parachains_paras;
+	pub type Paras = teyrchains_paras;
 	#[runtime::pallet_index(48)]
-	pub type Initializer = parachains_initializer;
+	pub type Initializer = teyrchains_initializer;
 	#[runtime::pallet_index(49)]
-	pub type Dmp = parachains_dmp;
+	pub type Dmp = teyrchains_dmp;
 	// RIP Ump 50
 	#[runtime::pallet_index(51)]
-	pub type Hrmp = parachains_hrmp;
+	pub type Hrmp = teyrchains_hrmp;
 	#[runtime::pallet_index(52)]
-	pub type ParaSessionInfo = parachains_session_info;
+	pub type ParaSessionInfo = teyrchains_session_info;
 	#[runtime::pallet_index(53)]
-	pub type ParasDisputes = parachains_disputes;
+	pub type ParasDisputes = teyrchains_disputes;
 	#[runtime::pallet_index(54)]
-	pub type ParasSlashing = parachains_slashing;
+	pub type ParasSlashing = teyrchains_slashing;
 	#[runtime::pallet_index(56)]
-	pub type OnDemandAssignmentProvider = parachains_on_demand;
+	pub type OnDemandAssignmentProvider = teyrchains_on_demand;
 	#[runtime::pallet_index(57)]
-	pub type CoretimeAssignmentProvider = parachains_assigner_coretime;
+	pub type CoretimeAssignmentProvider = teyrchains_assigner_coretime;
 
-	// Parachain Onboarding Pallets. Start indices at 60 to leave room.
+	// Teyrchain Onboarding Pallets. Start indices at 60 to leave room.
 	#[runtime::pallet_index(60)]
 	pub type Registrar = paras_registrar;
 	#[runtime::pallet_index(61)]
@@ -1979,13 +1979,13 @@ mod runtime {
 	#[runtime::pallet_index(200)]
 	pub type Beefy = pallet_beefy;
 	// MMR leaf construction must be after session in order to have a leaf's next_auth_set
-	// refer to block<N>. See issue polkadot-fellows/runtimes#160 for details.
+	// refer to block<N>. See issue pezkuwi-fellows/runtimes#160 for details.
 	#[runtime::pallet_index(201)]
 	pub type Mmr = pallet_mmr;
 	#[runtime::pallet_index(202)]
 	pub type BeefyMmrLeaf = pallet_beefy_mmr;
 
-	// Pallet for migrating Identity to a parachain. To be removed post-migration.
+	// Pallet for migrating Identity to a teyrchain. To be removed post-migration.
 	#[runtime::pallet_index(248)]
 	pub type IdentityMigrator = identity_migrator;
 }
@@ -2032,8 +2032,8 @@ pub mod migrations {
 
 	/// Unreleased migrations. Add new ones here:
 	pub type Unreleased = (
-		parachains_shared::migration::MigrateToV1<Runtime>,
-		parachains_scheduler::migration::MigrateV2ToV3<Runtime>,
+		teyrchains_shared::migration::MigrateToV1<Runtime>,
+		teyrchains_scheduler::migration::MigrateV2ToV3<Runtime>,
 		// permanent
 		pallet_xcm::migration::MigrateToLatestXcmVersion<Runtime>,
 	);
@@ -2060,25 +2060,25 @@ pub type SignedPayload = generic::SignedPayload<RuntimeCall, TxExtension>;
 #[cfg(feature = "runtime-benchmarks")]
 mod benches {
 	frame_benchmarking::define_benchmarks!(
-		// Polkadot
+		// Pezkuwi
 		// NOTE: Make sure to prefix these with `runtime_common::` so
 		// the that path resolves correctly in the generated file.
-		[polkadot_runtime_common::assigned_slots, AssignedSlots]
-		[polkadot_runtime_common::auctions, Auctions]
-		[polkadot_runtime_common::crowdloan, Crowdloan]
-		[polkadot_runtime_common::identity_migrator, IdentityMigrator]
-		[polkadot_runtime_common::paras_registrar, Registrar]
-		[polkadot_runtime_common::slots, Slots]
-		[polkadot_runtime_parachains::configuration, Configuration]
-		[polkadot_runtime_parachains::disputes, ParasDisputes]
-		[polkadot_runtime_parachains::disputes::slashing, ParasSlashing]
-		[polkadot_runtime_parachains::hrmp, Hrmp]
-		[polkadot_runtime_parachains::inclusion, ParaInclusion]
-		[polkadot_runtime_parachains::initializer, Initializer]
-		[polkadot_runtime_parachains::paras, Paras]
-		[polkadot_runtime_parachains::paras_inherent, ParaInherent]
-		[polkadot_runtime_parachains::on_demand, OnDemandAssignmentProvider]
-		[polkadot_runtime_parachains::coretime, Coretime]
+		[pezkuwi_runtime_common::assigned_slots, AssignedSlots]
+		[pezkuwi_runtime_common::auctions, Auctions]
+		[pezkuwi_runtime_common::crowdloan, Crowdloan]
+		[pezkuwi_runtime_common::identity_migrator, IdentityMigrator]
+		[pezkuwi_runtime_common::paras_registrar, Registrar]
+		[pezkuwi_runtime_common::slots, Slots]
+		[pezkuwi_runtime_teyrchains::configuration, Configuration]
+		[pezkuwi_runtime_teyrchains::disputes, ParasDisputes]
+		[pezkuwi_runtime_teyrchains::disputes::slashing, ParasSlashing]
+		[pezkuwi_runtime_teyrchains::hrmp, Hrmp]
+		[pezkuwi_runtime_teyrchains::inclusion, ParaInclusion]
+		[pezkuwi_runtime_teyrchains::initializer, Initializer]
+		[pezkuwi_runtime_teyrchains::paras, Paras]
+		[pezkuwi_runtime_teyrchains::paras_inherent, ParaInherent]
+		[pezkuwi_runtime_teyrchains::on_demand, OnDemandAssignmentProvider]
+		[pezkuwi_runtime_teyrchains::coretime, Coretime]
 		// Substrate
 		[pallet_bags_list, VoterList]
 		[pallet_balances, Balances]
@@ -2190,33 +2190,33 @@ sp_api::impl_runtime_apis! {
 	}
 
 	#[api_version(15)]
-	impl polkadot_primitives::runtime_api::ParachainHost<Block> for Runtime {
+	impl pezkuwi_primitives::runtime_api::TeyrchainHost<Block> for Runtime {
 		fn validators() -> Vec<ValidatorId> {
-			parachains_runtime_api_impl::validators::<Runtime>()
+			teyrchains_runtime_api_impl::validators::<Runtime>()
 		}
 
 		fn validation_code_bomb_limit() -> u32 {
-			parachains_runtime_api_impl::validation_code_bomb_limit::<Runtime>()
+			teyrchains_runtime_api_impl::validation_code_bomb_limit::<Runtime>()
 		}
 
 		fn validator_groups() -> (Vec<Vec<ValidatorIndex>>, GroupRotationInfo<BlockNumber>) {
-			parachains_runtime_api_impl::validator_groups::<Runtime>()
+			teyrchains_runtime_api_impl::validator_groups::<Runtime>()
 		}
 
 		fn availability_cores() -> Vec<CoreState<Hash, BlockNumber>> {
-			parachains_runtime_api_impl::availability_cores::<Runtime>()
+			teyrchains_runtime_api_impl::availability_cores::<Runtime>()
 		}
 
 		fn persisted_validation_data(para_id: ParaId, assumption: OccupiedCoreAssumption)
 			-> Option<PersistedValidationData<Hash, BlockNumber>> {
-			parachains_runtime_api_impl::persisted_validation_data::<Runtime>(para_id, assumption)
+			teyrchains_runtime_api_impl::persisted_validation_data::<Runtime>(para_id, assumption)
 		}
 
 		fn assumed_validation_data(
 			para_id: ParaId,
 			expected_persisted_validation_data_hash: Hash,
 		) -> Option<(PersistedValidationData<Hash, BlockNumber>, ValidationCodeHash)> {
-			parachains_runtime_api_impl::assumed_validation_data::<Runtime>(
+			teyrchains_runtime_api_impl::assumed_validation_data::<Runtime>(
 				para_id,
 				expected_persisted_validation_data_hash,
 			)
@@ -2224,27 +2224,27 @@ sp_api::impl_runtime_apis! {
 
 		fn check_validation_outputs(
 			para_id: ParaId,
-			outputs: polkadot_primitives::CandidateCommitments,
+			outputs: pezkuwi_primitives::CandidateCommitments,
 		) -> bool {
-			parachains_runtime_api_impl::check_validation_outputs::<Runtime>(para_id, outputs)
+			teyrchains_runtime_api_impl::check_validation_outputs::<Runtime>(para_id, outputs)
 		}
 
 		fn session_index_for_child() -> SessionIndex {
-			parachains_runtime_api_impl::session_index_for_child::<Runtime>()
+			teyrchains_runtime_api_impl::session_index_for_child::<Runtime>()
 		}
 
 		fn validation_code(para_id: ParaId, assumption: OccupiedCoreAssumption)
 			-> Option<ValidationCode> {
-			parachains_runtime_api_impl::validation_code::<Runtime>(para_id, assumption)
+			teyrchains_runtime_api_impl::validation_code::<Runtime>(para_id, assumption)
 		}
 
 		fn candidate_pending_availability(para_id: ParaId) -> Option<CommittedCandidateReceipt<Hash>> {
 			#[allow(deprecated)]
-			parachains_runtime_api_impl::candidate_pending_availability::<Runtime>(para_id)
+			teyrchains_runtime_api_impl::candidate_pending_availability::<Runtime>(para_id)
 		}
 
 		fn candidate_events() -> Vec<CandidateEvent<Hash>> {
-			parachains_runtime_api_impl::candidate_events::<Runtime, _>(|ev| {
+			teyrchains_runtime_api_impl::candidate_events::<Runtime, _>(|ev| {
 				match ev {
 					RuntimeEvent::ParaInclusion(ev) => {
 						Some(ev)
@@ -2255,60 +2255,60 @@ sp_api::impl_runtime_apis! {
 		}
 
 		fn session_info(index: SessionIndex) -> Option<SessionInfo> {
-			parachains_runtime_api_impl::session_info::<Runtime>(index)
+			teyrchains_runtime_api_impl::session_info::<Runtime>(index)
 		}
 
 		fn session_executor_params(session_index: SessionIndex) -> Option<ExecutorParams> {
-			parachains_runtime_api_impl::session_executor_params::<Runtime>(session_index)
+			teyrchains_runtime_api_impl::session_executor_params::<Runtime>(session_index)
 		}
 
 		fn dmq_contents(recipient: ParaId) -> Vec<InboundDownwardMessage<BlockNumber>> {
-			parachains_runtime_api_impl::dmq_contents::<Runtime>(recipient)
+			teyrchains_runtime_api_impl::dmq_contents::<Runtime>(recipient)
 		}
 
 		fn inbound_hrmp_channels_contents(
 			recipient: ParaId
 		) -> BTreeMap<ParaId, Vec<InboundHrmpMessage<BlockNumber>>> {
-			parachains_runtime_api_impl::inbound_hrmp_channels_contents::<Runtime>(recipient)
+			teyrchains_runtime_api_impl::inbound_hrmp_channels_contents::<Runtime>(recipient)
 		}
 
 		fn validation_code_by_hash(hash: ValidationCodeHash) -> Option<ValidationCode> {
-			parachains_runtime_api_impl::validation_code_by_hash::<Runtime>(hash)
+			teyrchains_runtime_api_impl::validation_code_by_hash::<Runtime>(hash)
 		}
 
 		fn on_chain_votes() -> Option<ScrapedOnChainVotes<Hash>> {
-			parachains_runtime_api_impl::on_chain_votes::<Runtime>()
+			teyrchains_runtime_api_impl::on_chain_votes::<Runtime>()
 		}
 
 		fn submit_pvf_check_statement(
 			stmt: PvfCheckStatement,
 			signature: ValidatorSignature,
 		) {
-			parachains_runtime_api_impl::submit_pvf_check_statement::<Runtime>(stmt, signature)
+			teyrchains_runtime_api_impl::submit_pvf_check_statement::<Runtime>(stmt, signature)
 		}
 
 		fn pvfs_require_precheck() -> Vec<ValidationCodeHash> {
-			parachains_runtime_api_impl::pvfs_require_precheck::<Runtime>()
+			teyrchains_runtime_api_impl::pvfs_require_precheck::<Runtime>()
 		}
 
 		fn validation_code_hash(para_id: ParaId, assumption: OccupiedCoreAssumption)
 			-> Option<ValidationCodeHash>
 		{
-			parachains_runtime_api_impl::validation_code_hash::<Runtime>(para_id, assumption)
+			teyrchains_runtime_api_impl::validation_code_hash::<Runtime>(para_id, assumption)
 		}
 
 		fn disputes() -> Vec<(SessionIndex, CandidateHash, DisputeState<BlockNumber>)> {
-			parachains_runtime_api_impl::get_session_disputes::<Runtime>()
+			teyrchains_runtime_api_impl::get_session_disputes::<Runtime>()
 		}
 
 		fn unapplied_slashes(
 		) -> Vec<(SessionIndex, CandidateHash, slashing::LegacyPendingSlashes)> {
-			parachains_runtime_api_impl::unapplied_slashes::<Runtime>()
+			teyrchains_runtime_api_impl::unapplied_slashes::<Runtime>()
 		}
 
 		fn unapplied_slashes_v2(
 		) -> Vec<(SessionIndex, CandidateHash, slashing::PendingSlashes)> {
-			parachains_runtime_api_impl::unapplied_slashes_v2::<Runtime>()
+			teyrchains_runtime_api_impl::unapplied_slashes_v2::<Runtime>()
 		}
 
 		fn key_ownership_proof(
@@ -2316,7 +2316,7 @@ sp_api::impl_runtime_apis! {
 		) -> Option<slashing::OpaqueKeyOwnershipProof> {
 			use codec::Encode;
 
-			Historical::prove((PARACHAIN_KEY_TYPE_ID, validator_id))
+			Historical::prove((TEYRCHAIN_KEY_TYPE_ID, validator_id))
 				.map(|p| p.encode())
 				.map(slashing::OpaqueKeyOwnershipProof::new)
 		}
@@ -2325,56 +2325,56 @@ sp_api::impl_runtime_apis! {
 			dispute_proof: slashing::DisputeProof,
 			key_ownership_proof: slashing::OpaqueKeyOwnershipProof,
 		) -> Option<()> {
-			parachains_runtime_api_impl::submit_unsigned_slashing_report::<Runtime>(
+			teyrchains_runtime_api_impl::submit_unsigned_slashing_report::<Runtime>(
 				dispute_proof,
 				key_ownership_proof,
 			)
 		}
 
 		fn minimum_backing_votes() -> u32 {
-			parachains_runtime_api_impl::minimum_backing_votes::<Runtime>()
+			teyrchains_runtime_api_impl::minimum_backing_votes::<Runtime>()
 		}
 
-		fn para_backing_state(para_id: ParaId) -> Option<polkadot_primitives::async_backing::BackingState> {
+		fn para_backing_state(para_id: ParaId) -> Option<pezkuwi_primitives::async_backing::BackingState> {
 			#[allow(deprecated)]
-			parachains_runtime_api_impl::backing_state::<Runtime>(para_id)
+			teyrchains_runtime_api_impl::backing_state::<Runtime>(para_id)
 		}
 
-		fn async_backing_params() -> polkadot_primitives::AsyncBackingParams {
+		fn async_backing_params() -> pezkuwi_primitives::AsyncBackingParams {
 			#[allow(deprecated)]
-			parachains_runtime_api_impl::async_backing_params::<Runtime>()
+			teyrchains_runtime_api_impl::async_backing_params::<Runtime>()
 		}
 
 		fn approval_voting_params() -> ApprovalVotingParams {
-			parachains_runtime_api_impl::approval_voting_params::<Runtime>()
+			teyrchains_runtime_api_impl::approval_voting_params::<Runtime>()
 		}
 
 		fn disabled_validators() -> Vec<ValidatorIndex> {
-			parachains_runtime_api_impl::disabled_validators::<Runtime>()
+			teyrchains_runtime_api_impl::disabled_validators::<Runtime>()
 		}
 
 		fn node_features() -> NodeFeatures {
-			parachains_runtime_api_impl::node_features::<Runtime>()
+			teyrchains_runtime_api_impl::node_features::<Runtime>()
 		}
 
 		fn claim_queue() -> BTreeMap<CoreIndex, VecDeque<ParaId>> {
-			parachains_runtime_api_impl::claim_queue::<Runtime>()
+			teyrchains_runtime_api_impl::claim_queue::<Runtime>()
 		}
 
 		fn candidates_pending_availability(para_id: ParaId) -> Vec<CommittedCandidateReceipt<Hash>> {
-			parachains_runtime_api_impl::candidates_pending_availability::<Runtime>(para_id)
+			teyrchains_runtime_api_impl::candidates_pending_availability::<Runtime>(para_id)
 		}
 
 		fn backing_constraints(para_id: ParaId) -> Option<Constraints> {
-			parachains_runtime_api_impl::backing_constraints::<Runtime>(para_id)
+			teyrchains_runtime_api_impl::backing_constraints::<Runtime>(para_id)
 		}
 
 		fn scheduling_lookahead() -> u32 {
-			parachains_runtime_api_impl::scheduling_lookahead::<Runtime>()
+			teyrchains_runtime_api_impl::scheduling_lookahead::<Runtime>()
 		}
 
 		fn para_ids() -> Vec<ParaId> {
-			parachains_staging_runtime_api_impl::para_ids::<Runtime>()
+			teyrchains_staging_runtime_api_impl::para_ids::<Runtime>()
 		}
 	}
 
@@ -2591,7 +2591,7 @@ sp_api::impl_runtime_apis! {
 
 	impl sp_authority_discovery::AuthorityDiscoveryApi<Block> for Runtime {
 		fn authorities() -> Vec<AuthorityDiscoveryId> {
-			parachains_runtime_api_impl::relevant_authority_ids::<Runtime>()
+			teyrchains_runtime_api_impl::relevant_authority_ids::<Runtime>()
 		}
 	}
 
@@ -2707,7 +2707,7 @@ sp_api::impl_runtime_apis! {
 	#[cfg(feature = "try-runtime")]
 	impl frame_try_runtime::TryRuntime<Block> for Runtime {
 		fn on_runtime_upgrade(checks: frame_try_runtime::UpgradeCheckSelect) -> (Weight, Weight) {
-			log::info!("try-runtime::on_runtime_upgrade westend.");
+			log::info!("try-runtime::on_runtime_upgrade zagros.");
 			let weight = Executive::try_runtime_upgrade(checks).unwrap();
 			(weight, BlockWeights::get().max_block)
 		}
@@ -2782,23 +2782,23 @@ sp_api::impl_runtime_apis! {
 					TokenLocation::get(),
 					ExistentialDeposit::get()
 				).into());
-				pub AssetHubParaId: ParaId = pallet_staking_async_rc_runtime_constants::system_parachain::ASSET_HUB_ID.into();
+				pub AssetHubParaId: ParaId = pallet_staking_async_rc_runtime_constants::system_teyrchain::ASSET_HUB_ID.into();
 				pub const RandomParaId: ParaId = ParaId::new(43211234);
 			}
 
 			impl pallet_xcm::benchmarking::Config for Runtime {
 				type DeliveryHelper = (
-					polkadot_runtime_common::xcm_sender::ToParachainDeliveryHelper<
+					pezkuwi_runtime_common::xcm_sender::ToTeyrchainDeliveryHelper<
 						xcm_config::XcmConfig,
 						ExistentialDepositAsset,
-						xcm_config::PriceForChildParachainDelivery,
+						xcm_config::PriceForChildTeyrchainDelivery,
 						AssetHubParaId,
 						Dmp,
 					>,
-					polkadot_runtime_common::xcm_sender::ToParachainDeliveryHelper<
+					pezkuwi_runtime_common::xcm_sender::ToTeyrchainDeliveryHelper<
 						xcm_config::XcmConfig,
 						ExistentialDepositAsset,
-						xcm_config::PriceForChildParachainDelivery,
+						xcm_config::PriceForChildTeyrchainDelivery,
 						RandomParaId,
 						Dmp,
 					>
@@ -2817,20 +2817,20 @@ sp_api::impl_runtime_apis! {
 				}
 
 				fn reserve_transferable_asset_and_dest() -> Option<(Asset, Location)> {
-					// Relay can reserve transfer native token to some random parachain.
+					// Relay can reserve transfer native token to some random teyrchain.
 					Some((
 						Asset {
 							fun: Fungible(ExistentialDeposit::get()),
 							id: AssetId(Here.into())
 						},
-						crate::Junction::Parachain(RandomParaId::get().into()).into(),
+						crate::Junction::Teyrchain(RandomParaId::get().into()).into(),
 					))
 				}
 
 				fn set_up_complex_asset_transfer(
 				) -> Option<(Assets, AssetId, Location, Box<dyn FnOnce()>)> {
-					// Relay supports only native token, either reserve transfer it to non-system parachains,
-					// or teleport it to system parachain. Use the teleport case for benchmarking as it's
+					// Relay supports only native token, either reserve transfer it to non-system teyrchains,
+					// or teleport it to system teyrchain. Use the teleport case for benchmarking as it's
 					// slightly heavier.
 
 					// Relay/native token can be teleported to/from AH.
@@ -2850,7 +2850,7 @@ sp_api::impl_runtime_apis! {
 				}
 			}
 			impl frame_system_benchmarking::Config for Runtime {}
-			impl polkadot_runtime_parachains::disputes::slashing::benchmarking::Config for Runtime {}
+			impl pezkuwi_runtime_teyrchains::disputes::slashing::benchmarking::Config for Runtime {}
 
 			use xcm::latest::{
 				AssetId, Fungibility::*, InteriorLocation, Junction, Junctions::*,
@@ -2860,10 +2860,10 @@ sp_api::impl_runtime_apis! {
 			impl pallet_xcm_benchmarks::Config for Runtime {
 				type XcmConfig = xcm_config::XcmConfig;
 				type AccountIdConverter = xcm_config::LocationConverter;
-				type DeliveryHelper = polkadot_runtime_common::xcm_sender::ToParachainDeliveryHelper<
+				type DeliveryHelper = pezkuwi_runtime_common::xcm_sender::ToTeyrchainDeliveryHelper<
 					xcm_config::XcmConfig,
 					ExistentialDepositAsset,
-					xcm_config::PriceForChildParachainDelivery,
+					xcm_config::PriceForChildTeyrchainDelivery,
 					AssetHubParaId,
 					Dmp,
 				>;
@@ -2871,7 +2871,7 @@ sp_api::impl_runtime_apis! {
 					Ok(AssetHub::get())
 				}
 				fn worst_case_holding(_depositable_count: u32) -> Assets {
-					// Westend only knows about WND.
+					// Zagros only knows about ZGR.
 					vec![Asset{
 						id: AssetId(TokenLocation::get()),
 						fun: Fungible(1_000_000 * UNITS),
@@ -2911,12 +2911,12 @@ sp_api::impl_runtime_apis! {
 				}
 
 				fn worst_case_asset_exchange() -> Result<(Assets, Assets), BenchmarkError> {
-					// Westend doesn't support asset exchanges
+					// Zagros doesn't support asset exchanges
 					Err(BenchmarkError::Skip)
 				}
 
 				fn universal_alias() -> Result<(Location, Junction), BenchmarkError> {
-					// The XCM executor of Westend doesn't have a configured `UniversalAliases`
+					// The XCM executor of Zagros doesn't have a configured `UniversalAliases`
 					Err(BenchmarkError::Skip)
 				}
 
@@ -2943,19 +2943,19 @@ sp_api::impl_runtime_apis! {
 				}
 
 				fn unlockable_asset() -> Result<(Location, Location, Asset), BenchmarkError> {
-					// Westend doesn't support asset locking
+					// Zagros doesn't support asset locking
 					Err(BenchmarkError::Skip)
 				}
 
 				fn export_message_origin_and_destination(
 				) -> Result<(Location, NetworkId, InteriorLocation), BenchmarkError> {
-					// Westend doesn't support exporting messages
+					// Zagros doesn't support exporting messages
 					Err(BenchmarkError::Skip)
 				}
 
 				fn alias_origin() -> Result<(Location, Location), BenchmarkError> {
-					let origin = Location::new(0, [Parachain(1000)]);
-					let target = Location::new(0, [Parachain(1000), AccountId32 { id: [128u8; 32], network: None }]);
+					let origin = Location::new(0, [Teyrchain(1000)]);
+					let target = Location::new(0, [Teyrchain(1000), AccountId32 { id: [128u8; 32], network: None }]);
 					Ok((origin, target))
 				}
 			}

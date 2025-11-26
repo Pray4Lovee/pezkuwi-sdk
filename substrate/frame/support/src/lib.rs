@@ -808,7 +808,7 @@ pub mod pallet_macros {
 	pub use frame_support_procedural::pallet_section;
 
 	/// The `#[pallet::inherent]` attribute allows the pallet to provide
-	/// [inherents](https://docs.substrate.io/fundamentals/transaction-types/#inherent-transactions).
+	/// [inherents](https://github.com/pezkuwichain/docs.pezkuwichain.io/fundamentals/transaction-types/#inherent-transactions).
 	///
 	/// An inherent is some piece of data that is inserted by a block authoring node at block
 	/// creation time and can either be accepted or rejected by validators based on whether the
@@ -1010,7 +1010,7 @@ pub mod pallet_macros {
 	/// ```
 	///
 	/// To learn more about supertraits, see the
-	/// [trait_based_programming](../../polkadot_sdk_docs/reference_docs/trait_based_programming/index.html)
+	/// [trait_based_programming](../../pezkuwi_sdk_docs/reference_docs/trait_based_programming/index.html)
 	/// reference doc.
 	pub use frame_support_procedural::disable_frame_system_supertrait_check;
 
@@ -1038,7 +1038,7 @@ pub mod pallet_macros {
 	/// I.e. a regular trait definition named `Config`, with the supertrait
 	/// [`frame_system::pallet::Config`](../../frame_system/pallet/trait.Config.html), and
 	/// optionally other supertraits and a where clause. (Specifying other supertraits here is
-	/// known as [tight coupling](https://docs.substrate.io/reference/how-to-guides/pallet-design/use-tight-coupling/))
+	/// known as [tight coupling](https://github.com/pezkuwichain/docs.pezkuwichain.io/reference/how-to-guides/pallet-design/use-tight-coupling/))
 	///
 	/// ## Optional: `with_default`
 	///
@@ -1331,7 +1331,7 @@ pub mod pallet_macros {
 	/// 	pub(super) type SomeStorage<T: Config> =
 	/// 		StorageValue<_, FixedU128, ValueQuery, DefaultForSomeValue>;
 	///
-	/// 	// Define default for ParachainId
+	/// 	// Define default for TeyrchainId
 	/// 	#[pallet::type_value]
 	/// 	pub fn DefaultForSomeValue() -> FixedU128 {
 	/// 		FixedU128::from_u32(1)
@@ -2061,7 +2061,7 @@ pub mod pallet_macros {
 	/// To use a type as the value of a storage type, be it `StorageValue`, `StorageMap` or
 	/// anything else, you need to meet a number of trait bound constraints.
 	///
-	/// See: <https://paritytech.github.io/polkadot-sdk/master/polkadot_sdk_docs/reference_docs/frame_storage_derives/index.html>.
+	/// See: <https://docs.pezkuwichain.io/sdk/master/polkadot_sdk_docs/reference_docs/frame_storage_derives/index.html>.
 	///
 	/// Notably, all value types need to implement `Encode`, `Decode`, `MaxEncodedLen` and
 	/// `TypeInfo`, and possibly `Default`, if
@@ -2217,7 +2217,7 @@ pub mod pallet_macros {
 	/// `RuntimeOrigin`, very similar to [`call`], [`error`] and [`event`]. See
 	/// [`composite_enum`] for similar cases.
 	///
-	/// Origin is a complex FRAME topics and is further explained in `polkadot_sdk_docs`.
+	/// Origin is a complex FRAME topics and is further explained in `pezkuwi_sdk_docs`.
 	///
 	/// ## Syntax Variants
 	///
@@ -2266,7 +2266,7 @@ pub mod pallet_macros {
 	/// change in encoding. If stored anywhere on-chain, this will require a data migration.
 	///
 	/// Read more about origins at the [Origin Reference
-	/// Docs](../../polkadot_sdk_docs/reference_docs/frame_origin/index.html).
+	/// Docs](../../pezkuwi_sdk_docs/reference_docs/frame_origin/index.html).
 	pub use frame_support_procedural::origin;
 }
 

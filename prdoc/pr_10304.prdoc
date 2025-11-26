@@ -4,7 +4,7 @@ doc:
   description: |-
     Reenable `interest-cache` for `tracing-log` crate.
 
-    See https://github.com/paritytech/polkadot-sdk/issues/8760#issuecomment-3522183237
+    See https://github.com/pezkuwichain/pezkuwichain-sdk/issues/8760#issuecomment-3522183237
 crates:
 - name: sc-tracing
   bump: minor

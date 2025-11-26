@@ -4,7 +4,7 @@
 //!
 //! Location helpers for dealing with Tokens and Agents
 
-pub use polkadot_parachain_primitives::primitives::{
+pub use pezkuwi_teyrchain_primitives::primitives::{
 	Id as ParaId, IsSystem, Sibling as SiblingParaId,
 };
 pub use sp_core::U256;
@@ -23,7 +23,7 @@ pub type AgentId = H256;
 
 /// Creates an AgentId from a Location. An AgentId is a unique mapping to an Agent contract on
 /// Ethereum which acts as the sovereign account for the Location.
-/// Resolves Polkadot locations (as seen by Ethereum) to unique `AgentId` identifiers.
+/// Resolves Pezkuwi locations (as seen by Ethereum) to unique `AgentId` identifiers.
 pub type AgentIdOf = HashedDescription<
 	AgentId,
 	(
@@ -103,10 +103,10 @@ impl DescribeLocation for DescribeTokenTerminal {
 mod tests {
 	use crate::TokenIdOf;
 	use xcm::{
-		latest::WESTEND_GENESIS_HASH,
+		latest::ZAGROS_GENESIS_HASH,
 		prelude::{
 			GeneralIndex, GeneralKey, GlobalConsensus, Junction::*, Location, NetworkId::ByGenesis,
-			PalletInstance, Parachain,
+			PalletInstance, Teyrchain,
 		},
 	};
 	use xcm_executor::traits::ConvertLocation;
@@ -116,92 +116,92 @@ mod tests {
 		let token_locations = [
 			// Relay Chain cases
 			// Relay Chain relative to Ethereum
-			Location::new(1, [GlobalConsensus(ByGenesis(WESTEND_GENESIS_HASH))]),
-			// Parachain cases
-			// Parachain relative to Ethereum
-			Location::new(1, [GlobalConsensus(ByGenesis(WESTEND_GENESIS_HASH)), Parachain(2000)]),
-			// Parachain general index
+			Location::new(1, [GlobalConsensus(ByGenesis(ZAGROS_GENESIS_HASH))]),
+			// Teyrchain cases
+			// Teyrchain relative to Ethereum
+			Location::new(1, [GlobalConsensus(ByGenesis(ZAGROS_GENESIS_HASH)), Teyrchain(2000)]),
+			// Teyrchain general index
 			Location::new(
 				1,
 				[
-					GlobalConsensus(ByGenesis(WESTEND_GENESIS_HASH)),
-					Parachain(2000),
+					GlobalConsensus(ByGenesis(ZAGROS_GENESIS_HASH)),
+					Teyrchain(2000),
 					GeneralIndex(1),
 				],
 			),
-			// Parachain general key
+			// Teyrchain general key
 			Location::new(
 				1,
 				[
-					GlobalConsensus(ByGenesis(WESTEND_GENESIS_HASH)),
-					Parachain(2000),
+					GlobalConsensus(ByGenesis(ZAGROS_GENESIS_HASH)),
+					Teyrchain(2000),
 					GeneralKey { length: 32, data: [0; 32] },
 				],
 			),
-			// Parachain account key 20
+			// Teyrchain account key 20
 			Location::new(
 				1,
 				[
-					GlobalConsensus(ByGenesis(WESTEND_GENESIS_HASH)),
-					Parachain(2000),
+					GlobalConsensus(ByGenesis(ZAGROS_GENESIS_HASH)),
+					Teyrchain(2000),
 					AccountKey20 { network: None, key: [0; 20] },
 				],
 			),
-			// Parachain account id 32
+			// Teyrchain account id 32
 			Location::new(
 				1,
 				[
-					GlobalConsensus(ByGenesis(WESTEND_GENESIS_HASH)),
-					Parachain(2000),
+					GlobalConsensus(ByGenesis(ZAGROS_GENESIS_HASH)),
+					Teyrchain(2000),
 					AccountId32 { network: None, id: [0; 32] },
 				],
 			),
 			// Parchain Pallet instance cases
-			// Parachain pallet instance
+			// Teyrchain pallet instance
 			Location::new(
 				1,
 				[
-					GlobalConsensus(ByGenesis(WESTEND_GENESIS_HASH)),
-					Parachain(2000),
+					GlobalConsensus(ByGenesis(ZAGROS_GENESIS_HASH)),
+					Teyrchain(2000),
 					PalletInstance(8),
 				],
 			),
-			// Parachain Pallet general index
+			// Teyrchain Pallet general index
 			Location::new(
 				1,
 				[
-					GlobalConsensus(ByGenesis(WESTEND_GENESIS_HASH)),
-					Parachain(2000),
+					GlobalConsensus(ByGenesis(ZAGROS_GENESIS_HASH)),
+					Teyrchain(2000),
 					PalletInstance(8),
 					GeneralIndex(1),
 				],
 			),
-			// Parachain Pallet general key
+			// Teyrchain Pallet general key
 			Location::new(
 				1,
 				[
-					GlobalConsensus(ByGenesis(WESTEND_GENESIS_HASH)),
-					Parachain(2000),
+					GlobalConsensus(ByGenesis(ZAGROS_GENESIS_HASH)),
+					Teyrchain(2000),
 					PalletInstance(8),
 					GeneralKey { length: 32, data: [0; 32] },
 				],
 			),
-			// Parachain Pallet account key 20
+			// Teyrchain Pallet account key 20
 			Location::new(
 				1,
 				[
-					GlobalConsensus(ByGenesis(WESTEND_GENESIS_HASH)),
-					Parachain(2000),
+					GlobalConsensus(ByGenesis(ZAGROS_GENESIS_HASH)),
+					Teyrchain(2000),
 					PalletInstance(8),
 					AccountKey20 { network: None, key: [0; 20] },
 				],
 			),
-			// Parachain Pallet account id 32
+			// Teyrchain Pallet account id 32
 			Location::new(
 				1,
 				[
-					GlobalConsensus(ByGenesis(WESTEND_GENESIS_HASH)),
-					Parachain(2000),
+					GlobalConsensus(ByGenesis(ZAGROS_GENESIS_HASH)),
+					Teyrchain(2000),
 					PalletInstance(8),
 					AccountId32 { network: None, id: [0; 32] },
 				],
@@ -219,7 +219,7 @@ mod tests {
 			// Relative location for a token should fail.
 			Location::new(1, []),
 			// Relative location for a token should fail.
-			Location::new(1, [Parachain(1000)]),
+			Location::new(1, [Teyrchain(1000)]),
 		];
 
 		for token in non_token_locations {

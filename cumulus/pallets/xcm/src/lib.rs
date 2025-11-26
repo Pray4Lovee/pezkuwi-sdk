@@ -14,8 +14,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//! Pallet for stuff specific to parachains' usage of XCM. Right now that's just the origin
-//! used by parachains when receiving `Transact` messages from other parachains or the Relay chain
+//! Pallet for stuff specific to teyrchains' usage of XCM. Right now that's just the origin
+//! used by teyrchains when receiving `Transact` messages from other teyrchains or the Relay chain
 //! which must be natively represented.
 
 #![cfg_attr(not(feature = "std"), no_std)]
@@ -58,7 +58,7 @@ pub mod pallet {
 		ExecutedDownward([u8; 32], Outcome),
 	}
 
-	/// Origin for the parachains module.
+	/// Origin for the teyrchains module.
 	#[derive(
 		PartialEq,
 		Eq,
@@ -74,8 +74,8 @@ pub mod pallet {
 	pub enum Origin {
 		/// It comes from the (parent) relay chain.
 		Relay,
-		/// It comes from a (sibling) parachain.
-		SiblingParachain(ParaId),
+		/// It comes from a (sibling) teyrchain.
+		SiblingTeyrchain(ParaId),
 	}
 
 	#[pallet::call]
@@ -83,24 +83,24 @@ pub mod pallet {
 
 	impl From<ParaId> for Origin {
 		fn from(id: ParaId) -> Origin {
-			Origin::SiblingParachain(id)
+			Origin::SiblingTeyrchain(id)
 		}
 	}
 	impl From<u32> for Origin {
 		fn from(id: u32) -> Origin {
-			Origin::SiblingParachain(id.into())
+			Origin::SiblingTeyrchain(id.into())
 		}
 	}
 }
 
-/// Ensure that the origin `o` represents a sibling parachain.
-/// Returns `Ok` with the parachain ID of the sibling or an `Err` otherwise.
+/// Ensure that the origin `o` represents a sibling teyrchain.
+/// Returns `Ok` with the teyrchain ID of the sibling or an `Err` otherwise.
 pub fn ensure_sibling_para<OuterOrigin>(o: OuterOrigin) -> Result<ParaId, BadOrigin>
 where
 	OuterOrigin: Into<Result<Origin, OuterOrigin>>,
 {
 	match o.into() {
-		Ok(Origin::SiblingParachain(id)) => Ok(id),
+		Ok(Origin::SiblingTeyrchain(id)) => Ok(id),
 		_ => Err(BadOrigin),
 	}
 }

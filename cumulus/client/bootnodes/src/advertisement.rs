@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Cumulus.  If not, see <http://www.gnu.org/licenses/>.
 
-//! Parachain bootnode advertisement.
+//! Teyrchain bootnode advertisement.
 
 use crate::config::MAX_ADDRESSES;
 use codec::{Compact, CompactRef, Decode, Encode};
@@ -47,9 +47,9 @@ const LOG_TARGET: &str = "bootnodes::advertisement";
 /// Delay before retrying the DHT content provider publish operation.
 const RETRY_DELAY: std::time::Duration = std::time::Duration::from_secs(30);
 
-/// Parachain bootnode advertisement parameters.
+/// Teyrchain bootnode advertisement parameters.
 pub struct BootnodeAdvertisementParams {
-	/// Parachain ID.
+	/// Teyrchain ID.
 	pub para_id: ParaId,
 	/// Relay chain interface.
 	pub relay_chain_interface: Arc<dyn RelayChainInterface>,
@@ -57,19 +57,19 @@ pub struct BootnodeAdvertisementParams {
 	pub relay_chain_network: Arc<dyn NetworkService>,
 	/// Bootnode request-response protocol request receiver.
 	pub request_receiver: async_channel::Receiver<IncomingRequest>,
-	/// Parachain node network service.
-	pub parachain_network: Arc<dyn NetworkService>,
+	/// Teyrchain node network service.
+	pub teyrchain_network: Arc<dyn NetworkService>,
 	/// Whether to advertise non-global IPs.
 	pub advertise_non_global_ips: bool,
-	/// Parachain genesis hash.
-	pub parachain_genesis_hash: Vec<u8>,
-	/// Parachain fork ID.
-	pub parachain_fork_id: Option<String>,
-	/// Parachain side public addresses.
+	/// Teyrchain genesis hash.
+	pub teyrchain_genesis_hash: Vec<u8>,
+	/// Teyrchain fork ID.
+	pub teyrchain_fork_id: Option<String>,
+	/// Teyrchain side public addresses.
 	pub public_addresses: Vec<Multiaddr>,
 }
 
-/// Parachain bootnode advertisement service.
+/// Teyrchain bootnode advertisement service.
 pub struct BootnodeAdvertisement {
 	para_id: ParaId,
 	para_id_scale_compact: Vec<u8>,
@@ -80,10 +80,10 @@ pub struct BootnodeAdvertisement {
 	current_epoch_publish_retry: Pin<Box<Fuse<Sleep>>>,
 	next_epoch_publish_retry: Pin<Box<Fuse<Sleep>>>,
 	request_receiver: async_channel::Receiver<IncomingRequest>,
-	parachain_network: Arc<dyn NetworkService>,
+	teyrchain_network: Arc<dyn NetworkService>,
 	advertise_non_global_ips: bool,
-	parachain_genesis_hash: Vec<u8>,
-	parachain_fork_id: Option<String>,
+	teyrchain_genesis_hash: Vec<u8>,
+	teyrchain_fork_id: Option<String>,
 	public_addresses: Vec<Multiaddr>,
 }
 
@@ -95,16 +95,16 @@ impl BootnodeAdvertisement {
 			relay_chain_interface,
 			relay_chain_network,
 			request_receiver,
-			parachain_network,
+			teyrchain_network,
 			advertise_non_global_ips,
-			parachain_genesis_hash,
-			parachain_fork_id,
+			teyrchain_genesis_hash,
+			teyrchain_fork_id,
 			public_addresses,
 		}: BootnodeAdvertisementParams,
 	) -> Self {
 		// Discard `/p2p/<peer_id>` from public addresses on initialization to not generate warnings
 		// on every request for what is an operator mistake.
-		let local_peer_id = parachain_network.local_peer_id();
+		let local_peer_id = teyrchain_network.local_peer_id();
 		let public_addresses = public_addresses
 			.into_iter()
 			.filter_map(|mut addr| match addr.iter().last() {
@@ -133,10 +133,10 @@ impl BootnodeAdvertisement {
 			current_epoch_publish_retry: Box::pin(Fuse::terminated()),
 			next_epoch_publish_retry: Box::pin(Fuse::terminated()),
 			request_receiver,
-			parachain_network,
+			teyrchain_network,
 			advertise_non_global_ips,
-			parachain_genesis_hash,
-			parachain_fork_id,
+			teyrchain_genesis_hash,
+			teyrchain_fork_id,
 			public_addresses,
 		}
 	}
@@ -227,7 +227,7 @@ impl BootnodeAdvertisement {
 			self.current_epoch_publish_retry = Box::pin(Fuse::terminated());
 			self.next_epoch_publish_retry = Box::pin(Fuse::terminated());
 
-			debug!(target: LOG_TARGET, "New epoch started, readvertising parachain bootnode.");
+			debug!(target: LOG_TARGET, "New epoch started, readvertising teyrchain bootnode.");
 
 			// Stop advertisement of the obsolete key.
 			debug!(
@@ -297,7 +297,7 @@ impl BootnodeAdvertisement {
 		}
 	}
 
-	/// The list of parachain side addresses.
+	/// The list of teyrchain side addresses.
 	///
 	/// The addresses are sorted as follows:
 	///  1) public addresses provided by the operator
@@ -306,7 +306,7 @@ impl BootnodeAdvertisement {
 	///  4) non-global listen addresses
 	///  5) loopback listen addresses
 	fn paranode_addresses(&self) -> Vec<Multiaddr> {
-		let local_peer_id = self.parachain_network.local_peer_id();
+		let local_peer_id = self.teyrchain_network.local_peer_id();
 
 		// Discard `/p2p/<peer_id>` part. `None` if the address contains foreign peer ID.
 		let without_p2p = |mut addr: Multiaddr| match addr.iter().last() {
@@ -317,7 +317,7 @@ impl BootnodeAdvertisement {
 			Some(Protocol::P2p(_)) => {
 				warn!(
 					target: LOG_TARGET,
-					"Ignoring parachain side address containing not our peer ID: {addr}",
+					"Ignoring teyrchain side address containing not our peer ID: {addr}",
 				);
 				None
 			},
@@ -349,29 +349,29 @@ impl BootnodeAdvertisement {
 
 		// 2) global listen addresses
 		let global_listen_addresses =
-			self.parachain_network.listen_addresses().into_iter().filter(is_global);
+			self.teyrchain_network.listen_addresses().into_iter().filter(is_global);
 
 		// 3a) discovered external addresses (global)
 		let global_external_addresses =
-			self.parachain_network.external_addresses().into_iter().filter(is_global);
+			self.teyrchain_network.external_addresses().into_iter().filter(is_global);
 
 		// 3b) discovered external addresses (non-global)
 		let non_global_external_addresses = self
-			.parachain_network
+			.teyrchain_network
 			.external_addresses()
 			.into_iter()
 			.filter(|addr| !is_global(addr));
 
 		// 4) non-global listen addresses
 		let non_global_listen_addresses = self
-			.parachain_network
+			.teyrchain_network
 			.listen_addresses()
 			.into_iter()
 			.filter(|addr| !is_global(addr) && !is_loopback(addr));
 
 		// 5) loopback listen addresses
 		let loopback_listen_addresses =
-			self.parachain_network.listen_addresses().into_iter().filter(is_loopback);
+			self.teyrchain_network.listen_addresses().into_iter().filter(is_loopback);
 
 		let mut seen = HashSet::new();
 
@@ -399,16 +399,16 @@ impl BootnodeAdvertisement {
 		if req.payload == self.para_id_scale_compact {
 			trace!(
 				target: LOG_TARGET,
-				"Serving paranode addresses request from {:?} for parachain ID {}",
+				"Serving paranode addresses request from {:?} for teyrchain ID {}",
 				req.peer,
 				self.para_id,
 			);
 
 			let response = crate::schema::Response {
-				peer_id: self.parachain_network.local_peer_id().to_bytes(),
+				peer_id: self.teyrchain_network.local_peer_id().to_bytes(),
 				addrs: self.paranode_addresses().iter().map(|a| a.to_vec()).collect(),
-				genesis_hash: self.parachain_genesis_hash.clone(),
-				fork_id: self.parachain_fork_id.clone(),
+				genesis_hash: self.teyrchain_genesis_hash.clone(),
+				fork_id: self.teyrchain_fork_id.clone(),
 			};
 
 			let _ = req.pending_response.send(OutgoingResponse {
@@ -422,7 +422,7 @@ impl BootnodeAdvertisement {
 				Ok(para_id) => {
 					trace!(
 						target: LOG_TARGET,
-						"Ignoring request for parachain ID {} != self parachain ID {} from {:?}",
+						"Ignoring request for teyrchain ID {} != self teyrchain ID {} from {:?}",
 						para_id.0,
 						self.para_id,
 						req.peer,
@@ -431,7 +431,7 @@ impl BootnodeAdvertisement {
 				Err(e) => {
 					trace!(
 						target: LOG_TARGET,
-						"Cannot decode parachain ID in a request from {:?}: {e}",
+						"Cannot decode teyrchain ID in a request from {:?}: {e}",
 						req.peer,
 					);
 				},
@@ -515,7 +515,7 @@ impl BootnodeAdvertisement {
 			self.relay_chain_interface.import_notification_stream().await?;
 		let dht_event_stream = self
 			.relay_chain_network
-			.event_stream("parachain-bootnode-discovery")
+			.event_stream("teyrchain-bootnode-discovery")
 			.filter_map(|e| async move {
 				match e {
 					Event::Dht(e) => Some(e),

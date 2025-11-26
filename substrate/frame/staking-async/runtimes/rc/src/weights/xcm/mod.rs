@@ -30,7 +30,7 @@ use pallet_xcm_benchmarks_generic::WeightInfo as XcmGeneric;
 use sp_runtime::BoundedVec;
 use xcm::latest::AssetTransferFilter;
 
-/// Types of asset supported by the westend runtime.
+/// Types of asset supported by the zagros runtime.
 pub enum AssetTypes {
 	/// An asset backed by `pallet-balances`.
 	Balances,
@@ -52,7 +52,7 @@ trait WeighAssets {
 	fn weigh_assets(&self, balances_weight: Weight) -> Weight;
 }
 
-// Westend only knows about one asset, the balances pallet.
+// Zagros only knows about one asset, the balances pallet.
 const MAX_ASSETS: u64 = 1;
 
 impl WeighAssets for AssetFilter {
@@ -67,7 +67,7 @@ impl WeighAssets for AssetFilter {
 					AssetTypes::Unknown => Weight::MAX,
 				})
 				.fold(Weight::zero(), |acc, x| acc.saturating_add(x)),
-			// We don't support any NFTs on Westend, so these two variants will always match
+			// We don't support any NFTs on Zagros, so these two variants will always match
 			// only 1 kind of fungible asset.
 			Self::Wild(AllOf { .. } | AllOfCounted { .. }) => balances_weight,
 			Self::Wild(AllCounted(count)) =>
@@ -90,8 +90,8 @@ impl WeighAssets for Assets {
 	}
 }
 
-pub struct WestendXcmWeight<RuntimeCall>(core::marker::PhantomData<RuntimeCall>);
-impl<RuntimeCall> XcmWeightInfo<RuntimeCall> for WestendXcmWeight<RuntimeCall> {
+pub struct ZagrosXcmWeight<RuntimeCall>(core::marker::PhantomData<RuntimeCall>);
+impl<RuntimeCall> XcmWeightInfo<RuntimeCall> for ZagrosXcmWeight<RuntimeCall> {
 	fn withdraw_asset(assets: &Assets) -> Weight {
 		assets.weigh_assets(XcmBalancesWeight::<Runtime>::withdraw_asset())
 	}
@@ -155,7 +155,7 @@ impl<RuntimeCall> XcmWeightInfo<RuntimeCall> for WestendXcmWeight<RuntimeCall> {
 		assets.weigh_assets(XcmBalancesWeight::<Runtime>::deposit_reserve_asset())
 	}
 	fn exchange_asset(_give: &AssetFilter, _receive: &Assets, _maximal: &bool) -> Weight {
-		// Westend does not currently support exchange asset operations
+		// Zagros does not currently support exchange asset operations
 		Weight::MAX
 	}
 	fn initiate_reserve_withdraw(
@@ -267,27 +267,27 @@ impl<RuntimeCall> XcmWeightInfo<RuntimeCall> for WestendXcmWeight<RuntimeCall> {
 		XcmGeneric::<Runtime>::clear_transact_status()
 	}
 	fn universal_origin(_: &Junction) -> Weight {
-		// Westend does not currently support universal origin operations
+		// Zagros does not currently support universal origin operations
 		Weight::MAX
 	}
 	fn export_message(_: &NetworkId, _: &Junctions, _: &Xcm<()>) -> Weight {
-		// Westend relay should not support export message operations
+		// Zagros relay should not support export message operations
 		Weight::MAX
 	}
 	fn lock_asset(_: &Asset, _: &Location) -> Weight {
-		// Westend does not currently support asset locking operations
+		// Zagros does not currently support asset locking operations
 		Weight::MAX
 	}
 	fn unlock_asset(_: &Asset, _: &Location) -> Weight {
-		// Westend does not currently support asset locking operations
+		// Zagros does not currently support asset locking operations
 		Weight::MAX
 	}
 	fn note_unlockable(_: &Asset, _: &Location) -> Weight {
-		// Westend does not currently support asset locking operations
+		// Zagros does not currently support asset locking operations
 		Weight::MAX
 	}
 	fn request_unlock(_: &Asset, _: &Location) -> Weight {
-		// Westend does not currently support asset locking operations
+		// Zagros does not currently support asset locking operations
 		Weight::MAX
 	}
 	fn set_fees_mode(_: &bool) -> Weight {

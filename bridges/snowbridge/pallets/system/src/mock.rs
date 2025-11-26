@@ -88,7 +88,7 @@ mod pallet_xcm_origin {
 
 		#[cfg(feature = "runtime-benchmarks")]
 		fn try_successful_origin() -> Result<O, ()> {
-			Ok(O::from(Origin(Location::new(1, [Parachain(2000)]))))
+			Ok(O::from(Origin(Location::new(1, [Teyrchain(2000)]))))
 		}
 	}
 }
@@ -177,15 +177,15 @@ impl snowbridge_pallet_outbound_queue::Config for Test {
 parameter_types! {
 	pub const SS58Prefix: u8 = 42;
 	pub const AnyNetwork: Option<NetworkId> = None;
-	pub const RelayNetwork: Option<NetworkId> = Some(NetworkId::Polkadot);
+	pub const RelayNetwork: Option<NetworkId> = Some(NetworkId::Pezkuwi);
 	pub const RelayLocation: Location = Location::parent();
 	pub UniversalLocation: InteriorLocation =
-		[GlobalConsensus(RelayNetwork::get().unwrap()), Parachain(1013)].into();
+		[GlobalConsensus(RelayNetwork::get().unwrap()), Teyrchain(1013)].into();
 	pub EthereumNetwork: NetworkId = NetworkId::Ethereum { chain_id: 11155111 };
 	pub EthereumDestination: Location = Location::new(2,[GlobalConsensus(EthereumNetwork::get())]);
 }
 
-pub const DOT: u128 = 10_000_000_000;
+pub const HEZ: u128 = 10_000_000_000;
 
 parameter_types! {
 	pub TreasuryAccount: AccountId = PalletId(*b"py/trsry").into_account_truncating();
@@ -197,7 +197,7 @@ parameter_types! {
 	pub Parameters: PricingParameters<u128> = PricingParameters {
 		exchange_rate: FixedU128::from_rational(1, 400),
 		fee_per_gas: gwei(20),
-		rewards: Rewards { local: DOT, remote: meth(1) },
+		rewards: Rewards { local: HEZ, remote: meth(1) },
 		multiplier: FixedU128::from_rational(4, 3)
 	};
 	pub const InboundDeliveryCost: u128 = 1_000_000_000;

@@ -42,7 +42,7 @@ pub enum Command {
 		/// XCM execution fee on AssetHub
 		fee: u128,
 	},
-	/// Send Ethereum token to AssetHub or another parachain
+	/// Send Ethereum token to AssetHub or another teyrchain
 	SendToken {
 		/// The address of the ERC20 token to be bridged over to AssetHub
 		token: H160,
@@ -53,7 +53,7 @@ pub enum Command {
 		/// XCM execution fee on AssetHub
 		fee: u128,
 	},
-	/// Send Polkadot token back to the original parachain
+	/// Send Pezkuwi token back to the original teyrchain
 	SendNativeToken {
 		/// The Id of the token
 		token_id: TokenId,
@@ -71,8 +71,8 @@ pub enum Command {
 pub enum Destination {
 	/// The funds will be deposited into account `id` on AssetHub
 	AccountId32 { id: [u8; 32] },
-	/// The funds will deposited into the sovereign account of destination parachain `para_id` on
-	/// AssetHub, Account `id` on the destination parachain will receive the funds via a
+	/// The funds will deposited into the sovereign account of destination teyrchain `para_id` on
+	/// AssetHub, Account `id` on the destination teyrchain will receive the funds via a
 	/// reserve-backed transfer. See <https://github.com/paritytech/xcm-format#depositreserveasset>
 	ForeignAccountId32 {
 		para_id: u32,
@@ -80,8 +80,8 @@ pub enum Destination {
 		/// XCM execution fee on final destination
 		fee: u128,
 	},
-	/// The funds will deposited into the sovereign account of destination parachain `para_id` on
-	/// AssetHub, Account `id` on the destination parachain will receive the funds via a
+	/// The funds will deposited into the sovereign account of destination teyrchain `para_id` on
+	/// AssetHub, Account `id` on the destination teyrchain will receive the funds via a
 	/// reserve-backed transfer. See <https://github.com/paritytech/xcm-format#depositreserveasset>
 	ForeignAccountId20 {
 		para_id: u32,
@@ -357,13 +357,13 @@ where
 						// Send over assets and unspent fees, XCM delivery fee will be charged from
 						// here.
 						assets: Wild(AllCounted(2)),
-						dest: Location::new(1, [Parachain(dest_para_id)]),
+						dest: Location::new(1, [Teyrchain(dest_para_id)]),
 						xcm: vec![
 							// Buy execution on target.
 							BuyExecution { fees: dest_para_fee_asset, weight_limit: Unlimited },
 							// Deposit assets to beneficiary.
 							DepositAsset { assets: Wild(AllCounted(2)), beneficiary },
-							// Forward message id to destination parachain.
+							// Forward message id to destination teyrchain.
 							SetTopic(message_id.into()),
 						]
 						.into(),
@@ -402,7 +402,7 @@ where
 
 	/// Constructs an XCM message destined for AssetHub that withdraws assets from the sovereign
 	/// account of the Gateway contract and either deposits those assets into a recipient account or
-	/// forwards the assets to another parachain.
+	/// forwards the assets to another teyrchain.
 	fn convert_send_native_token(
 		message_id: H256,
 		chain_id: u64,
@@ -418,7 +418,7 @@ where
 			// Final destination is a 32-byte account on AssetHub
 			Destination::AccountId32 { id } =>
 				Ok(Location::new(0, [AccountId32 { network: None, id }])),
-			// Forwarding to a destination parachain is not allowed for PNA and is validated on the
+			// Forwarding to a destination teyrchain is not allowed for PNA and is validated on the
 			// Ethereum side. https://github.com/Snowfork/snowbridge/blob/e87ddb2215b513455c844463a25323bb9c01ff36/contracts/src/Assets.sol#L216-L224
 			_ => Err(ConvertMessageError::InvalidDestination),
 		}?;
@@ -487,9 +487,9 @@ mod tests {
 		pub const InboundQueuePalletInstance: u8 = 80;
 		pub EthereumUniversalLocation: InteriorLocation =
 			[GlobalConsensus(NETWORK)].into();
-		pub AssetHubFromEthereum: Location = Location::new(1,[GlobalConsensus(Polkadot),Parachain(1000)]);
+		pub AssetHubFromEthereum: Location = Location::new(1,[GlobalConsensus(Pezkuwi),Teyrchain(1000)]);
 		pub EthereumLocation: Location = Location::new(2,EthereumUniversalLocation::get());
-		pub BridgeHubContext: InteriorLocation = [GlobalConsensus(Polkadot),Parachain(1002)].into();
+		pub BridgeHubContext: InteriorLocation = [GlobalConsensus(Pezkuwi),Teyrchain(1002)].into();
 	}
 
 	type AccountId = <<MultiSignature as Verify>::Signer as IdentifyAccount>::AccountId;
@@ -520,7 +520,7 @@ mod tests {
 
 	#[test]
 	fn test_contract_location_with_incorrect_location_fails_convert() {
-		let contract_location = Location::new(2, [GlobalConsensus(Polkadot), Parachain(1000)]);
+		let contract_location = Location::new(2, [GlobalConsensus(Pezkuwi), Teyrchain(1000)]);
 
 		assert_eq!(
 			EthereumLocationsConverterFor::<[u8; 32]>::convert_location(&contract_location),
@@ -532,19 +532,19 @@ mod tests {
 	fn test_reanchor_all_assets() {
 		let ethereum_context: InteriorLocation = [GlobalConsensus(Ethereum { chain_id: 1 })].into();
 		let ethereum = Location::new(2, ethereum_context.clone());
-		let ah_context: InteriorLocation = [GlobalConsensus(Polkadot), Parachain(1000)].into();
+		let ah_context: InteriorLocation = [GlobalConsensus(Pezkuwi), Teyrchain(1000)].into();
 		let global_ah = Location::new(1, ah_context.clone());
 		let assets = vec![
-			// DOT
+			// HEZ
 			Location::new(1, []),
-			// GLMR (Some Polkadot parachain currency)
-			Location::new(1, [Parachain(2004)]),
+			// GLMR (Some Pezkuwi teyrchain currency)
+			Location::new(1, [Teyrchain(2004)]),
 			// AH asset
 			Location::new(0, [PalletInstance(50), GeneralIndex(42)]),
 			// KSM
 			Location::new(2, [GlobalConsensus(Kusama)]),
-			// KAR (Some Kusama parachain currency)
-			Location::new(2, [GlobalConsensus(Kusama), Parachain(2000)]),
+			// KAR (Some Kusama teyrchain currency)
+			Location::new(2, [GlobalConsensus(Kusama), Teyrchain(2000)]),
 		];
 		for asset in assets.iter() {
 			// reanchor logic in pallet_xcm on AH

@@ -15,12 +15,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//! > Made with *Substrate*, for *Polkadot*.
+//! > Made with *Substrate*, for *Pezkuwi*.
 //!
-//! [![github]](https://github.com/paritytech/polkadot-sdk/tree/master/substrate/frame/scheduler) -
-//! [![polkadot]](https://polkadot.com)
+//! [![github]](https://github.com/pezkuwichain/pezkuwichain-sdk/tree/master/substrate/frame/scheduler) -
+//! [![pezkuwi]](https://pezkuwichain.io)
 //!
-//! [polkadot]: https://img.shields.io/badge/polkadot-E6007A?style=for-the-badge&logo=polkadot&logoColor=white
+//! [pezkuwi]: https://img.shields.io/badge/polkadot-E6007A?style=for-the-badge&logo=polkadot&logoColor=white
 //! [github]: https://img.shields.io/badge/github-8da0cb?style=for-the-badge&labelColor=555555&logo=github
 //!
 //! # Scheduler Pallet
@@ -320,8 +320,8 @@ pub mod pallet {
 		/// Must return monotonically increasing values when called from consecutive blocks. It is
 		/// generally expected that the values also do not differ "too much" between consecutive
 		/// blocks. A future addition to this pallet will allow bigger difference between
-		/// consecutive blocks to make it possible to be utilized by parachains with *Agile
-		/// Coretime*. *Agile Coretime* parachains are currently not supported and must continue to
+		/// consecutive blocks to make it possible to be utilized by teyrchains with *Agile
+		/// Coretime*. *Agile Coretime* teyrchains are currently not supported and must continue to
 		/// use their local block number provider.
 		///
 		/// Can be configured to return either:
@@ -332,11 +332,11 @@ pub mod pallet {
 		/// Suggested values:
 		/// - Solo- and Relay-chains should use `frame_system::Pallet`. There are no concerns with
 		///   this configuration.
-		/// - Parachains should also use `frame_system::Pallet` for the time being. The scheduler
+		/// - Teyrchains should also use `frame_system::Pallet` for the time being. The scheduler
 		///   pallet is not yet ready for the case that big numbers of blocks are skipped. In an
 		///   *Agile Coretime* chain with relay chain number provider configured, it could otherwise
 		///   happen that the scheduler will not be able to catch up to its agendas, since too many
-		///   relay blocks are missing if the parachain only produces blocks rarely.
+		///   relay blocks are missing if the teyrchain only produces blocks rarely.
 		///
 		/// There is currently no migration provided to "hot-swap" block number providers and it is
 		/// therefore highly advised to stay with the default (local) values. If you still want to

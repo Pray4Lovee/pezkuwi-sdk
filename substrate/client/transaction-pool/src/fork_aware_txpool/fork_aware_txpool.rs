@@ -86,7 +86,7 @@ const FINALITY_TIMEOUT_THRESHOLD: usize = 128;
 /// The number of transactions that will be sent from the mempool to the newly created view during
 /// the maintain process.
 //todo [#8835]: better approach is needed - maybe time-budget approach?
-//note: yap parachain block size.
+//note: yap teyrchain block size.
 const MEMPOOL_TO_VIEW_BATCH_SIZE: usize = 7_000;
 
 /// Fork aware transaction pool task, that needs to be polled.

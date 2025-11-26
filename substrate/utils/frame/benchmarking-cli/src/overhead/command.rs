@@ -24,7 +24,7 @@ use crate::{
 		ExtrinsicBuilder,
 	},
 	overhead::{
-		command::ChainType::{Parachain, Relaychain, Unknown},
+		command::ChainType::{Teyrchain, Relaychain, Unknown},
 		fake_runtime_api,
 		remark_builder::SubstrateRemarkBuilder,
 		template::TemplateData,
@@ -37,12 +37,12 @@ use crate::{
 };
 use clap::{error::ErrorKind, Args, CommandFactory, Parser};
 use codec::{Decode, Encode};
-use cumulus_client_parachain_inherent::MockValidationDataInherentDataProvider;
+use cumulus_client_teyrchain_inherent::MockValidationDataInherentDataProvider;
 use fake_runtime_api::RuntimeApi as FakeRuntimeApi;
 use frame_support::Deserialize;
 use genesis_state::WARN_SPEC_GENESIS_CTOR;
 use log::info;
-use polkadot_parachain_primitives::primitives::Id as ParaId;
+use pezkuwi_teyrchain_primitives::primitives::Id as ParaId;
 use sc_block_builder::BlockBuilderApi;
 use sc_chain_spec::{ChainSpec, ChainSpecExtension, GenesisBlockBuilder};
 use sc_cli::{CliConfiguration, Database, ImportParams, Result, SharedParams};
@@ -73,7 +73,7 @@ use std::{
 use subxt::{client::RuntimeVersion, ext::futures, Metadata};
 
 const DEFAULT_PARA_ID: u32 = 100;
-const LOG_TARGET: &'static str = "polkadot_sdk_frame::benchmark::overhead";
+const LOG_TARGET: &'static str = "pezkuwi_sdk_frame::benchmark::overhead";
 
 /// Benchmark the execution overhead per-block and per-extrinsic.
 #[derive(Debug, Parser)]
@@ -142,7 +142,7 @@ pub struct OverheadParams {
 	#[arg(long, value_enum, alias = "genesis-builder-policy")]
 	pub genesis_builder: Option<GenesisBuilderPolicy>,
 
-	/// Parachain Id to use for parachains. If not specified, the benchmark code will choose
+	/// Teyrchain Id to use for teyrchains. If not specified, the benchmark code will choose
 	/// a para-id and patch the state accordingly.
 	#[arg(long)]
 	pub para_id: Option<u32>,
@@ -171,8 +171,8 @@ pub(crate) enum BenchmarkType {
 	Block,
 }
 
-/// Hostfunctions that are typically used by parachains.
-pub type ParachainHostFunctions = (
+/// Hostfunctions that are typically used by teyrchains.
+pub type TeyrchainHostFunctions = (
 	cumulus_primitives_proof_size_hostfunction::storage_proof_size::HostFunctions,
 	sp_io::SubstrateHostFunctions,
 );
@@ -188,7 +188,7 @@ pub type OpaqueBlock = generic::Block<Header, OpaqueExtrinsic>;
 /// Client type used throughout the benchmarking code.
 type OverheadClient<Block, HF> = TFullClient<Block, FakeRuntimeApi, WasmExecutor<HF>>;
 
-/// Creates inherent data for a given parachain ID.
+/// Creates inherent data for a given teyrchain ID.
 ///
 /// This function constructs the inherent data required for block execution,
 /// including the relay chain state and validation data. Not all of these
@@ -203,21 +203,21 @@ fn create_inherent_data<Client: UsageProvider<Block> + HeaderBackend<Block>, Blo
 
 	let mut inherent_data = InherentData::new();
 
-	// Para inherent can only makes sense when we are handling a parachain.
-	if let Parachain(para_id) = chain_type {
-		let parachain_validation_data_provider = MockValidationDataInherentDataProvider::<()> {
+	// Para inherent can only makes sense when we are handling a teyrchain.
+	if let Teyrchain(para_id) = chain_type {
+		let teyrchain_validation_data_provider = MockValidationDataInherentDataProvider::<()> {
 			para_id: ParaId::from(*para_id),
 			current_para_block_head: Some(header.encode().into()),
 			relay_offset: 0,
 			..Default::default()
 		};
 		let _ = futures::executor::block_on(
-			parachain_validation_data_provider.provide_inherent_data(&mut inherent_data),
+			teyrchain_validation_data_provider.provide_inherent_data(&mut inherent_data),
 		);
 	}
 
-	// Parachain inherent that is used on relay chains to perform parachain validation.
-	let para_inherent = polkadot_primitives::InherentData {
+	// Teyrchain inherent that is used on relay chains to perform teyrchain validation.
+	let para_inherent = pezkuwi_primitives::InherentData {
 		bitfields: Vec::new(),
 		backed_candidates: Vec::new(),
 		disputes: Vec::new(),
@@ -229,26 +229,26 @@ fn create_inherent_data<Client: UsageProvider<Block> + HeaderBackend<Block>, Blo
 
 	let _ = futures::executor::block_on(timestamp.provide_inherent_data(&mut inherent_data));
 	let _ =
-		inherent_data.put_data(polkadot_primitives::PARACHAINS_INHERENT_IDENTIFIER, &para_inherent);
+		inherent_data.put_data(pezkuwi_primitives::TEYRCHAINS_INHERENT_IDENTIFIER, &para_inherent);
 
 	inherent_data
 }
 
 /// Identifies what kind of chain we are dealing with.
 ///
-/// Chains containing the `ParachainSystem` and `ParachainInfo` pallet are considered parachains.
+/// Chains containing the `TeyrchainSystem` and `TeyrchainInfo` pallet are considered teyrchains.
 /// Chains containing the `ParaInherent` pallet are considered relay chains.
 fn identify_chain(metadata: &Metadata, para_id: Option<u32>) -> ChainType {
-	let parachain_info_exists = metadata.pallet_by_name("ParachainInfo").is_some();
-	let parachain_system_exists = metadata.pallet_by_name("ParachainSystem").is_some();
+	let teyrchain_info_exists = metadata.pallet_by_name("TeyrchainInfo").is_some();
+	let teyrchain_system_exists = metadata.pallet_by_name("TeyrchainSystem").is_some();
 	let para_inherent_exists = metadata.pallet_by_name("ParaInherent").is_some();
 
-	log::debug!("{} ParachainSystem", if parachain_system_exists { "✅" } else { "❌" });
-	log::debug!("{} ParachainInfo", if parachain_info_exists { "✅" } else { "❌" });
+	log::debug!("{} TeyrchainSystem", if teyrchain_system_exists { "✅" } else { "❌" });
+	log::debug!("{} TeyrchainInfo", if teyrchain_info_exists { "✅" } else { "❌" });
 	log::debug!("{} ParaInherent", if para_inherent_exists { "✅" } else { "❌" });
 
-	let chain_type = if parachain_system_exists && parachain_info_exists {
-		Parachain(para_id.unwrap_or(DEFAULT_PARA_ID))
+	let chain_type = if teyrchain_system_exists && teyrchain_info_exists {
+		Teyrchain(para_id.unwrap_or(DEFAULT_PARA_ID))
 	} else if para_inherent_exists {
 		Relaychain
 	} else {
@@ -261,8 +261,8 @@ fn identify_chain(metadata: &Metadata, para_id: Option<u32>) -> ChainType {
 }
 
 #[derive(Deserialize, Serialize, Clone, ChainSpecExtension)]
-pub struct ParachainExtension {
-	/// The id of the Parachain.
+pub struct TeyrchainExtension {
+	/// The id of the Teyrchain.
 	pub para_id: Option<u32>,
 }
 
@@ -394,9 +394,9 @@ impl OverheadCmd {
 		};
 
 		let (state_handler, para_id) =
-			self.state_handler_from_cli::<(ParachainHostFunctions, ExtraHF)>(chain_spec)?;
+			self.state_handler_from_cli::<(TeyrchainHostFunctions, ExtraHF)>(chain_spec)?;
 
-		let executor = WasmExecutor::<(ParachainHostFunctions, ExtraHF)>::builder()
+		let executor = WasmExecutor::<(TeyrchainHostFunctions, ExtraHF)>::builder()
 			.with_allow_missing_host_functions(true)
 			.build();
 
@@ -410,16 +410,16 @@ impl OverheadCmd {
 		// At this point we know what kind of chain we are dealing with.
 		let chain_type = identify_chain(&metadata, para_id);
 
-		// If we are dealing  with a parachain, make sure that the para id in genesis will
+		// If we are dealing  with a teyrchain, make sure that the para id in genesis will
 		// match what we expect.
 		let genesis_patcher = match chain_type {
-			Parachain(para_id) =>
+			Teyrchain(para_id) =>
 				Some(Box::new(move |value| patch_genesis(value, Some(para_id))) as Box<_>),
 			_ => None,
 		};
 
-		let client = self.build_client_components::<Block, (ParachainHostFunctions, ExtraHF)>(
-			state_handler.build_storage::<(ParachainHostFunctions, ExtraHF)>(genesis_patcher)?,
+		let client = self.build_client_components::<Block, (TeyrchainHostFunctions, ExtraHF)>(
+			state_handler.build_storage::<(TeyrchainHostFunctions, ExtraHF)>(genesis_patcher)?,
 			executor,
 			&chain_type,
 		)?;
@@ -611,7 +611,7 @@ impl BenchmarkType {
 
 #[derive(Clone, PartialEq, Debug)]
 enum ChainType {
-	Parachain(u32),
+	Teyrchain(u32),
 	Relaychain,
 	Unknown,
 }
@@ -619,7 +619,7 @@ enum ChainType {
 impl Display for ChainType {
 	fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
 		match self {
-			ChainType::Parachain(id) => write!(f, "Parachain(paraid = {})", id),
+			ChainType::Teyrchain(id) => write!(f, "Teyrchain(paraid = {})", id),
 			ChainType::Relaychain => write!(f, "Relaychain"),
 			ChainType::Unknown => write!(f, "Unknown"),
 		}
@@ -629,25 +629,25 @@ impl Display for ChainType {
 impl ChainType {
 	fn requires_proof_recording(&self) -> bool {
 		match self {
-			Parachain(_) => true,
+			Teyrchain(_) => true,
 			Relaychain => false,
 			Unknown => false,
 		}
 	}
 }
 
-/// Patch the parachain id into the genesis config. This is necessary since the inherents
-/// also contain a parachain id and they need to match.
+/// Patch the teyrchain id into the genesis config. This is necessary since the inherents
+/// also contain a teyrchain id and they need to match.
 fn patch_genesis(mut input_value: Value, para_id: Option<u32>) -> Value {
-	// If we identified a parachain we should patch a parachain id into the genesis config.
+	// If we identified a teyrchain we should patch a teyrchain id into the genesis config.
 	// This ensures compatibility with the inherents that we provide to successfully build a
 	// block.
 	if let Some(para_id) = para_id {
 		sc_chain_spec::json_patch::merge(
 			&mut input_value,
 			json!({
-				"parachainInfo": {
-					"parachainId": para_id,
+				"teyrchainInfo": {
+					"teyrchainId": para_id,
 				}
 			}),
 		);
@@ -683,7 +683,7 @@ impl CliConfiguration for OverheadCmd {
 #[cfg(test)]
 mod tests {
 	use crate::{
-		overhead::command::{identify_chain, ChainType, ParachainHostFunctions, DEFAULT_PARA_ID},
+		overhead::command::{identify_chain, ChainType, TeyrchainHostFunctions, DEFAULT_PARA_ID},
 		OverheadCmd,
 	};
 	use clap::Parser;
@@ -692,9 +692,9 @@ mod tests {
 
 	#[test]
 	fn test_chain_type_relaychain() {
-		let executor: WasmExecutor<ParachainHostFunctions> = WasmExecutor::builder().build();
-		let code_bytes = westend_runtime::WASM_BINARY
-			.expect("To run this test, build the wasm binary of westend-runtime")
+		let executor: WasmExecutor<TeyrchainHostFunctions> = WasmExecutor::builder().build();
+		let code_bytes = zagros_runtime::WASM_BINARY
+			.expect("To run this test, build the wasm binary of zagros-runtime")
 			.to_vec();
 		let opaque_metadata =
 			super::fetch_latest_metadata_from_code_blob(&executor, code_bytes.into()).unwrap();
@@ -705,8 +705,8 @@ mod tests {
 	}
 
 	#[test]
-	fn test_chain_type_parachain() {
-		let executor: WasmExecutor<ParachainHostFunctions> = WasmExecutor::builder().build();
+	fn test_chain_type_teyrchain() {
+		let executor: WasmExecutor<TeyrchainHostFunctions> = WasmExecutor::builder().build();
 		let code_bytes = cumulus_test_runtime::WASM_BINARY
 			.expect("To run this test, build the wasm binary of cumulus-test-runtime")
 			.to_vec();
@@ -714,14 +714,14 @@ mod tests {
 			super::fetch_latest_metadata_from_code_blob(&executor, code_bytes.into()).unwrap();
 		let metadata = subxt::Metadata::decode(&mut (*opaque_metadata).as_slice()).unwrap();
 		let chain_type = identify_chain(&metadata, Some(100));
-		assert_eq!(chain_type, ChainType::Parachain(100));
+		assert_eq!(chain_type, ChainType::Teyrchain(100));
 		assert!(chain_type.requires_proof_recording());
-		assert_eq!(identify_chain(&metadata, None), ChainType::Parachain(DEFAULT_PARA_ID));
+		assert_eq!(identify_chain(&metadata, None), ChainType::Teyrchain(DEFAULT_PARA_ID));
 	}
 
 	#[test]
 	fn test_chain_type_custom() {
-		let executor: WasmExecutor<ParachainHostFunctions> = WasmExecutor::builder().build();
+		let executor: WasmExecutor<TeyrchainHostFunctions> = WasmExecutor::builder().build();
 		let code_bytes = substrate_test_runtime::WASM_BINARY
 			.expect("To run this test, build the wasm binary of substrate-test-runtime")
 			.to_vec();

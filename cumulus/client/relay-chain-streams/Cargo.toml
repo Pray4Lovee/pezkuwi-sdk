@@ -19,9 +19,9 @@ tracing = { workspace = true, default-features = true }
 sp-api = { workspace = true, default-features = true }
 sp-consensus = { workspace = true, default-features = true }
 
-# Polkadot
-polkadot-node-subsystem = { workspace = true, default-features = true }
-polkadot-primitives = { workspace = true, default-features = true }
+# Pezkuwi
+pezkuwi-node-subsystem = { workspace = true, default-features = true }
+pezkuwi-primitives = { workspace = true, default-features = true }
 
 # Cumulus
 cumulus-relay-chain-interface = { workspace = true, default-features = true }

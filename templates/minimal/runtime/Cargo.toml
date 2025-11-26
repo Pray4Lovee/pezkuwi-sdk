@@ -1,6 +1,6 @@
 [package]
 name = "minimal-template-runtime"
-description = "A solochain runtime template built with Substrate, part of Polkadot Sdk."
+description = "A solochain runtime template built with Substrate, part of Pezkuwi Sdk."
 version = "0.0.0"
 license = "Unlicense"
 authors.workspace = true
@@ -14,7 +14,7 @@ workspace = true
 
 [dependencies]
 codec = { workspace = true }
-polkadot-sdk = { workspace = true, features = [
+pezkuwi-sdk = { workspace = true, features = [
 	"pallet-balances",
 	"pallet-sudo",
 	"pallet-timestamp",
@@ -29,14 +29,14 @@ serde_json = { workspace = true, default-features = false, features = ["alloc"] 
 pallet-minimal-template = { workspace = true }
 
 [build-dependencies]
-polkadot-sdk = { optional = true, workspace = true, features = ["substrate-wasm-builder"] }
+pezkuwi-sdk = { optional = true, workspace = true, features = ["substrate-wasm-builder"] }
 
 [features]
 default = ["std"]
 std = [
 	"codec/std",
 	"pallet-minimal-template/std",
-	"polkadot-sdk/std",
+	"pezkuwi-sdk/std",
 	"scale-info/std",
 	"serde_json/std",
 ]
