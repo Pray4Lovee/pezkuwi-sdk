@@ -194,7 +194,7 @@ fn invoke_build(current_dir: &Path) -> Result<()> {
 			"-Zbuild-std-features=panic_immediate_abort",
 		])
 		.arg("--target")
-		.arg(polkavm_linker::target_json_64_path().unwrap());
+		.arg(polkavm_linker::target_json_path(polkavm_linker::TargetJsonArgs::default()).unwrap());
 
 	if let Ok(toolchain) = env::var(OVERRIDE_RUSTUP_TOOLCHAIN_ENV_VAR) {
 		build_command.env("RUSTUP_TOOLCHAIN", &toolchain);
@@ -221,7 +221,7 @@ fn post_process(input_path: &Path, output_path: &Path) -> Result<()> {
 	config.set_strip(strip);
 	config.set_optimize(optimize);
 	let orig = fs::read(input_path).with_context(|| format!("Failed to read {input_path:?}"))?;
-	let linked = polkavm_linker::program_from_elf(config, orig.as_ref())
+	let linked = polkavm_linker::program_from_elf(config, polkavm_linker::TargetInstructionSet::Latest, orig.as_ref())
 		.map_err(|err| anyhow::format_err!("Failed to link polkavm program: {}", err))?;
 	fs::write(output_path, linked).with_context(|| format!("Failed to write {output_path:?}"))?;
 	Ok(())
