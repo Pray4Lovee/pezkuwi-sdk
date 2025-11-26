@@ -1,115 +1,63 @@
-Pezkuwi-SDK
-TeyrChain - The Kurdistan Blockchain Network
-
-A sovereign blockchain parachain built for the Kurdistan region on Polkadot SDK v1.15.6.
-
+Pezkuwichain - Kurdistan Blockchain Network
+A sovereign blockchain parachain built on Polkadot SDK v1.15.6 for the Kurdish nation
 Overview
-TeyrChain (تێیرچەین) is a production-ready Substrate-based parachain runtime featuring:
+TeyrChain (تێیرچەین) is a production-ready Substrate-based parachain featuring:
 
-12 Custom Pallets: Presale, Governance, Education, Identity, Treasury, and more
-Dual Token Economics: HEZ (native) + PEZ (governance)
-XCM Integration: Cross-chain asset transfers (wUSDT from Asset Hub)
-Democratic Governance: Welati - Digital democracy system
-Educational Platform: Perwerde - Learning and certification
-Identity System: KYC and citizen verification
-Economic Tools: PEZ treasury and rewards system
+15 Custom Pallets: Presale, Governance (Welati), Education (Perwerde), Identity-KYC, Treasury, and more
+Dual Token Economics: HEZ (native gas) + PEZ (governance, 5B fixed supply)
+XCM Integration: Cross-chain USDT transfers via Polkadot Asset Hub
+TNPoS Consensus: Trust-enhanced validator selection and rewards
+Democratic Governance: On-chain voting and treasury management
+
 Key Features
 🪙 Token Economics
-HEZ Token: Native gas token (inflationary, Polkadot SDK standard)
-PEZ Token: Governance token (5B fixed supply, presale distribution)
-wUSDT: Bridged USDT from Polkadot Asset Hub (Asset ID 1000)
-🏛️ Custom Pallets
-Presale: Multi-presale launchpad with soft/hard caps, vesting, bonus tiers
-Tiki: NFT-based social and economic features
-Identity-KYC: Decentralized identity and compliance
-Referral: Incentivized referral system
-Perwerde: Educational platform and certification
-Token Wrapper: Asset wrapping (wUSDT, etc.)
-Welati: Democratic governance and voting
-Staking Score: Reputation-based staking rewards
-validator-pool: Trust embeded validator system
-Trust: Decentralized trust and reputation
-PEZ Treasury: Community treasury management
-PEZ Rewards: Staking and participation rewards
-🌉 Cross-Chain
-XCM v5 implementation
-Asset Hub USDT bridge (reserve-backed)
-Polkadot/Kusama parachain ready
-HRMP channels for system parachains
-Documentation
-Whitepaper: Complete technical specification
-Runtime: pezkuwi/runtime/parachain/ (TeyrChain runtime)
-Pallets: pezkuwi/pallets/ (11 custom pallets)
-Parachain Node: cumulus/pezkuwi-parachain/ (Cumulus collator)
-Quick Start
-Build from Source
-# Clone repository
-git clone https://github.com/pezkuwichain/pezkuwi-sdk.git
-cd pezkuwi-sdk
+HEZ Token - Native gas token following Polkadot's inflationary model
 
-# Build release binary
-cargo build --release
+Used for: Transaction fees, staking, network security
+Distribution: 85% to staking rewards, 15% to treasury
+Decimals: 10
 
-# Binary location
-./target/release/pezkuwi-parachain
-Run Local Development
-# Start local relay chain (Alice + Bob validators)
-# See scripts/devlocalfa-testnet/ for setup
+PEZ Token - Fixed supply governance token (5,000,000,000 PEZ)
 
-# Start parachain collator
-./target/release/pezkuwi-parachain \
-  --collator \
-  --alice \
-  --chain=local \
-  --base-path=/tmp/parachain/alice \
-  --port 40333 \
-  --rpc-port 8844 \
-  -- \
-  --chain=rococo-local \
-  --port 30343 \
-  --rpc-port 9977
-Network Stages
-Current: Alfa Testnet (4 validators) 🔄 Next: Beta Testnet (8 validators) 📅 Future: Staging → Mainnet (Polkadot/Kusama parachain)
+Treasury allocation: 1,012,500,000 PEZ (20.25%)
+Presale allocation: 93,750,000 PEZ (1.875%)
+Founder allocation: 93,750,000 PEZ (1.875%)
+Rewards pool: ~3,800,000,000 PEZ (~76%)
+48-month halving cycles
+Decimals: 12
 
-Architecture
-Polkadot/Kusama Relay Chain
-    │
-    └─── TeyrChain Parachain (ParaID TBD)
-          ├─ Runtime: teyrchain-runtime
-          ├─ Consensus: Aura + GRANDPA (via relay)
-          ├─ Block Time: 6 seconds
-          └─ 11 Custom Pallets
-               ├─ XCM Bridge (Asset Hub USDT)
-               └─ Democratic Governance
-Technology Stack
-Framework: Substrate (Polkadot SDK v1.15.6)
-Parachain: Cumulus
-Language: Rust
-Runtime: WASM compilation
-Consensus: Aura (PoA)
-Finality: GRANDPA (relay chain)
+wUSDT - Bridged stablecoin from Polkadot Asset Hub (Asset ID 1000)
+🛠 Custom Pallets
+PalletPurposepresaleMulti-round token launches with vesting and bonus tiersidentity-kycDecentralized identity and KYC compliancewelatiDemocratic governance, proposals and votingperwerdeEducational platform and certificationpez-treasuryCommunity treasury with halving mechanismpez-rewardsTrust-based staking rewards distributionvalidator-poolSimplified validator participationstaking-scoreReputation-based staking metricstrustSocial trust and reputation systemreferralGrowth incentive systemtikiNFT and social featurestoken-wrapperAsset wrapping for cross-chain transfers
+🌉 Cross-Chain Features
+
+XCM v5 implementation for cross-consensus messaging
+USDT Bridge from Polkadot Asset Hub (reserve-backed)
+HRMP Channels for parachain communication
+
 Use Cases
-Token Launches: Multi-presale platform with compliance
-Digital Governance: Community voting and proposals (Welati)
-Education: Online courses and certifications (Perwerde)
-Identity: KYC and trust systems
-Cross-Chain Finance: USDT bridge, asset swaps
-Official Links
-Website: https://pezkuwichain.io
-Explorer: https://explorer.pezkuwichain.io
-RPC: wss://rpc.pezkuwichain.io
-Network Dashboard: https://network.pezkuwichain.io
+
+Token Launches: Compliant multi-round presales
+Digital Governance: Community voting and treasury management
+Education: Blockchain-verified certificates (Perwerde)
+Identity: KYC-compliant digital identity system
+Cross-Chain Finance: USDT bridge and asset swaps
+
+Links
+
+Website: pezkuwichain.io
+Explorer: explorer.pezkuwichain.io
+Documentation: docs.pezkuwichain.io
+RPC Endpoint: wss://rpc.pezkuwichain.io
+
 Community
+
 Telegram: @pezkuwichain
 Discord: discord.gg/pezkuwichain
 Twitter: @pezkuwichain
-License
-Apache 2.0 - Open Source
-
-Built for the Kurdish Nation
-
-TeyrChain (تێیرچەین) - Empowering Kurdistan through blockchain technology
-
+GitHub: github.com/pezkuwichain
+Medium: /@pezkuwichain
+Facebook: https://www.facebook.com/profile.php?id=61582484611719
 
 
 <div align="center">
