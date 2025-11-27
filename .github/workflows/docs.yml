@@ -149,7 +149,7 @@ jobs:
       - name: Push changes to gh-pages
         env:
           TOKEN: ${{ steps.app-token.outputs.token }}
-          APP_NAME: "paritytech-upd-ghpages-polkadotsdk"
+          APP_NAME: "pezkuwichain-upd-ghpages"
           REF_NAME: ${{ github.head_ref || github.ref_name }}
           Green: "\e[32m"
           NC: "\e[0m"

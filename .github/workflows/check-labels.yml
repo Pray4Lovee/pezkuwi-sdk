@@ -23,7 +23,7 @@ jobs:
           API_BASE: https://api.github.com/repos
           REPO: ${{ github.repository }}
           RULES_PATH: labels/ruled_labels
-          CHECK_SPECS: "specs_polkadot-sdk.yaml"
+          CHECK_SPECS: "specs_pezkuwi-sdk.yaml"
         run: |
           if [ ${{ github.ref }} == "refs/heads/master" ]; then
             echo "Skipping master"
@@ -41,8 +41,7 @@ jobs:
           # Clone repo with labels specs
           echo "Cloning repo with labels specs"
 
-          # Temporary, before https://github.com/paritytech/labels/pull/29 is not merged
-          git clone https://github.com/paritytech/labels
+          git clone https://github.com/pezkuwichain/labels
 
           # Fetch the labels for the PR under test
           echo "Fetch the labels for $API_BASE/${REPO}/pulls/${GITHUB_PR}"

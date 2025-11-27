@@ -207,8 +207,8 @@ jobs:
             --title "$PR_TITLE" \
             --head "$BRANCH" \
             --base "master" \
-            --reviewer paritytech/ci \
-            --reviewer paritytech/release-engineering \
+            --reviewer pezkuwichain/ci \
+            --reviewer pezkuwichain/release-engineering \
             $MAYBE_DRAFT \
             --label "R0-no-crate-publish-required" \
             --body "$(cat /tmp/pr_body.md)"
