@@ -1,17 +1,28 @@
 name: "stop all workflows"
-description: "Action stops all workflows in a PR to save compute resources. Disabled for Pezkuwi fork - requires Parity's internal GitHub App."
+description: "Action stops all workflows in a PR to save compute resources."
 inputs:
   app-id:
-    description: "App id (not used in fork)"
-    required: false
+    description: "App id"
+    required: true
   app-key:
-    description: "App token (not used in fork)"
-    required: false
+    description: "App token"
+    required: true
 runs:
   using: "composite"
   steps:
-    - name: Workflow stopper - Skip (fork mode)
-      shell: bash
-      run: |
-        echo "::notice::Workflow stopper is disabled in Pezkuwi fork (requires Parity's internal GitHub App)"
-        echo "To enable, create your own GitHub App and configure WORKFLOW_STOPPER_RUNNER_APP_ID/APP_KEY secrets"
+    - name: Worfklow stopper - Generate token
+      uses: actions/create-github-app-token@d72941d797fd3113feb6b93fd0dec494b13a2547 # v1.12.0
+      id: app-token
+      with:
+        app-id: ${{ inputs.app-id }}
+        private-key: ${{ inputs.app-key }}
+        owner: "paritytech"
+        repositories: "workflow-stopper"
+    - name: Workflow stopper - Stop all workflows
+      uses: octokit/request-action@v2.x
+      with:
+        route: POST /repos/paritytech/workflow-stopper/actions/workflows/stopper.yml/dispatches
+        ref: main
+        inputs: '${{ format(''{{ "github_sha": "{0}", "github_repository": "{1}", "github_ref_name": "{2}", "github_workflow_id": "{3}", "github_job_name": "{4}" }}'', github.event.pull_request.head.sha, github.repository, github.ref_name, github.run_id, github.job) }}'
+      env:
+        GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
