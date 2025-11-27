@@ -18,13 +18,40 @@ In order to build this project you need to install some dependencies, follow the
 
 There are a few basic ground-rules for contributors (including the maintainer(s) of the project):
 
-1. **No `--force` pushes** or modifying the master branch history in any way. If you need to rebase, ensure you do it in
+1. **No `--force` pushes** or modifying the main branch history in any way. If you need to rebase, ensure you do it in
    your own repo. No rewriting of the history after the code has been shared (e.g. through a Pull-Request).
-2. **Non-master branches**, prefixed with a short name moniker (e.g. `gav-my-feature`) must be used for ongoing work.
+2. **Feature branches** must follow the naming conventions below and be used for ongoing work.
 3. **All modifications** must be made in a **pull-request** to solicit feedback from other contributors.
 4. A pull-request **must not be merged until CI** has finished successfully.
 5. Contributors should adhere to the [house coding style](./STYLE_GUIDE.md).
 6. Contributors should adhere to the [house documenting style](./DOCUMENTATION_GUIDELINES.md), when applicable.
+
+## Branch Naming Conventions
+
+All branches must follow these naming patterns:
+
+| Pattern | Purpose | Example |
+|---------|---------|---------|
+| `feature/<name>` | New features | `feature/parliamentary-nft-voting` |
+| `fix/<name>` | Bug fixes | `fix/presale-overflow-check` |
+| `pallet/<name>` | Pallet-specific changes | `pallet/welati-liquid-democracy` |
+| `runtime/<name>` | Runtime configuration changes | `runtime/xcm-v5-upgrade` |
+| `docs/<name>` | Documentation updates | `docs/token-economics` |
+| `ci/<name>` | CI/CD changes | `ci/benchmark-workflow` |
+| `refactor/<name>` | Code refactoring | `refactor/treasury-cleanup` |
+| `test/<name>` | Test additions/fixes | `test/presale-edge-cases` |
+| `hotfix/<name>` | Urgent production fixes | `hotfix/critical-security-patch` |
+
+**Branch name rules:**
+- Use lowercase letters, numbers, and hyphens only
+- Keep names concise but descriptive
+- No spaces or special characters
+- Maximum 50 characters for branch name
+
+**Protected branches:**
+- `main` - Production branch, requires PR with review
+- `staging` - Pre-production testing
+- `develop` - Integration branch (if used)
 
 ## Merge Process
 

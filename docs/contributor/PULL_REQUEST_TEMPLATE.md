@@ -1,65 +1,74 @@
+## Description
 
+<!-- A concise description of what your PR does and what issue it solves -->
+<!-- Use GitHub semantic linking: Fixes #123, Closes #456 -->
 
-✄ -----------------------------------------------------------------------------
+## Type of Change
 
-Thank you for your Pull Request! 🙏 Please make sure it follows the contribution guidelines outlined in [this
-document](https://github.com/pezkuwichain/pezkuwichain-sdk/blob/master/docs/contributor/CONTRIBUTING.md) and fill out the
-sections below. Once you're ready to submit your PR for review, please delete this section and leave only the text under
-the "Description" heading.
+- [ ] Bug fix (non-breaking change that fixes an issue)
+- [ ] New feature (non-breaking change that adds functionality)
+- [ ] Breaking change (fix or feature that would cause existing functionality to change)
+- [ ] Pallet change (changes to custom pallets in `/pezkuwi/pallets/`)
+- [ ] Runtime change (changes to runtime configuration)
+- [ ] XCM/Cross-chain change
+- [ ] Documentation update
+- [ ] CI/CD change
 
-# Description
+## Changes Made
 
-*A concise description of what your PR is doing, and what potential issue it is solving. Use [Github semantic
-linking](https://docs.github.com/en/issues/tracking-your-work-with-issues/linking-a-pull-request-to-an-issue#linking-a-pull-request-to-an-issue-using-a-keyword)
-to link the PR to an issue that must be closed once this is merged.*
+<!-- List the specific changes made in this PR -->
 
-## Integration
+-
 
-*In depth notes about how this PR should be integrated by downstream projects. This part is
-mandatory, and should be reviewed by reviewers, if the PR does NOT have the
-`R0-no-crate-publish-required` label. In case of a `R0-no-crate-publish-required`, it can be
-ignored.*
+## Testing
 
-## Review Notes
+<!-- Describe the tests you ran and how to reproduce them -->
 
-*In depth notes about the **implementation** details of your PR. This should be the main guide for reviewers to
-understand your approach and effectively review it. If too long, use
-[`<details>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/details)*.
+- [ ] Unit tests pass (`cargo test`)
+- [ ] Build succeeds (`cargo build --release`)
+- [ ] Benchmarks compile (`cargo build --release --features runtime-benchmarks`)
+- [ ] Manual testing completed (describe below)
 
-*Imagine that someone who is depending on the old code wants to integrate your new code and the only information that
-they get is this section. It helps to include example usage and default value here, with a `diff` code-block to show
-possibly integration.*
+### Test Details
 
-*Include your leftover TODOs, if any, here.*
+<!-- How did you test this change? -->
 
-# Checklist
+## Checklist
 
-* [ ] My PR includes a detailed description as outlined in the "Description" and its two subsections above.
-* [ ] My PR follows the [labeling requirements](
-https://github.com/pezkuwichain/pezkuwichain-sdk/blob/master/docs/contributor/CONTRIBUTING.md#Process
-) of this project (at minimum one label for `T` required)
-    * External contributors: Use `/cmd label <label-name>` to add labels
-    * Maintainers can also add labels manually
-* [ ] I have made corresponding changes to the documentation (if applicable)
-* [ ] I have added tests that prove my fix is effective or that my feature works (if applicable)
+- [ ] My code follows the project's style guidelines
+- [ ] I have performed a self-review of my code
+- [ ] I have commented my code, particularly in hard-to-understand areas
+- [ ] I have made corresponding changes to the documentation
+- [ ] My changes generate no new warnings
+- [ ] I have added tests that prove my fix is effective or that my feature works
+- [ ] New and existing unit tests pass locally with my changes
+- [ ] Any dependent changes have been merged and published
 
-## Bot Commands
+## Security Considerations
 
-You can use the following bot commands in comments to help manage your PR:
+<!-- For changes to pallets, runtime, or financial logic -->
 
-**Labeling (Self-service for contributors):**
-* `/cmd label T1-FRAME` - Add a single label
-* `/cmd label T1-FRAME R0-no-crate-publish-required` - Add multiple labels
-* `/cmd label T6-XCM D2-substantial I5-enhancement` - Add multiple labels at once
-* See [label documentation](https://docs.pezkuwichain.io/labels/doc_polkadot-sdk.html) for all available labels
+- [ ] No new security vulnerabilities introduced
+- [ ] Financial calculations reviewed for overflow/underflow
+- [ ] Access control properly implemented
+- [ ] No sensitive data exposed
 
-**Other useful commands:**
-* `/cmd fmt` - Format code (cargo +nightly fmt and taplo)
-* `/cmd prdoc` - Generate PR documentation
-* `/cmd bench` - Run benchmarks
-* `/cmd update-ui` - Update UI tests
-* `/cmd --help` - Show help for all available commands
+## Breaking Changes
 
-You can remove the "Checklist" section once all have been checked. Thank you for your contribution!
+<!-- If this is a breaking change, describe the impact and migration path -->
 
-✄ -----------------------------------------------------------------------------
+N/A
+
+## Related Issues/PRs
+
+<!-- Link any related issues or PRs -->
+
+-
+
+---
+
+**For Reviewers:**
+- Check that tests cover the changes adequately
+- Verify no regressions in existing functionality
+- For pallet changes: review weight calculations
+- For XCM changes: verify cross-chain compatibility
