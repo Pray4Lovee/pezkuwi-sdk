@@ -1,64 +1,229 @@
-Pezkuwichain - Kurdistan Blockchain Network
-A sovereign blockchain parachain built on Polkadot SDK v1.15.6 for the Kurdish nation
-Overview
-TeyrChain (تێیرچەین) is a production-ready Substrate-based parachain featuring:
+# PezkuwiChain — Digital Sovereignty for Stateless Nations
 
-15 Custom Pallets: Presale, Governance (Welati), Education (Perwerde), Identity-KYC, Treasury, and more
-Dual Token Economics: HEZ (native gas) + PEZ (governance, 5B fixed supply)
-XCM Integration: Cross-chain USDT transfers via Polkadot Asset Hub
-TNPoS Consensus: Trust-enhanced validator selection and rewards
-Democratic Governance: On-chain voting and treasury management
+**The world's first blockchain infrastructure designed for stateless nations and distributed communities.**
 
-Key Features
-🪙 Token Economics
-HEZ Token - Native gas token following Polkadot's inflationary model
+PezkuwiChain introduces **Trust-enhanced Nominated Proof-of-Stake (TNPoS)** — a novel consensus mechanism that combines economic stake with social trust metrics, creating humanity's first merit-based, Sybil-resistant digital nation infrastructure.
 
-Used for: Transaction fees, staking, network security
-Distribution: 85% to staking rewards, 15% to treasury
-Decimals: 10
+---
 
-PEZ Token - Fixed supply governance token (5,000,000,000 PEZ)
+## Vision: Type-1 Civilization Infrastructure
 
-Treasury allocation: 1,012,500,000 PEZ (20.25%)
-Presale allocation: 93,750,000 PEZ (1.875%)
-Founder allocation: 93,750,000 PEZ (1.875%)
-Rewards pool: ~3,800,000,000 PEZ (~76%)
-48-month halving cycles
-Decimals: 12
+PezkuwiChain is more than a blockchain. It is the foundational layer for **decentralized digital states** — enabling stateless peoples, cultural nations, and distributed communities to achieve sovereignty without geographic borders.
 
-wUSDT - Bridged stablecoin from Polkadot Asset Hub (Asset ID 1000)
-🛠 Custom Pallets
-PalletPurposepresaleMulti-round token launches with vesting and bonus tiersidentity-kycDecentralized identity and KYC compliancewelatiDemocratic governance, proposals and votingperwerdeEducational platform and certificationpez-treasuryCommunity treasury with halving mechanismpez-rewardsTrust-based staking rewards distributionvalidator-poolSimplified validator participationstaking-scoreReputation-based staking metricstrustSocial trust and reputation systemreferralGrowth incentive systemtikiNFT and social featurestoken-wrapperAsset wrapping for cross-chain transfers
-🌉 Cross-Chain Features
+**Phase 1** (Current): Kurdish Digital Nation — 40M+ Kurds worldwide
+**Phase 2**: Multi-Nation Platform — Catalans, Tibetans, Uyghurs, Basques, Indigenous peoples
+**Phase 3**: Global Digital Nations Framework — Any community seeking self-determination
+**Phase 4**: Type-1 Civilization Infrastructure — Humanity's first borderless governance layer
 
-XCM v5 implementation for cross-consensus messaging
-USDT Bridge from Polkadot Asset Hub (reserve-backed)
-HRMP Channels for parachain communication
+> *"The first step toward a Type-1 civilization is giving every human community the tools for self-governance."*
 
-Use Cases
+---
 
-Token Launches: Compliant multi-round presales
-Digital Governance: Community voting and treasury management
-Education: Blockchain-verified certificates (Perwerde)
-Identity: KYC-compliant digital identity system
-Cross-Chain Finance: USDT bridge and asset swaps
+## Architecture
 
-Links
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    PezkuwiChain Ecosystem                    │
+├─────────────────────────────────────────────────────────────┤
+│                                                              │
+│   ┌─────────────────────┐    ┌─────────────────────────┐    │
+│   │   PezkuwiChain      │    │      TeyrChain          │    │
+│   │   (Relay Chain)     │◄───│     (Parachain)         │    │
+│   │                     │    │                         │    │
+│   │  • Shared Security  │    │  • 12 Custom Pallets    │    │
+│   │  • Validator Set    │    │  • TNPoS Consensus      │    │
+│   │  • Cross-Chain Hub  │    │  • Kurdish Digital State│    │
+│   └─────────────────────┘    └─────────────────────────┘    │
+│              │                          │                    │
+│              └──────────┬───────────────┘                    │
+│                         │                                    │
+│              ┌──────────▼───────────┐                        │
+│              │   Polkadot Ecosystem │                        │
+│              │   (XCM Integration)  │                        │
+│              │   • Asset Hub (wUSDT)│                        │
+│              │   • Cross-Chain Msgs │                        │
+│              └──────────────────────┘                        │
+└─────────────────────────────────────────────────────────────┘
+```
 
-Website: pezkuwichain.io
-Explorer: explorer.pezkuwichain.io
-Documentation: docs.pezkuwichain.io
-RPC Endpoint: wss://rpc.pezkuwichain.io
+**TeyrChain (تێیرچەین)** — Production-ready parachain runtime built on Polkadot SDK v1.15.6
 
-Community
+---
 
-Telegram: @pezkuwichain
-Discord: discord.gg/pezkuwichain
-Twitter: @pezkuwichain
-GitHub: github.com/pezkuwichain
-Medium: /@pezkuwichain
-Facebook: https://www.facebook.com/profile.php?id=61582484611719
+## Token Economics
 
+### HEZ — Native Gas Token (Inflationary)
+| Property | Value |
+|----------|-------|
+| **Purpose** | Transaction fees, staking, network security |
+| **Model** | Polkadot-identical inflation curve |
+| **Distribution** | 85% staking rewards, 15% treasury |
+| **Decimals** | 10 |
+| **Access** | Permissionless — open to everyone globally |
+
+### PEZ — Governance Token (Fixed Supply)
+| Property | Value |
+|----------|-------|
+| **Total Supply** | 5,000,000,000 PEZ |
+| **Treasury** | 1,012,500,000 PEZ (20.25%) |
+| **Rewards Pool** | ~3,800,000,000 PEZ (~76%) |
+| **Presale** | 93,750,000 PEZ (1.875%) |
+| **Founders** | 93,750,000 PEZ (1.875%) |
+| **Halving** | 48-month cycles |
+| **Decimals** | 12 |
+| **Access** | Citizenship-gated rewards |
+
+### wUSDT — Bridged Stablecoin
+- XCM reserve-backed from Polkadot Asset Hub
+- Asset ID: 1000
+- 1:1 USDT peg via cross-chain transfer
+
+---
+
+## 12 Custom Pallets
+
+| Pallet | Purpose | Status |
+|--------|---------|--------|
+| **presale** | Multi-round token launches with vesting, bonus tiers, soft/hard caps | ✅ Production |
+| **identity-kyc** | Decentralized identity and KYC compliance | ✅ Production |
+| **welati** | Democratic governance — proposals, voting, liquid democracy | ✅ Production |
+| **perwerde** | Educational platform — courses, certificates, skill verification | ✅ Production |
+| **pez-treasury** | Community treasury with halving mechanism | ✅ Production |
+| **pez-rewards** | Trust-based staking rewards distribution | ✅ Production |
+| **validator-pool** | Simplified validator participation | ✅ Production |
+| **staking-score** | Reputation-based staking metrics | ✅ Production |
+| **trust** | Peer-to-peer trust and reputation system | ✅ Production |
+| **referral** | Multi-level referral incentive system | ✅ Production |
+| **tiki** | NFT-based citizenship (4-tier: Applicant→Citizen→Legislator→Core) | ✅ Production |
+| **token-wrapper** | Asset wrapping for cross-chain transfers | ✅ Production |
+
+**All pallets**: Real benchmark weights generated, fully tested, production-ready.
+
+---
+
+## TNPoS Consensus — World's First Trust-Augmented PoS
+
+**Trust-enhanced Nominated Proof-of-Stake** combines:
+- **Economic Stake**: Traditional staking (HEZ)
+- **Social Trust**: Peer endorsements, citizenship level, governance participation
+- **Performance Metrics**: Uptime, finality participation, historical behavior
+
+**Key Innovations**:
+- 🔬 First implementation of social trust in consensus (academic contribution)
+- 🏛️ Parliamentary NFT System: 201 non-transferable governance seats
+- 🔐 Sybil-resistant via citizenship verification (Tiki pallet)
+- 📊 Multi-dimensional validator scoring
+
+---
+
+## Cross-Chain Integration (XCM v5)
+
+```
+Polkadot Asset Hub (USDT)
+         │
+         │ XCM Reserve Transfer
+         ▼
+TeyrChain Parachain
+         │
+         ├─► Presale contributions
+         ├─► DEX trading (future)
+         └─► Withdraw back to Asset Hub
+```
+
+- Full XCM v5 implementation
+- Reserve-backed wUSDT bridge
+- HRMP channels for system parachains
+- Future bridges: wETH, wBTC, Ethereum, Tron, BSC
+
+---
+
+## Network Roadmap
+
+| Stage | Validators | Status |
+|-------|------------|--------|
+| Dev Mode | 1 | ✅ Complete |
+| Local Testnet | 2 | ✅ Complete |
+| **Alfa Testnet** | 4 | 🔄 Current |
+| Beta Testnet | 8 | Q1 2026 |
+| Staging | 20 | Q1 2026 |
+| **Mainnet** | 100 | Q2 2026 |
+
+---
+
+## Multi-Nation Platform Vision
+
+PezkuwiChain is designed to host **multiple digital nations** simultaneously:
+
+| Nation Type | Example | Target Population |
+|-------------|---------|-------------------|
+| **Ethnic** | Kurdish (PEZ) | 40M+ globally |
+| **Ethnic** | Catalan | 10M+ |
+| **Ethnic** | Tibetan | 6M+ diaspora |
+| **Ethnic** | Uyghur | 12M+ |
+| **Ethnic** | Basque | 3M+ |
+| **Cultural** | Armenian diaspora | 8M+ |
+| **Cultural** | Romani | 10M+ worldwide |
+| **Indigenous** | Various tribes | Land rights, heritage |
+
+**Shared Infrastructure**: All nations use HEZ for transactions
+**Nation-Specific Tokens**: Each group issues citizenship-gated tokens (PEZ model)
+**Interoperable Governance**: Cross-nation commerce, diplomacy on single blockchain
+
+---
+
+## Use Cases
+
+1. **Digital Governance** — Parliamentary NFTs, on-chain voting, treasury management
+2. **Token Launches** — Compliant multi-round presales with vesting
+3. **Education** — Blockchain-verified certificates (Perwerde)
+4. **Identity** — Self-sovereign KYC and citizenship verification
+5. **Cross-Chain Finance** — wUSDT bridge, DeFi primitives
+6. **Cultural Preservation** — Language, heritage, oral tradition on-chain
+7. **Remittance** — Low-cost diaspora→homeland transfers ($20B+ Kurdish annual flows)
+
+---
+
+## Quick Start
+
+```bash
+# Clone repository
+git clone https://github.com/pezkuwichain/pezkuwi-sdk.git
+cd pezkuwi-sdk
+
+# Build release
+cargo build --release
+
+# Build with benchmarks
+cargo build --release --features runtime-benchmarks
+
+# Run local testnet
+./target/release/pezkuwi-parachain --dev
+```
+
+---
+
+## Links
+
+| Resource | URL |
+|----------|-----|
+| Website | [pezkuwichain.io](https://pezkuwichain.io) |
+| App | [pezkuwichain.app](https://pezkuwichain.app) |
+| Explorer | [explorer.pezkuwichain.io](https://explorer.pezkuwichain.io) |
+| Documentation | [docs.pezkuwichain.io](https://docs.pezkuwichain.io) |
+| RPC Endpoint | `wss://rpc.pezkuwichain.io` |
+
+## Community
+
+| Platform | Link |
+|----------|------|
+| Telegram | [@pezkuwichain](https://t.me/pezkuwichain) |
+| Discord | [discord.gg/pezkuwichain](https://discord.gg/pezkuwichain) |
+| Twitter | [@pezkuwichain](https://twitter.com/pezkuwichain) |
+| GitHub | [github.com/pezkuwichain](https://github.com/pezkuwichain) |
+| Medium | [@pezkuwichain](https://medium.com/@pezkuwichain) |
+| Facebook | [PezkuwiChain](https://www.facebook.com/profile.php?id=61582484611719) |
+
+---
 
 <div align="center">
 
