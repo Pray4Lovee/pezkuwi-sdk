@@ -95,10 +95,10 @@ use frame_support::{
 	genesis_builder_helper::{build_state, get_preset},
 	parameter_types,
 	traits::{
-		fungible::HoldConsideration, tokens::UnityOrOuterConversion, Contains, EitherOf,
-		EitherOfDiverse, EnsureOrigin, EnsureOriginWithArg, EverythingBut, InstanceFilter,
-		KeyOwnerProofSystem, LinearStoragePrice, PrivilegeCmp, ProcessMessage, ProcessMessageError,
-		StorageMapShim, WithdrawReasons,
+		fungible::HoldConsideration, tokens::UnityOrOuterConversion, AsEnsureOriginWithArg,
+		Contains, EitherOf, EitherOfDiverse, EnsureOrigin, EnsureOriginWithArg, EverythingBut,
+		InstanceFilter, KeyOwnerProofSystem, LinearStoragePrice, Nothing, PrivilegeCmp,
+		ProcessMessage, ProcessMessageError, StorageMapShim, WithdrawReasons,
 	},
 	weights::{ConstantMultiplier, WeightMeter},
 	PalletId,
@@ -108,7 +108,7 @@ use pallet_grandpa::{fg_primitives, AuthorityId as GrandpaId};
 use pallet_identity::legacy::IdentityInfo;
 use pallet_session::historical as session_historical;
 use pallet_transaction_payment::{FeeDetails, FungibleAdapter, RuntimeDispatchInfo};
-use sp_core::{ConstU128, ConstU8, ConstUint, Get, OpaqueMetadata, H256};
+use sp_core::{ConstBool, ConstU128, ConstU8, ConstUint, Get, OpaqueMetadata, H256};
 use sp_runtime::{
 	generic, impl_opaque_keys,
 	traits::{
@@ -414,7 +414,7 @@ impl pallet_balances::Config for Runtime {
 	type MaxReserves = MaxReserves;
 	type ReserveIdentifier = [u8; 8];
 	type WeightInfo = weights::pallet_balances_balances::WeightInfo<Runtime>;
-	type FreezeIdentifier = ();
+	type FreezeIdentifier = RuntimeFreezeReason;
 	type RuntimeHoldReason = RuntimeHoldReason;
 	type RuntimeFreezeReason = RuntimeFreezeReason;
 	type MaxFreezes = ConstU32<1>;
@@ -500,9 +500,219 @@ impl pallet_session::historical::Config for Runtime {
 	type FullIdentificationOf = FullIdentificationOf;
 }
 
+// =====================================================
+// STAKING CONFIGURATION
+// =====================================================
+
 parameter_types! {
 	pub const SessionsPerEra: SessionIndex = 6;
 	pub const BondingDuration: sp_staking::EraIndex = 28;
+	pub const SlashDeferDuration: sp_staking::EraIndex = 27;
+	pub const HistoryDepth: u32 = 84;
+	pub const MaxWinners: u32 = 100;
+	pub const MaxElectingVoters: u32 = 22_500;
+	pub const MaxActiveValidators: u32 = 1000;
+	// Limits for election provider.
+	pub const ElectionBounds: frame_election_provider_support::bounds::ElectionBounds =
+		frame_election_provider_support::bounds::ElectionBounds {
+			voters: frame_election_provider_support::bounds::DataProviderBounds {
+				size: Some(frame_election_provider_support::bounds::SizeBound(20_000)),
+				count: Some(frame_election_provider_support::bounds::CountBound(1_000)),
+			},
+			targets: frame_election_provider_support::bounds::DataProviderBounds {
+				size: Some(frame_election_provider_support::bounds::SizeBound(1_500)),
+				count: Some(frame_election_provider_support::bounds::CountBound(200)),
+			},
+		};
+}
+
+pub struct OnChainSeqPhragmen;
+impl frame_election_provider_support::onchain::Config for OnChainSeqPhragmen {
+	type Sort = ConstBool<true>;
+	type System = Runtime;
+	type Solver = frame_election_provider_support::SequentialPhragmen<AccountId, Perbill>;
+	type DataProvider = Staking;
+	type WeightInfo = frame_election_provider_support::weights::SubstrateWeight<Runtime>;
+	type MaxBackersPerWinner = MaxElectingVoters;
+	type MaxWinnersPerPage = MaxWinners;
+	type Bounds = ElectionBounds;
+}
+
+
+/// Era payout calculation for staking rewards.
+pub struct EraPayout;
+impl pallet_staking::EraPayout<Balance> for EraPayout {
+	fn era_payout(
+		_total_staked: Balance,
+		total_issuance: Balance,
+		era_duration_millis: u64,
+	) -> (Balance, Balance) {
+		// 8% annual inflation rate
+		const MILLISECONDS_PER_YEAR: u64 = (1000 * 3600 * 24 * 36525) / 100;
+		let relative_era_len =
+			FixedU128::from_rational(era_duration_millis.into(), MILLISECONDS_PER_YEAR.into());
+		let inflation_rate = FixedU128::from_rational(8, 100);
+		let yearly_emission = inflation_rate.saturating_mul_int(total_issuance as i128);
+		let era_emission = relative_era_len.saturating_mul_int(yearly_emission);
+		// 15% to treasury, 85% to stakers
+		let to_treasury = FixedU128::from_rational(15, 100).saturating_mul_int(era_emission);
+		let to_stakers = era_emission.saturating_sub(to_treasury);
+		(to_stakers.saturated_into(), to_treasury.saturated_into())
+	}
+}
+
+pub struct PezkuwiStakingBenchmarkingConfig;
+impl pallet_staking::BenchmarkingConfig for PezkuwiStakingBenchmarkingConfig {
+	type MaxValidators = ConstU32<1000>;
+	type MaxNominators = ConstU32<1000>;
+}
+
+impl pallet_staking::Config for Runtime {
+	type Currency = Balances;
+	type CurrencyBalance = Balance;
+	type UnixTime = Timestamp;
+	type CurrencyToVote = sp_staking::currency_to_vote::U128CurrencyToVote;
+	type RewardRemainder = ();
+	type RuntimeEvent = RuntimeEvent;
+	type Slash = ();
+	type Reward = ();
+	type SessionsPerEra = SessionsPerEra;
+	type BondingDuration = BondingDuration;
+	type SlashDeferDuration = SlashDeferDuration;
+	type SessionInterface = ();
+	type EraPayout = EraPayout;
+	type NextNewSession = Session;
+	type MaxExposurePageSize = ConstU32<64>;
+	type MaxValidatorSet = MaxActiveValidators;
+	type ElectionProvider = frame_election_provider_support::onchain::OnChainExecution<OnChainSeqPhragmen>;
+	type GenesisElectionProvider = frame_election_provider_support::onchain::OnChainExecution<OnChainSeqPhragmen>;
+	type VoterList = VoterBagsList;
+	type TargetList = pallet_staking::UseValidatorsMap<Self>;
+	type MaxControllersInDeprecationBatch = ConstU32<5_900>;
+	type AdminOrigin = EnsureRoot<AccountId>;
+	type EventListeners = ();
+	type WeightInfo = pallet_staking::weights::SubstrateWeight<Runtime>;
+	type RuntimeHoldReason = RuntimeHoldReason;
+	type HistoryDepth = HistoryDepth;
+	type NominationsQuota = pallet_staking::FixedNominationsQuota<16>;
+	type MaxUnlockingChunks = ConstU32<32>;
+	type Filter = Nothing;
+	type OldCurrency = Balances;
+	type BenchmarkingConfig = PezkuwiStakingBenchmarkingConfig;
+}
+
+// =====================================================
+// FAST UNSTAKE CONFIGURATION
+// =====================================================
+
+impl pallet_fast_unstake::Config for Runtime {
+	type RuntimeEvent = RuntimeEvent;
+	type Currency = Balances;
+	type BatchSize = ConstU32<64>;
+	type Deposit = ConstU128<{ UNITS }>;
+	type ControlOrigin = EnsureRoot<AccountId>;
+	type Staking = Staking;
+	type MaxErasToCheckPerBlock = ConstU32<1>;
+	type WeightInfo = pallet_fast_unstake::weights::SubstrateWeight<Runtime>;
+}
+
+// =====================================================
+// NOMINATION POOLS CONFIGURATION
+// =====================================================
+
+parameter_types! {
+	pub const PoolsPalletId: PalletId = PalletId(*b"py/nopls");
+	pub const MaxPointsToBalance: u8 = 10;
+}
+
+pub struct BalanceToU256;
+impl sp_runtime::traits::Convert<Balance, sp_core::U256> for BalanceToU256 {
+	fn convert(balance: Balance) -> sp_core::U256 {
+		sp_core::U256::from(balance)
+	}
+}
+
+pub struct U256ToBalance;
+impl sp_runtime::traits::Convert<sp_core::U256, Balance> for U256ToBalance {
+	fn convert(n: sp_core::U256) -> Balance {
+		n.try_into().unwrap_or(Balance::MAX)
+	}
+}
+
+impl pallet_nomination_pools::Config for Runtime {
+	type RuntimeEvent = RuntimeEvent;
+	type WeightInfo = pallet_nomination_pools::weights::SubstrateWeight<Runtime>;
+	type Currency = Balances;
+	type RuntimeFreezeReason = RuntimeFreezeReason;
+	type RewardCounter = FixedU128;
+	type BalanceToU256 = BalanceToU256;
+	type U256ToBalance = U256ToBalance;
+	type StakeAdapter = pallet_nomination_pools::adapter::TransferStake<Self, Staking>;
+	type PostUnbondingPoolsWindow = ConstU32<4>;
+	type MaxMetadataLen = ConstU32<256>;
+	type MaxUnbonding = ConstU32<8>;
+	type MaxPointsToBalance = MaxPointsToBalance;
+	type PalletId = PoolsPalletId;
+	type AdminOrigin = EnsureRoot<AccountId>;
+	type BlockNumberProvider = System;
+	type Filter = Nothing;
+}
+
+// =====================================================
+// VOTER BAGS LIST CONFIGURATION
+// =====================================================
+
+parameter_types! {
+	pub const VoterBagThresholds: &'static [u64] = &[
+		100 * UNITS as u64,
+		200 * UNITS as u64,
+		500 * UNITS as u64,
+		1_000 * UNITS as u64,
+		2_000 * UNITS as u64,
+		5_000 * UNITS as u64,
+		10_000 * UNITS as u64,
+		20_000 * UNITS as u64,
+		50_000 * UNITS as u64,
+		100_000 * UNITS as u64,
+	];
+}
+
+pub type VoterBagsListInstance = pallet_bags_list::Instance1;
+impl pallet_bags_list::Config<VoterBagsListInstance> for Runtime {
+	type RuntimeEvent = RuntimeEvent;
+	type WeightInfo = pallet_bags_list::weights::SubstrateWeight<Runtime>;
+	type ScoreProvider = Staking;
+	type BagThresholds = VoterBagThresholds;
+	type Score = u64;
+	type MaxAutoRebagPerBlock = ConstU32<10>;
+}
+
+// =====================================================
+// COUNCIL CONFIGURATION
+// =====================================================
+
+parameter_types! {
+	pub const CouncilMotionDuration: BlockNumber = 7 * DAYS;
+	pub const CouncilMaxProposals: u32 = 100;
+	pub const CouncilMaxMembers: u32 = 100;
+	pub MaxCollectivesProposalWeight: frame_support::weights::Weight = Perbill::from_percent(50) * BlockWeights::get().max_block;
+}
+
+pub type CouncilCollective = pallet_collective::Instance1;
+impl pallet_collective::Config<CouncilCollective> for Runtime {
+	type RuntimeOrigin = RuntimeOrigin;
+	type Proposal = RuntimeCall;
+	type RuntimeEvent = RuntimeEvent;
+	type MotionDuration = CouncilMotionDuration;
+	type MaxProposals = CouncilMaxProposals;
+	type MaxMembers = CouncilMaxMembers;
+	type DefaultVote = pallet_collective::PrimeDefaultVote;
+	type WeightInfo = pallet_collective::weights::SubstrateWeight<Runtime>;
+	type SetMembersOrigin = EnsureRoot<AccountId>;
+	type MaxProposalWeight = MaxCollectivesProposalWeight;
+	type DisapproveOrigin = EnsureRoot<AccountId>;
+	type KillOrigin = EnsureRoot<AccountId>;
+	type Consideration = ();
 }
 
 parameter_types! {
@@ -1477,6 +1687,191 @@ impl pallet_root_testing::Config for Runtime {
 	type RuntimeEvent = RuntimeEvent;
 }
 
+// =====================================================
+// ASSETS CONFIGURATION
+// =====================================================
+
+parameter_types! {
+	pub const AssetDeposit: Balance = 100 * UNITS;
+	pub const AssetAccountDeposit: Balance = deposit(1, 16);
+	pub const ApprovalDeposit: Balance = EXISTENTIAL_DEPOSIT;
+	pub const AssetsStringLimit: u32 = 50;
+	pub const MetadataDepositBase: Balance = deposit(1, 68);
+	pub const MetadataDepositPerByte: Balance = deposit(0, 1);
+}
+
+pub type AssetsInstance = pallet_assets::Instance1;
+impl pallet_assets::Config<AssetsInstance> for Runtime {
+	type RuntimeEvent = RuntimeEvent;
+	type Balance = Balance;
+	type AssetId = u32;
+	type AssetIdParameter = codec::Compact<u32>;
+	type ReserveData = ();
+	type Currency = Balances;
+	type CreateOrigin = AsEnsureOriginWithArg<EnsureSigned<AccountId>>;
+	type ForceOrigin = EnsureRoot<AccountId>;
+	type AssetDeposit = AssetDeposit;
+	type AssetAccountDeposit = AssetAccountDeposit;
+	type MetadataDepositBase = MetadataDepositBase;
+	type MetadataDepositPerByte = MetadataDepositPerByte;
+	type ApprovalDeposit = ApprovalDeposit;
+	type StringLimit = AssetsStringLimit;
+	type Holder = ();
+	type Freezer = ();
+	type Extra = ();
+	type CallbackHandle = ();
+	type WeightInfo = pallet_assets::weights::SubstrateWeight<Runtime>;
+	type RemoveItemsLimit = ConstU32<1000>;
+	#[cfg(feature = "runtime-benchmarks")]
+	type BenchmarkHelper = ();
+}
+
+// =====================================================
+// NFTs CONFIGURATION
+// =====================================================
+
+parameter_types! {
+	pub const NftCollectionDeposit: Balance = 100 * UNITS;
+	pub const NftItemDeposit: Balance = UNITS;
+	pub const NftMetadataDepositBase: Balance = deposit(1, 129);
+	pub const NftAttributeDepositBase: Balance = deposit(1, 0);
+	pub const NftDepositPerByte: Balance = deposit(0, 1);
+	pub NftFeatures: pallet_nfts::PalletFeatures = pallet_nfts::PalletFeatures::all_enabled();
+	pub const NftApprovalsLimit: u32 = 20;
+	pub const NftItemAttributesApprovalsLimit: u32 = 30;
+	pub const NftMaxTips: u32 = 10;
+	pub const NftMaxDeadlineDuration: BlockNumber = 12 * 30 * DAYS;
+	pub const NftMaxAttributesPerCall: u32 = 10;
+}
+
+impl pallet_nfts::Config for Runtime {
+	type RuntimeEvent = RuntimeEvent;
+	type CollectionId = u32;
+	type ItemId = u32;
+	type Currency = Balances;
+	type ForceOrigin = EnsureRoot<AccountId>;
+	type CollectionDeposit = NftCollectionDeposit;
+	type ItemDeposit = NftItemDeposit;
+	type MetadataDepositBase = NftMetadataDepositBase;
+	type AttributeDepositBase = NftAttributeDepositBase;
+	type DepositPerByte = NftDepositPerByte;
+	type StringLimit = ConstU32<256>;
+	type KeyLimit = ConstU32<64>;
+	type ValueLimit = ConstU32<256>;
+	type ApprovalsLimit = NftApprovalsLimit;
+	type ItemAttributesApprovalsLimit = NftItemAttributesApprovalsLimit;
+	type MaxTips = NftMaxTips;
+	type MaxDeadlineDuration = NftMaxDeadlineDuration;
+	type MaxAttributesPerCall = NftMaxAttributesPerCall;
+	type Features = NftFeatures;
+	type OffchainSignature = Signature;
+	type OffchainPublic = <Signature as sp_runtime::traits::Verify>::Signer;
+	type WeightInfo = pallet_nfts::weights::SubstrateWeight<Runtime>;
+	#[cfg(feature = "runtime-benchmarks")]
+	type Helper = ();
+	type CreateOrigin = AsEnsureOriginWithArg<EnsureSigned<AccountId>>;
+	type Locker = ();
+	type BlockNumberProvider = frame_system::Pallet<Runtime>;
+}
+
+// =====================================================
+// ASSET CONVERSION (DEX) CONFIGURATION
+// =====================================================
+
+/// Use NativeOrWithId from frame_support
+pub use frame_support::traits::fungible::NativeOrWithId;
+
+parameter_types! {
+	pub const AssetConversionPalletId: PalletId = PalletId(*b"py/ascon");
+	pub const PoolSetupFee: Balance = UNITS; // 1 HEZ pool setup fee
+	pub const MintMinLiquidity: Balance = 100;
+	pub const LiquidityWithdrawalFee: Permill = Permill::from_percent(0); // No withdrawal fee
+	/// Native asset for asset conversion - HEZ
+	pub NativeAsset: NativeOrWithId<u32> = NativeOrWithId::Native;
+}
+
+/// Pool assets are identified by a pair of asset IDs
+pub type PoolIdToAccountId = pallet_asset_conversion::AccountIdConverter<AssetConversionPalletId, (NativeOrWithId<u32>, NativeOrWithId<u32>)>;
+
+/// Union of native token and pallet-assets tokens
+pub type NativeAndAssets = frame_support::traits::fungible::UnionOf<
+	Balances,
+	Assets,
+	frame_support::traits::fungible::NativeFromLeft,
+	NativeOrWithId<u32>,
+	AccountId,
+>;
+
+/// Pool Assets instance for LP tokens
+pub type PoolAssetsInstance = pallet_assets::Instance2;
+
+parameter_types! {
+	pub const PoolAssetDeposit: Balance = 10 * UNITS;
+	pub const PoolAssetAccountDeposit: Balance = deposit(1, 16);
+}
+
+frame_support::ord_parameter_types! {
+	/// Only the AssetConversion pallet account can create pool assets (LP tokens)
+	pub const AssetConversionOrigin: AccountId =
+		AccountIdConversion::<AccountId>::into_account_truncating(&AssetConversionPalletId::get());
+}
+
+impl pallet_assets::Config<PoolAssetsInstance> for Runtime {
+	type RuntimeEvent = RuntimeEvent;
+	type Balance = Balance;
+	type AssetId = u32;
+	type AssetIdParameter = codec::Compact<u32>;
+	type ReserveData = ();
+	type Currency = Balances;
+	type CreateOrigin = AsEnsureOriginWithArg<frame_system::EnsureSignedBy<AssetConversionOrigin, AccountId>>;
+	type ForceOrigin = EnsureRoot<AccountId>;
+	type AssetDeposit = PoolAssetDeposit;
+	type AssetAccountDeposit = PoolAssetAccountDeposit;
+	type MetadataDepositBase = MetadataDepositBase;
+	type MetadataDepositPerByte = MetadataDepositPerByte;
+	type ApprovalDeposit = ApprovalDeposit;
+	type StringLimit = AssetsStringLimit;
+	type Holder = ();
+	type Freezer = ();
+	type Extra = ();
+	type CallbackHandle = ();
+	type WeightInfo = pallet_assets::weights::SubstrateWeight<Runtime>;
+	type RemoveItemsLimit = ConstU32<1000>;
+	#[cfg(feature = "runtime-benchmarks")]
+	type BenchmarkHelper = ();
+}
+
+impl pallet_asset_conversion::Config for Runtime {
+	type RuntimeEvent = RuntimeEvent;
+	type Balance = Balance;
+	type HigherPrecisionBalance = sp_core::U256;
+	type AssetKind = NativeOrWithId<u32>;
+	type Assets = NativeAndAssets;
+	type PoolId = (Self::AssetKind, Self::AssetKind);
+	type PoolLocator = pallet_asset_conversion::WithFirstAsset<
+		NativeAsset,
+		AccountId,
+		NativeOrWithId<u32>,
+		PoolIdToAccountId,
+	>;
+	type PoolAssetId = u32;
+	type PoolAssets = PoolAssets;
+	type PoolSetupFee = PoolSetupFee;
+	type PoolSetupFeeAsset = NativeAsset;
+	type PoolSetupFeeTarget = frame_support::traits::tokens::imbalance::ResolveAssetTo<
+		AssetConversionOrigin,
+		NativeAndAssets,
+	>;
+	type PalletId = AssetConversionPalletId;
+	type LPFee = ConstU32<3>; // 0.3% LP fee
+	type LiquidityWithdrawalFee = LiquidityWithdrawalFee;
+	type WeightInfo = pallet_asset_conversion::weights::SubstrateWeight<Runtime>;
+	type MaxSwapPathLength = ConstU32<4>;
+	type MintMinLiquidity = MintMinLiquidity;
+	#[cfg(feature = "runtime-benchmarks")]
+	type BenchmarkHelper = ();
+}
+
 impl pallet_asset_rate::Config for Runtime {
 	type WeightInfo = weights::pallet_asset_rate::WeightInfo<Runtime>;
 	type RuntimeEvent = RuntimeEvent;
@@ -1519,10 +1914,16 @@ construct_runtime! {
 		Historical: session_historical = 34,
 
 		Session: pallet_session = 8,
+		Staking: pallet_staking = 9,
 		Grandpa: pallet_grandpa = 10,
 		AuthorityDiscovery: pallet_authority_discovery = 12,
 
+		// Staking extensions.
+		NominationPools: pallet_nomination_pools = 14,
+		FastUnstake: pallet_fast_unstake = 15,
+
 		// Governance stuff; uncallable initially.
+		Council: pallet_collective::<Instance1> = 17,
 		Treasury: pallet_treasury = 18,
 		ConvictionVoting: pallet_conviction_voting = 20,
 		Referenda: pallet_referenda = 21,
@@ -1562,8 +1963,12 @@ construct_runtime! {
 		// Preimage registrar.
 		Preimage: pallet_preimage = 32,
 
-		// Asset rate.
+		// Asset management.
+		Assets: pallet_assets::<Instance1> = 36,
+		Nfts: pallet_nfts = 37,
+		PoolAssets: pallet_assets::<Instance2> = 16,
 		AssetRate: pallet_asset_rate = 39,
+		AssetConversion: pallet_asset_conversion = 11,
 
 		// Bounties modules.
 		Bounties: pallet_bounties = 35,
@@ -1626,6 +2031,26 @@ construct_runtime! {
 
 		// Root testing pallet.
 		RootTesting: pallet_root_testing = 249,
+
+		// VoterBagsList pallet.
+		VoterBagsList: pallet_bags_list::<Instance1> = 100,
+
+		// ============================================================
+		// PHASE 2 - Custom Pezkuwi Pallets (uncomment when ready)
+		// ============================================================
+		// Tiki: pallet_tiki = 42,
+		// IdentityKyc: pallet_identity_kyc = 46,
+		// Referral: pallet_referral = 47,
+		// Perwerde: pallet_perwerde = 48,
+		// StakingScore: pallet_staking_score = 49,
+		// Trust: pallet_trust = 69,
+		// Welati: pallet_welati = 75,
+		// TokenWrapper: pallet_token_wrapper = 76,
+		// PezTreasury: pallet_pez_treasury = 101,
+		// PezRewards: pallet_pez_rewards = 102,
+		// ValidatorPool: pallet_validator_pool = 103,
+		// Presale: pallet_presale = 105,
+		// ============================================================
 
 		// Sudo.
 		Sudo: pallet_sudo = 255,
@@ -1718,36 +2143,8 @@ pub mod migrations {
 
 	// Special Config for Gov V1 pallets, allowing us to run migrations for them without
 	// implementing their configs on [`Runtime`].
-	pub struct UnlockConfig;
-	impl pallet_democracy::migrations::unlock_and_unreserve_all_funds::UnlockConfig for UnlockConfig {
-		type Currency = Balances;
-		type MaxVotes = ConstU32<100>;
-		type MaxDeposits = ConstU32<100>;
-		type AccountId = AccountId;
-		type BlockNumber = BlockNumberFor<Runtime>;
-		type DbWeight = <Runtime as frame_system::Config>::DbWeight;
-		type PalletName = DemocracyPalletName;
-	}
-	impl pallet_elections_phragmen::migrations::unlock_and_unreserve_all_funds::UnlockConfig
-		for UnlockConfig
-	{
-		type Currency = Balances;
-		type MaxVotesPerVoter = ConstU32<16>;
-		type PalletId = PhragmenElectionPalletId;
-		type AccountId = AccountId;
-		type DbWeight = <Runtime as frame_system::Config>::DbWeight;
-		type PalletName = PhragmenElectionPalletName;
-	}
-	impl pallet_tips::migrations::unreserve_deposits::UnlockConfig<()> for UnlockConfig {
-		type Currency = Balances;
-		type Hash = Hash;
-		type DataDepositPerByte = DataDepositPerByte;
-		type TipReportDepositBase = TipReportDepositBase;
-		type AccountId = AccountId;
-		type BlockNumber = BlockNumberFor<Runtime>;
-		type DbWeight = <Runtime as frame_system::Config>::DbWeight;
-		type PalletName = TipsPalletName;
-	}
+	// NOTE: Gov1 migration configs removed - pallet-democracy, pallet-elections-phragmen,
+	// and pallet-tips are no longer part of this runtime (using pallet-welati for governance)
 
 	// We don't have a limit in the Relay Chain.
 	const IDENTITY_MIGRATION_KEY_LIMIT: u64 = u64::MAX;
@@ -1765,15 +2162,11 @@ pub mod migrations {
         pallet_referenda::migration::v1::MigrateV0ToV1<Runtime, pallet_referenda::Instance2>,
         pallet_child_bounties::migration::MigrateV0ToV1<Runtime, BalanceTransferAllowDeath>,
 
-        // Unlock & unreserve Gov1 funds
-
-        pallet_elections_phragmen::migrations::unlock_and_unreserve_all_funds::UnlockAndUnreserveAllFunds<UnlockConfig>,
-        pallet_democracy::migrations::unlock_and_unreserve_all_funds::UnlockAndUnreserveAllFunds<UnlockConfig>,
-        pallet_tips::migrations::unreserve_deposits::UnreserveDeposits<UnlockConfig, ()>,
+        // NOTE: Gov1 migration steps removed - pallets no longer in runtime
+        // Treasury cleanup still included as it may have existing proposals
         pallet_treasury::migration::cleanup_proposals::Migration<Runtime, (), BalanceUnreserveWeight>,
 
-        // Delete all Gov v1 pallet storage key/values.
-
+        // Delete all Gov v1 pallet storage key/values (still needed to clean up any leftover storage)
         frame_support::migrations::RemovePallet<DemocracyPalletName, <Runtime as frame_system::Config>::DbWeight>,
         frame_support::migrations::RemovePallet<CouncilPalletName, <Runtime as frame_system::Config>::DbWeight>,
         frame_support::migrations::RemovePallet<TechnicalCommitteePalletName, <Runtime as frame_system::Config>::DbWeight>,

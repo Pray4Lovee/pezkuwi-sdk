@@ -43,23 +43,31 @@ sp-staking = { workspace = true }
 sp-storage = { workspace = true }
 sp-transaction-pool = { workspace = true }
 sp-version = { workspace = true }
+sp-npos-elections = { workspace = true }
 
+frame-election-provider-support = { workspace = true }
 frame-executive = { workspace = true }
 frame-support = { features = ["tuples-96"], workspace = true }
 frame-system = { workspace = true }
 frame-system-rpc-runtime-api = { workspace = true }
+pallet-asset-conversion = { workspace = true }
 pallet-asset-rate = { workspace = true }
+pallet-assets = { workspace = true }
 pallet-authority-discovery = { workspace = true }
 pallet-authorship = { workspace = true }
 pallet-babe = { workspace = true }
 pallet-balances = { workspace = true }
+pallet-bags-list = { workspace = true }
 pallet-beefy = { workspace = true }
 pallet-beefy-mmr = { workspace = true }
 pallet-bounties = { workspace = true }
 pallet-child-bounties = { workspace = true }
+pallet-collective = { workspace = true }
 pallet-conviction-voting = { workspace = true }
-pallet-democracy = { workspace = true }
-pallet-elections-phragmen = { workspace = true }
+# pallet-democracy removed - pallet-welati implements custom governance
+# pallet-election-provider-multi-phase removed - using OnChain election
+# pallet-elections-phragmen removed - pallet-welati implements custom elections
+pallet-fast-unstake = { workspace = true }
 pallet-grandpa = { workspace = true }
 pallet-identity = { workspace = true }
 pallet-indices = { workspace = true }
@@ -68,6 +76,9 @@ pallet-migrations = { workspace = true }
 pallet-mmr = { workspace = true }
 pallet-multisig = { workspace = true }
 pallet-nis = { workspace = true }
+pallet-nfts = { workspace = true }
+pallet-nomination-pools = { workspace = true }
+pallet-nomination-pools-runtime-api = { workspace = true }
 pallet-offences = { workspace = true }
 pallet-parameters = { workspace = true }
 pallet-preimage = { workspace = true }
@@ -80,10 +91,11 @@ pallet-scheduler = { workspace = true }
 pallet-session = { workspace = true }
 pallet-society = { workspace = true }
 pallet-staking = { workspace = true }
+pallet-staking-runtime-api = { workspace = true }
 pallet-state-trie-migration = { workspace = true }
 pallet-sudo = { workspace = true }
 pallet-timestamp = { workspace = true }
-pallet-tips = { workspace = true }
+# pallet-tips removed - not used in Pezkuwi governance model
 pallet-transaction-payment = { workspace = true }
 pallet-transaction-payment-rpc-runtime-api = { workspace = true }
 pallet-treasury = { workspace = true }
@@ -98,6 +110,10 @@ frame-metadata-hash-extension = { workspace = true }
 frame-system-benchmarking = { optional = true, workspace = true }
 frame-try-runtime = { optional = true, workspace = true }
 hex-literal = { workspace = true, default-features = true }
+pallet-election-provider-support-benchmarking = { optional = true, workspace = true }
+pallet-nomination-pools-benchmarking = { optional = true, workspace = true }
+pallet-offences-benchmarking = { optional = true, workspace = true }
+pallet-session-benchmarking = { optional = true, workspace = true }
 
 pezkuwi-teyrchain-primitives = { workspace = true }
 pezkuwi-primitives = { workspace = true }
@@ -127,6 +143,7 @@ std = [
 	"bitvec/std",
 	"codec/std",
 	"frame-benchmarking?/std",
+	"frame-election-provider-support/std",
 	"frame-executive/std",
 	"frame-metadata-hash-extension/std",
 	"frame-support/std",
@@ -135,18 +152,22 @@ std = [
 	"frame-system/std",
 	"frame-try-runtime/std",
 	"log/std",
+	"pallet-asset-conversion/std",
 	"pallet-asset-rate/std",
+	"pallet-assets/std",
 	"pallet-authority-discovery/std",
 	"pallet-authorship/std",
 	"pallet-babe/std",
+	"pallet-bags-list/std",
 	"pallet-balances/std",
 	"pallet-beefy-mmr/std",
 	"pallet-beefy/std",
 	"pallet-bounties/std",
 	"pallet-child-bounties/std",
+	"pallet-collective/std",
 	"pallet-conviction-voting/std",
-	"pallet-democracy/std",
-	"pallet-elections-phragmen/std",
+	"pallet-election-provider-support-benchmarking?/std",
+	"pallet-fast-unstake/std",
 	"pallet-grandpa/std",
 	"pallet-identity/std",
 	"pallet-indices/std",
@@ -154,7 +175,12 @@ std = [
 	"pallet-migrations/std",
 	"pallet-mmr/std",
 	"pallet-multisig/std",
+	"pallet-nfts/std",
 	"pallet-nis/std",
+	"pallet-nomination-pools-benchmarking?/std",
+	"pallet-nomination-pools-runtime-api/std",
+	"pallet-nomination-pools/std",
+	"pallet-offences-benchmarking?/std",
 	"pallet-offences/std",
 	"pallet-parameters/std",
 	"pallet-preimage/std",
@@ -164,13 +190,14 @@ std = [
 	"pallet-referenda/std",
 	"pallet-root-testing/std",
 	"pallet-scheduler/std",
+	"pallet-session-benchmarking?/std",
 	"pallet-session/std",
 	"pallet-society/std",
+	"pallet-staking-runtime-api/std",
 	"pallet-staking/std",
 	"pallet-state-trie-migration/std",
 	"pallet-sudo/std",
 	"pallet-timestamp/std",
-	"pallet-tips/std",
 	"pallet-transaction-payment-rpc-runtime-api/std",
 	"pallet-transaction-payment/std",
 	"pallet-treasury/std",
@@ -200,6 +227,7 @@ std = [
 	"sp-inherents/std",
 	"sp-io/std",
 	"sp-mmr-primitives/std",
+	"sp-npos-elections/std",
 	"sp-offchain/std",
 	"sp-runtime/std",
 	"sp-session/std",
@@ -216,18 +244,23 @@ std = [
 ]
 runtime-benchmarks = [
 	"frame-benchmarking/runtime-benchmarks",
+	"frame-election-provider-support/runtime-benchmarks",
 	"frame-support/runtime-benchmarks",
 	"frame-system-benchmarking/runtime-benchmarks",
 	"frame-system/runtime-benchmarks",
+	"pallet-asset-conversion/runtime-benchmarks",
 	"pallet-asset-rate/runtime-benchmarks",
+	"pallet-assets/runtime-benchmarks",
 	"pallet-babe/runtime-benchmarks",
+	"pallet-bags-list/runtime-benchmarks",
 	"pallet-balances/runtime-benchmarks",
 	"pallet-beefy-mmr/runtime-benchmarks",
 	"pallet-bounties/runtime-benchmarks",
 	"pallet-child-bounties/runtime-benchmarks",
+	"pallet-collective/runtime-benchmarks",
 	"pallet-conviction-voting/runtime-benchmarks",
-	"pallet-democracy/runtime-benchmarks",
-	"pallet-elections-phragmen/runtime-benchmarks",
+	"pallet-election-provider-support-benchmarking/runtime-benchmarks",
+	"pallet-fast-unstake/runtime-benchmarks",
 	"pallet-grandpa/runtime-benchmarks",
 	"pallet-identity/runtime-benchmarks",
 	"pallet-indices/runtime-benchmarks",
@@ -235,7 +268,11 @@ runtime-benchmarks = [
 	"pallet-migrations/runtime-benchmarks",
 	"pallet-mmr/runtime-benchmarks",
 	"pallet-multisig/runtime-benchmarks",
+	"pallet-nfts/runtime-benchmarks",
 	"pallet-nis/runtime-benchmarks",
+	"pallet-nomination-pools-benchmarking/runtime-benchmarks",
+	"pallet-nomination-pools/runtime-benchmarks",
+	"pallet-offences-benchmarking/runtime-benchmarks",
 	"pallet-offences/runtime-benchmarks",
 	"pallet-parameters/runtime-benchmarks",
 	"pallet-preimage/runtime-benchmarks",
@@ -244,13 +281,13 @@ runtime-benchmarks = [
 	"pallet-recovery/runtime-benchmarks",
 	"pallet-referenda/runtime-benchmarks",
 	"pallet-scheduler/runtime-benchmarks",
+	"pallet-session-benchmarking/runtime-benchmarks",
 	"pallet-session/runtime-benchmarks",
 	"pallet-society/runtime-benchmarks",
 	"pallet-staking/runtime-benchmarks",
 	"pallet-state-trie-migration/runtime-benchmarks",
 	"pallet-sudo/runtime-benchmarks",
 	"pallet-timestamp/runtime-benchmarks",
-	"pallet-tips/runtime-benchmarks",
 	"pallet-transaction-payment/runtime-benchmarks",
 	"pallet-treasury/runtime-benchmarks",
 	"pallet-utility/runtime-benchmarks",
@@ -270,23 +307,27 @@ runtime-benchmarks = [
 	"xcm/runtime-benchmarks",
 ]
 try-runtime = [
+	"frame-election-provider-support/try-runtime",
 	"frame-executive/try-runtime",
 	"frame-support/try-runtime",
 	"frame-system/try-runtime",
 	"frame-try-runtime",
 	"frame-try-runtime/try-runtime",
+	"pallet-asset-conversion/try-runtime",
 	"pallet-asset-rate/try-runtime",
+	"pallet-assets/try-runtime",
 	"pallet-authority-discovery/try-runtime",
 	"pallet-authorship/try-runtime",
 	"pallet-babe/try-runtime",
+	"pallet-bags-list/try-runtime",
 	"pallet-balances/try-runtime",
 	"pallet-beefy-mmr/try-runtime",
 	"pallet-beefy/try-runtime",
 	"pallet-bounties/try-runtime",
 	"pallet-child-bounties/try-runtime",
+	"pallet-collective/try-runtime",
 	"pallet-conviction-voting/try-runtime",
-	"pallet-democracy/try-runtime",
-	"pallet-elections-phragmen/try-runtime",
+	"pallet-fast-unstake/try-runtime",
 	"pallet-grandpa/try-runtime",
 	"pallet-identity/try-runtime",
 	"pallet-indices/try-runtime",
@@ -294,7 +335,9 @@ try-runtime = [
 	"pallet-migrations/try-runtime",
 	"pallet-mmr/try-runtime",
 	"pallet-multisig/try-runtime",
+	"pallet-nfts/try-runtime",
 	"pallet-nis/try-runtime",
+	"pallet-nomination-pools/try-runtime",
 	"pallet-offences/try-runtime",
 	"pallet-parameters/try-runtime",
 	"pallet-preimage/try-runtime",
@@ -310,7 +353,6 @@ try-runtime = [
 	"pallet-state-trie-migration/try-runtime",
 	"pallet-sudo/try-runtime",
 	"pallet-timestamp/try-runtime",
-	"pallet-tips/try-runtime",
 	"pallet-transaction-payment/try-runtime",
 	"pallet-treasury/try-runtime",
 	"pallet-utility/try-runtime",
