@@ -16,12 +16,12 @@ runs:
       with:
         app-id: ${{ inputs.app-id }}
         private-key: ${{ inputs.app-key }}
-        owner: "paritytech"
+        owner: "pezkuwichain"
         repositories: "workflow-stopper"
     - name: Workflow stopper - Stop all workflows
       uses: octokit/request-action@v2.x
       with:
-        route: POST /repos/paritytech/workflow-stopper/actions/workflows/stopper.yml/dispatches
+        route: POST /repos/pezkuwichain/workflow-stopper/actions/workflows/stopper.yml/dispatches
         ref: main
         inputs: '${{ format(''{{ "github_sha": "{0}", "github_repository": "{1}", "github_ref_name": "{2}", "github_workflow_id": "{3}", "github_job_name": "{4}" }}'', github.event.pull_request.head.sha, github.repository, github.ref_name, github.run_id, github.job) }}'
       env:
