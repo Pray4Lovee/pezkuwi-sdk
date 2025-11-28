@@ -59,19 +59,17 @@ on:
         type: string
 
 jobs:
-
-  check-synchronization:
-    # DISABLED: uses: paritytech-release/sync-workflows/.github/workflows/check-synchronization.yml@main
-    secrets:
-      fork_writer_app_key: ${{ secrets.UPSTREAM_CONTENT_SYNC_APP_KEY }}
+  # DISABLED: Workflow synchronization check
+  # check-synchronization:
+  #   uses: paritytech-release/sync-workflows/.github/workflows/check-synchronization.yml@main
+  #   secrets:
+  #     fork_writer_app_key: ${{ secrets.UPSTREAM_CONTENT_SYNC_APP_KEY }}
 
   # ==============================================
   # PHASE 1: Promote RC to Final on S3
   # ==============================================
   promote-rc-to-final:
     name: Promote RC to final on S3
-    needs: [check-synchronization]
-    if: ${{ needs.check-synchronization.outputs.checks_passed }} == 'true'
     uses: ./.github/workflows/release-31_promote-rc-to-final.yml
     with:
       binary: ${{ inputs.binary }}
@@ -104,7 +102,6 @@ jobs:
   publish-docker-polkadot:
     name: Publish Docker image - polkadot
     # needs: [publish-deb-package, publish-rpm-package]
-    needs: [check-synchronization]
     if: ${{ inputs.binary == 'polkadot' || inputs.binary == 'all' }}
     uses: ./.github/workflows/release-50_publish-docker.yml
     with:
@@ -119,7 +116,6 @@ jobs:
   publish-docker-polkadot-teyrchain:
     name: Publish Docker image - polkadot-teyrchain
     # needs: [publish-deb-package, publish-rpm-package]
-    needs: [check-synchronization]
     if: ${{ inputs.binary == 'polkadot-teyrchain' || inputs.binary == 'all' }}
     uses: ./.github/workflows/release-50_publish-docker.yml
     with:
@@ -134,7 +130,6 @@ jobs:
   publish-docker-polkadot-omni-node:
     name: Publish Docker image - polkadot-omni-node
     # needs: [publish-deb-package, publish-rpm-package]
-    needs: [check-synchronization]
     if: ${{ inputs.binary == 'polkadot-omni-node' || inputs.binary == 'all' }}
     uses: ./.github/workflows/release-50_publish-docker.yml
     with:
@@ -149,7 +144,6 @@ jobs:
   publish-docker-chain-spec-builder:
     name: Publish Docker image - chain-spec-builder
     # needs: [publish-deb-package, publish-rpm-package]
-    needs: [check-synchronization]
     if: ${{ inputs.binary == 'chain-spec-builder' || inputs.binary == 'all' }}
     uses: ./.github/workflows/release-50_publish-docker.yml
     with:

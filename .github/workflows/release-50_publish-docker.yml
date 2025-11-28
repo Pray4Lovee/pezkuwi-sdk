@@ -100,14 +100,11 @@ env:
   IMAGE_TYPE: ${{ inputs.image_type }}
 
 jobs:
-  check-synchronization:
-    # DISABLED: uses: paritytech-release/sync-workflows/.github/workflows/check-synchronization.yml@main
-    secrets:
-      fork_writer_app_key: ${{ secrets.UPSTREAM_CONTENT_SYNC_APP_KEY }}
+  # check-synchronization job disabled - paritytech-release sync not needed for pezkuwichain
+  # Original: uses: paritytech-release/sync-workflows/.github/workflows/check-synchronization.yml@main
 
   validate-inputs:
-    needs: [check-synchronization]
-    if: ${{ needs.check-synchronization.outputs.checks_passed }} == 'true'
+    # Removed dependency on check-synchronization (disabled)
     runs-on: ubuntu-latest
     outputs:
       version: ${{ steps.validate_inputs.outputs.VERSION }}
