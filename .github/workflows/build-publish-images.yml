@@ -707,10 +707,10 @@ jobs:
             echo "build_success=true" >> $GITHUB_OUTPUT
           fi
 
-  trigger-zombienet-polkadot:
+  trigger-zombienet-pezkuwi:
     needs: [preflight, confirm-required-build-jobs-passed]
     if: ${{ needs.confirm-required-build-jobs-passed.outputs.build_success == 'true' }}
-    uses: ./.github/workflows/zombienet_polkadot.yml
+    uses: ./.github/workflows/zombienet_pezkuwi.yml
     with:
       build_run_id: ${{ github.run_id }}
       ref_slug: ${{ needs.preflight.outputs.SOURCE_REF_SLUG }}
@@ -743,7 +743,7 @@ jobs:
     runs-on: ubuntu-latest
     name: All zombienet tests passed
     needs:
-      - trigger-zombienet-polkadot
+      - trigger-zombienet-pezkuwi
       - trigger-zombienet-cumulus
       - trigger-zombienet-substrate
       - trigger-zombienet-teyrchain-template
