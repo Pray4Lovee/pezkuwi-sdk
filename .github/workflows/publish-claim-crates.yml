@@ -3,7 +3,7 @@ name: Claim Crates
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   claim-crates:

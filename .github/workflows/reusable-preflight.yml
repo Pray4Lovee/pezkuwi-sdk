@@ -72,7 +72,7 @@ on:
         value: ${{ jobs.preflight.outputs.REF_SLUG }}
         description: |
           Name of the current revision (depending on the event) with `/` replaced by `_`, e.g:
-          push - master
+          push - main
           pull_request - 49_merge
           merge_group - gh-readonly-queue_master_pr-49-38d43798a986430231c828b2c762997f818ac012
 
