@@ -58,6 +58,7 @@ pub mod pallet {
     use sp_runtime::traits::Saturating;
     use codec::{Encode, Decode, MaxEncodedLen};
     use alloc::vec::Vec;
+    use frame_support::traits::Instance;
 
     pub type PresaleId = u32;
 
@@ -140,9 +141,9 @@ pub mod pallet {
         /// Presale creator/owner
         pub owner: T::AccountId,
         /// Payment asset (wUSDT, wUSDC, etc.)
-        pub payment_asset: <T as pallet_assets::Config>::AssetId,
+        pub payment_asset: <T::AssetsConfig as pallet_assets::Config>::AssetId,
         /// Reward token asset
-        pub reward_asset: <T as pallet_assets::Config>::AssetId,
+        pub reward_asset: <T::AssetsConfig as pallet_assets::Config>::AssetId,
         /// Total tokens for sale (with decimals)
         /// Example: 10_000_000 * 10^12 = 10M PEZ with 12 decimals
         pub tokens_for_sale: u128,
@@ -172,12 +173,12 @@ pub mod pallet {
     pub struct Pallet<T>(_);
 
     #[pallet::config]
-    pub trait Config: frame_system::Config + pallet_assets::Config
-    where
-        <Self as pallet_assets::Config>::AssetId: Clone + MaxEncodedLen,
-        <Self as pallet_assets::Config>::Balance: TryFrom<u128>,
-    {
+    pub trait Config: frame_system::Config {
         type RuntimeEvent: From<Event<Self>> + IsType<<Self as frame_system::Config>::RuntimeEvent>;
+
+        /// The specific pallet_assets instance to use for this presale pallet.
+        type Assets: pallet_assets::Config<Self::AssetInstance>;
+        type AssetInstance: 'static + Instance;
 
         /// The presale pallet id, used for deriving sub-account treasuries
         #[pallet::constant]
@@ -215,6 +216,11 @@ pub mod pallet {
 
         /// Weight information
         type PresaleWeightInfo: crate::weights::WeightInfo;
+
+        where // This is the new, correct position for the where clause.
+            <Self::Assets as pallet_assets::Config>::AssetId: Clone + MaxEncodedLen,
+            <Self::Assets as pallet_assets::Config>::Balance: TryFrom<u128>,
+        {}
     }
 
     /// Next presale ID
@@ -308,8 +314,8 @@ pub mod pallet {
         PresaleCreated {
             presale_id: PresaleId,
             owner: T::AccountId,
-            payment_asset: <T as pallet_assets::Config>::AssetId,
-            reward_asset: <T as pallet_assets::Config>::AssetId,
+            payment_asset: <T::AssetsConfig as pallet_assets::Config>::AssetId,
+            reward_asset: <T::AssetsConfig as pallet_assets::Config>::AssetId,
         },
         /// Contribution made [presale_id, who, amount, bonus_amount]
         Contributed {
@@ -421,8 +427,8 @@ pub mod pallet {
         #[pallet::weight(T::PresaleWeightInfo::create_presale())]
         pub fn create_presale(
             origin: OriginFor<T>,
-            payment_asset: <T as pallet_assets::Config>::AssetId,
-            reward_asset: <T as pallet_assets::Config>::AssetId,
+            payment_asset: <T::AssetsConfig as pallet_assets::Config>::AssetId,
+            reward_asset: <T::AssetsConfig as pallet_assets::Config>::AssetId,
             tokens_for_sale: u128,
             duration: BlockNumberFor<T>,
             is_whitelist: bool,
@@ -568,9 +574,9 @@ pub mod pallet {
 
             // Transfer payment asset from user to presale treasury
             let treasury = Self::presale_account_id(presale_id);
-            let net_amount_balance: <T as pallet_assets::Config>::Balance = net_amount.try_into()
+            let net_amount_balance: <T::AssetsConfig as pallet_assets::Config>::Balance = net_amount.try_into()
                 .map_err(|_| Error::<T>::ArithmeticOverflow)?;
-            <pallet_assets::Pallet<T> as Mutate<T::AccountId>>::transfer(
+            <T::AssetsConfig as Mutate<T::AccountId>>::transfer(
                 presale.payment_asset.clone(),
                 &who,
                 &treasury,
@@ -690,9 +696,9 @@ pub mod pallet {
                     let immediate = total_reward.saturating_mul(vesting.immediate_release_percent as u128) / 100;
 
                     if immediate > 0 {
-                        let immediate_balance: <T as pallet_assets::Config>::Balance = immediate.try_into()
+                        let immediate_balance: <T::AssetsConfig as pallet_assets::Config>::Balance = immediate.try_into()
                             .map_err(|_| Error::<T>::ArithmeticOverflow)?;
-                        <pallet_assets::Pallet<T> as Mutate<T::AccountId>>::transfer(
+                        <T::AssetsConfig as Mutate<T::AccountId>>::transfer(
                             presale.reward_asset.clone(),
                             &treasury,
                             contributor,
@@ -705,9 +711,9 @@ pub mod pallet {
                     VestingClaimed::<T>::insert(presale_id, contributor, immediate);
                 } else {
                     // No vesting - transfer all
-                    let total_reward_balance: <T as pallet_assets::Config>::Balance = total_reward.try_into()
+                    let total_reward_balance: <T::AssetsConfig as pallet_assets::Config>::Balance = total_reward.try_into()
                         .map_err(|_| Error::<T>::ArithmeticOverflow)?;
-                    <pallet_assets::Pallet<T> as Mutate<T::AccountId>>::transfer(
+                    <T::AssetsConfig as Mutate<T::AccountId>>::transfer(
                         presale.reward_asset.clone(),
                         &treasury,
                         contributor,
@@ -789,9 +795,9 @@ pub mod pallet {
             let treasury = Self::presale_account_id(presale_id);
 
             // Step 1: Transfer refund amount to user
-            let refund_amount_balance: <T as pallet_assets::Config>::Balance = refund_amount.try_into()
+            let refund_amount_balance: <T::AssetsConfig as pallet_assets::Config>::Balance = refund_amount.try_into()
                 .map_err(|_| Error::<T>::ArithmeticOverflow)?;
-            <pallet_assets::Pallet<T> as Mutate<T::AccountId>>::transfer(
+            <T::AssetsConfig as Mutate<T::AccountId>>::transfer(
                 presale.payment_asset.clone(),
                 &treasury,
                 &who,
@@ -887,17 +893,15 @@ pub mod pallet {
 
             // Transfer tokens
             let treasury = Self::presale_account_id(presale_id);
-            let claimable_balance: <T as pallet_assets::Config>::Balance = claimable.try_into()
+            let claimable_balance: <T::AssetsConfig as pallet_assets::Config>::Balance = claimable.try_into()
                 .map_err(|_| Error::<T>::ArithmeticOverflow)?;
-            <pallet_assets::Pallet<T> as Mutate<T::AccountId>>::transfer(
+            <T::AssetsConfig as Mutate<T::AccountId>>::transfer(
                 presale.reward_asset,
                 &treasury,
                 &who,
                 claimable_balance,
                 Preservation::Preserve,
-            )?;
-
-            VestingClaimed::<T>::insert(presale_id, &who, already_claimed.saturating_add(claimable));
+            )?;            VestingClaimed::<T>::insert(presale_id, &who, already_claimed.saturating_add(claimable));
 
             Self::deposit_event(Event::VestingClaimed {
                 presale_id,
@@ -984,11 +988,11 @@ pub mod pallet {
                 if let Some(contribution_info) = Contributions::<T>::get(presale_id, contributor) {
                     if !contribution_info.refunded && contribution_info.amount > 0 {
                         // Full refund (no fees on cancelled presale)
-                        let refund_amount: <T as pallet_assets::Config>::Balance =
+                        let refund_amount: <T::AssetsConfig as pallet_assets::Config>::Balance =
                             contribution_info.amount.try_into()
                                 .map_err(|_| Error::<T>::ArithmeticOverflow)?;
 
-                        <pallet_assets::Pallet<T> as Mutate<T::AccountId>>::transfer(
+                        <T::AssetsConfig as Mutate<T::AccountId>>::transfer(
                             presale.payment_asset.clone(),
                             &treasury,
                             contributor,
@@ -1058,12 +1062,12 @@ pub mod pallet {
                     // Skip if already refunded or zero amount
                     if !contribution_info.refunded && contribution_info.amount > 0 {
                         // Full refund (NO FEE for failed presale)
-                        let refund_amount: <T as pallet_assets::Config>::Balance =
+                        let refund_amount: <T::AssetsConfig as pallet_assets::Config>::Balance =
                             contribution_info.amount
                                 .try_into()
                                 .map_err(|_| Error::<T>::ArithmeticOverflow)?;
 
-                        <pallet_assets::Pallet<T> as Mutate<T::AccountId>>::transfer(
+                        <T::AssetsConfig as Mutate<T::AccountId>>::transfer(
                             presale.payment_asset.clone(),
                             &treasury,
                             contributor,
@@ -1125,7 +1129,7 @@ pub mod pallet {
         /// IMPORTANT: Operations happen sequentially from the same source account.
         /// After each operation, the source balance decreases, so we must carefully order operations.
         fn distribute_platform_fee(
-            asset_id: <T as pallet_assets::Config>::AssetId,
+            asset_id: <T::AssetsConfig as pallet_assets::Config>::AssetId,
             from: &T::AccountId,
             total_fee: u128,
         ) -> DispatchResult {
@@ -1134,18 +1138,18 @@ pub mod pallet {
             let to_burn = total_fee.saturating_mul(25) / 100;      // 25%
             let to_stakers = total_fee.saturating_mul(25) / 100;   // 25%
 
-            let to_treasury_balance: <T as pallet_assets::Config>::Balance = to_treasury.try_into()
+            let to_treasury_balance: <T::AssetsConfig as pallet_assets::Config>::Balance = to_treasury.try_into()
                 .map_err(|_| Error::<T>::ArithmeticOverflow)?;
-            let to_burn_balance: <T as pallet_assets::Config>::Balance = to_burn.try_into()
+            let to_burn_balance: <T::AssetsConfig as pallet_assets::Config>::Balance = to_burn.try_into()
                 .map_err(|_| Error::<T>::ArithmeticOverflow)?;
-            let to_stakers_balance: <T as pallet_assets::Config>::Balance = to_stakers.try_into()
+            let to_stakers_balance: <T::AssetsConfig as pallet_assets::Config>::Balance = to_stakers.try_into()
                 .map_err(|_| Error::<T>::ArithmeticOverflow)?;
 
             // Note: Balance check removed - rely on Preservation::Expendable to handle insufficient balance gracefully
             // The operations below will transfer/burn as much as possible without failing
 
             // 1. Treasury (50%)
-            <pallet_assets::Pallet<T> as Mutate<T::AccountId>>::transfer(
+            <T::AssetsConfig as Mutate<T::AccountId>>::transfer(
                 asset_id.clone(),
                 from,
                 &T::PlatformTreasury::get(),
@@ -1154,7 +1158,7 @@ pub mod pallet {
             )?;
 
             // 2. Burn (25%)
-            <pallet_assets::Pallet<T> as Mutate<T::AccountId>>::burn_from(
+            <T::AssetsConfig as Mutate<T::AccountId>>::burn_from(
                 asset_id.clone(),
                 from,
                 to_burn_balance,
@@ -1164,7 +1168,7 @@ pub mod pallet {
             )?;
 
             // 3. Stakers (25%)
-            <pallet_assets::Pallet<T> as Mutate<T::AccountId>>::transfer(
+            <T::AssetsConfig as Mutate<T::AccountId>>::transfer(
                 asset_id,
                 from,
                 &T::StakingRewardPool::get(),

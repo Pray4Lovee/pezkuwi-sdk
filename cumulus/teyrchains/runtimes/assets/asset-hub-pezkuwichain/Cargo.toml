@@ -47,6 +47,11 @@ pallet-transaction-payment = { workspace = true }
 pallet-transaction-payment-rpc-runtime-api = { workspace = true }
 pallet-uniques = { workspace = true }
 pallet-utility = { workspace = true }
+pallet-staking-score = { workspace = true }
+pallet-token-wrapper = { workspace = true }
+pallet-pez-treasury = { workspace = true }
+pallet-pez-rewards = { workspace = true }
+pallet-presale = { workspace = true }
 sp-api = { workspace = true }
 sp-block-builder = { workspace = true }
 sp-consensus-aura = { workspace = true }
@@ -138,6 +143,11 @@ runtime-benchmarks = [
 	"pallet-transaction-payment/runtime-benchmarks",
 	"pallet-uniques/runtime-benchmarks",
 	"pallet-utility/runtime-benchmarks",
+	"pallet-staking-score/runtime-benchmarks",
+	"pallet-token-wrapper/runtime-benchmarks",
+	"pallet-pez-treasury/runtime-benchmarks",
+	"pallet-pez-rewards/runtime-benchmarks",
+	"pallet-presale/runtime-benchmarks",
 	"pallet-xcm-benchmarks/runtime-benchmarks",
 	"pallet-xcm-bridge-hub-router/runtime-benchmarks",
 	"pallet-xcm/runtime-benchmarks",
@@ -234,6 +244,11 @@ std = [
 	"pallet-transaction-payment/std",
 	"pallet-uniques/std",
 	"pallet-utility/std",
+	"pallet-staking-score/std",
+	"pallet-token-wrapper/std",
+	"pallet-pez-treasury/std",
+	"pallet-pez-rewards/std",
+	"pallet-presale/std",
 	"pallet-xcm-benchmarks?/std",
 	"pallet-xcm-bridge-hub-router/std",
 	"pallet-xcm/std",

@@ -1123,6 +1123,13 @@ construct_runtime!(
 
 		AssetRewards: pallet_asset_rewards = 60,
 
+		// Asset Hub Custom Pallets (Phase 3) - Gemini
+		StakingScore: pallet_staking_score = 100,
+		TokenWrapper: pallet_token_wrapper = 101,
+		PezTreasury: pallet_pez_treasury = 102,
+		PezRewards: pallet_pez_rewards = 103,
+		Presale: pallet_presale = 104,
+
 		// TODO: the pallet instance should be removed once all pools have migrated
 		// to the new account IDs.
 		AssetConversionMigration: pallet_asset_conversion_ops = 200,
@@ -1611,12 +1618,197 @@ impl_runtime_apis! {
 		}
 	}
 
-	impl pallet_asset_rewards::AssetRewards<Block, Balance> for Runtime {
-		fn pool_creation_cost() -> Balance {
-			StakePoolCreationDeposit::get()
-		}
+	
+	
+	parameter_types! {
+	    pub const TokenWrapperPalletId: PalletId = PalletId(*b"tokwrap");
+	    pub const WrappedTokenAssetId: u32 = 0; // Asset ID for wHEZ (or a custom ID)
 	}
-
+	
+	impl pallet_staking_score::Config for Runtime {
+	    type RuntimeEvent = RuntimeEvent;
+	    type Balance = Balance;
+	    type StakingInfo = StakingInfoAdapter;
+	    type WeightInfo = pallet_staking_score::weights::SubstrateWeight<Runtime>;
+	}
+		pub struct StakingInfoAdapter;
+	impl pallet_staking_score::StakingInfoProvider<AccountId, Balance> for StakingInfoAdapter {
+	    fn get_staking_details(who: &AccountId) -> Option<pallet_staking_score::StakingDetails<Balance>> {
+	        let free_balance = Balances::free_balance(who);
+	        if free_balance == Zero::zero() {
+	            return None;
+	        }
+	        Some(pallet_staking_score::StakingDetails {
+	            staked_amount: free_balance,
+	            nominations_count: 0,
+	            unlocking_chunks_count: 0,
+	        })
+	    		}
+	    	}
+	    
+	    	impl pallet_token_wrapper::Config for Runtime {
+	    		type RuntimeEvent = RuntimeEvent;
+	    		type WeightInfo = pallet_token_wrapper::weights::SubstrateWeight<Runtime>;
+	    		type Currency = Balances;
+	    		type Assets = Assets; // Using pallet_assets::Instance1
+	    		type PalletId = TokenWrapperPalletId;
+	    				type WrapperAssetId = WrappedTokenAssetId;
+	    			}
+	    		
+	    		parameter_types! {
+	    		    pub const PezAssetId: AssetIdForTrustBackedAssets = AssetIdForTrustBackedAssets::from(1); // Assuming PEZ is asset ID 1
+	    		    pub const TreasuryPalletId: PalletId = PalletId(*b"PezTreas");
+	    		    pub const IncentivePotId: PalletId = PalletId(*b"PezIncen");
+	    		    pub const GovernmentPotId: PalletId = PalletId(*b"PezGover");
+	    		    pub PresaleAccount: AccountId = PalletId(*b"PezPreAc").into_account_truncating();
+	    		            pub FounderAccount: AccountId = PalletId(*b"PezFounA").into_account_truncating();
+	    		        }
+	    		        
+	    		        parameter_types! {
+	    		            pub ClawbackRecipient: AccountId = PalletId(*b"ClawBack").into_account_truncating();
+	    		            }
+	    		            
+	    		            pub struct TrustScoreAdapter;
+	    		            impl pallet_trust::TrustScoreProvider<AccountId> for TrustScoreAdapter {
+	    		                fn trust_score_of(who: &AccountId) -> u128 {
+	    		                    // Here we would implement XCM to query Trust Pallet on People Parachain
+	    		                    // For now, return a dummy value or a default.
+	    		                    // This is a major architectural piece missing.
+	    		                    0 // Placeholder
+	    		                }
+	    		            }
+	    		            
+	    		            impl pallet_pez_treasury::Config for Runtime {
+	    		            
+	    		                type RuntimeEvent = RuntimeEvent;
+	    		            
+	    		                type Assets = Assets; // Using pallet_assets::Instance1
+	    		            
+	    		                type WeightInfo = pallet_pez_treasury::weights::SubstrateWeight<Runtime>;
+	    		            
+	    		                type PezAssetId = PezAssetId;
+	    		            
+	    		                type TreasuryPalletId = TreasuryPalletId;
+	    		            
+	    		                type IncentivePotId = IncentivePotId;
+	    		            
+	    		                type GovernmentPotId = GovernmentPotId;
+	    		            
+	    		                type PresaleAccount = PresaleAccount;
+	    		            
+	    		                type FounderAccount = FounderAccount;
+	    		            
+	    		                type ForceOrigin = EnsureRoot<AccountId>;
+	    		            
+	    		            }
+	    		            
+	    		            
+	    		            
+	    		            impl pallet_pez_rewards::Config for Runtime {
+	    		            
+	    		                type RuntimeEvent = RuntimeEvent;
+	    		            
+	    		                type Assets = Assets; // Using pallet_assets::Instance1
+	    		            
+	    		                type PezAssetId = PezAssetId; // Defined for PezTreasury
+	    		            
+	    		                type WeightInfo = pallet_pez_rewards::weights::SubstrateWeight<Runtime>;
+	    		            
+	    		                type TrustScoreSource = TrustScoreAdapter; // Custom adapter for TrustScore
+	    		            
+	    		                type IncentivePotId = IncentivePotId; // Defined for PezTreasury
+	    		            
+	    		                type ClawbackRecipient = ClawbackRecipient;
+	    		            
+	    		                type ForceOrigin = EnsureRoot<AccountId>;
+	    		            
+	    		                type CollectionId = CollectionId; // From pallet-nfts
+	    		            
+	    		                    type ItemId = ItemId; // From pallet-nfts
+	    		            
+	    		                }
+	    		            
+	    		                
+	    		            
+	    		                parameter_types! {
+	    		            
+	    		                    pub const PresalePalletId: PalletId = PalletId(*b"PezPreSa");
+	    		            
+	    		                    pub PlatformTreasuryAccount: AccountId = PalletId(*b"PlatTrea").into_account_truncating();
+	    		            
+	    		                                        pub StakingRewardPoolAccount: AccountId = PalletId(*b"StkRewPo").into_account_truncating();
+	    		            
+	    		                                    }
+	    		            
+	    		                                    
+	    		            
+	    		                                    impl pallet_presale::Config for Runtime {
+	    		            
+	    		                                    
+	    		            
+	    		                                        type RuntimeEvent = RuntimeEvent;
+	    		            
+	    		                                    
+	    		            
+	    		                                        type AssetsConfig = Assets; // `Assets` (pallet_assets::<TrustBackedAssetsInstance>) is the AssetsConfig
+	    		            
+	    		                                    
+	    		            
+	    		                                        type AssetInstance = TrustBackedAssetsInstance;
+	    		            
+	    		                                    
+	    		            
+	    		                                        type PalletId = PresalePalletId;
+	    		            
+	    		                                    
+	    		            
+	    		                                        type PlatformTreasury = PlatformTreasuryAccount;
+	    		            
+	    		                                    
+	    		            
+	    		                                        type StakingRewardPool = StakingRewardPoolAccount;
+	    		            
+	    		                                    
+	    		            
+	    		                                        type PlatformFeePercent = ConstU8<2>; // 2%
+	    		            
+	    		                                    
+	    		            
+	    		                                        type MaxContributors = ConstU32<1000>;
+	    		            
+	    		                                    
+	    		            
+	    		                                        type MaxBonusTiers = ConstU32<5>;
+	    		            
+	    		                                    
+	    		            
+	    		                                        type MaxWhitelistedAccounts = ConstU32<1000>;
+	    		            
+	    		                                    
+	    		            
+	    		                                        type CreatePresaleOrigin = EnsureRoot<AccountId>; // Or a more specific origin
+	    		            
+	    		                                    
+	    		            
+	    		                                        type EmergencyOrigin = EnsureRoot<AccountId>; // Or a more specific origin
+	    		            
+	    		                                    
+	    		            
+	    		                                        type PresaleWeightInfo = pallet_presale::weights::SubstrateWeight<Runtime>;
+	    		            
+	    		                                    
+	    		            
+	    		                                    }
+	    		            
+	    		                                    
+	    		            
+	    		                                    impl pallet_asset_rewards::AssetRewards<Block, Balance> for Runtime> {
+	    		            
+	    		                	    		fn pool_creation_cost() -> Balance {
+	    			StakePoolCreationDeposit::get()
+	    		}
+	    	}
+	    
 	#[cfg(feature = "try-runtime")]
 	impl frame_try_runtime::TryRuntime<Block> for Runtime {
 		fn on_runtime_upgrade(checks: frame_try_runtime::UpgradeCheckSelect) -> (Weight, Weight) {
