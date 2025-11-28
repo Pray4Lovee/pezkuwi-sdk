@@ -337,3 +337,4 @@ cargo build -p pezkuwichain-runtime --release --features runtime-benchmarks
 ---
 
 **Generated with Claude Code**
+# last step : costum pallets
