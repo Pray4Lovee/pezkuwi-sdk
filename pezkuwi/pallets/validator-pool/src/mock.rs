@@ -5,7 +5,6 @@ use frame_support::{
     traits::{ConstU32, Everything},
 };
 use frame_system as system;
-use pallet_session::{PeriodicSessions, SessionHandler};
 use sp_core::H256;
 use sp_runtime::{
     traits::{BlakeTwo256, IdentityLookup},
@@ -17,12 +16,13 @@ pub type Balance = u128;
 pub type BlockNumber = u64;
 
 // Configure a mock runtime to test the pallet.
+// Note: We don't include pallet_session here because it requires complex Currency setup.
+// We can test SessionManager trait implementation directly.
 construct_runtime!(
     pub enum Test {
         System: frame_system,
         Balances: pallet_balances,
         ValidatorPool: pallet_validator_pool,
-        Session: pallet_session,
     }
 );
 
@@ -87,72 +87,6 @@ impl pallet_balances::Config for Test {
     type DoneSlashHandler = ();
 }
 
-// Mock Session Pallet
-parameter_types! {
-    pub const Period: u64 = 10;
-    pub const Offset: u64 = 0;
-}
-
-// Mock session handler
-pub struct MockSessionHandler;
-impl SessionHandler<AccountId> for MockSessionHandler {
-    const KEY_TYPE_IDS: &'static [sp_runtime::KeyTypeId] = &[];
-    
-    fn on_genesis_session<T: sp_runtime::traits::OpaqueKeys>(_validators: &[(AccountId, T)]) {}
-    
-    fn on_new_session<T: sp_runtime::traits::OpaqueKeys>(
-        _changed: bool,
-        _validators: &[(AccountId, T)],
-        _queued_validators: &[(AccountId, T)],
-    ) {}
-    
-    fn on_disabled(_validator_index: u32) {}
-}
-
-// Mock opaque keys with all required trait implementations
-#[derive(
-    codec::Encode, 
-    codec::Decode, 
-    codec::DecodeWithMemTracking,
-    Clone, 
-    PartialEq, 
-    Eq, 
-    sp_runtime::RuntimeDebug,
-    scale_info::TypeInfo
-)]
-#[cfg_attr(feature = "std", derive(serde::Serialize, serde::Deserialize))]
-pub struct MockOpaqueKeys;
-
-impl sp_runtime::traits::OpaqueKeys for MockOpaqueKeys {
-    type KeyTypeIdProviders = ();
-    
-    fn key_ids() -> &'static [sp_runtime::KeyTypeId] {
-        &[]
-    }
-    
-    fn get_raw(&self, _id: sp_runtime::KeyTypeId) -> &[u8] {
-        &[]
-    }
-}
-
-impl From<()> for MockOpaqueKeys {
-    fn from(_: ()) -> Self {
-        MockOpaqueKeys
-    }
-}
-
-impl pallet_session::Config for Test {
-    type RuntimeEvent = RuntimeEvent;
-    type ValidatorId = AccountId;
-    type ValidatorIdOf = ();
-    type ShouldEndSession = PeriodicSessions<Period, Offset>;
-    type NextSessionRotation = PeriodicSessions<Period, Offset>;
-    type SessionManager = ValidatorPool;
-    type SessionHandler = MockSessionHandler;
-    type Keys = MockOpaqueKeys;
-    type WeightInfo = ();
-    type DisablingStrategy = ();
-}
 
 // Mock Randomness
 pub struct MockRandomness;
@@ -258,6 +192,11 @@ impl Config for Test {
 
 // Build genesis storage according to the mock runtime.
 pub fn new_test_ext() -> sp_io::TestExternalities {
+    new_test_ext_with_mode(OperationMode::Active)
+}
+
+// Build genesis storage with specific operation mode
+pub fn new_test_ext_with_mode(mode: OperationMode) -> sp_io::TestExternalities {
     let mut storage = system::GenesisConfig::<Test>::default().build_storage().unwrap();
 
     // Initialize balances - Fixed genesis config with correct type
@@ -268,8 +207,22 @@ pub fn new_test_ext() -> sp_io::TestExternalities {
             (3, 6000),
             (4, 4000),
             (5, 2000),
+            (6, 5000),
+            (7, 5000),
+            (8, 5000),
+            (9, 5000),
+            (10, 5000),
         ],
-        dev_accounts: None, // Changed to None instead of empty vec
+        dev_accounts: None,
+    }
+    .assimilate_storage(&mut storage)
+    .unwrap();
+
+    // Initialize validator pool with genesis config
+    pallet_validator_pool::GenesisConfig::<Test> {
+        operation_mode: mode,
+        era_length: 100,
+        initial_pool_members: vec![],
     }
     .assimilate_storage(&mut storage)
     .unwrap();
@@ -277,13 +230,13 @@ pub fn new_test_ext() -> sp_io::TestExternalities {
     let mut ext = sp_io::TestExternalities::new(storage);
     ext.execute_with(|| {
         System::set_block_number(1);
-        // Set initial era length
-        ValidatorPool::set_pool_parameters(
-            RuntimeOrigin::root(),
-            100, // Era length: 100 blocks
-        ).unwrap();
     });
     ext
+}
+
+// Build genesis storage for shadow mode testing
+pub fn new_test_ext_shadow_mode() -> sp_io::TestExternalities {
+    new_test_ext_with_mode(OperationMode::Shadow)
 }
 
 // Helper functions for tests

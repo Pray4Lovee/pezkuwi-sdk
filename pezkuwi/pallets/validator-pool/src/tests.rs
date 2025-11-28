@@ -1,7 +1,8 @@
 use super::*;
 use crate::mock::*;
+use crate::types::OperationMode;
 use frame_support::{assert_noop, assert_ok};
-// Correct import for SessionManager
+// Import SessionManager trait for testing
 use pallet_session::SessionManager;
 
 #[test]
@@ -368,16 +369,354 @@ fn complex_era_transition_scenario() {
         assert_ok!(ValidatorPool::join_validator_pool(RuntimeOrigin::signed(1), stake_validator_category()));
         assert_ok!(ValidatorPool::join_validator_pool(RuntimeOrigin::signed(2), parliamentary_validator_category()));
         assert_ok!(ValidatorPool::join_validator_pool(RuntimeOrigin::signed(3), merit_validator_category()));
-        
+
         // Test performance metrics update
         assert_ok!(ValidatorPool::update_performance_metrics(RuntimeOrigin::root(), 1, 90, 10, 500));
         let metrics = ValidatorPool::performance_metrics(1);
         assert_eq!(metrics.reputation_score, 90);
-        
+
         // Test category update
         assert_ok!(ValidatorPool::update_category(RuntimeOrigin::signed(1), parliamentary_validator_category()));
-        
+
         // Test pool size
         assert_eq!(ValidatorPool::pool_size(), 3);
+    });
+}
+
+// ============================================================================
+// SHADOW MODE TESTS
+// ============================================================================
+
+#[test]
+fn genesis_sets_operation_mode() {
+    // Test Active mode genesis
+    new_test_ext().execute_with(|| {
+        assert_eq!(ValidatorPool::operation_mode(), OperationMode::Active);
+    });
+
+    // Test Shadow mode genesis
+    new_test_ext_shadow_mode().execute_with(|| {
+        assert_eq!(ValidatorPool::operation_mode(), OperationMode::Shadow);
+        // Shadow mode should track activation block
+        assert!(ValidatorPool::shadow_mode_since().is_some());
+    });
+}
+
+#[test]
+fn set_operation_mode_works() {
+    new_test_ext().execute_with(|| {
+        // Start in Active mode
+        assert_eq!(ValidatorPool::operation_mode(), OperationMode::Active);
+
+        // Switch to Shadow mode
+        assert_ok!(ValidatorPool::set_operation_mode(
+            RuntimeOrigin::root(),
+            OperationMode::Shadow
+        ));
+        assert_eq!(ValidatorPool::operation_mode(), OperationMode::Shadow);
+
+        // Switch back to Active mode
+        assert_ok!(ValidatorPool::set_operation_mode(
+            RuntimeOrigin::root(),
+            OperationMode::Active
+        ));
+        assert_eq!(ValidatorPool::operation_mode(), OperationMode::Active);
+    });
+}
+
+#[test]
+fn set_operation_mode_fails_same_mode() {
+    new_test_ext().execute_with(|| {
+        // Already in Active mode
+        assert_noop!(
+            ValidatorPool::set_operation_mode(RuntimeOrigin::root(), OperationMode::Active),
+            Error::<Test>::AlreadyInActiveMode
+        );
+    });
+
+    new_test_ext_shadow_mode().execute_with(|| {
+        // Already in Shadow mode
+        assert_noop!(
+            ValidatorPool::set_operation_mode(RuntimeOrigin::root(), OperationMode::Shadow),
+            Error::<Test>::AlreadyInShadowMode
+        );
+    });
+}
+
+#[test]
+fn set_operation_mode_requires_root() {
+    new_test_ext().execute_with(|| {
+        assert_noop!(
+            ValidatorPool::set_operation_mode(RuntimeOrigin::signed(1), OperationMode::Shadow),
+            sp_runtime::DispatchError::BadOrigin
+        );
+    });
+}
+
+#[test]
+fn shadow_mode_session_manager_returns_none() {
+    new_test_ext_shadow_mode().execute_with(|| {
+        // Add validators
+        for i in 1..=5 {
+            assert_ok!(ValidatorPool::join_validator_pool(
+                RuntimeOrigin::signed(i),
+                stake_validator_category()
+            ));
+        }
+
+        // In shadow mode, new_session should return None
+        let validators = <ValidatorPool as SessionManager<u64>>::new_session(1);
+        assert!(validators.is_none());
+
+        // But shadow validator set should be stored
+        assert!(ValidatorPool::shadow_validator_set().is_some());
+    });
+}
+
+#[test]
+fn active_mode_session_manager_returns_validators() {
+    new_test_ext().execute_with(|| {
+        // Add validators
+        for i in 1..=5 {
+            assert_ok!(ValidatorPool::join_validator_pool(
+                RuntimeOrigin::signed(i),
+                stake_validator_category()
+            ));
+        }
+
+        // Force first era to get a validator set
+        assert_ok!(ValidatorPool::force_new_era(RuntimeOrigin::root()));
+
+        // In active mode, new_session should return validators
+        let validators = <ValidatorPool as SessionManager<u64>>::new_session(2);
+        assert!(validators.is_some());
+        assert!(!validators.unwrap().is_empty());
+    });
+}
+
+#[test]
+fn record_npos_validators_works() {
+    new_test_ext_shadow_mode().execute_with(|| {
+        // Add validators to pool
+        for i in 1..=5 {
+            assert_ok!(ValidatorPool::join_validator_pool(
+                RuntimeOrigin::signed(i),
+                stake_validator_category()
+            ));
+        }
+
+        // Trigger shadow selection
+        let _ = <ValidatorPool as SessionManager<u64>>::new_session(1);
+
+        // Record NPoS validators
+        let npos_validators = vec![1u64, 2, 3, 6, 7];
+        assert_ok!(ValidatorPool::record_npos_validators(
+            RuntimeOrigin::root(),
+            npos_validators
+        ));
+
+        // Check NPoS set is stored
+        assert!(!ValidatorPool::npos_validator_set().is_empty());
+    });
+}
+
+#[test]
+fn record_npos_validators_fails_in_active_mode() {
+    new_test_ext().execute_with(|| {
+        let npos_validators = vec![1u64, 2, 3];
+        assert_noop!(
+            ValidatorPool::record_npos_validators(RuntimeOrigin::root(), npos_validators),
+            Error::<Test>::ShadowModeNotEnabled
+        );
+    });
+}
+
+#[test]
+fn shadow_comparison_recorded() {
+    new_test_ext_shadow_mode().execute_with(|| {
+        // Add validators to pool
+        for i in 1..=10 {
+            let category = if i <= 5 {
+                stake_validator_category()
+            } else if i <= 7 {
+                parliamentary_validator_category()
+            } else {
+                merit_validator_category()
+            };
+            assert_ok!(ValidatorPool::join_validator_pool(
+                RuntimeOrigin::signed(i),
+                category
+            ));
+        }
+
+        // Trigger shadow selection
+        let _ = <ValidatorPool as SessionManager<u64>>::new_session(1);
+
+        // Record NPoS validators (some overlap, some different)
+        let npos_validators = vec![1u64, 2, 3, 11, 12];
+        assert_ok!(ValidatorPool::record_npos_validators(
+            RuntimeOrigin::root(),
+            npos_validators
+        ));
+
+        // Check comparison was recorded
+        let comparison = ValidatorPool::shadow_comparison();
+        assert!(comparison.is_some());
+        let comp = comparison.unwrap();
+        assert!(comp.overlap_count > 0 || comp.tnpos_only.len() > 0 || comp.npos_only.len() > 0);
+    });
+}
+
+#[test]
+fn cumulative_statistics_updated() {
+    new_test_ext_shadow_mode().execute_with(|| {
+        // Add validators
+        for i in 1..=5 {
+            assert_ok!(ValidatorPool::join_validator_pool(
+                RuntimeOrigin::signed(i),
+                stake_validator_category()
+            ));
+        }
+
+        // Trigger shadow selection
+        let _ = <ValidatorPool as SessionManager<u64>>::new_session(1);
+
+        // Record NPoS validators
+        let npos_validators = vec![1u64, 2, 6, 7, 8];
+        assert_ok!(ValidatorPool::record_npos_validators(
+            RuntimeOrigin::root(),
+            npos_validators
+        ));
+
+        // Check cumulative stats were updated
+        let stats = ValidatorPool::shadow_statistics();
+        assert_eq!(stats.eras_analyzed, 1);
+    });
+}
+
+#[test]
+fn era_analysis_data_stored() {
+    new_test_ext_shadow_mode().execute_with(|| {
+        // Add validators
+        for i in 1..=5 {
+            assert_ok!(ValidatorPool::join_validator_pool(
+                RuntimeOrigin::signed(i),
+                stake_validator_category()
+            ));
+        }
+
+        // Trigger shadow selection
+        let _ = <ValidatorPool as SessionManager<u64>>::new_session(1);
+
+        // Record NPoS validators
+        let npos_validators = vec![1u64, 2, 3, 4, 5];
+        assert_ok!(ValidatorPool::record_npos_validators(
+            RuntimeOrigin::root(),
+            npos_validators
+        ));
+
+        // Check era analysis was stored
+        let era = ValidatorPool::current_era();
+        let analysis = ValidatorPool::era_analysis(era);
+        assert!(analysis.is_some());
+    });
+}
+
+#[test]
+fn category_distribution_tracked() {
+    new_test_ext_shadow_mode().execute_with(|| {
+        // Add different category validators
+        assert_ok!(ValidatorPool::join_validator_pool(RuntimeOrigin::signed(1), stake_validator_category()));
+        assert_ok!(ValidatorPool::join_validator_pool(RuntimeOrigin::signed(2), stake_validator_category()));
+        assert_ok!(ValidatorPool::join_validator_pool(RuntimeOrigin::signed(3), parliamentary_validator_category()));
+        assert_ok!(ValidatorPool::join_validator_pool(RuntimeOrigin::signed(4), merit_validator_category()));
+        assert_ok!(ValidatorPool::join_validator_pool(RuntimeOrigin::signed(5), stake_validator_category()));
+
+        // Trigger shadow selection
+        let _ = <ValidatorPool as SessionManager<u64>>::new_session(1);
+
+        // Record NPoS validators
+        assert_ok!(ValidatorPool::record_npos_validators(
+            RuntimeOrigin::root(),
+            vec![1u64, 2, 3, 4, 5]
+        ));
+
+        // Check category distribution was recorded
+        let era = ValidatorPool::current_era();
+        let distribution = ValidatorPool::category_distribution(era);
+        assert!(distribution.is_some());
+        let dist = distribution.unwrap();
+        assert!(dist.target_stake > 0);
+    });
+}
+
+#[test]
+fn record_era_end_stats_works() {
+    new_test_ext_shadow_mode().execute_with(|| {
+        // Setup validators and trigger comparison
+        for i in 1..=5 {
+            assert_ok!(ValidatorPool::join_validator_pool(
+                RuntimeOrigin::signed(i),
+                stake_validator_category()
+            ));
+        }
+        let _ = <ValidatorPool as SessionManager<u64>>::new_session(1);
+        assert_ok!(ValidatorPool::record_npos_validators(
+            RuntimeOrigin::root(),
+            vec![1u64, 2, 3, 4, 5]
+        ));
+
+        // Record era end stats
+        let era = ValidatorPool::current_era();
+        assert_ok!(ValidatorPool::record_era_end_stats(
+            RuntimeOrigin::root(),
+            era,
+            950, // blocks produced
+            50   // blocks missed
+        ));
+
+        // Check era analysis was updated
+        let analysis = ValidatorPool::era_analysis(era);
+        assert!(analysis.is_some());
+        let a = analysis.unwrap();
+        assert_eq!(a.blocks_produced, 950);
+        assert_eq!(a.blocks_missed, 50);
+    });
+}
+
+#[test]
+fn operation_mode_change_emits_event() {
+    new_test_ext().execute_with(|| {
+        System::set_block_number(1);
+        System::reset_events();
+
+        assert_ok!(ValidatorPool::set_operation_mode(
+            RuntimeOrigin::root(),
+            OperationMode::Shadow
+        ));
+
+        let events = System::events();
+        assert!(events.iter().any(|event| matches!(
+            event.event,
+            RuntimeEvent::ValidatorPool(crate::Event::OperationModeChanged { .. })
+        )));
+    });
+}
+
+#[test]
+fn shadow_mode_tracks_activation_block() {
+    new_test_ext().execute_with(|| {
+        System::set_block_number(100);
+
+        // Switch to shadow mode
+        assert_ok!(ValidatorPool::set_operation_mode(
+            RuntimeOrigin::root(),
+            OperationMode::Shadow
+        ));
+
+        // Check activation block is tracked
+        let since = ValidatorPool::shadow_mode_since();
+        assert!(since.is_some());
+        assert_eq!(since.unwrap(), 100);
     });
 }
