@@ -220,6 +220,18 @@ members = [
 	"pezkuwi/teyrchain/test-teyrchains/undying",
 	"pezkuwi/teyrchain/test-teyrchains/undying/collator",
 	"pezkuwi/pallets/validator-pool",
+	# People Parachain Custom Pallets (Phase 2)
+	"cumulus/teyrchains/pallets/identity-kyc",
+	"cumulus/teyrchains/pallets/tiki",
+	"cumulus/teyrchains/pallets/trust",
+	"cumulus/teyrchains/pallets/referral",
+	"cumulus/teyrchains/pallets/perwerde",
+	# Asset Hub Custom Pallets (Phase 3)
+	"cumulus/teyrchains/pallets/staking-score",
+	"cumulus/teyrchains/pallets/token-wrapper",
+	"cumulus/teyrchains/pallets/pez-treasury",
+	"cumulus/teyrchains/pallets/pez-rewards",
+	"cumulus/teyrchains/pallets/presale",
 	"pezkuwi/primitives",
 	"pezkuwi/primitives/test-helpers",
 	"pezkuwi/rpc",
@@ -1062,9 +1074,24 @@ pallet-society = { path = "substrate/frame/society", default-features = false }
 pallet-staking = { path = "substrate/frame/staking", default-features = false }
 pallet-staking-reward-curve = { path = "substrate/frame/staking/reward-curve", default-features = false }
 
-# Pezkuwi Custom Pallets
+# Pezkuwi Custom Pallets (Relay Chain)
 pallet-validator-pool = { path = "pezkuwi/pallets/validator-pool", default-features = false }
 pallet-staking-reward-fn = { path = "substrate/frame/staking/reward-fn", default-features = false }
+
+# People Parachain Pallets (Phase 2)
+pallet-identity-kyc = { path = "cumulus/teyrchains/pallets/identity-kyc", default-features = false }
+pallet-tiki = { path = "cumulus/teyrchains/pallets/tiki", default-features = false }
+pallet-trust = { path = "cumulus/teyrchains/pallets/trust", default-features = false }
+pallet-referral = { path = "cumulus/teyrchains/pallets/referral", default-features = false }
+pallet-perwerde = { path = "cumulus/teyrchains/pallets/perwerde", default-features = false }
+
+# Asset Hub Pallets (Phase 3)
+pallet-staking-score = { path = "cumulus/teyrchains/pallets/staking-score", default-features = false }
+pallet-token-wrapper = { path = "cumulus/teyrchains/pallets/token-wrapper", default-features = false }
+pallet-pez-treasury = { path = "cumulus/teyrchains/pallets/pez-treasury", default-features = false }
+pallet-pez-rewards = { path = "cumulus/teyrchains/pallets/pez-rewards", default-features = false }
+pallet-presale = { path = "cumulus/teyrchains/pallets/presale", default-features = false }
+
 pallet-staking-runtime-api = { path = "substrate/frame/staking/runtime-api", default-features = false }
 revive-dev-node = { path = "substrate/frame/revive/dev-node/node" }
 revive-dev-runtime = { path = "substrate/frame/revive/dev-node/runtime" }
