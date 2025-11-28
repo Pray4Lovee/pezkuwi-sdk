@@ -109,6 +109,9 @@ pezkuwi-primitives = { workspace = true }
 pezkuwi-runtime-common = { workspace = true }
 pezkuwi-runtime-teyrchains = { workspace = true }
 
+# Custom Pezkuwi Pallets
+pallet-validator-pool = { workspace = true }
+
 xcm = { workspace = true }
 xcm-builder = { workspace = true }
 xcm-executor = { workspace = true }
@@ -189,6 +192,7 @@ std = [
 	"pezkuwi-runtime-common/std",
 	"pezkuwi-runtime-teyrchains/std",
 	"pezkuwichain-runtime-constants/std",
+	"pallet-validator-pool/std",
 	"scale-info/std",
 	"serde/std",
 	"serde_derive",
@@ -266,6 +270,7 @@ runtime-benchmarks = [
 	"pezkuwi-primitives/runtime-benchmarks",
 	"pezkuwi-runtime-common/runtime-benchmarks",
 	"pezkuwi-runtime-teyrchains/runtime-benchmarks",
+	"pallet-validator-pool/runtime-benchmarks",
 	"sp-runtime/runtime-benchmarks",
 	"sp-staking/runtime-benchmarks",
 	"xcm-builder/runtime-benchmarks",
@@ -317,6 +322,7 @@ try-runtime = [
 	"pallet-xcm/try-runtime",
 	"pezkuwi-runtime-common/try-runtime",
 	"pezkuwi-runtime-teyrchains/try-runtime",
+	"pallet-validator-pool/try-runtime",
 	"sp-runtime/try-runtime",
 ]
 

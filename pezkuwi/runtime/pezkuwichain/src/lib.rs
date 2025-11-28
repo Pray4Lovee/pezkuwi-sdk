@@ -622,6 +622,66 @@ impl pallet_nomination_pools::Config for Runtime {
 }
 
 // =====================================================
+// VALIDATOR POOL CONFIGURATION (TNPoS Shadow Mode)
+// =====================================================
+
+/// Stub Trust Score Provider - returns default trust for shadow mode
+/// Will be replaced with XCM cache from People Parachain in Phase 5
+pub struct StubTrustProvider;
+impl pallet_validator_pool::TrustScoreProvider<AccountId> for StubTrustProvider {
+	fn trust_score_of(_who: &AccountId) -> u128 {
+		1000 // Default trust score for shadow mode
+	}
+}
+
+/// Stub Tiki Score Provider - returns default tiki for shadow mode
+/// Will be replaced with XCM cache from People Parachain in Phase 5
+pub struct StubTikiProvider;
+impl pallet_validator_pool::TikiScoreProvider<AccountId> for StubTikiProvider {
+	fn get_tiki_score(_who: &AccountId) -> u32 {
+		0 // No tiki in shadow mode
+	}
+}
+
+/// Stub Referral Provider - returns default referral count for shadow mode
+/// Will be replaced with XCM cache from People Parachain in Phase 5
+pub struct StubReferralProvider;
+impl pallet_validator_pool::types::ReferralProvider<AccountId> for StubReferralProvider {
+	fn get_referral_count(_who: &AccountId) -> u32 {
+		0 // No referrals in shadow mode
+	}
+}
+
+/// Stub Perwerde Provider - returns default perwerde score for shadow mode
+/// Will be replaced with XCM cache from People Parachain in Phase 5
+pub struct StubPerwerdeProvider;
+impl pallet_validator_pool::types::PerwerdeProvider<AccountId> for StubPerwerdeProvider {
+	fn get_perwerde_score(_who: &AccountId) -> u32 {
+		0 // No perwerde in shadow mode
+	}
+}
+
+parameter_types! {
+	pub const ValidatorPoolMaxValidators: u32 = 21; // Target: 10 stake + 6 parliamentary + 5 merit
+	pub const ValidatorPoolMaxPoolSize: u32 = 1000;
+	pub const ValidatorPoolMinStakeAmount: u128 = 100 * UNITS;
+}
+
+impl pallet_validator_pool::Config for Runtime {
+	type RuntimeEvent = RuntimeEvent;
+	type WeightInfo = pallet_validator_pool::weights::SubstrateWeight<Runtime>;
+	type Randomness = pallet_babe::RandomnessFromOneEpochAgo<Runtime>;
+	type TrustSource = StubTrustProvider;
+	type TikiSource = StubTikiProvider;
+	type ReferralSource = StubReferralProvider;
+	type PerwerdeSource = StubPerwerdeProvider;
+	type PoolManagerOrigin = EnsureRoot<AccountId>;
+	type MaxValidators = ValidatorPoolMaxValidators;
+	type MaxPoolSize = ValidatorPoolMaxPoolSize;
+	type MinStakeAmount = ValidatorPoolMinStakeAmount;
+}
+
+// =====================================================
 // VOTER BAGS LIST CONFIGURATION
 // =====================================================
 
@@ -1549,6 +1609,10 @@ construct_runtime! {
 
 		// State trie migration pallet, only temporary.
 		StateTrieMigration: pallet_state_trie_migration = 254,
+
+		// === CUSTOM PEZKUWI PALLETS ===
+		// TNPoS Validator Pool - Shadow Mode (runs parallel to NPoS)
+		ValidatorPool: pallet_validator_pool = 91,
 
 		// Root testing pallet.
 		RootTesting: pallet_root_testing = 249,

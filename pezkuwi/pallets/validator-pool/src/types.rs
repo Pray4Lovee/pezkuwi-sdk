@@ -10,8 +10,7 @@ use scale_info::TypeInfo;
 use sp_runtime::RuntimeDebug;
 
 /// Types of validators in the pool
-#[derive(Encode, Decode, DecodeWithMemTracking, Clone, PartialEq, Eq, RuntimeDebug, TypeInfo, MaxEncodedLen)]
-#[cfg_attr(feature = "std", derive(serde::Serialize, serde::Deserialize))]
+#[derive(Encode, Decode, DecodeWithMemTracking, Clone, PartialEq, Eq, RuntimeDebug, TypeInfo, MaxEncodedLen, serde::Serialize, serde::Deserialize)]
 #[codec(mel_bound())]
 pub enum ValidatorPoolCategory {
     /// Stake-based validators (high stake + trust score)
@@ -112,8 +111,7 @@ impl<AccountId> PerwerdeProvider<AccountId> for () {
 // ============================================================================
 
 /// Operation mode for the validator pool
-#[derive(Encode, Decode, DecodeWithMemTracking, Clone, Copy, PartialEq, Eq, RuntimeDebug, TypeInfo, MaxEncodedLen, Default)]
-#[cfg_attr(feature = "std", derive(serde::Serialize, serde::Deserialize))]
+#[derive(Encode, Decode, DecodeWithMemTracking, Clone, Copy, PartialEq, Eq, RuntimeDebug, TypeInfo, MaxEncodedLen, Default, serde::Serialize, serde::Deserialize)]
 pub enum OperationMode {
     /// Shadow mode: TNPoS runs in parallel but doesn't control consensus
     /// NPoS remains the authority, TNPoS results are recorded for comparison
