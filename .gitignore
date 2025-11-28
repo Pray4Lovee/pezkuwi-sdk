@@ -42,3 +42,7 @@ pezkuwi.code-workspace
 target/
 *.scale
 rustc-ice-*
+
+# AI coordination files (private)
+.ai-coordination/
+head.rs
