@@ -22,8 +22,8 @@ use std::sync::Arc;
 use crate::{
 	cli::{
 		bridge::{
-			CliBridgeBase, MessagesCliBridge, TeyrchainToRelayHeadersCliBridge,
-			RelayToRelayHeadersCliBridge,
+			CliBridgeBase, MessagesCliBridge, RelayToRelayHeadersCliBridge,
+			TeyrchainToRelayHeadersCliBridge,
 		},
 		relay_headers_and_messages::{Full2WayBridgeBase, Full2WayBridgeCommonParams},
 		DefaultClient,
@@ -33,8 +33,8 @@ use crate::{
 		headers::OnDemandHeadersRelay, teyrchains::OnDemandTeyrchainsRelay, OnDemandRelay,
 	},
 };
-use bp_teyrchains::{RelayBlockHash, RelayBlockHasher, RelayBlockNumber};
 use bp_pezkuwi_core::teyrchains::ParaHash;
+use bp_teyrchains::{RelayBlockHash, RelayBlockHasher, RelayBlockNumber};
 use relay_substrate_client::{
 	AccountIdOf, AccountKeyPairOf, Chain, ChainWithRuntimeVersion, ChainWithTransactions, Client,
 	Teyrchain,

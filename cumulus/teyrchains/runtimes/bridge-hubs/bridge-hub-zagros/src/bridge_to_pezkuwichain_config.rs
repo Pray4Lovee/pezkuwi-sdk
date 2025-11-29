@@ -38,9 +38,9 @@ use pallet_bridge_messages::LaneIdOf;
 use pallet_bridge_relayers::extension::{
 	BridgeRelayersTransactionExtension, WithMessagesExtensionConfig,
 };
-use teyrchains_common::xcm_config::{AllSiblingSystemTeyrchains, RelayOrOtherSystemTeyrchains};
 use pezkuwi_teyrchain_primitives::primitives::Sibling;
 use testnet_teyrchains_constants::zagros::currency::UNITS as ZGR;
+use teyrchains_common::xcm_config::{AllSiblingSystemTeyrchains, RelayOrOtherSystemTeyrchains};
 use xcm::{
 	latest::{prelude::*, PEZKUWICHAIN_GENESIS_HASH},
 	prelude::{InteriorLocation, NetworkId},
@@ -87,8 +87,11 @@ pub type ToPezkuwichainBridgeHubMessagesDeliveryProof<MI> =
 	FromBridgedChainMessagesDeliveryProof<bp_bridge_hub_pezkuwichain::Hash, LaneIdOf<Runtime, MI>>;
 
 /// Dispatches received XCM messages from other bridge
-type FromPezkuwichainMessageBlobDispatcher =
-	BridgeBlobDispatcher<XcmRouter, UniversalLocation, BridgeZagrosToPezkuwichainMessagesPalletInstance>;
+type FromPezkuwichainMessageBlobDispatcher = BridgeBlobDispatcher<
+	XcmRouter,
+	UniversalLocation,
+	BridgeZagrosToPezkuwichainMessagesPalletInstance,
+>;
 
 /// Transaction extension that refunds relayers that are delivering messages from the Pezkuwichain
 /// teyrchain.
@@ -169,7 +172,8 @@ impl pallet_xcm_bridge_hub::Config<XcmOverBridgeHubPezkuwichainInstance> for Run
 	type BridgeMessagesPalletInstance = WithBridgeHubPezkuwichainMessagesInstance;
 
 	type MessageExportPrice = ();
-	type DestinationVersion = XcmVersionOfDestAndRemoteBridge<PezkuwiXcm, BridgeHubPezkuwichainLocation>;
+	type DestinationVersion =
+		XcmVersionOfDestAndRemoteBridge<PezkuwiXcm, BridgeHubPezkuwichainLocation>;
 
 	type ForceOrigin = EnsureRoot<AccountId>;
 	// We don't want to allow creating bridges for this instance with `LegacyLaneId`.

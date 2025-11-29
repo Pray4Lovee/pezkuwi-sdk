@@ -20,9 +20,7 @@ use crate::traits::Registrar;
 use codec::{Decode, Encode};
 use frame_support::{dispatch::DispatchResult, weights::Weight};
 use frame_system::pallet_prelude::BlockNumberFor;
-use pezkuwi_primitives::{
-	HeadData, Id as ParaId, PvfCheckStatement, SessionIndex, ValidationCode,
-};
+use pezkuwi_primitives::{HeadData, Id as ParaId, PvfCheckStatement, SessionIndex, ValidationCode};
 use pezkuwi_runtime_teyrchains::paras;
 use sp_keyring::Sr25519Keyring;
 use sp_runtime::{traits::SaturatedConversion, DispatchError, Permill};

@@ -163,7 +163,8 @@ pub(crate) fn send_assets_from_asset_hub_zagros(
 	let signed_origin =
 		<AssetHubZagros as Chain>::RuntimeOrigin::signed(AssetHubZagrosSender::get().into());
 	let beneficiary: Location =
-		AccountId32Junction { network: None, id: AssetHubPezkuwichainReceiver::get().into() }.into();
+		AccountId32Junction { network: None, id: AssetHubPezkuwichainReceiver::get().into() }
+			.into();
 
 	type Runtime = <AssetHubZagros as Chain>::Runtime;
 	let remote_fee_id: AssetId = assets

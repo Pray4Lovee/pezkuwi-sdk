@@ -26,11 +26,11 @@ use asset_hub_zagros_runtime::{
 	xcm_config::{
 		bridging, CheckingAccount, LocationToAccountId, StakingPot,
 		TrustBackedAssetsPalletLocation, UniquesConvertedConcreteId, UniquesPalletLocation,
-		ZagrosLocation, XcmConfig,
+		XcmConfig, ZagrosLocation,
 	},
 	AllPalletsWithoutSystem, Assets, Balances, Block, ExistentialDeposit, ForeignAssets,
-	ForeignAssetsInstance, MetadataDepositBase, MetadataDepositPerByte, TeyrchainSystem,
-	PezkuwiXcm, Revive, Runtime, RuntimeCall, RuntimeEvent, RuntimeOrigin, SessionKeys,
+	ForeignAssetsInstance, MetadataDepositBase, MetadataDepositPerByte, PezkuwiXcm, Revive,
+	Runtime, RuntimeCall, RuntimeEvent, RuntimeOrigin, SessionKeys, TeyrchainSystem,
 	ToPezkuwichainXcmRouterInstance, TrustBackedAssetsInstance, Uniques, WeightToFee, XcmpQueue,
 };
 pub use asset_hub_zagros_runtime::{AssetConversion, AssetDeposit, CollatorSelection, System};
@@ -62,12 +62,12 @@ use pallet_revive::{
 };
 use pallet_revive_fixtures::compile_module;
 use pallet_uniques::{asset_ops::Item, asset_strategies::Attribute};
-use teyrchains_common::{AccountId, AssetIdForTrustBackedAssets, AuraId, Balance};
 use sp_consensus_aura::SlotDuration;
 use sp_core::crypto::Ss58Codec;
 use sp_runtime::{traits::MaybeEquivalence, Either, MultiAddress};
 use std::convert::Into;
 use testnet_teyrchains_constants::zagros::{consensus::*, currency::UNITS};
+use teyrchains_common::{AccountId, AssetIdForTrustBackedAssets, AuraId, Balance};
 use xcm::{
 	latest::{
 		prelude::{Assets as XcmAssets, *},
@@ -1146,7 +1146,8 @@ fn receive_reserve_asset_deposited_roc_from_asset_hub_pezkuwichain_fees_paid_by_
 }
 
 #[test]
-fn receive_reserve_asset_deposited_roc_from_asset_hub_pezkuwichain_fees_paid_by_sufficient_asset_works() {
+fn receive_reserve_asset_deposited_roc_from_asset_hub_pezkuwichain_fees_paid_by_sufficient_asset_works(
+) {
 	const BLOCK_AUTHOR_ACCOUNT: [u8; 32] = [13; 32];
 	let block_author_account = AccountId::from(BLOCK_AUTHOR_ACCOUNT);
 	let staking_pot = StakingPot::get();
@@ -1236,10 +1237,12 @@ fn report_bridge_status_from_xcm_bridge_router_for_pezkuwichain_works() {
 fn test_report_bridge_status_call_compatibility() {
 	// if this test fails, make sure `bp_asset_hub_pezkuwichain` has valid encoding
 	assert_eq!(
-		RuntimeCall::ToPezkuwichainXcmRouter(pallet_xcm_bridge_hub_router::Call::report_bridge_status {
-			bridge_id: Default::default(),
-			is_congested: true,
-		})
+		RuntimeCall::ToPezkuwichainXcmRouter(
+			pallet_xcm_bridge_hub_router::Call::report_bridge_status {
+				bridge_id: Default::default(),
+				is_congested: true,
+			}
+		)
 		.encode(),
 		bp_asset_hub_zagros::Call::ToPezkuwichainXcmRouter(
 			bp_asset_hub_zagros::XcmBridgeHubRouterCall::report_bridge_status {

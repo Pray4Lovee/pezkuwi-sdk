@@ -26,13 +26,13 @@ use frame_system::EnsureRoot;
 use sp_core::{ConstU32, H256};
 use sp_runtime::traits::IdentityLookup;
 
-use pezkuwi_teyrchain_primitives::primitives::Id as ParaId;
 use pezkuwi_runtime_teyrchains::{configuration, origin, shared};
+use pezkuwi_teyrchain_primitives::primitives::Id as ParaId;
 use xcm::latest::prelude::*;
 use xcm_builder::{
 	AccountId32Aliases, AllowExplicitUnpaidExecutionFrom, AllowSubscriptionsFrom,
-	AllowTopLevelPaidExecutionFrom, ChildTeyrchainAsNative, ChildTeyrchainConvertsVia,
-	ChildSystemTeyrchainAsSuperuser, DescribeAllTerminal, DescribeFamily, FixedRateOfFungible,
+	AllowTopLevelPaidExecutionFrom, ChildSystemTeyrchainAsSuperuser, ChildTeyrchainAsNative,
+	ChildTeyrchainConvertsVia, DescribeAllTerminal, DescribeFamily, FixedRateOfFungible,
 	FixedWeightBounds, FrameTransactionalProcessor, FungibleAdapter, HashedDescription, IsConcrete,
 	SignedAccountId32AsNative, SignedToAccountId32, SovereignSignedViaLocation, WithComputedOrigin,
 };

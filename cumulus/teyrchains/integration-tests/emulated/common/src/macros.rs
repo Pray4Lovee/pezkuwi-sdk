@@ -33,8 +33,8 @@ pub use xcm::{
 	prelude::{
 		AliasOrigin, All, AllCounted, Asset, AssetId, Assets, BuyExecution, DepositAsset,
 		ExpectTransactStatus, Fungible, GeneralIndex, Here, InitiateTransfer, Junction, Location,
-		MaybeErrorCode, OriginKind, Outcome, PalletInstance, Teyrchain, Parent, PayFees,
-		RefundSurplus, Transact, Unlimited, VersionedAssetId, VersionedAssets, VersionedLocation,
+		MaybeErrorCode, OriginKind, Outcome, PalletInstance, Parent, PayFees, RefundSurplus,
+		Teyrchain, Transact, Unlimited, VersionedAssetId, VersionedAssets, VersionedLocation,
 		VersionedXcm, WeightLimit, Wild, WithdrawAsset, Xcm, XcmContext, XCM_VERSION,
 	},
 };
@@ -46,7 +46,7 @@ pub use asset_test_utils;
 pub use cumulus_pallet_xcmp_queue;
 pub use teyrchains_common::AccountId;
 pub use xcm_emulator::{
-	assert_expected_events, Chain, Teyrchain as Para, RelayChain, TestArgs, TestContext, TestExt,
+	assert_expected_events, Chain, RelayChain, TestArgs, TestContext, TestExt, Teyrchain as Para,
 };
 
 pub use frame_support::{

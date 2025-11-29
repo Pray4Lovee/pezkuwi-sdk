@@ -28,9 +28,9 @@ use frame_support::{
 	assert_err_ignore_postinfo, assert_ok,
 	traits::fungible::{Inspect, Mutate},
 };
-use teyrchains_common::{AccountId, Balance};
 use sp_tracing::capture_test_logs;
 use std::convert::Into;
+use teyrchains_common::{AccountId, Balance};
 use xcm::latest::{Assets, Error as XcmError, Location, Xcm};
 
 const UNITS: Balance = 1_000_000_000;
@@ -290,8 +290,7 @@ fn exchange_asset_from_penpal_via_asset_hub_back_to_penpal() {
 
 		let mq_prc_id = find_mq_processed_id::<AssetHubZagros>().expect("Missing Processed Event");
 		topic_id_tracker.insert("AssetHubZagros_received", mq_prc_id);
-		let msg_sent_id =
-			find_xcm_sent_message_id::<AssetHubZagros>().expect("Missing Sent Event");
+		let msg_sent_id = find_xcm_sent_message_id::<AssetHubZagros>().expect("Missing Sent Event");
 		topic_id_tracker.insert("AssetHubZagros_sent", msg_sent_id.into());
 	});
 

@@ -67,7 +67,7 @@ mod benchmarks {
 		let treasury_account = PezTreasury::<T>::treasury_account_id();
 		let initial_monthly_amount = PezTreasury::<T>::halving_info().monthly_amount;
 		let incentive_amount = initial_monthly_amount * 75u32.into() / 100u32.into();
-        let government_amount = initial_monthly_amount.saturating_sub(incentive_amount);
+		let government_amount = initial_monthly_amount.saturating_sub(incentive_amount);
 
 		// Ensure treasury has MORE than enough balance for the release
 		// Mint additional 10x the monthly amount to ensure sufficient balance

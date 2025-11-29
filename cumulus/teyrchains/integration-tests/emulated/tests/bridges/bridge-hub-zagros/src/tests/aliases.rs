@@ -204,13 +204,11 @@ fn authorized_cross_chain_aliases() {
 			.into()),
 		);
 		// `target` adds `penpal_origin` as authorized alias
-		assert_ok!(
-			<BridgeHubZagros as BridgeHubZagrosPallet>::PezkuwiXcm::add_authorized_alias(
-				<BridgeHubZagros as Chain>::RuntimeOrigin::signed(target.clone()),
-				Box::new(penpal_origin.into()),
-				None
-			)
-		);
+		assert_ok!(<BridgeHubZagros as BridgeHubZagrosPallet>::PezkuwiXcm::add_authorized_alias(
+			<BridgeHubZagros as Chain>::RuntimeOrigin::signed(target.clone()),
+			Box::new(penpal_origin.into()),
+			None
+		));
 	});
 	// Verify that unauthorized `bad_origin` cannot alias into `target`, from any chain.
 	test_cross_chain_alias!(

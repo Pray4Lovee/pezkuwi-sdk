@@ -1,7 +1,9 @@
-use crate::{mock::*, Error, Event, ReferralCount, PendingReferrals, Referrals, ReferrerStatsStorage};
-use crate::pallet::ReferralInfo;
-use pallet_identity_kyc::types::{OnKycApproved, OnCitizenshipRevoked};
+use crate::{
+	mock::*, pallet::ReferralInfo, Error, Event, PendingReferrals, ReferralCount, Referrals,
+	ReferrerStatsStorage,
+};
 use frame_support::{assert_noop, assert_ok};
+use pallet_identity_kyc::types::{OnCitizenshipRevoked, OnKycApproved};
 use sp_runtime::DispatchError;
 
 type ReferralPallet = crate::Pallet<Test>;
@@ -14,19 +16,15 @@ type ReferralPallet = crate::Pallet<Test>;
 fn initiate_referral_works() {
 	new_test_ext().execute_with(|| {
 		// REFERRER (citizen) invites REFERRED
-		assert_ok!(ReferralPallet::initiate_referral(
-			RuntimeOrigin::signed(REFERRER),
-			REFERRED
-		));
+		assert_ok!(ReferralPallet::initiate_referral(RuntimeOrigin::signed(REFERRER), REFERRED));
 
 		// Verification: Correct record is added to pending referrals list.
 		assert_eq!(ReferralPallet::pending_referrals(REFERRED), Some(REFERRER));
 
 		// Correct event is emitted.
-		System::assert_last_event(Event::ReferralInitiated {
-			referrer: REFERRER,
-			referred: REFERRED,
-		}.into());
+		System::assert_last_event(
+			Event::ReferralInitiated { referrer: REFERRER, referred: REFERRED }.into(),
+		);
 	});
 }
 
@@ -45,10 +43,7 @@ fn initiate_referral_fails_for_self_referral() {
 fn initiate_referral_fails_if_already_referred() {
 	new_test_ext().execute_with(|| {
 		// First referral succeeds
-		assert_ok!(ReferralPallet::initiate_referral(
-			RuntimeOrigin::signed(REFERRER),
-			REFERRED
-		));
+		assert_ok!(ReferralPallet::initiate_referral(RuntimeOrigin::signed(REFERRER), REFERRED));
 
 		// Second referral attempt by USER_3 fails
 		assert_noop!(
@@ -66,15 +61,12 @@ fn initiate_referral_fails_if_already_referred() {
 fn on_kyc_approved_hook_works() {
 	new_test_ext().execute_with(|| {
 		// Setup: REFERRER invites REFERRED via PendingReferrals
-		assert_ok!(ReferralPallet::initiate_referral(
-			RuntimeOrigin::signed(REFERRER),
-			REFERRED
-		));
+		assert_ok!(ReferralPallet::initiate_referral(RuntimeOrigin::signed(REFERRER), REFERRED));
 
 		// Set user's KYC as approved
 		pallet_identity_kyc::KycStatuses::<Test>::insert(
 			REFERRED,
-			pallet_identity_kyc::types::KycLevel::Approved
+			pallet_identity_kyc::types::KycLevel::Approved,
 		);
 
 		// Action: Call on_kyc_approved with referrer parameter
@@ -99,7 +91,8 @@ fn on_kyc_approved_hook_works() {
 				referrer: REFERRER,
 				referred: REFERRED,
 				new_referrer_count: 1,
-			}.into(),
+			}
+			.into(),
 		);
 	});
 }
@@ -112,7 +105,7 @@ fn on_kyc_approved_uses_referrer_parameter() {
 
 		pallet_identity_kyc::KycStatuses::<Test>::insert(
 			REFERRED,
-			pallet_identity_kyc::types::KycLevel::Approved
+			pallet_identity_kyc::types::KycLevel::Approved,
 		);
 
 		// Call with explicit referrer parameter
@@ -145,7 +138,7 @@ fn on_kyc_approved_prevents_double_counting() {
 	new_test_ext().execute_with(|| {
 		pallet_identity_kyc::KycStatuses::<Test>::insert(
 			REFERRED,
-			pallet_identity_kyc::types::KycLevel::Approved
+			pallet_identity_kyc::types::KycLevel::Approved,
 		);
 
 		// First approval
@@ -168,7 +161,7 @@ fn on_citizenship_revoked_penalizes_referrer() {
 		// Setup: Complete referral first
 		pallet_identity_kyc::KycStatuses::<Test>::insert(
 			REFERRED,
-			pallet_identity_kyc::types::KycLevel::Approved
+			pallet_identity_kyc::types::KycLevel::Approved,
 		);
 		ReferralPallet::on_kyc_approved(&REFERRED, &REFERRER);
 
@@ -194,7 +187,8 @@ fn on_citizenship_revoked_penalizes_referrer() {
 				revoked_citizen: REFERRED,
 				new_penalty_score: PenaltyPerRevocationAmount::get(),
 				total_revoked: 1,
-			}.into(),
+			}
+			.into(),
 		);
 	});
 }
@@ -379,7 +373,7 @@ fn get_inviter_returns_correct_referrer() {
 		// Complete referral
 		pallet_identity_kyc::KycStatuses::<Test>::insert(
 			REFERRED,
-			pallet_identity_kyc::types::KycLevel::Approved
+			pallet_identity_kyc::types::KycLevel::Approved,
 		);
 		ReferralPallet::on_kyc_approved(&REFERRED, &REFERRER);
 
@@ -443,11 +437,7 @@ fn force_confirm_referral_requires_root() {
 fn force_confirm_referral_prevents_self_referral() {
 	new_test_ext().execute_with(|| {
 		assert_noop!(
-			ReferralPallet::force_confirm_referral(
-				RuntimeOrigin::root(),
-				REFERRER,
-				REFERRER
-			),
+			ReferralPallet::force_confirm_referral(RuntimeOrigin::root(), REFERRER, REFERRER),
 			Error::<Test>::SelfReferral
 		);
 	});
@@ -465,11 +455,7 @@ fn force_confirm_referral_prevents_duplicate() {
 
 		// Second attempt fails
 		assert_noop!(
-			ReferralPallet::force_confirm_referral(
-				RuntimeOrigin::root(),
-				REFERRER,
-				REFERRED
-			),
+			ReferralPallet::force_confirm_referral(RuntimeOrigin::root(), REFERRER, REFERRED),
 			Error::<Test>::AlreadyReferred
 		);
 	});
@@ -485,16 +471,13 @@ fn complete_referral_flow_integration() {
 
 	new_test_ext().execute_with(|| {
 		// Step 1: Initiate referral (legacy way via PendingReferrals)
-		assert_ok!(ReferralPallet::initiate_referral(
-			RuntimeOrigin::signed(REFERRER),
-			REFERRED
-		));
+		assert_ok!(ReferralPallet::initiate_referral(RuntimeOrigin::signed(REFERRER), REFERRED));
 		assert_eq!(PendingReferrals::<Test>::get(REFERRED), Some(REFERRER));
 
 		// Step 2: KYC approval triggers confirmation
 		pallet_identity_kyc::KycStatuses::<Test>::insert(
 			REFERRED,
-			pallet_identity_kyc::types::KycLevel::Approved
+			pallet_identity_kyc::types::KycLevel::Approved,
 		);
 		ReferralPallet::on_kyc_approved(&REFERRED, &REFERRER);
 
@@ -521,7 +504,7 @@ fn multiple_referrals_for_same_referrer() {
 		for &referred in &[referred1, referred2, referred3] {
 			pallet_identity_kyc::KycStatuses::<Test>::insert(
 				referred,
-				pallet_identity_kyc::types::KycLevel::Approved
+				pallet_identity_kyc::types::KycLevel::Approved,
 			);
 			ReferralPallet::on_kyc_approved(&referred, &REFERRER);
 		}
@@ -543,7 +526,7 @@ fn referral_info_stores_block_number() {
 
 		pallet_identity_kyc::KycStatuses::<Test>::insert(
 			REFERRED,
-			pallet_identity_kyc::types::KycLevel::Approved
+			pallet_identity_kyc::types::KycLevel::Approved,
 		);
 		ReferralPallet::on_kyc_approved(&REFERRED, &REFERRER);
 

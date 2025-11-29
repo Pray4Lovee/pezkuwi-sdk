@@ -110,7 +110,8 @@ fn para_to_para_transfer_assets_through_ah(t: ParaToParaThroughAHTest) -> Dispat
 		.find(|a| a.id == t.args.fee_asset_id)
 		.cloned()
 		.unwrap();
-	let asset_hub_location: Location = PenpalA::sibling_location_of(AssetHubPezkuwichain::para_id());
+	let asset_hub_location: Location =
+		PenpalA::sibling_location_of(AssetHubPezkuwichain::para_id());
 	let custom_xcm_on_dest = Xcm::<()>(vec![DepositAsset {
 		assets: Wild(AllCounted(t.args.assets.len() as u32)),
 		beneficiary: t.args.beneficiary,
@@ -365,8 +366,10 @@ fn transfer_foreign_assets_from_para_to_asset_hub() {
 
 	// Init values for System Teyrchain
 	let receiver = AssetHubPezkuwichainReceiver::get();
-	let penpal_location_as_seen_by_ahr = AssetHubPezkuwichain::sibling_location_of(PenpalA::para_id());
-	let sov_penpal_on_ahr = AssetHubPezkuwichain::sovereign_account_id_of(penpal_location_as_seen_by_ahr);
+	let penpal_location_as_seen_by_ahr =
+		AssetHubPezkuwichain::sibling_location_of(PenpalA::para_id());
+	let sov_penpal_on_ahr =
+		AssetHubPezkuwichain::sovereign_account_id_of(penpal_location_as_seen_by_ahr);
 
 	// fund Teyrchain's SA on AssetHub with the assets held in reserve
 	AssetHubPezkuwichain::fund_accounts(vec![(
@@ -474,7 +477,8 @@ fn transfer_foreign_assets_from_para_to_para_through_asset_hub() {
 	let sender_as_seen_by_ah = AssetHubPezkuwichain::sibling_location_of(PenpalA::para_id());
 	let sov_of_sender_on_ah = AssetHubPezkuwichain::sovereign_account_id_of(sender_as_seen_by_ah);
 	let receiver_as_seen_by_ah = AssetHubPezkuwichain::sibling_location_of(PenpalB::para_id());
-	let sov_of_receiver_on_ah = AssetHubPezkuwichain::sovereign_account_id_of(receiver_as_seen_by_ah);
+	let sov_of_receiver_on_ah =
+		AssetHubPezkuwichain::sovereign_account_id_of(receiver_as_seen_by_ah);
 	let wnd_to_send = ASSET_HUB_PEZKUWICHAIN_ED * 10_000_000;
 
 	// Configure source and destination chains to trust AH as reserve of ZGR
@@ -536,7 +540,10 @@ fn transfer_foreign_assets_from_para_to_para_through_asset_hub() {
 		wnd_to_send * 2,
 	);
 	// fund the Teyrchain Origin's SA on Asset Hub with the assets held in reserve
-	AssetHubPezkuwichain::fund_accounts(vec![(sov_of_sender_on_ah.clone().into(), roc_to_send * 2)]);
+	AssetHubPezkuwichain::fund_accounts(vec![(
+		sov_of_sender_on_ah.clone().into(),
+		roc_to_send * 2,
+	)]);
 	AssetHubPezkuwichain::mint_foreign_asset(
 		<AssetHubPezkuwichain as Chain>::RuntimeOrigin::signed(assets_owner),
 		wnd_at_pezkuwichain_teyrchains.clone().try_into().unwrap(),
@@ -714,7 +721,9 @@ fn transfer_native_asset_from_relay_to_para_through_asset_hub() {
 	// Query initial balances
 	let sender_balance_before = test.sender.balance;
 	let sov_penpal_on_ah_before = AssetHubPezkuwichain::execute_with(|| {
-		<AssetHubPezkuwichain as AssetHubPezkuwichainPallet>::Balances::free_balance(sov_penpal_on_ah.clone())
+		<AssetHubPezkuwichain as AssetHubPezkuwichainPallet>::Balances::free_balance(
+			sov_penpal_on_ah.clone(),
+		)
 	});
 	let receiver_assets_before = PenpalA::execute_with(|| {
 		type ForeignAssets = <PenpalA as PenpalAPallet>::ForeignAssets;
@@ -837,7 +846,9 @@ fn transfer_native_asset_from_relay_to_para_through_asset_hub() {
 	// Query final balances
 	let sender_balance_after = test.sender.balance;
 	let sov_penpal_on_ah_after = AssetHubPezkuwichain::execute_with(|| {
-		<AssetHubPezkuwichain as AssetHubPezkuwichainPallet>::Balances::free_balance(sov_penpal_on_ah)
+		<AssetHubPezkuwichain as AssetHubPezkuwichainPallet>::Balances::free_balance(
+			sov_penpal_on_ah,
+		)
 	});
 	let receiver_assets_after = PenpalA::execute_with(|| {
 		type ForeignAssets = <PenpalA as PenpalAPallet>::ForeignAssets;

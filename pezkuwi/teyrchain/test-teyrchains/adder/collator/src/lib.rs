@@ -292,8 +292,8 @@ mod tests {
 	use super::*;
 
 	use futures::executor::block_on;
-	use pezkuwi_teyrchain_primitives::primitives::{ValidationParams, ValidationResult};
 	use pezkuwi_primitives::PersistedValidationData;
+	use pezkuwi_teyrchain_primitives::primitives::{ValidationParams, ValidationResult};
 
 	#[test]
 	fn collator_works() {

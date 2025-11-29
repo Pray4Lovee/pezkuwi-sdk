@@ -198,8 +198,8 @@ pub mod xcm_version {
 
 pub mod locations {
 	use frame_support::parameter_types;
-	pub use zagros_runtime_constants::system_teyrchain::{AssetHubParaId, PeopleParaId};
 	use xcm::latest::prelude::{Location, Teyrchain};
+	pub use zagros_runtime_constants::system_teyrchain::{AssetHubParaId, PeopleParaId};
 
 	parameter_types! {
 		pub AssetHubLocation: Location = Location::new(1, Teyrchain(zagros_runtime_constants::system_teyrchain::ASSET_HUB_ID));

@@ -90,9 +90,9 @@ use frame_support::{
 	genesis_builder_helper::{build_state, get_preset},
 	parameter_types,
 	traits::{
-		fungible::HoldConsideration, EitherOf, EitherOfDiverse, EnsureOriginWithArg, InstanceFilter,
-		KeyOwnerProofSystem, LinearStoragePrice, Nothing, PrivilegeCmp, ProcessMessage,
-		ProcessMessageError, WithdrawReasons,
+		fungible::HoldConsideration, EitherOf, EitherOfDiverse, EnsureOriginWithArg,
+		InstanceFilter, KeyOwnerProofSystem, LinearStoragePrice, Nothing, PrivilegeCmp,
+		ProcessMessage, ProcessMessageError, WithdrawReasons,
 	},
 	weights::{ConstantMultiplier, WeightMeter},
 	PalletId,
@@ -501,7 +501,6 @@ impl frame_election_provider_support::onchain::Config for OnChainSeqPhragmen {
 	type Bounds = ElectionBounds;
 }
 
-
 /// Era payout calculation for staking rewards.
 pub struct EraPayout;
 impl pallet_staking::EraPayout<Balance> for EraPayout {
@@ -547,8 +546,10 @@ impl pallet_staking::Config for Runtime {
 	type NextNewSession = Session;
 	type MaxExposurePageSize = ConstU32<64>;
 	type MaxValidatorSet = MaxActiveValidators;
-	type ElectionProvider = frame_election_provider_support::onchain::OnChainExecution<OnChainSeqPhragmen>;
-	type GenesisElectionProvider = frame_election_provider_support::onchain::OnChainExecution<OnChainSeqPhragmen>;
+	type ElectionProvider =
+		frame_election_provider_support::onchain::OnChainExecution<OnChainSeqPhragmen>;
+	type GenesisElectionProvider =
+		frame_election_provider_support::onchain::OnChainExecution<OnChainSeqPhragmen>;
 	type VoterList = VoterBagsList;
 	type TargetList = pallet_staking::UseValidatorsMap<Self>;
 	type MaxControllersInDeprecationBatch = ConstU32<5_900>;
@@ -1375,7 +1376,6 @@ impl auctions::Config for Runtime {
 	type WeightInfo = weights::pezkuwi_runtime_common_auctions::WeightInfo<Runtime>;
 }
 
-
 impl pallet_parameters::Config for Runtime {
 	type RuntimeEvent = RuntimeEvent;
 	type RuntimeParameters = RuntimeParameters;
@@ -1715,42 +1715,70 @@ pub mod migrations {
 
 	/// Unreleased migrations. Add new ones here:
 	pub type Unreleased = (
-        teyrchains_configuration::migration::v7::MigrateToV7<Runtime>,
-        assigned_slots::migration::v1::MigrateToV1<Runtime>,
-        teyrchains_scheduler::migration::MigrateV1ToV2<Runtime>,
-        teyrchains_configuration::migration::v8::MigrateToV8<Runtime>,
-        teyrchains_configuration::migration::v9::MigrateToV9<Runtime>,
-        paras_registrar::migration::MigrateToV1<Runtime, ()>,
-        pallet_referenda::migration::v1::MigrateV0ToV1<Runtime, ()>,
-
-        // NOTE: Gov1 migration steps removed - pallets no longer in runtime
-        // Treasury cleanup still included as it may have existing proposals
-        pallet_treasury::migration::cleanup_proposals::Migration<Runtime, (), BalanceUnreserveWeight>,
-
-        // Delete all Gov v1 pallet storage key/values (still needed to clean up any leftover storage)
-        frame_support::migrations::RemovePallet<DemocracyPalletName, <Runtime as frame_system::Config>::DbWeight>,
-        frame_support::migrations::RemovePallet<CouncilPalletName, <Runtime as frame_system::Config>::DbWeight>,
-        frame_support::migrations::RemovePallet<TechnicalCommitteePalletName, <Runtime as frame_system::Config>::DbWeight>,
-        frame_support::migrations::RemovePallet<PhragmenElectionPalletName, <Runtime as frame_system::Config>::DbWeight>,
-        frame_support::migrations::RemovePallet<TechnicalMembershipPalletName, <Runtime as frame_system::Config>::DbWeight>,
-        frame_support::migrations::RemovePallet<TipsPalletName, <Runtime as frame_system::Config>::DbWeight>,
-        pallet_grandpa::migrations::MigrateV4ToV5<Runtime>,
-        teyrchains_configuration::migration::v10::MigrateToV10<Runtime>,
-        teyrchains_configuration::migration::v11::MigrateToV11<Runtime>,
-        // This needs to come after the `teyrchains_configuration` above as we are reading the configuration.
-        coretime::migration::MigrateToCoretime<Runtime, crate::xcm_config::XcmRouter, GetLegacyLeaseImpl, TIMESLICE_PERIOD>,
-        teyrchains_configuration::migration::v12::MigrateToV12<Runtime>,
-        teyrchains_on_demand::migration::MigrateV0ToV1<Runtime>,
-
+		teyrchains_configuration::migration::v7::MigrateToV7<Runtime>,
+		assigned_slots::migration::v1::MigrateToV1<Runtime>,
+		teyrchains_scheduler::migration::MigrateV1ToV2<Runtime>,
+		teyrchains_configuration::migration::v8::MigrateToV8<Runtime>,
+		teyrchains_configuration::migration::v9::MigrateToV9<Runtime>,
+		paras_registrar::migration::MigrateToV1<Runtime, ()>,
+		pallet_referenda::migration::v1::MigrateV0ToV1<Runtime, ()>,
+		// NOTE: Gov1 migration steps removed - pallets no longer in runtime
+		// Treasury cleanup still included as it may have existing proposals
+		pallet_treasury::migration::cleanup_proposals::Migration<
+			Runtime,
+			(),
+			BalanceUnreserveWeight,
+		>,
+		// Delete all Gov v1 pallet storage key/values (still needed to clean up any leftover
+		// storage)
+		frame_support::migrations::RemovePallet<
+			DemocracyPalletName,
+			<Runtime as frame_system::Config>::DbWeight,
+		>,
+		frame_support::migrations::RemovePallet<
+			CouncilPalletName,
+			<Runtime as frame_system::Config>::DbWeight,
+		>,
+		frame_support::migrations::RemovePallet<
+			TechnicalCommitteePalletName,
+			<Runtime as frame_system::Config>::DbWeight,
+		>,
+		frame_support::migrations::RemovePallet<
+			PhragmenElectionPalletName,
+			<Runtime as frame_system::Config>::DbWeight,
+		>,
+		frame_support::migrations::RemovePallet<
+			TechnicalMembershipPalletName,
+			<Runtime as frame_system::Config>::DbWeight,
+		>,
+		frame_support::migrations::RemovePallet<
+			TipsPalletName,
+			<Runtime as frame_system::Config>::DbWeight,
+		>,
+		pallet_grandpa::migrations::MigrateV4ToV5<Runtime>,
+		teyrchains_configuration::migration::v10::MigrateToV10<Runtime>,
+		teyrchains_configuration::migration::v11::MigrateToV11<Runtime>,
+		// This needs to come after the `teyrchains_configuration` above as we are reading the
+		// configuration.
+		coretime::migration::MigrateToCoretime<
+			Runtime,
+			crate::xcm_config::XcmRouter,
+			GetLegacyLeaseImpl,
+			TIMESLICE_PERIOD,
+		>,
+		teyrchains_configuration::migration::v12::MigrateToV12<Runtime>,
+		teyrchains_on_demand::migration::MigrateV0ToV1<Runtime>,
 		// migrates session storage item
-		pallet_session::migrations::v1::MigrateV0ToV1<Runtime, pallet_session::migrations::v1::InitOffenceSeverity<Runtime>>,
-
-        // permanent
-        pallet_xcm::migration::MigrateToLatestXcmVersion<Runtime>,
-        teyrchains_inclusion::migration::MigrateToV1<Runtime>,
+		pallet_session::migrations::v1::MigrateV0ToV1<
+			Runtime,
+			pallet_session::migrations::v1::InitOffenceSeverity<Runtime>,
+		>,
+		// permanent
+		pallet_xcm::migration::MigrateToLatestXcmVersion<Runtime>,
+		teyrchains_inclusion::migration::MigrateToV1<Runtime>,
 		teyrchains_shared::migration::MigrateToV1<Runtime>,
-        teyrchains_scheduler::migration::MigrateV2ToV3<Runtime>,
-    );
+		teyrchains_scheduler::migration::MigrateV2ToV3<Runtime>,
+	);
 }
 
 /// Executive: handles dispatch to the various modules.
@@ -2679,8 +2707,9 @@ mod remote_tests {
 		}
 
 		sp_tracing::try_init_simple();
-		let transport: Transport =
-			var("WS").unwrap_or("wss://pezkuwichain-rpc.pezkuwichain.io:443".to_string()).into();
+		let transport: Transport = var("WS")
+			.unwrap_or("wss://pezkuwichain-rpc.pezkuwichain.io:443".to_string())
+			.into();
 		let maybe_state_snapshot: Option<SnapshotConfig> = var("SNAP").map(|s| s.into()).ok();
 		let mut ext = Builder::<Block>::default()
 			.mode(if let Some(state_snapshot) = maybe_state_snapshot {

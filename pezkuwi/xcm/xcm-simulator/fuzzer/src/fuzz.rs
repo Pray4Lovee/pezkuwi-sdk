@@ -26,7 +26,7 @@ use codec::DecodeLimit;
 use pezkuwi_core_primitives::AccountId;
 use pezkuwi_teyrchain_primitives::primitives::Id as ParaId;
 use sp_runtime::{traits::AccountIdConversion, BuildStorage};
-use xcm_simulator::{decl_test_network, decl_test_teyrchain, decl_test_relay_chain, TestExt};
+use xcm_simulator::{decl_test_network, decl_test_relay_chain, decl_test_teyrchain, TestExt};
 
 #[cfg(feature = "try-runtime")]
 use frame_support::traits::{TryState, TryStateSelect::All};

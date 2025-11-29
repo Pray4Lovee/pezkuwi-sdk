@@ -19,9 +19,9 @@
 //! ## How to update this test?
 //!
 //! Usually, this action is required after changes suffered by `cumulus-test-runtime` or
-//! `pezkuwichain-local`. The test starts a relaychain + teyrchain network, where a few nodes are started
-//! based on existing db snapshots, while the rest of the nodes are warp synced to the latest
-//! state. Updating the test means updating the chain specs used to start both relaychain and
+//! `pezkuwichain-local`. The test starts a relaychain + teyrchain network, where a few nodes are
+//! started based on existing db snapshots, while the rest of the nodes are warp synced to the
+//! latest state. Updating the test means updating the chain specs used to start both relaychain and
 //! teyrchain nodes, but also the snapshots.
 //!
 //! ### Updating chain specs

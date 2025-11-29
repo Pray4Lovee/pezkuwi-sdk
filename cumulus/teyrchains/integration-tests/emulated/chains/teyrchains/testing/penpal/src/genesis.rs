@@ -22,8 +22,8 @@ use sp_keyring::Sr25519Keyring as Keyring;
 use emulated_integration_tests_common::{
 	accounts, build_genesis_storage, collators, SAFE_XCM_VERSION,
 };
-use teyrchains_common::{AccountId, Balance};
 use penpal_runtime::xcm_config::{LocalReservableFromAssetHub, RelayLocation, UsdtFromAssetHub};
+use teyrchains_common::{AccountId, Balance};
 // Penpal
 pub const PARA_ID_A: u32 = 2000;
 pub const PARA_ID_B: u32 = 2001;

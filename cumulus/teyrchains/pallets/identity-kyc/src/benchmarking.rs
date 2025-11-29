@@ -3,8 +3,7 @@
 #![cfg(feature = "runtime-benchmarks")]
 
 use super::*;
-use crate::Pallet as IdentityKyc;
-use crate::types::*;
+use crate::{types::*, Pallet as IdentityKyc};
 use frame_benchmarking::v2::*;
 use frame_system::RawOrigin;
 use sp_std::prelude::*;
@@ -16,8 +15,10 @@ mod benchmarks {
 	#[benchmark]
 	fn set_identity() {
 		let caller: T::AccountId = whitelisted_caller();
-		let name: BoundedVec<u8, T::MaxStringLength> = vec![0u8; T::MaxStringLength::get() as usize].try_into().unwrap();
-		let email: BoundedVec<u8, T::MaxStringLength> = vec![0u8; T::MaxStringLength::get() as usize].try_into().unwrap();
+		let name: BoundedVec<u8, T::MaxStringLength> =
+			vec![0u8; T::MaxStringLength::get() as usize].try_into().unwrap();
+		let email: BoundedVec<u8, T::MaxStringLength> =
+			vec![0u8; T::MaxStringLength::get() as usize].try_into().unwrap();
 
 		#[extrinsic_call]
 		set_identity(RawOrigin::Signed(caller.clone()), name, email);
@@ -29,12 +30,19 @@ mod benchmarks {
 	fn apply_for_kyc() {
 		let caller: T::AccountId = whitelisted_caller();
 		// Before calling `apply_for_kyc`, user must have an identity
-		let name: BoundedVec<u8, T::MaxStringLength> = vec![0u8; T::MaxStringLength::get() as usize].try_into().unwrap();
-		let email: BoundedVec<u8, T::MaxStringLength> = vec![0u8; T::MaxStringLength::get() as usize].try_into().unwrap();
-		IdentityKyc::<T>::set_identity(RawOrigin::Signed(caller.clone()).into(), name, email).unwrap();
+		let name: BoundedVec<u8, T::MaxStringLength> =
+			vec![0u8; T::MaxStringLength::get() as usize].try_into().unwrap();
+		let email: BoundedVec<u8, T::MaxStringLength> =
+			vec![0u8; T::MaxStringLength::get() as usize].try_into().unwrap();
+		IdentityKyc::<T>::set_identity(RawOrigin::Signed(caller.clone()).into(), name, email)
+			.unwrap();
 
-		let cids: BoundedVec<BoundedVec<u8, T::MaxCidLength>, T::MaxCidLength> = vec![vec![0u8; T::MaxCidLength::get() as usize].try_into().unwrap()].try_into().unwrap();
-		let notes: BoundedVec<u8, T::MaxStringLength> = vec![0u8; T::MaxStringLength::get() as usize].try_into().unwrap();
+		let cids: BoundedVec<BoundedVec<u8, T::MaxCidLength>, T::MaxCidLength> =
+			vec![vec![0u8; T::MaxCidLength::get() as usize].try_into().unwrap()]
+				.try_into()
+				.unwrap();
+		let notes: BoundedVec<u8, T::MaxStringLength> =
+			vec![0u8; T::MaxStringLength::get() as usize].try_into().unwrap();
 
 		#[extrinsic_call]
 		apply_for_kyc(RawOrigin::Signed(caller.clone()), cids, notes);
@@ -47,13 +55,21 @@ mod benchmarks {
 		let user: T::AccountId = whitelisted_caller();
 		// Before calling `approve_kyc`, user must have a pending application
 		// 1. Create identity
-		let name: BoundedVec<u8, T::MaxStringLength> = vec![0u8; T::MaxStringLength::get() as usize].try_into().unwrap();
-		let email: BoundedVec<u8, T::MaxStringLength> = vec![0u8; T::MaxStringLength::get() as usize].try_into().unwrap();
-		IdentityKyc::<T>::set_identity(RawOrigin::Signed(user.clone()).into(), name, email).unwrap();
+		let name: BoundedVec<u8, T::MaxStringLength> =
+			vec![0u8; T::MaxStringLength::get() as usize].try_into().unwrap();
+		let email: BoundedVec<u8, T::MaxStringLength> =
+			vec![0u8; T::MaxStringLength::get() as usize].try_into().unwrap();
+		IdentityKyc::<T>::set_identity(RawOrigin::Signed(user.clone()).into(), name, email)
+			.unwrap();
 		// 2. Apply for KYC
-		let cids: BoundedVec<BoundedVec<u8, T::MaxCidLength>, T::MaxCidLength> = vec![vec![0u8; T::MaxCidLength::get() as usize].try_into().unwrap()].try_into().unwrap();
-		let notes: BoundedVec<u8, T::MaxStringLength> = vec![0u8; T::MaxStringLength::get() as usize].try_into().unwrap();
-		IdentityKyc::<T>::apply_for_kyc(RawOrigin::Signed(user.clone()).into(), cids, notes).unwrap();
+		let cids: BoundedVec<BoundedVec<u8, T::MaxCidLength>, T::MaxCidLength> =
+			vec![vec![0u8; T::MaxCidLength::get() as usize].try_into().unwrap()]
+				.try_into()
+				.unwrap();
+		let notes: BoundedVec<u8, T::MaxStringLength> =
+			vec![0u8; T::MaxStringLength::get() as usize].try_into().unwrap();
+		IdentityKyc::<T>::apply_for_kyc(RawOrigin::Signed(user.clone()).into(), cids, notes)
+			.unwrap();
 
 		#[extrinsic_call]
 		approve_kyc(RawOrigin::Root, user.clone());
@@ -66,13 +82,21 @@ mod benchmarks {
 		let user: T::AccountId = whitelisted_caller();
 		// Before calling `revoke_kyc`, user's KYC must be approved
 		// 1. Create identity
-		let name: BoundedVec<u8, T::MaxStringLength> = vec![0u8; T::MaxStringLength::get() as usize].try_into().unwrap();
-		let email: BoundedVec<u8, T::MaxStringLength> = vec![0u8; T::MaxStringLength::get() as usize].try_into().unwrap();
-		IdentityKyc::<T>::set_identity(RawOrigin::Signed(user.clone()).into(), name, email).unwrap();
+		let name: BoundedVec<u8, T::MaxStringLength> =
+			vec![0u8; T::MaxStringLength::get() as usize].try_into().unwrap();
+		let email: BoundedVec<u8, T::MaxStringLength> =
+			vec![0u8; T::MaxStringLength::get() as usize].try_into().unwrap();
+		IdentityKyc::<T>::set_identity(RawOrigin::Signed(user.clone()).into(), name, email)
+			.unwrap();
 		// 2. Apply for KYC
-		let cids: BoundedVec<BoundedVec<u8, T::MaxCidLength>, T::MaxCidLength> = vec![vec![0u8; T::MaxCidLength::get() as usize].try_into().unwrap()].try_into().unwrap();
-		let notes: BoundedVec<u8, T::MaxStringLength> = vec![0u8; T::MaxStringLength::get() as usize].try_into().unwrap();
-		IdentityKyc::<T>::apply_for_kyc(RawOrigin::Signed(user.clone()).into(), cids, notes).unwrap();
+		let cids: BoundedVec<BoundedVec<u8, T::MaxCidLength>, T::MaxCidLength> =
+			vec![vec![0u8; T::MaxCidLength::get() as usize].try_into().unwrap()]
+				.try_into()
+				.unwrap();
+		let notes: BoundedVec<u8, T::MaxStringLength> =
+			vec![0u8; T::MaxStringLength::get() as usize].try_into().unwrap();
+		IdentityKyc::<T>::apply_for_kyc(RawOrigin::Signed(user.clone()).into(), cids, notes)
+			.unwrap();
 		// 3. Approve
 		IdentityKyc::<T>::approve_kyc(RawOrigin::Root.into(), user.clone()).unwrap();
 
@@ -87,13 +111,21 @@ mod benchmarks {
 		let caller: T::AccountId = whitelisted_caller();
 		// Before calling `confirm_citizenship`, user must have a pending application
 		// 1. Create identity
-		let name: BoundedVec<u8, T::MaxStringLength> = vec![0u8; T::MaxStringLength::get() as usize].try_into().unwrap();
-		let email: BoundedVec<u8, T::MaxStringLength> = vec![0u8; T::MaxStringLength::get() as usize].try_into().unwrap();
-		IdentityKyc::<T>::set_identity(RawOrigin::Signed(caller.clone()).into(), name, email).unwrap();
+		let name: BoundedVec<u8, T::MaxStringLength> =
+			vec![0u8; T::MaxStringLength::get() as usize].try_into().unwrap();
+		let email: BoundedVec<u8, T::MaxStringLength> =
+			vec![0u8; T::MaxStringLength::get() as usize].try_into().unwrap();
+		IdentityKyc::<T>::set_identity(RawOrigin::Signed(caller.clone()).into(), name, email)
+			.unwrap();
 		// 2. Apply for KYC
-		let cids: BoundedVec<BoundedVec<u8, T::MaxCidLength>, T::MaxCidLength> = vec![vec![0u8; T::MaxCidLength::get() as usize].try_into().unwrap()].try_into().unwrap();
-		let notes: BoundedVec<u8, T::MaxStringLength> = vec![0u8; T::MaxStringLength::get() as usize].try_into().unwrap();
-		IdentityKyc::<T>::apply_for_kyc(RawOrigin::Signed(caller.clone()).into(), cids, notes).unwrap();
+		let cids: BoundedVec<BoundedVec<u8, T::MaxCidLength>, T::MaxCidLength> =
+			vec![vec![0u8; T::MaxCidLength::get() as usize].try_into().unwrap()]
+				.try_into()
+				.unwrap();
+		let notes: BoundedVec<u8, T::MaxStringLength> =
+			vec![0u8; T::MaxStringLength::get() as usize].try_into().unwrap();
+		IdentityKyc::<T>::apply_for_kyc(RawOrigin::Signed(caller.clone()).into(), cids, notes)
+			.unwrap();
 
 		#[extrinsic_call]
 		confirm_citizenship(RawOrigin::Signed(caller.clone()));
@@ -106,13 +138,21 @@ mod benchmarks {
 		let caller: T::AccountId = whitelisted_caller();
 		// Before calling `renounce_citizenship`, user must be a citizen (Approved)
 		// 1. Create identity
-		let name: BoundedVec<u8, T::MaxStringLength> = vec![0u8; T::MaxStringLength::get() as usize].try_into().unwrap();
-		let email: BoundedVec<u8, T::MaxStringLength> = vec![0u8; T::MaxStringLength::get() as usize].try_into().unwrap();
-		IdentityKyc::<T>::set_identity(RawOrigin::Signed(caller.clone()).into(), name, email).unwrap();
+		let name: BoundedVec<u8, T::MaxStringLength> =
+			vec![0u8; T::MaxStringLength::get() as usize].try_into().unwrap();
+		let email: BoundedVec<u8, T::MaxStringLength> =
+			vec![0u8; T::MaxStringLength::get() as usize].try_into().unwrap();
+		IdentityKyc::<T>::set_identity(RawOrigin::Signed(caller.clone()).into(), name, email)
+			.unwrap();
 		// 2. Apply for KYC
-		let cids: BoundedVec<BoundedVec<u8, T::MaxCidLength>, T::MaxCidLength> = vec![vec![0u8; T::MaxCidLength::get() as usize].try_into().unwrap()].try_into().unwrap();
-		let notes: BoundedVec<u8, T::MaxStringLength> = vec![0u8; T::MaxStringLength::get() as usize].try_into().unwrap();
-		IdentityKyc::<T>::apply_for_kyc(RawOrigin::Signed(caller.clone()).into(), cids, notes).unwrap();
+		let cids: BoundedVec<BoundedVec<u8, T::MaxCidLength>, T::MaxCidLength> =
+			vec![vec![0u8; T::MaxCidLength::get() as usize].try_into().unwrap()]
+				.try_into()
+				.unwrap();
+		let notes: BoundedVec<u8, T::MaxStringLength> =
+			vec![0u8; T::MaxStringLength::get() as usize].try_into().unwrap();
+		IdentityKyc::<T>::apply_for_kyc(RawOrigin::Signed(caller.clone()).into(), cids, notes)
+			.unwrap();
 		// 3. Confirm citizenship (self-confirmation)
 		IdentityKyc::<T>::confirm_citizenship(RawOrigin::Signed(caller.clone()).into()).unwrap();
 

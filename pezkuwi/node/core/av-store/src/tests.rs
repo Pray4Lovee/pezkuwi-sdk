@@ -209,8 +209,7 @@ fn candidate_included(receipt: CandidateReceipt) -> CandidateEvent {
 #[cfg(test)]
 fn test_store() -> Arc<dyn Database> {
 	let db = kvdb_memorydb::create(columns::NUM_COLUMNS);
-	let db =
-		pezkuwi_node_subsystem_util::database::kvdb_impl::DbAdapter::new(db, &[columns::META]);
+	let db = pezkuwi_node_subsystem_util::database::kvdb_impl::DbAdapter::new(db, &[columns::META]);
 	Arc::new(db)
 }
 
@@ -1096,8 +1095,7 @@ fn forkfullness_works() {
 		};
 
 		let chunks =
-			pezkuwi_erasure_coding::obtain_chunks_v1(n_validators as _, &available_data_1)
-				.unwrap();
+			pezkuwi_erasure_coding::obtain_chunks_v1(n_validators as _, &available_data_1).unwrap();
 		let branches = pezkuwi_erasure_coding::branches(chunks.as_ref());
 
 		let (tx, rx) = oneshot::channel();
@@ -1116,8 +1114,7 @@ fn forkfullness_works() {
 		rx.await.unwrap().unwrap();
 
 		let chunks =
-			pezkuwi_erasure_coding::obtain_chunks_v1(n_validators as _, &available_data_2)
-				.unwrap();
+			pezkuwi_erasure_coding::obtain_chunks_v1(n_validators as _, &available_data_2).unwrap();
 		let branches = pezkuwi_erasure_coding::branches(chunks.as_ref());
 
 		let (tx, rx) = oneshot::channel();

@@ -70,9 +70,15 @@ fn send_xcm_through_opened_lane_with_different_xcm_version_on_hops_works() {
 	let amount = ASSET_HUB_PEZKUWICHAIN_ED * 1_000;
 
 	// fund the AHR's SA on BHR for paying bridge delivery fees
-	BridgeHubPezkuwichain::fund_para_sovereign(AssetHubPezkuwichain::para_id(), 10_000_000_000_000u128);
+	BridgeHubPezkuwichain::fund_para_sovereign(
+		AssetHubPezkuwichain::para_id(),
+		10_000_000_000_000u128,
+	);
 	// fund sender
-	AssetHubPezkuwichain::fund_accounts(vec![(AssetHubPezkuwichainSender::get().into(), amount * 10)]);
+	AssetHubPezkuwichain::fund_accounts(vec![(
+		AssetHubPezkuwichainSender::get().into(),
+		amount * 10,
+	)]);
 
 	// Initially set only default version on all runtimes
 	let newer_xcm_version = xcm::prelude::XCM_VERSION;

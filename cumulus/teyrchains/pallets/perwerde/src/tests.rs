@@ -1,5 +1,5 @@
 use crate::{
-	mock::{new_test_ext, RuntimeOrigin, System, Test, Perwerde as PerwerdePallet},
+	mock::{new_test_ext, Perwerde as PerwerdePallet, RuntimeOrigin, System, Test},
 	Event,
 };
 use frame_support::{assert_noop, assert_ok, pallet_prelude::Get, BoundedVec};
@@ -27,7 +27,9 @@ fn create_course_works() {
 		assert!(crate::Courses::<Test>::contains_key(0));
 		let course = crate::Courses::<Test>::get(0).unwrap();
 		assert_eq!(course.owner, admin_account_id);
-		System::assert_last_event(Event::CourseCreated { course_id: 0, owner: admin_account_id }.into());
+		System::assert_last_event(
+			Event::CourseCreated { course_id: 0, owner: admin_account_id }.into(),
+		);
 	});
 }
 
@@ -274,7 +276,12 @@ fn complete_course_works() {
 		assert_ok!(PerwerdePallet::enroll(RuntimeOrigin::signed(student), 0));
 
 		// Complete the course (course owner completes for student)
-		assert_ok!(PerwerdePallet::complete_course(RuntimeOrigin::signed(admin), student, 0, points));
+		assert_ok!(PerwerdePallet::complete_course(
+			RuntimeOrigin::signed(admin),
+			student,
+			0,
+			points
+		));
 
 		// Verify completion
 		let enrollment = crate::Enrollments::<Test>::get((student, 0)).unwrap();
@@ -370,7 +377,12 @@ fn complete_course_with_max_points() {
 		assert_ok!(PerwerdePallet::enroll(RuntimeOrigin::signed(student), 0));
 
 		// Complete with maximum points
-		assert_ok!(PerwerdePallet::complete_course(RuntimeOrigin::signed(admin), student, 0, u32::MAX));
+		assert_ok!(PerwerdePallet::complete_course(
+			RuntimeOrigin::signed(admin),
+			student,
+			0,
+			u32::MAX
+		));
 
 		let enrollment = crate::Enrollments::<Test>::get((student, 0)).unwrap();
 		assert_eq!(enrollment.points_earned, u32::MAX);
@@ -392,7 +404,12 @@ fn multiple_students_complete_same_course() {
 		// 3 students enroll and admin completes with different scores
 		for i in 1u64..=3 {
 			assert_ok!(PerwerdePallet::enroll(RuntimeOrigin::signed(i), 0));
-			assert_ok!(PerwerdePallet::complete_course(RuntimeOrigin::signed(admin), i, 0, (70 + (i * 10)) as u32));
+			assert_ok!(PerwerdePallet::complete_course(
+				RuntimeOrigin::signed(admin),
+				i,
+				0,
+				(70 + (i * 10)) as u32
+			));
 		}
 
 		// Verify each completion
@@ -448,9 +465,16 @@ fn complete_course_event_emitted() {
 			create_bounded_vec(b"http://test.com")
 		));
 		assert_ok!(PerwerdePallet::enroll(RuntimeOrigin::signed(student), 0));
-		assert_ok!(PerwerdePallet::complete_course(RuntimeOrigin::signed(admin), student, 0, points));
+		assert_ok!(PerwerdePallet::complete_course(
+			RuntimeOrigin::signed(admin),
+			student,
+			0,
+			points
+		));
 
-		System::assert_last_event(Event::CourseCompleted { student: 7, course_id: 0, points: 88 }.into());
+		System::assert_last_event(
+			Event::CourseCompleted { student: 7, course_id: 0, points: 88 }.into(),
+		);
 	});
 }
 

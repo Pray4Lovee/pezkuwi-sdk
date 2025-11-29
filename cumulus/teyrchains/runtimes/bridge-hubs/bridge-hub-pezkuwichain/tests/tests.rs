@@ -21,15 +21,13 @@ use bridge_hub_pezkuwichain_runtime::{
 	bridge_common_config, bridge_to_bulletin_config, bridge_to_zagros_config,
 	xcm_config::{RelayNetwork, TokenLocation, XcmConfig},
 	AllPalletsWithoutSystem, Block, BridgeRejectObsoleteHeadersAndMessages, Executive,
-	ExistentialDeposit, TeyrchainSystem, PezkuwiXcm, Runtime, RuntimeCall, RuntimeEvent,
-	RuntimeOrigin, SessionKeys, TransactionPayment, TxExtension, UncheckedExtrinsic,
+	ExistentialDeposit, PezkuwiXcm, Runtime, RuntimeCall, RuntimeEvent, RuntimeOrigin, SessionKeys,
+	TeyrchainSystem, TransactionPayment, TxExtension, UncheckedExtrinsic,
 };
 use bridge_hub_test_utils::{GovernanceOrigin, SlotDurations};
 use codec::{Decode, Encode};
 use frame_support::{dispatch::GetDispatchInfo, parameter_types, traits::ConstU8};
 use hex_literal::hex;
-use teyrchains_common::{AccountId, AuraId, Balance};
-use teyrchains_runtimes_test_utils::ExtBuilder;
 use snowbridge_core::ChannelId;
 use sp_consensus_aura::SlotDuration;
 use sp_core::{crypto::Ss58Codec, H160};
@@ -39,6 +37,8 @@ use sp_runtime::{
 	AccountId32, Perbill,
 };
 use testnet_teyrchains_constants::pezkuwichain::{consensus::*, fee::WeightToFee};
+use teyrchains_common::{AccountId, AuraId, Balance};
+use teyrchains_runtimes_test_utils::ExtBuilder;
 use xcm::latest::{prelude::*, PEZKUWICHAIN_GENESIS_HASH, ZAGROS_GENESIS_HASH};
 use xcm_runtime_apis::conversions::LocationToAccountHelper;
 
@@ -136,8 +136,8 @@ mod bridge_hub_zagros_tests {
 	};
 	use bridge_hub_test_utils::test_cases::from_teyrchain;
 	use bridge_to_zagros_config::{
-		BridgeHubZagrosLocation, ZagrosGlobalConsensusNetwork,
-		WithBridgeHubZagrosMessagesInstance, XcmOverBridgeHubZagrosInstance,
+		BridgeHubZagrosLocation, WithBridgeHubZagrosMessagesInstance,
+		XcmOverBridgeHubZagrosInstance, ZagrosGlobalConsensusNetwork,
 	};
 	use cumulus_primitives_core::UpwardMessageSender;
 
@@ -527,7 +527,8 @@ mod bridge_hub_bulletin_tests {
 	};
 	use bridge_hub_test_utils::test_cases::from_grandpa_chain;
 	use bridge_to_bulletin_config::{
-		PezkuwichainBulletinGlobalConsensusNetwork, PezkuwichainBulletinGlobalConsensusNetworkLocation,
+		PezkuwichainBulletinGlobalConsensusNetwork,
+		PezkuwichainBulletinGlobalConsensusNetworkLocation,
 		WithPezkuwichainBulletinMessagesInstance, XcmOverPezkuwiBulletinInstance,
 	};
 	use cumulus_primitives_core::UpwardMessageSender;

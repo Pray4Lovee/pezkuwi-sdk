@@ -51,10 +51,11 @@ fn register_ethereum_asset_on_rah_from_wah() {
 }
 
 fn register_asset_on_rah_from_wah(bridged_asset_at_rah: Location) {
-	let sa_of_wah_on_rah = AssetHubPezkuwichain::sovereign_account_of_teyrchain_on_other_global_consensus(
-		ByGenesis(ZAGROS_GENESIS_HASH),
-		AssetHubZagros::para_id(),
-	);
+	let sa_of_wah_on_rah =
+		AssetHubPezkuwichain::sovereign_account_of_teyrchain_on_other_global_consensus(
+			ByGenesis(ZAGROS_GENESIS_HASH),
+			AssetHubZagros::para_id(),
+		);
 
 	// Encoded `create_asset` call to be executed in Pezkuwichain Asset Hub ForeignAssets pallet.
 	let call = AssetHubPezkuwichain::create_foreign_asset_call(

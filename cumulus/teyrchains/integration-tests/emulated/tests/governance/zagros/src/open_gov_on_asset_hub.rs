@@ -158,10 +158,7 @@ fn assethub_can_authorize_upgrade_for_relay_chain() {
 
 	// check after - authorized
 	Zagros::execute_with(|| {
-		assert_eq!(
-			<Zagros as Chain>::System::authorized_upgrade().unwrap().code_hash(),
-			&code_hash
-		)
+		assert_eq!(<Zagros as Chain>::System::authorized_upgrade().unwrap().code_hash(), &code_hash)
 	});
 }
 

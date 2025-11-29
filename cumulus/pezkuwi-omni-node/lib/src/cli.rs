@@ -343,9 +343,7 @@ impl<Config: CliConfig> RelayChainCli<Config> {
 			{{options}}",
 		);
 
-		pezkuwi_cli::RunCmd::command()
-			.no_binary_name(true)
-			.help_template(help_template)
+		pezkuwi_cli::RunCmd::command().no_binary_name(true).help_template(help_template)
 	}
 
 	/// Parse the relay chain CLI parameters using the teyrchain `Configuration`.

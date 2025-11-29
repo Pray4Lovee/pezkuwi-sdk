@@ -105,7 +105,6 @@ use pezkuwi_node_subsystem_util::{
 	runtime::{self, ClaimQueueSnapshot},
 	Validator,
 };
-use pezkuwi_teyrchain_primitives::primitives::IsSystem;
 use pezkuwi_primitives::{
 	BackedCandidate, CandidateCommitments, CandidateHash, CandidateReceiptV2 as CandidateReceipt,
 	CommittedCandidateReceiptV2 as CommittedCandidateReceipt, CoreIndex, ExecutorParams,
@@ -121,6 +120,7 @@ use pezkuwi_statement_table::{
 	},
 	Context as TableContextTrait, Table,
 };
+use pezkuwi_teyrchain_primitives::primitives::IsSystem;
 use sp_keystore::KeystorePtr;
 
 mod error;

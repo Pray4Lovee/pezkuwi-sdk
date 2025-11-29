@@ -212,8 +212,7 @@ pub fn versi_development_config() -> Result<PezkuwichainChainSpec, String> {
 #[cfg(feature = "zagros-native")]
 pub fn zagros_local_testnet_config() -> Result<ZagrosChainSpec, String> {
 	Ok(ZagrosChainSpec::builder(
-		zagros::fast_runtime_binary::WASM_BINARY
-			.ok_or("Zagros development wasm not available")?,
+		zagros::fast_runtime_binary::WASM_BINARY.ok_or("Zagros development wasm not available")?,
 		Default::default(),
 	)
 	.with_name("Zagros Local Testnet")
@@ -228,7 +227,8 @@ pub fn zagros_local_testnet_config() -> Result<ZagrosChainSpec, String> {
 #[cfg(feature = "pezkuwichain-native")]
 pub fn pezkuwichain_local_testnet_config() -> Result<PezkuwichainChainSpec, String> {
 	Ok(PezkuwichainChainSpec::builder(
-		pezkuwichain::fast_runtime_binary::WASM_BINARY.ok_or("Pezkuwichain development wasm not available")?,
+		pezkuwichain::fast_runtime_binary::WASM_BINARY
+			.ok_or("Pezkuwichain development wasm not available")?,
 		Default::default(),
 	)
 	.with_name("Pezkuwichain Local Testnet")
@@ -243,7 +243,8 @@ pub fn pezkuwichain_local_testnet_config() -> Result<PezkuwichainChainSpec, Stri
 #[cfg(feature = "pezkuwichain-native")]
 pub fn versi_local_testnet_config() -> Result<PezkuwichainChainSpec, String> {
 	Ok(PezkuwichainChainSpec::builder(
-		pezkuwichain::WASM_BINARY.ok_or("Pezkuwichain development wasm (used for versi) not available")?,
+		pezkuwichain::WASM_BINARY
+			.ok_or("Pezkuwichain development wasm (used for versi) not available")?,
 		Default::default(),
 	)
 	.with_name("Versi Local Testnet")

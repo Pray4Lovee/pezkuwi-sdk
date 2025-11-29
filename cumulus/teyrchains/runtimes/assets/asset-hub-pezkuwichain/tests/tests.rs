@@ -25,9 +25,8 @@ use asset_hub_pezkuwichain_runtime::{
 	},
 	AllPalletsWithoutSystem, AssetConversion, AssetDeposit, Assets, Balances, Block,
 	CollatorSelection, ExistentialDeposit, ForeignAssets, ForeignAssetsInstance,
-	MetadataDepositBase, MetadataDepositPerByte, TeyrchainSystem, Runtime, RuntimeCall,
-	RuntimeEvent, RuntimeOrigin, SessionKeys, ToZagrosXcmRouterInstance,
-	TrustBackedAssetsInstance, XcmpQueue,
+	MetadataDepositBase, MetadataDepositPerByte, Runtime, RuntimeCall, RuntimeEvent, RuntimeOrigin,
+	SessionKeys, TeyrchainSystem, ToZagrosXcmRouterInstance, TrustBackedAssetsInstance, XcmpQueue,
 };
 use asset_test_utils::{
 	test_cases_over_bridge::TestBridgingConfig, CollatorSessionKey, CollatorSessionKeys,
@@ -45,12 +44,12 @@ use frame_support::{
 	weights::{Weight, WeightToFee as WeightToFeeT},
 };
 use hex_literal::hex;
-use teyrchains_common::{AccountId, AssetIdForTrustBackedAssets, AuraId, Balance};
 use sp_consensus_aura::SlotDuration;
 use sp_core::crypto::Ss58Codec;
 use sp_runtime::traits::MaybeEquivalence;
 use std::convert::Into;
 use testnet_teyrchains_constants::pezkuwichain::{consensus::*, currency::UNITS, fee::WeightToFee};
+use teyrchains_common::{AccountId, AssetIdForTrustBackedAssets, AuraId, Balance};
 use xcm::latest::{
 	prelude::{Assets as XcmAssets, *},
 	ZAGROS_GENESIS_HASH,
@@ -934,7 +933,10 @@ mod asset_hub_pezkuwichain_tests {
 			collator_session_keys(),
 			bridging_to_asset_hub_zagros,
 			|| bp_asset_hub_pezkuwichain::build_congestion_message(Default::default(), true).into(),
-			|| bp_asset_hub_pezkuwichain::build_congestion_message(Default::default(), false).into(),
+			|| {
+				bp_asset_hub_pezkuwichain::build_congestion_message(Default::default(), false)
+					.into()
+			},
 		)
 	}
 

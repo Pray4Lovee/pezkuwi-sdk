@@ -33,7 +33,7 @@ use cumulus_client_consensus_common::{
 use cumulus_client_consensus_proposer::ProposerInterface;
 use cumulus_client_teyrchain_inherent::{TeyrchainInherentData, TeyrchainInherentDataProvider};
 use cumulus_primitives_core::{
-	relay_chain::Hash as PHash, DigestItem, TeyrchainBlockData, PersistedValidationData,
+	relay_chain::Hash as PHash, DigestItem, PersistedValidationData, TeyrchainBlockData,
 };
 use cumulus_relay_chain_interface::RelayChainInterface;
 

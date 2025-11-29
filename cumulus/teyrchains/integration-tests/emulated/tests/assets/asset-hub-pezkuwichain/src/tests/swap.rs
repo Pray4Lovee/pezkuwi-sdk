@@ -27,25 +27,35 @@ fn swap_locally_on_chain_using_local_assets() {
 		type RuntimeEvent = <AssetHubPezkuwichain as Chain>::RuntimeEvent;
 
 		assert_ok!(<AssetHubPezkuwichain as AssetHubPezkuwichainPallet>::Assets::create(
-			<AssetHubPezkuwichain as Chain>::RuntimeOrigin::signed(AssetHubPezkuwichainSender::get()),
+			<AssetHubPezkuwichain as Chain>::RuntimeOrigin::signed(
+				AssetHubPezkuwichainSender::get()
+			),
 			ASSET_ID.into(),
 			AssetHubPezkuwichainSender::get().into(),
 			1000,
 		));
-		assert!(<AssetHubPezkuwichain as AssetHubPezkuwichainPallet>::Assets::asset_exists(ASSET_ID));
+		assert!(<AssetHubPezkuwichain as AssetHubPezkuwichainPallet>::Assets::asset_exists(
+			ASSET_ID
+		));
 
 		assert_ok!(<AssetHubPezkuwichain as AssetHubPezkuwichainPallet>::Assets::mint(
-			<AssetHubPezkuwichain as Chain>::RuntimeOrigin::signed(AssetHubPezkuwichainSender::get()),
+			<AssetHubPezkuwichain as Chain>::RuntimeOrigin::signed(
+				AssetHubPezkuwichainSender::get()
+			),
 			ASSET_ID.into(),
 			AssetHubPezkuwichainSender::get().into(),
 			100_000_000_000_000,
 		));
 
-		assert_ok!(<AssetHubPezkuwichain as AssetHubPezkuwichainPallet>::AssetConversion::create_pool(
-			<AssetHubPezkuwichain as Chain>::RuntimeOrigin::signed(AssetHubPezkuwichainSender::get()),
-			asset_native.clone(),
-			asset_one.clone(),
-		));
+		assert_ok!(
+			<AssetHubPezkuwichain as AssetHubPezkuwichainPallet>::AssetConversion::create_pool(
+				<AssetHubPezkuwichain as Chain>::RuntimeOrigin::signed(
+					AssetHubPezkuwichainSender::get()
+				),
+				asset_native.clone(),
+				asset_one.clone(),
+			)
+		);
 
 		assert_expected_events!(
 			AssetHubPezkuwichain,
@@ -54,16 +64,20 @@ fn swap_locally_on_chain_using_local_assets() {
 			]
 		);
 
-		assert_ok!(<AssetHubPezkuwichain as AssetHubPezkuwichainPallet>::AssetConversion::add_liquidity(
-			<AssetHubPezkuwichain as Chain>::RuntimeOrigin::signed(AssetHubPezkuwichainSender::get()),
-			asset_native.clone(),
-			asset_one.clone(),
-			1_000_000_000_000,
-			2_000_000_000_000,
-			0,
-			0,
-			AssetHubPezkuwichainSender::get().into()
-		));
+		assert_ok!(
+			<AssetHubPezkuwichain as AssetHubPezkuwichainPallet>::AssetConversion::add_liquidity(
+				<AssetHubPezkuwichain as Chain>::RuntimeOrigin::signed(
+					AssetHubPezkuwichainSender::get()
+				),
+				asset_native.clone(),
+				asset_one.clone(),
+				1_000_000_000_000,
+				2_000_000_000_000,
+				0,
+				0,
+				AssetHubPezkuwichainSender::get().into()
+			)
+		);
 
 		assert_expected_events!(
 			AssetHubPezkuwichain,
@@ -95,15 +109,20 @@ fn swap_locally_on_chain_using_local_assets() {
 			]
 		);
 
-		assert_ok!(<AssetHubPezkuwichain as AssetHubPezkuwichainPallet>::AssetConversion::remove_liquidity(
-			<AssetHubPezkuwichain as Chain>::RuntimeOrigin::signed(AssetHubPezkuwichainSender::get()),
-			asset_native,
-			asset_one,
-			1414213562273 - ASSET_HUB_PEZKUWICHAIN_ED * 2, // all but the 2 EDs can't be retrieved.
-			0,
-			0,
-			AssetHubPezkuwichainSender::get().into(),
-		));
+		assert_ok!(
+			<AssetHubPezkuwichain as AssetHubPezkuwichainPallet>::AssetConversion::remove_liquidity(
+				<AssetHubPezkuwichain as Chain>::RuntimeOrigin::signed(
+					AssetHubPezkuwichainSender::get()
+				),
+				asset_native,
+				asset_one,
+				1414213562273 - ASSET_HUB_PEZKUWICHAIN_ED * 2, /* all but the 2 EDs can't be
+				                                                * retrieved. */
+				0,
+				0,
+				AssetHubPezkuwichainSender::get().into(),
+			)
+		);
 	});
 }
 
@@ -138,7 +157,9 @@ fn swap_locally_on_chain_using_foreign_assets() {
 		type RuntimeEvent = <AssetHubPezkuwichain as Chain>::RuntimeEvent;
 		// 1. Mint foreign asset (in reality this should be a teleport or some such)
 		assert_ok!(<AssetHubPezkuwichain as AssetHubPezkuwichainPallet>::ForeignAssets::mint(
-			<AssetHubPezkuwichain as Chain>::RuntimeOrigin::signed(sov_penpal_on_ahr.clone().into()),
+			<AssetHubPezkuwichain as Chain>::RuntimeOrigin::signed(
+				sov_penpal_on_ahr.clone().into()
+			),
 			foreign_asset_at_asset_hub_pezkuwichain.clone(),
 			sov_penpal_on_ahr.clone().into(),
 			ASSET_HUB_PEZKUWICHAIN_ED * 3_000_000_000_000,
@@ -152,11 +173,15 @@ fn swap_locally_on_chain_using_foreign_assets() {
 		);
 
 		// 2. Create pool:
-		assert_ok!(<AssetHubPezkuwichain as AssetHubPezkuwichainPallet>::AssetConversion::create_pool(
-			<AssetHubPezkuwichain as Chain>::RuntimeOrigin::signed(AssetHubPezkuwichainSender::get()),
-			asset_native.clone(),
-			Box::new(foreign_asset_at_asset_hub_pezkuwichain.clone()),
-		));
+		assert_ok!(
+			<AssetHubPezkuwichain as AssetHubPezkuwichainPallet>::AssetConversion::create_pool(
+				<AssetHubPezkuwichain as Chain>::RuntimeOrigin::signed(
+					AssetHubPezkuwichainSender::get()
+				),
+				asset_native.clone(),
+				Box::new(foreign_asset_at_asset_hub_pezkuwichain.clone()),
+			)
+		);
 
 		assert_expected_events!(
 			AssetHubPezkuwichain,
@@ -166,16 +191,18 @@ fn swap_locally_on_chain_using_foreign_assets() {
 		);
 
 		// 3. Add liquidity:
-		assert_ok!(<AssetHubPezkuwichain as AssetHubPezkuwichainPallet>::AssetConversion::add_liquidity(
-			<AssetHubPezkuwichain as Chain>::RuntimeOrigin::signed(sov_penpal_on_ahr.clone()),
-			asset_native.clone(),
-			Box::new(foreign_asset_at_asset_hub_pezkuwichain.clone()),
-			1_000_000_000_000,
-			2_000_000_000_000,
-			0,
-			0,
-			sov_penpal_on_ahr.clone().into()
-		));
+		assert_ok!(
+			<AssetHubPezkuwichain as AssetHubPezkuwichainPallet>::AssetConversion::add_liquidity(
+				<AssetHubPezkuwichain as Chain>::RuntimeOrigin::signed(sov_penpal_on_ahr.clone()),
+				asset_native.clone(),
+				Box::new(foreign_asset_at_asset_hub_pezkuwichain.clone()),
+				1_000_000_000_000,
+				2_000_000_000_000,
+				0,
+				0,
+				sov_penpal_on_ahr.clone().into()
+			)
+		);
 
 		assert_expected_events!(
 			AssetHubPezkuwichain,
@@ -187,7 +214,8 @@ fn swap_locally_on_chain_using_foreign_assets() {
 		);
 
 		// 4. Swap!
-		let path = vec![asset_native.clone(), Box::new(foreign_asset_at_asset_hub_pezkuwichain.clone())];
+		let path =
+			vec![asset_native.clone(), Box::new(foreign_asset_at_asset_hub_pezkuwichain.clone())];
 
 		assert_ok!(
 			<AssetHubPezkuwichain as AssetHubPezkuwichainPallet>::AssetConversion::swap_exact_tokens_for_tokens(
@@ -211,15 +239,18 @@ fn swap_locally_on_chain_using_foreign_assets() {
 		);
 
 		// 5. Remove liquidity
-		assert_ok!(<AssetHubPezkuwichain as AssetHubPezkuwichainPallet>::AssetConversion::remove_liquidity(
-			<AssetHubPezkuwichain as Chain>::RuntimeOrigin::signed(sov_penpal_on_ahr.clone()),
-			asset_native.clone(),
-			Box::new(foreign_asset_at_asset_hub_pezkuwichain.clone()),
-			1414213562273 - ASSET_HUB_PEZKUWICHAIN_ED * 2, // all but the 2 EDs can't be retrieved.
-			0,
-			0,
-			sov_penpal_on_ahr.clone().into(),
-		));
+		assert_ok!(
+			<AssetHubPezkuwichain as AssetHubPezkuwichainPallet>::AssetConversion::remove_liquidity(
+				<AssetHubPezkuwichain as Chain>::RuntimeOrigin::signed(sov_penpal_on_ahr.clone()),
+				asset_native.clone(),
+				Box::new(foreign_asset_at_asset_hub_pezkuwichain.clone()),
+				1414213562273 - ASSET_HUB_PEZKUWICHAIN_ED * 2, /* all but the 2 EDs can't be
+				                                                * retrieved. */
+				0,
+				0,
+				sov_penpal_on_ahr.clone().into(),
+			)
+		);
 	});
 }
 
@@ -238,7 +269,9 @@ fn cannot_create_pool_from_pool_assets() {
 			pool_owner_account_id.clone().into(),
 			1000,
 		));
-		assert!(<AssetHubPezkuwichain as AssetHubPezkuwichainPallet>::PoolAssets::asset_exists(ASSET_ID));
+		assert!(<AssetHubPezkuwichain as AssetHubPezkuwichainPallet>::PoolAssets::asset_exists(
+			ASSET_ID
+		));
 
 		assert_ok!(<AssetHubPezkuwichain as AssetHubPezkuwichainPallet>::PoolAssets::mint(
 			<AssetHubPezkuwichain as Chain>::RuntimeOrigin::signed(pool_owner_account_id),
@@ -269,34 +302,44 @@ fn pay_xcm_fee_with_some_asset_swapped_for_native() {
 		]
 		.into(),
 	};
-	let penpal = AssetHubPezkuwichain::sovereign_account_id_of(AssetHubPezkuwichain::sibling_location_of(
-		PenpalA::para_id(),
-	));
+	let penpal = AssetHubPezkuwichain::sovereign_account_id_of(
+		AssetHubPezkuwichain::sibling_location_of(PenpalA::para_id()),
+	);
 
 	AssetHubPezkuwichain::execute_with(|| {
 		type RuntimeEvent = <AssetHubPezkuwichain as Chain>::RuntimeEvent;
 
 		// set up pool with ASSET_ID <> NATIVE pair
 		assert_ok!(<AssetHubPezkuwichain as AssetHubPezkuwichainPallet>::Assets::create(
-			<AssetHubPezkuwichain as Chain>::RuntimeOrigin::signed(AssetHubPezkuwichainSender::get()),
+			<AssetHubPezkuwichain as Chain>::RuntimeOrigin::signed(
+				AssetHubPezkuwichainSender::get()
+			),
 			ASSET_ID.into(),
 			AssetHubPezkuwichainSender::get().into(),
 			ASSET_MIN_BALANCE,
 		));
-		assert!(<AssetHubPezkuwichain as AssetHubPezkuwichainPallet>::Assets::asset_exists(ASSET_ID));
+		assert!(<AssetHubPezkuwichain as AssetHubPezkuwichainPallet>::Assets::asset_exists(
+			ASSET_ID
+		));
 
 		assert_ok!(<AssetHubPezkuwichain as AssetHubPezkuwichainPallet>::Assets::mint(
-			<AssetHubPezkuwichain as Chain>::RuntimeOrigin::signed(AssetHubPezkuwichainSender::get()),
+			<AssetHubPezkuwichain as Chain>::RuntimeOrigin::signed(
+				AssetHubPezkuwichainSender::get()
+			),
 			ASSET_ID.into(),
 			AssetHubPezkuwichainSender::get().into(),
 			3_000_000_000_000,
 		));
 
-		assert_ok!(<AssetHubPezkuwichain as AssetHubPezkuwichainPallet>::AssetConversion::create_pool(
-			<AssetHubPezkuwichain as Chain>::RuntimeOrigin::signed(AssetHubPezkuwichainSender::get()),
-			Box::new(asset_native.clone()),
-			Box::new(asset_one.clone()),
-		));
+		assert_ok!(
+			<AssetHubPezkuwichain as AssetHubPezkuwichainPallet>::AssetConversion::create_pool(
+				<AssetHubPezkuwichain as Chain>::RuntimeOrigin::signed(
+					AssetHubPezkuwichainSender::get()
+				),
+				Box::new(asset_native.clone()),
+				Box::new(asset_one.clone()),
+			)
+		);
 
 		assert_expected_events!(
 			AssetHubPezkuwichain,
@@ -305,16 +348,20 @@ fn pay_xcm_fee_with_some_asset_swapped_for_native() {
 			]
 		);
 
-		assert_ok!(<AssetHubPezkuwichain as AssetHubPezkuwichainPallet>::AssetConversion::add_liquidity(
-			<AssetHubPezkuwichain as Chain>::RuntimeOrigin::signed(AssetHubPezkuwichainSender::get()),
-			Box::new(asset_native),
-			Box::new(asset_one),
-			1_000_000_000_000,
-			2_000_000_000_000,
-			0,
-			0,
-			AssetHubPezkuwichainSender::get().into()
-		));
+		assert_ok!(
+			<AssetHubPezkuwichain as AssetHubPezkuwichainPallet>::AssetConversion::add_liquidity(
+				<AssetHubPezkuwichain as Chain>::RuntimeOrigin::signed(
+					AssetHubPezkuwichainSender::get()
+				),
+				Box::new(asset_native),
+				Box::new(asset_one),
+				1_000_000_000_000,
+				2_000_000_000_000,
+				0,
+				0,
+				AssetHubPezkuwichainSender::get().into()
+			)
+		);
 
 		assert_expected_events!(
 			AssetHubPezkuwichain,
@@ -325,18 +372,24 @@ fn pay_xcm_fee_with_some_asset_swapped_for_native() {
 
 		// ensure `penpal` sovereign account has no native tokens and mint some `ASSET_ID`
 		assert_eq!(
-			<AssetHubPezkuwichain as AssetHubPezkuwichainPallet>::Balances::free_balance(penpal.clone()),
+			<AssetHubPezkuwichain as AssetHubPezkuwichainPallet>::Balances::free_balance(
+				penpal.clone()
+			),
 			0
 		);
 
 		assert_ok!(<AssetHubPezkuwichain as AssetHubPezkuwichainPallet>::Assets::touch_other(
-			<AssetHubPezkuwichain as Chain>::RuntimeOrigin::signed(AssetHubPezkuwichainSender::get()),
+			<AssetHubPezkuwichain as Chain>::RuntimeOrigin::signed(
+				AssetHubPezkuwichainSender::get()
+			),
 			ASSET_ID.into(),
 			penpal.clone().into(),
 		));
 
 		assert_ok!(<AssetHubPezkuwichain as AssetHubPezkuwichainPallet>::Assets::mint(
-			<AssetHubPezkuwichain as Chain>::RuntimeOrigin::signed(AssetHubPezkuwichainSender::get()),
+			<AssetHubPezkuwichain as Chain>::RuntimeOrigin::signed(
+				AssetHubPezkuwichainSender::get()
+			),
 			ASSET_ID.into(),
 			penpal.clone().into(),
 			10_000_000_000_000,
@@ -358,7 +411,8 @@ fn pay_xcm_fee_with_some_asset_swapped_for_native() {
 		let fee_amount = 4_000_000_000_000u128;
 		let asset_one =
 			([PalletInstance(ASSETS_PALLET_ID), GeneralIndex(ASSET_ID.into())], fee_amount).into();
-		let asset_hub_location = PenpalA::sibling_location_of(AssetHubPezkuwichain::para_id()).into();
+		let asset_hub_location =
+			PenpalA::sibling_location_of(AssetHubPezkuwichain::para_id()).into();
 		let xcm = xcm_transact_paid_execution(
 			call,
 			OriginKind::SovereignAccount,

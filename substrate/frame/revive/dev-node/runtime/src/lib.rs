@@ -49,8 +49,8 @@ use pezkuwi_sdk::{
 use sp_weights::ConstantMultiplier;
 
 pub use pezkuwi_sdk::{
-	teyrchains_common::{AccountId, Balance, BlockNumber, Hash, Header, Nonce, Signature},
 	pezkuwi_sdk_frame::runtime::types_common::OpaqueBlock,
+	teyrchains_common::{AccountId, Balance, BlockNumber, Hash, Header, Nonce, Signature},
 };
 
 pub mod currency {

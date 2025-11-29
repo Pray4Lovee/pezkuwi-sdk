@@ -46,8 +46,8 @@ use sp_version::RuntimeVersion;
 
 // Local module imports
 use super::{
-	AccountId, Balance, Block, ConsensusHook, Executive, InherentDataExt, Nonce, TeyrchainSystem,
-	Runtime, RuntimeCall, RuntimeGenesisConfig, SessionKeys, System, TransactionPayment,
+	AccountId, Balance, Block, ConsensusHook, Executive, InherentDataExt, Nonce, Runtime,
+	RuntimeCall, RuntimeGenesisConfig, SessionKeys, System, TeyrchainSystem, TransactionPayment,
 	SLOT_DURATION, VERSION,
 };
 

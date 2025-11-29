@@ -17,8 +17,8 @@
 use crate::{error::InternalValidationError, ArtifactChecksum};
 use codec::{Decode, Encode};
 use pezkuwi_node_primitives::PoV;
-use pezkuwi_teyrchain_primitives::primitives::ValidationResult;
 use pezkuwi_primitives::{ExecutorParams, PersistedValidationData};
+use pezkuwi_teyrchain_primitives::primitives::ValidationResult;
 use std::time::Duration;
 
 /// The payload of the one-time handshake that is done when a worker process is created. Carries

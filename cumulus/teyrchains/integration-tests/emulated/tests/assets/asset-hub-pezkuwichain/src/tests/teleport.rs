@@ -264,7 +264,12 @@ fn teleport_via_limited_teleport_assets_from_and_to_relay() {
 fn teleport_via_transfer_assets_from_and_to_relay() {
 	let amount = PEZKUWICHAIN_ED * 100;
 
-	test_relay_is_trusted_teleporter!(Pezkuwichain, vec![AssetHubPezkuwichain], amount, transfer_assets);
+	test_relay_is_trusted_teleporter!(
+		Pezkuwichain,
+		vec![AssetHubPezkuwichain],
+		amount,
+		transfer_assets
+	);
 
 	test_teyrchain_is_trusted_teleporter_for_relay!(
 		AssetHubPezkuwichain,
@@ -372,7 +377,10 @@ pub fn do_bidirectional_teleport_foreign_assets_between_para_and_asset_hub_using
 		asset_amount_to_send,
 	);
 	// fund Teyrchain's check account to be able to teleport
-	PenpalA::fund_accounts(vec![(penpal_check_account.clone().into(), ASSET_HUB_PEZKUWICHAIN_ED * 1000)]);
+	PenpalA::fund_accounts(vec![(
+		penpal_check_account.clone().into(),
+		ASSET_HUB_PEZKUWICHAIN_ED * 1000,
+	)]);
 
 	// prefund SA of Penpal on AssetHub with enough native tokens to pay for fees
 	let penpal_as_seen_by_ah = AssetHubPezkuwichain::sibling_location_of(PenpalA::para_id());
@@ -426,7 +434,8 @@ pub fn do_bidirectional_teleport_foreign_assets_between_para_and_asset_hub_using
 	});
 
 	penpal_to_ah.set_assertion::<PenpalA>(penpal_to_ah_foreign_assets_sender_assertions);
-	penpal_to_ah.set_assertion::<AssetHubPezkuwichain>(penpal_to_ah_foreign_assets_receiver_assertions);
+	penpal_to_ah
+		.set_assertion::<AssetHubPezkuwichain>(penpal_to_ah_foreign_assets_receiver_assertions);
 	penpal_to_ah.set_dispatchable::<PenpalA>(para_to_ah_dispatchable);
 	penpal_to_ah.assert();
 
@@ -474,7 +483,9 @@ pub fn do_bidirectional_teleport_foreign_assets_between_para_and_asset_hub_using
 	AssetHubPezkuwichain::execute_with(|| {
 		type ForeignAssets = <AssetHubPezkuwichain as AssetHubPezkuwichainPallet>::ForeignAssets;
 		assert_ok!(ForeignAssets::transfer(
-			<AssetHubPezkuwichain as Chain>::RuntimeOrigin::signed(AssetHubPezkuwichainReceiver::get()),
+			<AssetHubPezkuwichain as Chain>::RuntimeOrigin::signed(
+				AssetHubPezkuwichainReceiver::get()
+			),
 			foreign_asset_at_asset_hub_pezkuwichain.clone().try_into().unwrap(),
 			AssetHubPezkuwichainSender::get().into(),
 			asset_amount_to_send,
@@ -527,7 +538,8 @@ pub fn do_bidirectional_teleport_foreign_assets_between_para_and_asset_hub_using
 		<Assets as Inspect<_>>::balance(asset_id_on_penpal, &PenpalAReceiver::get())
 	});
 
-	ah_to_penpal.set_assertion::<AssetHubPezkuwichain>(ah_to_penpal_foreign_assets_sender_assertions);
+	ah_to_penpal
+		.set_assertion::<AssetHubPezkuwichain>(ah_to_penpal_foreign_assets_sender_assertions);
 	ah_to_penpal.set_assertion::<PenpalA>(ah_to_penpal_foreign_assets_receiver_assertions);
 	ah_to_penpal.set_dispatchable::<AssetHubPezkuwichain>(ah_to_para_dispatchable);
 	ah_to_penpal.assert();
@@ -583,8 +595,9 @@ fn bidirectional_teleport_foreign_assets_between_para_and_asset_hub() {
 fn teleport_to_untrusted_chain_fails() {
 	// Init values for Teyrchain Origin
 	let destination = AssetHubPezkuwichain::sibling_location_of(PenpalA::para_id());
-	let signed_origin =
-		<AssetHubPezkuwichain as Chain>::RuntimeOrigin::signed(AssetHubPezkuwichainSender::get().into());
+	let signed_origin = <AssetHubPezkuwichain as Chain>::RuntimeOrigin::signed(
+		AssetHubPezkuwichainSender::get().into(),
+	);
 	let roc_to_send: Balance = PEZKUWICHAIN_ED * 10000;
 	let roc_location = RelayLocation::get();
 

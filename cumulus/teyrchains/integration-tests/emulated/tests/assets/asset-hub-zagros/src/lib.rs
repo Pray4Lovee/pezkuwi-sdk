@@ -37,11 +37,12 @@ mod imports {
 	pub(crate) use asset_test_utils::xcm_helpers;
 	pub(crate) use emulated_integration_tests_common::{
 		accounts::DUMMY_EMPTY,
-		test_teyrchain_is_trusted_teleporter, test_teyrchain_is_trusted_teleporter_for_relay,
-		test_relay_is_trusted_teleporter, test_xcm_fee_querying_apis_work_for_asset_hub,
+		test_relay_is_trusted_teleporter, test_teyrchain_is_trusted_teleporter,
+		test_teyrchain_is_trusted_teleporter_for_relay,
+		test_xcm_fee_querying_apis_work_for_asset_hub,
 		xcm_emulator::{
-			assert_expected_events, bx, Chain, Teyrchain as Para, RelayChain as Relay, Test,
-			TestArgs, TestContext, TestExt,
+			assert_expected_events, bx, Chain, RelayChain as Relay, Test, TestArgs, TestContext,
+			TestExt, Teyrchain as Para,
 		},
 		xcm_helpers::{
 			fee_asset, find_mq_processed_id, find_xcm_sent_message_id,
@@ -57,8 +58,8 @@ mod imports {
 				self,
 				governance::TreasuryAccount,
 				xcm_config::{
-					self as ahw_xcm_config, ZagrosLocation as RelayLocation,
-					XcmConfig as AssetHubZagrosXcmConfig,
+					self as ahw_xcm_config, XcmConfig as AssetHubZagrosXcmConfig,
+					ZagrosLocation as RelayLocation,
 				},
 				AssetConversionOrigin as AssetHubZagrosAssetConversionOrigin,
 				ExistentialDeposit as AssetHubZagrosExistentialDeposit, ForeignAssetReserveData,
@@ -95,10 +96,8 @@ mod imports {
 			},
 			ZagrosRelayPallet as ZagrosPallet,
 		},
-		AssetHubZagrosPara as AssetHubZagros,
-		AssetHubZagrosParaReceiver as AssetHubZagrosReceiver,
-		AssetHubZagrosParaSender as AssetHubZagrosSender,
-		BridgeHubZagrosPara as BridgeHubZagros,
+		AssetHubZagrosPara as AssetHubZagros, AssetHubZagrosParaReceiver as AssetHubZagrosReceiver,
+		AssetHubZagrosParaSender as AssetHubZagrosSender, BridgeHubZagrosPara as BridgeHubZagros,
 		BridgeHubZagrosParaReceiver as BridgeHubZagrosReceiver,
 		CollectivesZagrosPara as CollectivesZagros, CoretimeZagrosPara as CoretimeZagros,
 		PenpalAPara as PenpalA, PenpalAParaReceiver as PenpalAReceiver,

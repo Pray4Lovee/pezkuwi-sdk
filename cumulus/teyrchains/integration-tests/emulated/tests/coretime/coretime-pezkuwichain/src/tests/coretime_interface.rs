@@ -123,7 +123,8 @@ fn transact_hardcoded_weights_are_sane() {
 
 	// Keep track of the relay chain block number so we can fast forward while still checking the
 	// right block.
-	let mut block_number_cursor = Pezkuwichain::ext_wrapper(<Pezkuwichain as Chain>::System::block_number);
+	let mut block_number_cursor =
+		Pezkuwichain::ext_wrapper(<Pezkuwichain as Chain>::System::block_number);
 
 	let config = CoretimePezkuwichain::ext_wrapper(|| {
 		Configuration::<<CoretimePezkuwichain as Chain>::Runtime>::get()

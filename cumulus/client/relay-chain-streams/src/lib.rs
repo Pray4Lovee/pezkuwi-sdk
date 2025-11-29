@@ -67,13 +67,14 @@ pub async fn pending_candidates(
 					)
 				})
 				.ok()?;
-			let teyrchain_host_runtime_api_version = runtime_api_version
-				.api_version(
-					&<dyn pezkuwi_primitives::runtime_api::TeyrchainHost<
-						pezkuwi_primitives::Block,
-					>>::ID,
-				)
-				.unwrap_or_default();
+			let teyrchain_host_runtime_api_version =
+				runtime_api_version
+					.api_version(
+						&<dyn pezkuwi_primitives::runtime_api::TeyrchainHost<
+							pezkuwi_primitives::Block,
+						>>::ID,
+					)
+					.unwrap_or_default();
 
 			// If the relay chain runtime does not support the new runtime API, fallback to the
 			// deprecated one.

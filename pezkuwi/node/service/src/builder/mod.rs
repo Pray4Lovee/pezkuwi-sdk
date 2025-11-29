@@ -25,10 +25,9 @@ pub(crate) use partial::{new_partial, new_partial_basics};
 use crate::{
 	grandpa_support, open_database,
 	overseer::{ExtendedOverseerGenArgs, OverseerGen, OverseerGenArgs},
-	teyrchains_db,
 	relay_chain_selection::SelectRelayChain,
-	workers, Chain, Error, FullBackend, FullClient, IdentifyVariant, IsTeyrchainNode,
-	GRANDPA_JUSTIFICATION_PERIOD, KEEP_FINALIZED_FOR_LIVE_NETWORKS,
+	teyrchains_db, workers, Chain, Error, FullBackend, FullClient, IdentifyVariant,
+	IsTeyrchainNode, GRANDPA_JUSTIFICATION_PERIOD, KEEP_FINALIZED_FOR_LIVE_NETWORKS,
 };
 use frame_benchmarking_cli::SUBSTRATE_REFERENCE_HARDWARE;
 use gum::info;
@@ -429,7 +428,10 @@ where
 			let availability_config = AvailabilityConfig {
 				col_data: teyrchains_db::REAL_COLUMNS.col_availability_data,
 				col_meta: teyrchains_db::REAL_COLUMNS.col_availability_meta,
-				keep_finalized_for: if matches!(config.chain_spec.identify_chain(), Chain::Pezkuwichain) {
+				keep_finalized_for: if matches!(
+					config.chain_spec.identify_chain(),
+					Chain::Pezkuwichain
+				) {
 					keep_finalized_for.unwrap_or(1)
 				} else {
 					KEEP_FINALIZED_FOR_LIVE_NETWORKS

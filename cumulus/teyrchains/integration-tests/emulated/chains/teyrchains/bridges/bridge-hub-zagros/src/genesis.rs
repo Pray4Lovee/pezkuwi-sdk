@@ -49,8 +49,8 @@ pub fn genesis() -> Storage {
 				.into_iter()
 				.map(|(acc, aura)| {
 					(
-						acc.clone(),                                      // account id
-						acc,                                              // validator id
+						acc.clone(),                                     // account id
+						acc,                                             // validator id
 						bridge_hub_zagros_runtime::SessionKeys { aura }, // session keys
 					)
 				})
@@ -69,20 +69,21 @@ pub fn genesis() -> Storage {
 			owner: Some(Keyring::Bob.to_account_id()),
 			..Default::default()
 		},
-		xcm_over_bridge_hub_pezkuwichain: bridge_hub_zagros_runtime::XcmOverBridgeHubPezkuwichainConfig {
-			opened_bridges: vec![
-				// open AHW -> AHR bridge
-				(
-					Location::new(1, [Teyrchain(1000)]),
-					Junctions::from([
-						NetworkId::ByGenesis(PEZKUWICHAIN_GENESIS_HASH).into(),
-						Teyrchain(1000),
-					]),
-					Some(bp_messages::LegacyLaneId([0, 0, 0, 2])),
-				),
-			],
-			..Default::default()
-		},
+		xcm_over_bridge_hub_pezkuwichain:
+			bridge_hub_zagros_runtime::XcmOverBridgeHubPezkuwichainConfig {
+				opened_bridges: vec![
+					// open AHW -> AHR bridge
+					(
+						Location::new(1, [Teyrchain(1000)]),
+						Junctions::from([
+							NetworkId::ByGenesis(PEZKUWICHAIN_GENESIS_HASH).into(),
+							Teyrchain(1000),
+						]),
+						Some(bp_messages::LegacyLaneId([0, 0, 0, 2])),
+					),
+				],
+				..Default::default()
+			},
 		ethereum_system: bridge_hub_zagros_runtime::EthereumSystemConfig {
 			para_id: PARA_ID.into(),
 			asset_hub_para_id: ASSETHUB_PARA_ID.into(),

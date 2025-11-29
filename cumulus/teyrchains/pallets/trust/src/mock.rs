@@ -3,11 +3,12 @@ use frame_support::{
 	derive_impl, parameter_types,
 	traits::{ConstU16, ConstU64},
 };
+use frame_system as system;
 use sp_core::H256;
 use sp_runtime::{
-	traits::{BlakeTwo256, IdentityLookup}, BuildStorage,
+	traits::{BlakeTwo256, IdentityLookup},
+	BuildStorage,
 };
-use frame_system as system;
 
 type Block = frame_system::mocking::MockBlock<Test>;
 

@@ -79,7 +79,8 @@ fn transfer_assets_para_to_para_through_ah_call(
 ) -> <PenpalA as Chain>::RuntimeCall {
 	type RuntimeCall = <PenpalA as Chain>::RuntimeCall;
 
-	let asset_hub_location: Location = PenpalB::sibling_location_of(AssetHubPezkuwichain::para_id());
+	let asset_hub_location: Location =
+		PenpalB::sibling_location_of(AssetHubPezkuwichain::para_id());
 	let custom_xcm_on_dest = Xcm::<()>(vec![DepositAsset {
 		assets: Wild(AllCounted(test.args.assets.len() as u32)),
 		beneficiary: test.args.beneficiary,
@@ -108,7 +109,8 @@ fn multi_hop_works() {
 	let fee_asset_id: AssetId = Parent.into();
 	let relay_native_asset_location = Location::parent();
 	let sender_as_seen_by_ah = AssetHubPezkuwichain::sibling_location_of(PenpalA::para_id());
-	let sov_of_sender_on_ah = AssetHubPezkuwichain::sovereign_account_id_of(sender_as_seen_by_ah.clone());
+	let sov_of_sender_on_ah =
+		AssetHubPezkuwichain::sovereign_account_id_of(sender_as_seen_by_ah.clone());
 
 	// fund Teyrchain's sender account
 	PenpalA::mint_foreign_asset(

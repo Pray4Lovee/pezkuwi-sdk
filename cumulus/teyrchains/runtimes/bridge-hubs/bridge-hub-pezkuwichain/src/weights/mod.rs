@@ -19,8 +19,8 @@
 
 use ::pallet_bridge_grandpa::WeightInfoExt as GrandpaWeightInfoExt;
 use ::pallet_bridge_messages::WeightInfoExt as MessagesWeightInfoExt;
-use ::pallet_bridge_teyrchains::WeightInfoExt as TeyrchainsWeightInfoExt;
 use ::pallet_bridge_relayers::WeightInfo as _;
+use ::pallet_bridge_teyrchains::WeightInfoExt as TeyrchainsWeightInfoExt;
 
 pub mod block_weights;
 pub mod cumulus_pallet_teyrchain_system;
@@ -33,9 +33,9 @@ pub mod pallet_balances;
 pub mod pallet_bridge_grandpa;
 pub mod pallet_bridge_messages_pezkuwichain_to_pezkuwichain_bulletin;
 pub mod pallet_bridge_messages_pezkuwichain_to_zagros;
-pub mod pallet_bridge_teyrchains;
 pub mod pallet_bridge_relayers_legacy;
 pub mod pallet_bridge_relayers_permissionless_lanes;
+pub mod pallet_bridge_teyrchains;
 pub mod pallet_collator_selection;
 pub mod pallet_message_queue;
 pub mod pallet_multisig;

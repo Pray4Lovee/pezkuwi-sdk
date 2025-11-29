@@ -19,10 +19,10 @@ use crate::*;
 use alloc::{vec, vec::Vec};
 use cumulus_primitives_core::ParaId;
 use frame_support::build_struct_json_patch;
-use teyrchains_common::{AccountId, AuraId};
 use sp_genesis_builder::PresetId;
 use sp_keyring::Sr25519Keyring;
 use testnet_teyrchains_constants::zagros::xcm_version::SAFE_XCM_VERSION;
+use teyrchains_common::{AccountId, AuraId};
 use xcm::latest::PEZKUWICHAIN_GENESIS_HASH;
 
 const BRIDGE_HUB_ZAGROS_ED: Balance = ExistentialDeposit::get();
@@ -61,8 +61,12 @@ fn bridge_hub_zagros_genesis(
 				.collect(),
 		},
 		pezkuwi_xcm: PezkuwiXcmConfig { safe_xcm_version: Some(SAFE_XCM_VERSION) },
-		bridge_pezkuwichain_grandpa: BridgePezkuwichainGrandpaConfig { owner: bridges_pallet_owner.clone() },
-		bridge_pezkuwichain_messages: BridgePezkuwichainMessagesConfig { owner: bridges_pallet_owner.clone() },
+		bridge_pezkuwichain_grandpa: BridgePezkuwichainGrandpaConfig {
+			owner: bridges_pallet_owner.clone()
+		},
+		bridge_pezkuwichain_messages: BridgePezkuwichainMessagesConfig {
+			owner: bridges_pallet_owner.clone()
+		},
 		xcm_over_bridge_hub_pezkuwichain: XcmOverBridgeHubPezkuwichainConfig { opened_bridges },
 		ethereum_system: EthereumSystemConfig { para_id: id, asset_hub_para_id },
 	})

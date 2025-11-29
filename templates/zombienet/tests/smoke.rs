@@ -53,7 +53,8 @@ mod smoke {
 	}
 
 	fn get_config(network_spec: NetworkSpec) -> Result<NetworkConfig, anyhow::Error> {
-		let chain = if network_spec.relaychain_cmd == "pezkuwi" { "pezkuwichain-local" } else { "dev" };
+		let chain =
+			if network_spec.relaychain_cmd == "pezkuwi" { "pezkuwichain-local" } else { "dev" };
 		let config = NetworkConfigBuilder::new().with_relaychain(|r| {
 			let mut r = r.with_chain(chain).with_default_command(network_spec.relaychain_cmd);
 			if let Some(path) = network_spec.relaychain_spec_path {

@@ -22,13 +22,12 @@ mod imports {
 	pub(crate) use emulated_integration_tests_common::{
 		accounts::ALICE,
 		test_teyrchain_is_trusted_teleporter,
-		xcm_emulator::{assert_expected_events, bx, Chain, Teyrchain, TestExt},
+		xcm_emulator::{assert_expected_events, bx, Chain, TestExt, Teyrchain},
 	};
 	pub(crate) use zagros_system_emulated_network::{
 		asset_hub_zagros_emulated_chain::{
 			asset_hub_zagros_runtime::xcm_config::LocationToAccountId as AssetHubLocationToAccountId,
-			genesis::ED as ASSET_HUB_ZAGROS_ED,
-			AssetHubZagrosParaPallet as AssetHubZagrosPallet,
+			genesis::ED as ASSET_HUB_ZAGROS_ED, AssetHubZagrosParaPallet as AssetHubZagrosPallet,
 		},
 		bridge_hub_zagros_emulated_chain::BridgeHubZagrosParaPallet as BridgeHubZagrosPallet,
 		collectives_zagros_emulated_chain::{
@@ -44,15 +43,12 @@ mod imports {
 		people_zagros_emulated_chain::PeopleZagrosParaPallet as PeopleZagrosPallet,
 		zagros_emulated_chain::{
 			genesis::ED as ZAGROS_ED,
-			zagros_runtime::{
-				governance as zagros_governance, OriginCaller as ZagrosOriginCaller,
-			},
+			zagros_runtime::{governance as zagros_governance, OriginCaller as ZagrosOriginCaller},
 			ZagrosRelayPallet as ZagrosPallet,
 		},
-		AssetHubZagrosPara as AssetHubZagros,
-		AssetHubZagrosParaReceiver as AssetHubZagrosReceiver,
-		AssetHubZagrosParaSender as AssetHubZagrosSender,
-		BridgeHubZagrosPara as BridgeHubZagros, CollectivesZagrosPara as CollectivesZagros,
+		AssetHubZagrosPara as AssetHubZagros, AssetHubZagrosParaReceiver as AssetHubZagrosReceiver,
+		AssetHubZagrosParaSender as AssetHubZagrosSender, BridgeHubZagrosPara as BridgeHubZagros,
+		CollectivesZagrosPara as CollectivesZagros,
 		CollectivesZagrosParaReceiver as CollectivesZagrosReceiver,
 		CollectivesZagrosParaSender as CollectivesZagrosSender,
 		CoretimeZagrosPara as CoretimeZagros, PenpalBPara as PenpalB,

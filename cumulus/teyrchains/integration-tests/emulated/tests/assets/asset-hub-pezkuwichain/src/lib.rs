@@ -36,18 +36,18 @@ mod imports {
 	pub(crate) use asset_test_utils::xcm_helpers;
 	pub(crate) use emulated_integration_tests_common::{
 		accounts::DUMMY_EMPTY,
-		test_teyrchain_is_trusted_teleporter, test_teyrchain_is_trusted_teleporter_for_relay,
-		test_relay_is_trusted_teleporter, test_xcm_fee_querying_apis_work_for_asset_hub,
+		test_relay_is_trusted_teleporter, test_teyrchain_is_trusted_teleporter,
+		test_teyrchain_is_trusted_teleporter_for_relay,
+		test_xcm_fee_querying_apis_work_for_asset_hub,
 		xcm_emulator::{
-			assert_expected_events, bx, Chain, Teyrchain as Para, RelayChain as Relay, Test,
-			TestArgs, TestContext, TestExt,
+			assert_expected_events, bx, Chain, RelayChain as Relay, Test, TestArgs, TestContext,
+			TestExt, Teyrchain as Para,
 		},
 		xcm_helpers::{
 			fee_asset, get_amount_from_versioned_assets, non_fee_asset, xcm_transact_paid_execution,
 		},
 		PenpalATeleportableAssetLocation, ASSETS_PALLET_ID, RESERVABLE_ASSET_ID, XCM_V3,
 	};
-	pub(crate) use teyrchains_common::Balance;
 	pub(crate) use pezkuwichain_system_emulated_network::{
 		asset_hub_pezkuwichain_emulated_chain::{
 			asset_hub_pezkuwichain_runtime::{
@@ -82,13 +82,17 @@ mod imports {
 			},
 			PezkuwichainRelayPallet as PezkuwichainPallet,
 		},
-		AssetHubPezkuwichainPara as AssetHubPezkuwichain, AssetHubPezkuwichainParaReceiver as AssetHubPezkuwichainReceiver,
-		AssetHubPezkuwichainParaSender as AssetHubPezkuwichainSender, BridgeHubPezkuwichainPara as BridgeHubPezkuwichain,
+		AssetHubPezkuwichainPara as AssetHubPezkuwichain,
+		AssetHubPezkuwichainParaReceiver as AssetHubPezkuwichainReceiver,
+		AssetHubPezkuwichainParaSender as AssetHubPezkuwichainSender,
+		BridgeHubPezkuwichainPara as BridgeHubPezkuwichain,
 		BridgeHubPezkuwichainParaReceiver as BridgeHubPezkuwichainReceiver, PenpalAPara as PenpalA,
 		PenpalAParaReceiver as PenpalAReceiver, PenpalAParaSender as PenpalASender,
-		PenpalBPara as PenpalB, PenpalBParaReceiver as PenpalBReceiver, PezkuwichainRelay as Pezkuwichain,
-		PezkuwichainRelayReceiver as PezkuwichainReceiver, PezkuwichainRelaySender as PezkuwichainSender,
+		PenpalBPara as PenpalB, PenpalBParaReceiver as PenpalBReceiver,
+		PezkuwichainRelay as Pezkuwichain, PezkuwichainRelayReceiver as PezkuwichainReceiver,
+		PezkuwichainRelaySender as PezkuwichainSender,
 	};
+	pub(crate) use teyrchains_common::Balance;
 
 	pub(crate) const ASSET_ID: u32 = 3;
 	pub(crate) const ASSET_MIN_BALANCE: u128 = 1000;

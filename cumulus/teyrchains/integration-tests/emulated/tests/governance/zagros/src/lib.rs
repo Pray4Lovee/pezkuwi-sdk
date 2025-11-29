@@ -27,8 +27,8 @@ mod imports {
 	};
 	pub(crate) use frame_support::{assert_err, assert_ok};
 	pub(crate) use sp_runtime::{traits::Dispatchable, DispatchError};
-	pub(crate) use zagros_system_emulated_network::CollectivesZagrosPara as CollectivesZagros;
 	pub(crate) use xcm::{latest::prelude::*, VersionedLocation, VersionedXcm};
+	pub(crate) use zagros_system_emulated_network::CollectivesZagrosPara as CollectivesZagros;
 
 	pub(crate) use zagros_system_emulated_network::{
 		AssetHubZagrosPara as AssetHubZagros, BridgeHubZagrosPara as BridgeHubZagros,

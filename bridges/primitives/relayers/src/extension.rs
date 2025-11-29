@@ -19,8 +19,8 @@
 
 use bp_header_chain::SubmitFinalityProofInfo;
 use bp_messages::MessagesCallInfo;
-use bp_teyrchains::SubmitTeyrchainHeadsInfo;
 use bp_runtime::StaticStrProvider;
+use bp_teyrchains::SubmitTeyrchainHeadsInfo;
 use codec::{Decode, Encode};
 use frame_support::{
 	dispatch::CallableCallFor, traits::IsSubType, weights::Weight, RuntimeDebugNoBound,

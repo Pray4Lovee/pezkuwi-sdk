@@ -29,9 +29,7 @@ use pezkuwi_node_subsystem::{
 	overseer,
 };
 use pezkuwi_node_subsystem_util::runtime::RuntimeInfo;
-use pezkuwi_primitives::{
-	AuthorityDiscoveryId, CandidateHash, Hash, Id as ParaId, ValidatorIndex,
-};
+use pezkuwi_primitives::{AuthorityDiscoveryId, CandidateHash, Hash, Id as ParaId, ValidatorIndex};
 
 use crate::{
 	error::{Error, FatalError, JfyiError, Result},

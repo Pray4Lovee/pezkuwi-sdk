@@ -23,7 +23,7 @@ use xcm_simulator::TestExt;
 
 use super::{
 	network::{MockNet, ParaA, Relay, ALICE, BOB, CENTS, INITIAL_BALANCE},
-	teyrchain, relay_chain,
+	relay_chain, teyrchain,
 };
 
 #[docify::export]

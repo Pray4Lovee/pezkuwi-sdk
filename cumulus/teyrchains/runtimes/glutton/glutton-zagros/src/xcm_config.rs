@@ -14,8 +14,8 @@
 // limitations under the License.
 
 use super::{
-	AccountId, AllPalletsWithSystem, TeyrchainInfo, Runtime, RuntimeCall, RuntimeEvent,
-	RuntimeOrigin,
+	AccountId, AllPalletsWithSystem, Runtime, RuntimeCall, RuntimeEvent, RuntimeOrigin,
+	TeyrchainInfo,
 };
 use frame_support::{
 	parameter_types,

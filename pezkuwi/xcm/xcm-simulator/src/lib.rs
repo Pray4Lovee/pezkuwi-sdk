@@ -34,13 +34,13 @@ pub use frame_support::{
 pub use sp_io::{hashing::blake2_256, TestExternalities};
 
 pub use pezkuwi_core_primitives::BlockNumber as RelayBlockNumber;
-pub use pezkuwi_teyrchain_primitives::primitives::{
-	DmpMessageHandler as DmpMessageHandlerT, Id as ParaId, XcmpMessageFormat,
-	XcmpMessageHandler as XcmpMessageHandlerT,
-};
 pub use pezkuwi_runtime_teyrchains::{
 	dmp,
 	inclusion::{AggregateMessageOrigin, UmpQueueId},
+};
+pub use pezkuwi_teyrchain_primitives::primitives::{
+	DmpMessageHandler as DmpMessageHandlerT, Id as ParaId, XcmpMessageFormat,
+	XcmpMessageHandler as XcmpMessageHandlerT,
 };
 pub use xcm::{latest::prelude::*, VersionedXcm};
 pub use xcm_builder::ProcessXcmMessage;

@@ -17,10 +17,10 @@
 use crate::relay_chain::{
 	constants::RelayNetwork, location_converter::LocationConverter, RuntimeOrigin,
 };
-use pezkuwi_teyrchain_primitives::primitives::Id as ParaId;
 use pezkuwi_runtime_teyrchains::origin;
+use pezkuwi_teyrchain_primitives::primitives::Id as ParaId;
 use xcm_builder::{
-	ChildTeyrchainAsNative, ChildSystemTeyrchainAsSuperuser, SignedAccountId32AsNative,
+	ChildSystemTeyrchainAsSuperuser, ChildTeyrchainAsNative, SignedAccountId32AsNative,
 	SovereignSignedViaLocation,
 };
 

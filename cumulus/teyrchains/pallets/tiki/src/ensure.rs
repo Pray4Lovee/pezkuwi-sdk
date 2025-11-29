@@ -26,9 +26,9 @@ where
 
 	fn try_origin(o: T::RuntimeOrigin) -> Result<Self::Success, T::RuntimeOrigin> {
 		let who = match ensure_signed(o.clone()) {
-            Ok(account) => account,
-            Err(_) => return Err(o),
-        };
+			Ok(account) => account,
+			Err(_) => return Err(o),
+		};
 		let required_tiki = I::tiki();
 		match TikiPallet::<T>::tiki_holder(required_tiki) {
 			Some(holder) if holder == who => Ok(who),
@@ -49,17 +49,23 @@ where
 /// `Serok` rolünü temsil eden marker.
 pub struct SerokRole;
 impl GetTiki for SerokRole {
-	fn tiki() -> crate::Tiki { crate::Tiki::Serok }
+	fn tiki() -> crate::Tiki {
+		crate::Tiki::Serok
+	}
 }
 
 /// `Wezir` rolünü temsil eden marker.
 pub struct WezirRole;
 impl GetTiki for WezirRole {
-	fn tiki() -> crate::Tiki { crate::Tiki::Wezir }
+	fn tiki() -> crate::Tiki {
+		crate::Tiki::Wezir
+	}
 }
 
 /// `Parlementer` rolünü temsil eden marker.
 pub struct ParlementerRole;
 impl GetTiki for ParlementerRole {
-	fn tiki() -> crate::Tiki { crate::Tiki::Parlementer }
+	fn tiki() -> crate::Tiki {
+		crate::Tiki::Parlementer
+	}
 }

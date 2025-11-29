@@ -649,9 +649,7 @@ mod tests {
 	use assert_matches::assert_matches;
 	use futures::future::{join, FutureExt};
 	use pezkuwi_node_subsystem::{messages::RuntimeApiRequest, AllMessages};
-	use pezkuwi_node_subsystem_test_helpers::{
-		make_subsystem_context, TestSubsystemContextHandle,
-	};
+	use pezkuwi_node_subsystem_test_helpers::{make_subsystem_context, TestSubsystemContextHandle};
 	use pezkuwi_overseer::SubsystemContext;
 	use pezkuwi_primitives::Header;
 	use sp_core::testing::TaskExecutor;

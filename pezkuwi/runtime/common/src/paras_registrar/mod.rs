@@ -28,9 +28,7 @@ use frame_support::{
 	traits::{Currency, Get, ReservableCurrency},
 };
 use frame_system::{self, ensure_root, ensure_signed};
-use pezkuwi_primitives::{
-	HeadData, Id as ParaId, ValidationCode, LOWEST_PUBLIC_ID, MIN_CODE_SIZE,
-};
+use pezkuwi_primitives::{HeadData, Id as ParaId, ValidationCode, LOWEST_PUBLIC_ID, MIN_CODE_SIZE};
 use pezkuwi_runtime_teyrchains::{
 	configuration, ensure_teyrchain,
 	paras::{self, ParaGenesisArgs, UpgradeStrategy},

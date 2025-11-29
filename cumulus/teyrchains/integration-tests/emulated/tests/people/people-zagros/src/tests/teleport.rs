@@ -15,20 +15,15 @@
 
 use crate::imports::*;
 use emulated_integration_tests_common::{
-	test_teyrchain_is_trusted_teleporter, test_teyrchain_is_trusted_teleporter_for_relay,
-	test_relay_is_trusted_teleporter,
+	test_relay_is_trusted_teleporter, test_teyrchain_is_trusted_teleporter,
+	test_teyrchain_is_trusted_teleporter_for_relay,
 };
 
 #[test]
 fn teleport_via_limited_teleport_assets_from_and_to_relay() {
 	let amount = ZAGROS_ED * 100;
 
-	test_relay_is_trusted_teleporter!(
-		Zagros,
-		vec![PeopleZagros],
-		amount,
-		limited_teleport_assets
-	);
+	test_relay_is_trusted_teleporter!(Zagros, vec![PeopleZagros], amount, limited_teleport_assets);
 
 	test_teyrchain_is_trusted_teleporter_for_relay!(
 		PeopleZagros,
@@ -44,12 +39,7 @@ fn teleport_via_transfer_assets_from_and_to_relay() {
 
 	test_relay_is_trusted_teleporter!(Zagros, vec![PeopleZagros], amount, transfer_assets);
 
-	test_teyrchain_is_trusted_teleporter_for_relay!(
-		PeopleZagros,
-		Zagros,
-		amount,
-		transfer_assets
-	);
+	test_teyrchain_is_trusted_teleporter_for_relay!(PeopleZagros, Zagros, amount, transfer_assets);
 }
 
 #[test]

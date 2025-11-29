@@ -58,7 +58,8 @@ impl LoadSpec for ChainSpecLoader {
 	fn load_spec(&self, id: &str) -> Result<Box<dyn ChainSpec>, String> {
 		Ok(match id {
 			// - Default-like
-			"staging" => Box::new(pezkuwichain_teyrchain::staging_pezkuwichain_teyrchain_local_config()),
+			"staging" =>
+				Box::new(pezkuwichain_teyrchain::staging_pezkuwichain_teyrchain_local_config()),
 			"tick" => Box::new(GenericChainSpec::from_json_bytes(
 				&include_bytes!("../../chain-specs/tick.json")[..],
 			)?),
@@ -80,10 +81,13 @@ impl LoadSpec for ChainSpecLoader {
 			)?),
 
 			// -- Asset Hub Pezkuwichain
-			"asset-hub-pezkuwichain-dev" => Box::new(asset_hubs::asset_hub_pezkuwichain_development_config()),
-			"asset-hub-pezkuwichain-local" => Box::new(asset_hubs::asset_hub_pezkuwichain_local_config()),
+			"asset-hub-pezkuwichain-dev" =>
+				Box::new(asset_hubs::asset_hub_pezkuwichain_development_config()),
+			"asset-hub-pezkuwichain-local" =>
+				Box::new(asset_hubs::asset_hub_pezkuwichain_local_config()),
 			// the chain spec as used for generating the upgrade genesis values
-			"asset-hub-pezkuwichain-genesis" => Box::new(asset_hubs::asset_hub_pezkuwichain_genesis_config()),
+			"asset-hub-pezkuwichain-genesis" =>
+				Box::new(asset_hubs::asset_hub_pezkuwichain_genesis_config()),
 			"asset-hub-pezkuwichain" => Box::new(GenericChainSpec::from_json_bytes(
 				&include_bytes!("../../chain-specs/asset-hub-pezkuwichain.json")[..],
 			)?),
@@ -109,8 +113,7 @@ impl LoadSpec for ChainSpecLoader {
 			// -- Zagros Collectives
 			"collectives-zagros-dev" =>
 				Box::new(collectives::collectives_zagros_development_config()),
-			"collectives-zagros-local" =>
-				Box::new(collectives::collectives_zagros_local_config()),
+			"collectives-zagros-local" => Box::new(collectives::collectives_zagros_local_config()),
 			"collectives-zagros" => Box::new(GenericChainSpec::from_json_bytes(
 				&include_bytes!("../../chain-specs/collectives-zagros.json")[..],
 			)?),
@@ -339,7 +342,8 @@ mod tests {
 			create_default_with_extensions("penpal-pezkuwichain-1000", Extensions2::default());
 		assert_eq!(LegacyRuntime::Penpal, LegacyRuntime::from_id(chain_spec.id()));
 
-		let chain_spec = crate::chain_spec::pezkuwichain_teyrchain::pezkuwichain_teyrchain_local_config();
+		let chain_spec =
+			crate::chain_spec::pezkuwichain_teyrchain::pezkuwichain_teyrchain_local_config();
 		assert_eq!(LegacyRuntime::Omni, LegacyRuntime::from_id(chain_spec.id()));
 	}
 }

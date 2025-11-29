@@ -22,8 +22,8 @@
 use crate::{
 	bridge_common_config::RelayersForPermissionlessLanesInstance, weights,
 	xcm_config::UniversalLocation, AccountId, Balance, Balances, BridgePezkuwichainBulletinGrandpa,
-	BridgePezkuwichainBulletinMessages, Runtime, RuntimeEvent, RuntimeHoldReason, XcmOverPezkuwichainBulletin,
-	XcmRouter,
+	BridgePezkuwichainBulletinMessages, Runtime, RuntimeEvent, RuntimeHoldReason,
+	XcmOverPezkuwichainBulletin, XcmRouter,
 };
 use bp_messages::{
 	source_chain::FromBridgedChainMessagesDeliveryProof,
@@ -94,19 +94,23 @@ type FromPezkuwichainBulletinMessageBlobDispatcher = BridgeBlobDispatcher<
 
 /// Transaction extension that refunds relayers that are delivering messages from the Pezkuwichain
 /// Bulletin chain.
-pub type OnBridgeHubPezkuwichainRefundPezkuwichainBulletinMessages = BridgeRelayersTransactionExtension<
-	Runtime,
-	WithMessagesExtensionConfig<
-		StrOnBridgeHubPezkuwichainRefundPezkuwichainBulletinMessages,
+pub type OnBridgeHubPezkuwichainRefundPezkuwichainBulletinMessages =
+	BridgeRelayersTransactionExtension<
 		Runtime,
-		WithPezkuwichainBulletinMessagesInstance,
-		RelayersForPermissionlessLanesInstance,
-		PriorityBoostPerMessage,
-	>,
->;
-bp_runtime::generate_static_str_provider!(OnBridgeHubPezkuwichainRefundPezkuwichainBulletinMessages);
+		WithMessagesExtensionConfig<
+			StrOnBridgeHubPezkuwichainRefundPezkuwichainBulletinMessages,
+			Runtime,
+			WithPezkuwichainBulletinMessagesInstance,
+			RelayersForPermissionlessLanesInstance,
+			PriorityBoostPerMessage,
+		>,
+	>;
+bp_runtime::generate_static_str_provider!(
+	OnBridgeHubPezkuwichainRefundPezkuwichainBulletinMessages
+);
 
-/// Add XCM messages support for BridgeHubPezkuwichain to support Pezkuwichain->Pezkuwichain Bulletin XCM messages.
+/// Add XCM messages support for BridgeHubPezkuwichain to support Pezkuwichain->Pezkuwichain
+/// Bulletin XCM messages.
 pub type WithPezkuwichainBulletinMessagesInstance = pallet_bridge_messages::Instance4;
 impl pallet_bridge_messages::Config<WithPezkuwichainBulletinMessagesInstance> for Runtime {
 	type RuntimeEvent = RuntimeEvent;
@@ -164,8 +168,8 @@ mod tests {
 	use bridge_runtime_common::{
 		assert_complete_bridge_types, integrity::check_message_lane_weights,
 	};
-	use teyrchains_common::Balance;
 	use testnet_teyrchains_constants::pezkuwichain;
+	use teyrchains_common::Balance;
 
 	/// Every additional message in the message delivery transaction boosts its priority.
 	/// So the priority of transaction with `N+1` messages is larger than priority of

@@ -42,7 +42,6 @@ use pezkuwi_node_subsystem_util::{
 	runtime::{fetch_scheduling_lookahead, ClaimQueueSnapshot},
 };
 use pezkuwi_overseer::{ActivatedLeaf, ActiveLeavesUpdate};
-use pezkuwi_teyrchain_primitives::primitives::ValidationResult as WasmValidationResult;
 use pezkuwi_primitives::{
 	executor_params::{
 		DEFAULT_APPROVAL_EXECUTION_TIMEOUT, DEFAULT_BACKING_EXECUTION_TIMEOUT,
@@ -55,6 +54,7 @@ use pezkuwi_primitives::{
 	PersistedValidationData, PvfExecKind as RuntimePvfExecKind, PvfPrepKind, SessionIndex,
 	ValidationCode, ValidationCodeHash, ValidatorId,
 };
+use pezkuwi_teyrchain_primitives::primitives::ValidationResult as WasmValidationResult;
 use sp_application_crypto::{AppCrypto, ByteArray};
 use sp_keystore::KeystorePtr;
 

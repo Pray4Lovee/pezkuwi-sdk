@@ -79,7 +79,8 @@ impl pallet_assets::Config for Test {
 	type AssetId = u32;
 	type AssetIdParameter = u32;
 	type Currency = Balances;
-	type CreateOrigin = frame_support::traits::AsEnsureOriginWithArg<frame_system::EnsureSigned<u64>>;
+	type CreateOrigin =
+		frame_support::traits::AsEnsureOriginWithArg<frame_system::EnsureSigned<u64>>;
 	type ForceOrigin = frame_system::EnsureRoot<u64>;
 	type AssetDeposit = ConstU128<1>;
 	type AssetAccountDeposit = ConstU128<0>; // No deposit required for test environment
@@ -123,15 +124,13 @@ impl pallet_presale::Config for Test {
 
 // Build genesis storage according to the mock runtime.
 pub fn new_test_ext() -> sp_io::TestExternalities {
-	let mut t = frame_system::GenesisConfig::<Test>::default()
-		.build_storage()
-		.unwrap();
+	let mut t = frame_system::GenesisConfig::<Test>::default().build_storage().unwrap();
 
 	pallet_balances::GenesisConfig::<Test> {
 		balances: vec![
-			(1, 1_000_000_000_000_000), // Alice
-			(2, 1_000_000_000_000_000), // Bob
-			(3, 1_000_000_000_000_000), // Charlie
+			(1, 1_000_000_000_000_000),   // Alice
+			(2, 1_000_000_000_000_000),   // Bob
+			(3, 1_000_000_000_000_000),   // Charlie
 			(999, 1_000_000_000_000_000), // Platform Treasury
 			(998, 1_000_000_000_000_000), // Staking Pool
 		],
@@ -172,12 +171,7 @@ pub fn create_assets() {
 pub fn mint_assets(asset_id: u32, account: u64, amount: u128) {
 	use frame_support::assert_ok;
 
-	assert_ok!(Assets::mint(
-		RuntimeOrigin::signed(1),
-		asset_id.into(),
-		account,
-		amount
-	));
+	assert_ok!(Assets::mint(RuntimeOrigin::signed(1), asset_id.into(), account, amount));
 }
 
 // Helper to get presale sub-account treasury for a specific presale ID
@@ -194,8 +188,5 @@ pub fn presale_treasury(presale_id: u32) -> u64 {
 
 	// Convert hash to u64 (since Test uses u64 as AccountId)
 	// Take first 8 bytes and convert to u64
-	u64::from_le_bytes([
-		hash[0], hash[1], hash[2], hash[3],
-		hash[4], hash[5], hash[6], hash[7],
-	])
+	u64::from_le_bytes([hash[0], hash[1], hash[2], hash[3], hash[4], hash[5], hash[6], hash[7]])
 }

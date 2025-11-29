@@ -22,8 +22,8 @@ pub mod benchmarking;
 pub mod chain_spec;
 mod fake_runtime_api;
 mod grandpa_support;
-mod teyrchains_db;
 mod relay_chain_selection;
+mod teyrchains_db;
 
 #[cfg(feature = "full-node")]
 pub mod builder;
@@ -426,8 +426,8 @@ pub fn new_chain_ops(
 
 /// Build a full node.
 ///
-/// The actual "flavor", aka if it will use `Pezkuwi`, `Pezkuwichain` or `Kusama` is determined based on
-/// [`IdentifyVariant`] using the chain spec.
+/// The actual "flavor", aka if it will use `Pezkuwi`, `Pezkuwichain` or `Kusama` is determined
+/// based on [`IdentifyVariant`] using the chain spec.
 #[cfg(feature = "full-node")]
 pub fn build_full<OverseerGenerator: OverseerGen>(
 	config: Configuration,

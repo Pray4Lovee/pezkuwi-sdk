@@ -32,18 +32,19 @@ mod imports {
 	pub(crate) use emulated_integration_tests_common::{
 		accounts::ALICE,
 		impls::Inspect,
-		test_dry_run_transfer_across_pk_bridge, test_teyrchain_is_trusted_teleporter,
-		test_teyrchain_is_trusted_teleporter_for_relay, test_relay_is_trusted_teleporter,
+		test_dry_run_transfer_across_pk_bridge, test_relay_is_trusted_teleporter,
+		test_teyrchain_is_trusted_teleporter, test_teyrchain_is_trusted_teleporter_for_relay,
 		xcm_emulator::{
-			assert_expected_events, bx, Chain, Teyrchain as Para, RelayChain as Relay, TestExt,
+			assert_expected_events, bx, Chain, RelayChain as Relay, TestExt, Teyrchain as Para,
 		},
 		xcm_helpers::xcm_transact_paid_execution,
 		ASSETS_PALLET_ID, USDT_ID,
 	};
-	pub(crate) use teyrchains_common::AccountId;
 	pub(crate) use pezkuwichain_zagros_system_emulated_network::{
 		asset_hub_pezkuwichain_emulated_chain::{
-			asset_hub_pezkuwichain_runtime::{xcm_config::TreasuryAccount, ForeignAssetReserveData},
+			asset_hub_pezkuwichain_runtime::{
+				xcm_config::TreasuryAccount, ForeignAssetReserveData,
+			},
 			genesis::ED as ASSET_HUB_PEZKUWICHAIN_ED,
 			AssetHubPezkuwichainParaPallet as AssetHubPezkuwichainPallet,
 		},
@@ -62,17 +63,23 @@ mod imports {
 			},
 			PenpalAParaPallet as PenpalAPallet, PenpalAssetOwner,
 		},
-		pezkuwichain_emulated_chain::{genesis::ED as PEZKUWICHAIN_ED, PezkuwichainRelayPallet as PezkuwichainPallet},
-		AssetHubPezkuwichainPara as AssetHubPezkuwichain, AssetHubPezkuwichainParaReceiver as AssetHubPezkuwichainReceiver,
-		AssetHubPezkuwichainParaSender as AssetHubPezkuwichainSender, AssetHubZagrosPara as AssetHubZagros,
-		AssetHubZagrosParaReceiver as AssetHubZagrosReceiver,
-		AssetHubZagrosParaSender as AssetHubZagrosSender, BridgeHubPezkuwichainPara as BridgeHubPezkuwichain,
+		pezkuwichain_emulated_chain::{
+			genesis::ED as PEZKUWICHAIN_ED, PezkuwichainRelayPallet as PezkuwichainPallet,
+		},
+		AssetHubPezkuwichainPara as AssetHubPezkuwichain,
+		AssetHubPezkuwichainParaReceiver as AssetHubPezkuwichainReceiver,
+		AssetHubPezkuwichainParaSender as AssetHubPezkuwichainSender,
+		AssetHubZagrosPara as AssetHubZagros, AssetHubZagrosParaReceiver as AssetHubZagrosReceiver,
+		AssetHubZagrosParaSender as AssetHubZagrosSender,
+		BridgeHubPezkuwichainPara as BridgeHubPezkuwichain,
 		BridgeHubPezkuwichainParaReceiver as BridgeHubPezkuwichainReceiver,
 		BridgeHubPezkuwichainParaSender as BridgeHubPezkuwichainSender,
 		BridgeHubZagrosPara as BridgeHubZagros, PenpalAPara as PenpalA,
 		PenpalAParaSender as PenpalASender, PezkuwichainRelay as Pezkuwichain,
-		PezkuwichainRelayReceiver as PezkuwichainReceiver, PezkuwichainRelaySender as PezkuwichainSender,
+		PezkuwichainRelayReceiver as PezkuwichainReceiver,
+		PezkuwichainRelaySender as PezkuwichainSender,
 	};
+	pub(crate) use teyrchains_common::AccountId;
 
 	pub(crate) const ASSET_ID: u32 = 1;
 	pub(crate) const ASSET_MIN_BALANCE: u128 = 1000;

@@ -28,21 +28,21 @@ pub use weights::WeightInfo;
 pub use weights_ext::WeightInfoExt;
 
 use bp_header_chain::{HeaderChain, HeaderChainError};
+use bp_pezkuwi_core::teyrchains::{ParaHash, ParaHead, ParaHeadsProof, ParaId};
+use bp_runtime::{Chain, HashOf, HeaderId, HeaderIdOf, Teyrchain};
 use bp_teyrchains::{
 	ParaInfo, ParaStoredHeaderData, RelayBlockHash, RelayBlockHasher, RelayBlockNumber,
 	SubmitTeyrchainHeadsInfo,
 };
-use bp_pezkuwi_core::teyrchains::{ParaHash, ParaHead, ParaHeadsProof, ParaId};
-use bp_runtime::{Chain, HashOf, HeaderId, HeaderIdOf, Teyrchain};
 use frame_support::{dispatch::PostDispatchInfo, DefaultNoBound};
 use pallet_bridge_grandpa::SubmitFinalityProofHelper;
-use proofs::{TeyrchainsStorageProofAdapter, StorageProofAdapter};
+use proofs::{StorageProofAdapter, TeyrchainsStorageProofAdapter};
 use sp_std::{marker::PhantomData, vec::Vec};
 
 #[cfg(feature = "runtime-benchmarks")]
-use bp_teyrchains::ParaStoredHeaderDataBuilder;
-#[cfg(feature = "runtime-benchmarks")]
 use bp_runtime::HeaderOf;
+#[cfg(feature = "runtime-benchmarks")]
+use bp_teyrchains::ParaStoredHeaderDataBuilder;
 #[cfg(feature = "runtime-benchmarks")]
 use codec::Encode;
 
@@ -75,13 +75,13 @@ struct UpdateTeyrchainHeadArtifacts {
 #[frame_support::pallet]
 pub mod pallet {
 	use super::*;
-	use bp_teyrchains::{
-		BestParaHeadHash, ImportedParaHeadsKeyProvider, OnNewHead, ParaStoredHeaderDataBuilder,
-		ParasInfoKeyProvider,
-	};
 	use bp_runtime::{
 		BasicOperatingMode, BoundedStorageValue, OwnedBridgeModule, StorageDoubleMapKeyProvider,
 		StorageMapKeyProvider,
+	};
+	use bp_teyrchains::{
+		BestParaHeadHash, ImportedParaHeadsKeyProvider, OnNewHead, ParaStoredHeaderDataBuilder,
+		ParasInfoKeyProvider,
 	};
 	use frame_support::pallet_prelude::*;
 	use frame_system::pallet_prelude::*;
@@ -838,9 +838,6 @@ pub(crate) mod tests {
 	use codec::Encode;
 
 	use bp_header_chain::{justification::GrandpaJustification, StoredHeaderGrandpaInfo};
-	use bp_teyrchains::{
-		BestParaHeadHash, BridgeTeyrchainCall, ImportedParaHeadsKeyProvider, ParasInfoKeyProvider,
-	};
 	use bp_pezkuwi_core::teyrchains::ParaHead;
 	use bp_runtime::{
 		BasicOperatingMode, OwnedBridgeModuleError, StorageDoubleMapKeyProvider,
@@ -849,6 +846,9 @@ pub(crate) mod tests {
 	use bp_test_utils::{
 		authority_list, generate_owned_bridge_module_tests, make_default_justification,
 		TEST_GRANDPA_SET_ID,
+	};
+	use bp_teyrchains::{
+		BestParaHeadHash, BridgeTeyrchainCall, ImportedParaHeadsKeyProvider, ParasInfoKeyProvider,
 	};
 	use frame_support::{
 		assert_noop, assert_ok,

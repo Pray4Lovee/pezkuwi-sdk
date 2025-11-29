@@ -50,9 +50,7 @@ pub struct MetricsInner {
 
 impl Metrics {
 	/// Get the approval distribution metrics.
-	pub fn approval_distribution_metrics(
-		&self,
-	) -> pezkuwi_approval_distribution::metrics::Metrics {
+	pub fn approval_distribution_metrics(&self) -> pezkuwi_approval_distribution::metrics::Metrics {
 		self.0
 			.as_ref()
 			.map(|metrics_inner| metrics_inner.approval_distribution.clone())

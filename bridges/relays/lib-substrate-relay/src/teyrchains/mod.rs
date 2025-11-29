@@ -18,14 +18,14 @@
 //! teyrchain finality proofs synchronization pipelines.
 
 use async_trait::async_trait;
-use bp_teyrchains::{RelayBlockHash, RelayBlockHasher, RelayBlockNumber};
 use bp_pezkuwi_core::teyrchains::{ParaHash, ParaHeadsProof, ParaId};
+use bp_teyrchains::{RelayBlockHash, RelayBlockHasher, RelayBlockNumber};
 use pallet_bridge_teyrchains::{Call as BridgeTeyrchainsCall, Config as BridgeTeyrchainsConfig};
-use teyrchains_relay::TeyrchainsPipeline;
 use relay_substrate_client::{
-	CallOf, Chain, ChainWithTransactions, HeaderIdOf, Teyrchain, RelayChain,
+	CallOf, Chain, ChainWithTransactions, HeaderIdOf, RelayChain, Teyrchain,
 };
 use std::{fmt::Debug, marker::PhantomData};
+use teyrchains_relay::TeyrchainsPipeline;
 
 pub mod source;
 pub mod target;

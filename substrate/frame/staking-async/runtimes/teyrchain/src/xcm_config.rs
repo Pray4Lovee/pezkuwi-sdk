@@ -18,9 +18,9 @@
 use super::{
 	AccountId, AllPalletsWithSystem, Assets, Authorship, Balance, Balances, BaseDeliveryFee,
 	CollatorSelection, FeeAssetId, FellowshipAdmin, ForeignAssets, ForeignAssetsInstance,
-	GeneralAdmin, TeyrchainInfo, TeyrchainSystem, PezkuwiXcm, PoolAssets, Runtime, RuntimeCall,
-	RuntimeEvent, RuntimeOrigin, StakingAdmin, ToPezkuwichainXcmRouter, TransactionByteFee, Treasurer,
-	TrustBackedAssetsInstance, Uniques, WeightToFee, XcmpQueue,
+	GeneralAdmin, PezkuwiXcm, PoolAssets, Runtime, RuntimeCall, RuntimeEvent, RuntimeOrigin,
+	StakingAdmin, TeyrchainInfo, TeyrchainSystem, ToPezkuwichainXcmRouter, TransactionByteFee,
+	Treasurer, TrustBackedAssetsInstance, Uniques, WeightToFee, XcmpQueue,
 };
 use assets_common::{
 	matching::{FromSiblingTeyrchain, IsForeignConcreteAsset, ParentLocation},
@@ -36,18 +36,15 @@ use frame_support::{
 };
 use frame_system::EnsureRoot;
 use pallet_xcm::XcmPassthrough;
+use pezkuwi_runtime_common::xcm_sender::ExponentialPrice;
+use pezkuwi_teyrchain_primitives::primitives::Sibling;
+use sp_runtime::traits::{AccountIdConversion, ConvertInto, TryConvertInto};
 use teyrchains_common::{
 	xcm_config::{
 		AllSiblingSystemTeyrchains, AssetFeeAsExistentialDepositMultiplier,
 		ConcreteAssetFromSystem, RelayOrOtherSystemTeyrchains,
 	},
 	TREASURY_PALLET_ID,
-};
-use pezkuwi_teyrchain_primitives::primitives::Sibling;
-use pezkuwi_runtime_common::xcm_sender::ExponentialPrice;
-use sp_runtime::traits::{AccountIdConversion, ConvertInto, TryConvertInto};
-use zagros_runtime_constants::{
-	system_teyrchain::COLLECTIVES_ID, xcm::body::FELLOWSHIP_ADMIN_INDEX,
 };
 use xcm::latest::{prelude::*, PEZKUWICHAIN_GENESIS_HASH, ZAGROS_GENESIS_HASH};
 use xcm_builder::{
@@ -66,6 +63,9 @@ use xcm_builder::{
 	XcmFeeManagerFromComponents,
 };
 use xcm_executor::XcmExecutor;
+use zagros_runtime_constants::{
+	system_teyrchain::COLLECTIVES_ID, xcm::body::FELLOWSHIP_ADMIN_INDEX,
+};
 
 parameter_types! {
 	pub const RootLocation: Location = Location::here();
@@ -394,8 +394,8 @@ impl xcm_executor::Config for XcmConfig {
 	type OriginConverter = XcmOriginToTransactDispatchOrigin;
 	// Asset Hub trusts only particular, pre-configured bridged locations from a different consensus
 	// as reserve locations (we trust the Bridge Hub to relay the message that a reserve is being
-	// held). On Zagros Asset Hub, we allow Pezkuwichain Asset Hub to act as reserve for any asset native
-	// to the Pezkuwichain or Ethereum ecosystems.
+	// held). On Zagros Asset Hub, we allow Pezkuwichain Asset Hub to act as reserve for any asset
+	// native to the Pezkuwichain or Ethereum ecosystems.
 	type IsReserve = (
 		bridging::to_pezkuwichain::PezkuwichainAssetFromAssetHubPezkuwichain,
 		bridging::to_ethereum::EthereumAssetFromEthereum,
@@ -695,9 +695,12 @@ pub mod bridging {
 			}
 		}
 
-		/// Allow any asset native to the Pezkuwichain ecosystem if it comes from Pezkuwichain Asset Hub.
-		pub type PezkuwichainAssetFromAssetHubPezkuwichain =
-			matching::RemoteAssetFromLocation<StartsWith<PezkuwichainEcosystem>, AssetHubPezkuwichain>;
+		/// Allow any asset native to the Pezkuwichain ecosystem if it comes from Pezkuwichain Asset
+		/// Hub.
+		pub type PezkuwichainAssetFromAssetHubPezkuwichain = matching::RemoteAssetFromLocation<
+			StartsWith<PezkuwichainEcosystem>,
+			AssetHubPezkuwichain,
+		>;
 	}
 
 	pub mod to_ethereum {
@@ -768,15 +771,16 @@ pub mod bridging {
 	#[cfg(feature = "runtime-benchmarks")]
 	impl BridgingBenchmarksHelper {
 		pub fn prepare_universal_alias() -> Option<(Location, Junction)> {
-			let alias =
-				to_pezkuwichain::UniversalAliases::get().into_iter().find_map(|(location, junction)| {
+			let alias = to_pezkuwichain::UniversalAliases::get().into_iter().find_map(
+				|(location, junction)| {
 					match to_pezkuwichain::SiblingBridgeHubWithBridgeHubPezkuwichainInstance::get()
 						.eq(&location)
 					{
 						true => Some((location, junction)),
 						false => None,
 					}
-				});
+				},
+			);
 			Some(alias.expect("we expect here BridgeHubZagros to Pezkuwichain mapping at least"))
 		}
 	}

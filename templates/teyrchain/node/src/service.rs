@@ -21,8 +21,8 @@ use cumulus_client_consensus_aura::collators::lookahead::{self as aura, Params a
 use cumulus_client_consensus_common::TeyrchainBlockImport as TTeyrchainBlockImport;
 use cumulus_client_service::{
 	build_network, build_relay_chain_interface, prepare_node_config, start_relay_chain_tasks,
-	BuildNetworkParams, CollatorSybilResistance, DARecoveryProfile, TeyrchainHostFunctions,
-	StartRelayChainTasksParams,
+	BuildNetworkParams, CollatorSybilResistance, DARecoveryProfile, StartRelayChainTasksParams,
+	TeyrchainHostFunctions,
 };
 #[docify::export(cumulus_primitives)]
 use cumulus_primitives_core::{

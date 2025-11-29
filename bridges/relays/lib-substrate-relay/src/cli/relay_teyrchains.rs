@@ -21,10 +21,10 @@ use async_trait::async_trait;
 use bp_pezkuwi_core::BlockNumber as RelayBlockNumber;
 use bp_runtime::HeaderIdProvider;
 use clap::Parser;
-use teyrchains_relay::teyrchains_loop::{AvailableHeader, SourceClient, TargetClient};
 use relay_substrate_client::{Client, Teyrchain};
 use relay_utils::metrics::{GlobalMetrics, StandaloneMetric};
 use std::sync::Arc;
+use teyrchains_relay::teyrchains_loop::{AvailableHeader, SourceClient, TargetClient};
 
 use crate::{
 	cli::{

@@ -33,14 +33,13 @@ use cumulus_client_bootnodes::{start_bootnode_tasks, StartBootnodeTasksParams};
 use cumulus_client_cli::CollatorOptions;
 use cumulus_client_service::{
 	build_network, build_relay_chain_interface, prepare_node_config, start_relay_chain_tasks,
-	BuildNetworkParams, CollatorSybilResistance, DARecoveryProfile, TeyrchainTracingExecuteBlock,
-	StartRelayChainTasksParams,
+	BuildNetworkParams, CollatorSybilResistance, DARecoveryProfile, StartRelayChainTasksParams,
+	TeyrchainTracingExecuteBlock,
 };
 use cumulus_primitives_core::{BlockT, GetTeyrchainInfo, ParaId};
 use cumulus_relay_chain_interface::{OverseerHandle, RelayChainInterface};
 use futures::FutureExt;
 use log::info;
-use teyrchains_common::Hash;
 use pezkuwi_primitives::CollatorPair;
 use prometheus_endpoint::Registry;
 use sc_client_api::Backend;
@@ -60,6 +59,7 @@ use sp_api::{ApiExt, ProvideRuntimeApi};
 use sp_keystore::KeystorePtr;
 use sp_runtime::traits::AccountIdConversion;
 use std::{future::Future, pin::Pin, sync::Arc, time::Duration};
+use teyrchains_common::Hash;
 
 pub(crate) trait BuildImportQueue<
 	Block: BlockT,
@@ -187,9 +187,7 @@ pub(crate) trait BaseNodeSpec {
 		};
 
 		let teyrchain_account =
-			AccountIdConversion::<pezkuwi_primitives::AccountId>::into_account_truncating(
-				&para_id,
-			);
+			AccountIdConversion::<pezkuwi_primitives::AccountId>::into_account_truncating(&para_id);
 
 		info!("🪪 Teyrchain id: {:?}", para_id);
 		info!("🧾 Teyrchain Account: {}", teyrchain_account);

@@ -16,8 +16,8 @@
 
 use crate::prepare::PrepareJobKind;
 use codec::{Decode, Encode};
-use pezkuwi_teyrchain_primitives::primitives::ValidationCodeHash;
 use pezkuwi_primitives::ExecutorParams;
+use pezkuwi_teyrchain_primitives::primitives::ValidationCodeHash;
 use std::{fmt, sync::Arc, time::Duration};
 
 /// A struct that carries the exhaustive set of data to prepare an artifact out of plain

@@ -451,13 +451,9 @@ pub fn build_inprocess_relay_chain(
 	pezkuwi_config.impl_version = pezkuwi_cli::Cli::impl_version();
 	pezkuwi_config.impl_name = pezkuwi_cli::Cli::impl_name();
 
-	let (full_node, collator_key, paranode_req_receiver) = build_pezkuwi_full_node(
-		pezkuwi_config,
-		teyrchain_config,
-		telemetry_worker_handle,
-		hwbench,
-	)
-	.map_err(|e| RelayChainError::Application(Box::new(e) as Box<_>))?;
+	let (full_node, collator_key, paranode_req_receiver) =
+		build_pezkuwi_full_node(pezkuwi_config, teyrchain_config, telemetry_worker_handle, hwbench)
+			.map_err(|e| RelayChainError::Application(Box::new(e) as Box<_>))?;
 
 	let relay_chain_interface = Arc::new(RelayChainInProcessInterface::new(
 		full_node.client,

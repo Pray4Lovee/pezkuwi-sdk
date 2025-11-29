@@ -57,13 +57,13 @@ use sp_runtime::{
 
 pub use grandpa_adapter::WithGrandpaChainExtensionConfig;
 pub use messages_adapter::WithMessagesExtensionConfig;
-pub use teyrchain_adapter::WithTeyrchainExtensionConfig;
 pub use priority::*;
+pub use teyrchain_adapter::WithTeyrchainExtensionConfig;
 
 mod grandpa_adapter;
 mod messages_adapter;
-mod teyrchain_adapter;
 mod priority;
+mod teyrchain_adapter;
 
 /// Data that is crafted in `validate`, passed to `prepare` and used at `post_dispatch` method.
 #[cfg_attr(test, derive(Debug, PartialEq))]
@@ -462,11 +462,11 @@ mod tests {
 		ReceiveMessagesDeliveryProofInfo, ReceiveMessagesProofInfo, UnrewardedRelayer,
 		UnrewardedRelayerOccupation, UnrewardedRelayersState,
 	};
-	use bp_teyrchains::{BestParaHeadHash, ParaInfo, SubmitTeyrchainHeadsInfo};
 	use bp_pezkuwi_core::teyrchains::{ParaHeadsProof, ParaId};
 	use bp_relayers::RuntimeWithUtilityPallet;
 	use bp_runtime::{BasicOperatingMode, HeaderId, Teyrchain};
 	use bp_test_utils::{make_default_justification, test_keyring, TEST_GRANDPA_SET_ID};
+	use bp_teyrchains::{BestParaHeadHash, ParaInfo, SubmitTeyrchainHeadsInfo};
 	use frame_support::{
 		__private::sp_tracing,
 		assert_storage_noop, parameter_types,

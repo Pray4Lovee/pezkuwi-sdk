@@ -27,8 +27,8 @@ use emulated_integration_tests_common::{
 	PenpalBLocation, PenpalBSiblingSovereignAccount, PenpalBTeleportableAssetLocation,
 	RESERVABLE_ASSET_ID, SAFE_XCM_VERSION, USDT_ID,
 };
-use teyrchains_common::{AccountId, Balance};
 use testnet_teyrchains_constants::pezkuwichain::snowbridge::EthereumNetwork;
+use teyrchains_common::{AccountId, Balance};
 use xcm::{
 	latest::prelude::*,
 	opaque::latest::{PEZKUWICHAIN_GENESIS_HASH, ZAGROS_GENESIS_HASH},
@@ -78,8 +78,8 @@ pub fn genesis() -> Storage {
 				.into_iter()
 				.map(|(acc, aura)| {
 					(
-						acc.clone(),                                    // account id
-						acc,                                            // validator id
+						acc.clone(),                                          // account id
+						acc,                                                  // validator id
 						asset_hub_pezkuwichain_runtime::SessionKeys { aura }, // session keys
 					)
 				})
@@ -117,8 +117,8 @@ pub fn genesis() -> Storage {
 				(
 					EthereumLocation::get(),
 					AssetHubZagrosSovereignAccount::get(), /* To emulate double bridging, where
-					                                         * WAH is the owner of assets from
-					                                         * Ethereum on RAH */
+					                                        * WAH is the owner of assets from
+					                                        * Ethereum on RAH */
 					true,
 					ETHER_MIN_BALANCE,
 				),
@@ -164,6 +164,7 @@ pub fn genesis() -> Storage {
 
 	build_genesis_storage(
 		&genesis_config,
-		asset_hub_pezkuwichain_runtime::WASM_BINARY.expect("WASM binary was not built, please build it!"),
+		asset_hub_pezkuwichain_runtime::WASM_BINARY
+			.expect("WASM binary was not built, please build it!"),
 	)
 }

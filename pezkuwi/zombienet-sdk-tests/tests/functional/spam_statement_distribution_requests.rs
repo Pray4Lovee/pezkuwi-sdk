@@ -158,7 +158,10 @@ async fn spam_statement_distribution_requests_test() -> Result<(), anyhow::Error
 
 	// Check lag - dispute conclusion
 	honest
-		.assert("pezkuwi_teyrchain_disputes_finality_lag{chain=\"pezkuwichain_local_testnet\"}", 0.0)
+		.assert(
+			"pezkuwi_teyrchain_disputes_finality_lag{chain=\"pezkuwichain_local_testnet\"}",
+			0.0,
+		)
 		.await?;
 
 	log::info!("Test finished successfully");

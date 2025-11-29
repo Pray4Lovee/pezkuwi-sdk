@@ -170,9 +170,7 @@ fn send_roc_from_asset_hub_pezkuwichain_to_ethereum() {
 			ethereum()
 		));
 		assert_ok!(<AssetHubZagros as AssetHubZagrosPallet>::ForeignAssets::finish_destroy(
-			<AssetHubZagros as Chain>::RuntimeOrigin::signed(AssetHubZagros::account_id_of(
-				ALICE
-			)),
+			<AssetHubZagros as Chain>::RuntimeOrigin::signed(AssetHubZagros::account_id_of(ALICE)),
 			ethereum()
 		));
 	});
@@ -189,7 +187,8 @@ fn send_roc_from_asset_hub_pezkuwichain_to_ethereum() {
 
 	// send TYRs, use them for fees
 	let local_fee_asset: Asset = (roc_at_asset_hub_pezkuwichain.clone(), roc_fee_amount).into();
-	let remote_fee_on_zagros: Asset = (roc_at_asset_hub_pezkuwichain.clone(), roc_fee_amount).into();
+	let remote_fee_on_zagros: Asset =
+		(roc_at_asset_hub_pezkuwichain.clone(), roc_fee_amount).into();
 	let assets: Assets = (roc_at_asset_hub_pezkuwichain.clone(), amount).into();
 	let reserved_asset_on_zagros: Asset =
 		(roc_at_asset_hub_pezkuwichain.clone(), amount - roc_fee_amount * 2).into();
@@ -279,11 +278,10 @@ fn send_roc_from_asset_hub_pezkuwichain_to_ethereum() {
 #[test]
 fn register_pezkuwichain_asset_on_ethereum_from_rah() {
 	const XCM_FEE: u128 = 4_000_000_000_000;
-	let sa_of_rah_on_wah =
-		AssetHubZagros::sovereign_account_of_teyrchain_on_other_global_consensus(
-			ByGenesis(PEZKUWICHAIN_GENESIS_HASH),
-			AssetHubPezkuwichain::para_id(),
-		);
+	let sa_of_rah_on_wah = AssetHubZagros::sovereign_account_of_teyrchain_on_other_global_consensus(
+		ByGenesis(PEZKUWICHAIN_GENESIS_HASH),
+		AssetHubPezkuwichain::para_id(),
+	);
 
 	// Pezkuwichain Asset Hub asset when bridged to Zagros Asset Hub.
 	let bridged_asset_at_wah = Location::new(
@@ -337,7 +335,10 @@ fn register_pezkuwichain_asset_on_ethereum_from_rah() {
 	let destination = asset_hub_zagros_global_location();
 
 	// fund the RAH's SA on RBH for paying bridge delivery fees
-	BridgeHubPezkuwichain::fund_para_sovereign(AssetHubPezkuwichain::para_id(), 10_000_000_000_000u128);
+	BridgeHubPezkuwichain::fund_para_sovereign(
+		AssetHubPezkuwichain::para_id(),
+		10_000_000_000_000u128,
+	);
 
 	// set XCM versions
 	AssetHubPezkuwichain::force_xcm_version(destination.clone(), XCM_VERSION);

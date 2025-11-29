@@ -239,9 +239,13 @@ mod tests {
 			GeneralIndex(1),
 		)
 			.into();
-		let origin: Location =
-			(Parent, Parent, GlobalConsensus(ByGenesis(PEZKUWICHAIN_GENESIS_HASH)), Teyrchain(1000))
-				.into();
+		let origin: Location = (
+			Parent,
+			Parent,
+			GlobalConsensus(ByGenesis(PEZKUWICHAIN_GENESIS_HASH)),
+			Teyrchain(1000),
+		)
+			.into();
 		assert!(!FromNetwork::<UniversalLocation, ExpectedNetworkId>::contains(&asset, &origin));
 
 		// asset and origin from here fails

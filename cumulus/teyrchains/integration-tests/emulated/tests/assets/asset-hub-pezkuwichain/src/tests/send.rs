@@ -57,7 +57,8 @@ fn send_xcm_from_para_to_asset_hub_paying_fee_with_system_asset() {
 	let system_asset = (Parent, fee_amount).into();
 
 	let root_origin = <PenpalA as Chain>::RuntimeOrigin::root();
-	let system_para_destination = PenpalA::sibling_location_of(AssetHubPezkuwichain::para_id()).into();
+	let system_para_destination =
+		PenpalA::sibling_location_of(AssetHubPezkuwichain::para_id()).into();
 	let xcm = xcm_transact_paid_execution(
 		call,
 		origin_kind,
@@ -143,7 +144,8 @@ fn send_xcm_from_para_to_asset_hub_paying_fee_with_sufficient_asset() {
 		Location::new(0, [PalletInstance(ASSETS_PALLET_ID), GeneralIndex(ASSET_ID.into())]);
 
 	let root_origin = <PenpalA as Chain>::RuntimeOrigin::root();
-	let system_para_destination = PenpalA::sibling_location_of(AssetHubPezkuwichain::para_id()).into();
+	let system_para_destination =
+		PenpalA::sibling_location_of(AssetHubPezkuwichain::para_id()).into();
 	let xcm = xcm_transact_paid_execution(call, origin_kind, asset, para_sovereign_account.clone());
 
 	// SA-of-Penpal-on-AHR needs to have balance to pay for asset creation deposit

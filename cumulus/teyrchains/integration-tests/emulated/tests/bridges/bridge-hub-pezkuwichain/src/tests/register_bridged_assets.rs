@@ -20,11 +20,10 @@ const XCM_FEE: u128 = 4_000_000_000_000;
 /// Tests the registering of a Pezkuwichain Asset as a bridged asset on Zagros Asset Hub.
 #[test]
 fn register_pezkuwichain_asset_on_wah_from_rah() {
-	let sa_of_rah_on_wah =
-		AssetHubZagros::sovereign_account_of_teyrchain_on_other_global_consensus(
-			ByGenesis(PEZKUWICHAIN_GENESIS_HASH),
-			AssetHubPezkuwichain::para_id(),
-		);
+	let sa_of_rah_on_wah = AssetHubZagros::sovereign_account_of_teyrchain_on_other_global_consensus(
+		ByGenesis(PEZKUWICHAIN_GENESIS_HASH),
+		AssetHubPezkuwichain::para_id(),
+	);
 
 	// Pezkuwichain Asset Hub asset when bridged to Zagros Asset Hub.
 	let bridged_asset_at_wah = Location::new(
@@ -59,7 +58,10 @@ fn register_pezkuwichain_asset_on_wah_from_rah() {
 	let destination = asset_hub_zagros_location();
 
 	// fund the RAH's SA on RBH for paying bridge delivery fees
-	BridgeHubPezkuwichain::fund_para_sovereign(AssetHubPezkuwichain::para_id(), 10_000_000_000_000u128);
+	BridgeHubPezkuwichain::fund_para_sovereign(
+		AssetHubPezkuwichain::para_id(),
+		10_000_000_000_000u128,
+	);
 
 	// set XCM versions
 	AssetHubPezkuwichain::force_xcm_version(destination.clone(), XCM_VERSION);

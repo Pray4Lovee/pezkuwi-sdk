@@ -108,7 +108,6 @@ pub mod pallet {
 		traits::{EnsureOrigin, Get},
 	};
 	use frame_system::pallet_prelude::*;
-	
 
 	#[pallet::pallet]
 	pub struct Pallet<T>(_);
@@ -180,8 +179,13 @@ pub mod pallet {
 	/// This is the correct semantic - limits how many courses ONE student can take
 	#[pallet::storage]
 	#[pallet::getter(fn student_courses)]
-	pub type StudentCourses<T: Config> =
-		StorageMap<_, Blake2_128Concat, T::AccountId, BoundedVec<u32, T::MaxCoursesPerStudent>, ValueQuery>;
+	pub type StudentCourses<T: Config> = StorageMap<
+		_,
+		Blake2_128Concat,
+		T::AccountId,
+		BoundedVec<u32, T::MaxCoursesPerStudent>,
+		ValueQuery,
+	>;
 
 	#[pallet::event]
 	#[pallet::generate_deposit(pub(super) fn deposit_event)]
@@ -240,7 +244,10 @@ pub mod pallet {
 			let student = ensure_signed(origin)?;
 			let course = Courses::<T>::get(course_id).ok_or(Error::<T>::CourseNotFound)?;
 			ensure!(course.status == CourseStatus::Active, Error::<T>::CourseNotActive);
-			ensure!(!Enrollments::<T>::contains_key((&student, course_id)), Error::<T>::AlreadyEnrolled);
+			ensure!(
+				!Enrollments::<T>::contains_key((&student, course_id)),
+				Error::<T>::AlreadyEnrolled
+			);
 
 			let enrollment = Enrollment {
 				student: student.clone(),
@@ -276,8 +283,8 @@ pub mod pallet {
 			ensure!(course.owner == caller, Error::<T>::NotCourseOwner);
 
 			// Get and validate enrollment
-			let mut enrollment = Enrollments::<T>::get((&student, course_id))
-				.ok_or(Error::<T>::NotEnrolled)?;
+			let mut enrollment =
+				Enrollments::<T>::get((&student, course_id)).ok_or(Error::<T>::NotEnrolled)?;
 			ensure!(enrollment.completed_at.is_none(), Error::<T>::CourseAlreadyCompleted);
 
 			// Mark completion

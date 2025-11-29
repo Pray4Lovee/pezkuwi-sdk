@@ -19,7 +19,8 @@ use crate::imports::*;
 fn relay_sets_system_para_xcm_supported_version() {
 	// Init tests variables
 	let sudo_origin = <Pezkuwichain as Chain>::RuntimeOrigin::root();
-	let system_para_destination: Location = Pezkuwichain::child_location_of(AssetHubPezkuwichain::para_id());
+	let system_para_destination: Location =
+		Pezkuwichain::child_location_of(AssetHubPezkuwichain::para_id());
 
 	// Relay Chain sets supported version for Asset Teyrchain
 	Pezkuwichain::execute_with(|| {

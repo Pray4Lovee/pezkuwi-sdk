@@ -25,7 +25,7 @@ use crate::{
 };
 
 use bp_relayers::{BatchCallUnpacker, ExtensionCallData, ExtensionCallInfo, ExtensionConfig};
-use bp_runtime::{Teyrchain, StaticStrProvider};
+use bp_runtime::{StaticStrProvider, Teyrchain};
 use core::marker::PhantomData;
 use frame_support::dispatch::{DispatchInfo, PostDispatchInfo};
 use frame_system::Config as SystemConfig;

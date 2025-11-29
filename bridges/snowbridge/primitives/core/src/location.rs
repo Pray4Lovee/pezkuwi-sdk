@@ -123,11 +123,7 @@ mod tests {
 			// Teyrchain general index
 			Location::new(
 				1,
-				[
-					GlobalConsensus(ByGenesis(ZAGROS_GENESIS_HASH)),
-					Teyrchain(2000),
-					GeneralIndex(1),
-				],
+				[GlobalConsensus(ByGenesis(ZAGROS_GENESIS_HASH)), Teyrchain(2000), GeneralIndex(1)],
 			),
 			// Teyrchain general key
 			Location::new(

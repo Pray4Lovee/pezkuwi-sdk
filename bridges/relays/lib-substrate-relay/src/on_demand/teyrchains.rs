@@ -20,8 +20,8 @@ use crate::{
 	messages::source::best_finalized_peer_header_at_self,
 	on_demand::OnDemandRelay,
 	teyrchains::{
-		source::TeyrchainsSource, target::TeyrchainsTarget, TeyrchainsPipelineAdapter,
-		SubmitTeyrchainHeadsCallBuilder, SubstrateTeyrchainsPipeline,
+		source::TeyrchainsSource, target::TeyrchainsTarget, SubmitTeyrchainHeadsCallBuilder,
+		SubstrateTeyrchainsPipeline, TeyrchainsPipelineAdapter,
 	},
 	TransactionParams,
 };
@@ -31,12 +31,11 @@ use async_std::{
 	sync::{Arc, Mutex},
 };
 use async_trait::async_trait;
-use bp_teyrchains::{RelayBlockHash, RelayBlockHasher, RelayBlockNumber};
 use bp_pezkuwi_core::teyrchains::{ParaHash, ParaId};
 use bp_runtime::HeaderIdProvider;
+use bp_teyrchains::{RelayBlockHash, RelayBlockHasher, RelayBlockNumber};
 use futures::{select, FutureExt};
 use num_traits::Zero;
-use teyrchains_relay::teyrchains_loop::{AvailableHeader, SourceClient, TargetClient};
 use relay_substrate_client::{
 	is_ancient_block, AccountIdOf, AccountKeyPairOf, BlockNumberOf, CallOf, Chain, Client,
 	Error as SubstrateError, HashOf, HeaderIdOf, TeyrchainBase,
@@ -46,6 +45,7 @@ use relay_utils::{
 	HeaderId, UniqueSaturatedInto,
 };
 use std::fmt::Debug;
+use teyrchains_relay::teyrchains_loop::{AvailableHeader, SourceClient, TargetClient};
 
 /// On-demand Substrate <-> Substrate teyrchain finality relay.
 ///

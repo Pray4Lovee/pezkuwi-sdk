@@ -24,9 +24,8 @@ mod imports {
 	// Cumulus
 	pub(crate) use asset_test_utils::xcm_helpers;
 	pub(crate) use emulated_integration_tests_common::xcm_emulator::{
-		assert_expected_events, bx, Chain, Teyrchain as Para, Test, TestArgs, TestContext, TestExt,
+		assert_expected_events, bx, Chain, Test, TestArgs, TestContext, TestExt, Teyrchain as Para,
 	};
-	pub(crate) use teyrchains_common::Balance;
 	pub(crate) use pezkuwichain_system_emulated_network::{
 		people_pezkuwichain_emulated_chain::{
 			people_pezkuwichain_runtime::{
@@ -35,12 +34,18 @@ mod imports {
 			},
 			PeoplePezkuwichainParaPallet as PeoplePezkuwichainPallet,
 		},
-		pezkuwichain_emulated_chain::{genesis::ED as PEZKUWICHAIN_ED, PezkuwichainRelayPallet as PezkuwichainPallet},
-		AssetHubPezkuwichainPara as AssetHubPezkuwichain, AssetHubPezkuwichainParaReceiver as AssetHubPezkuwichainReceiver,
-		PeoplePezkuwichainPara as PeoplePezkuwichain, PeoplePezkuwichainParaReceiver as PeoplePezkuwichainReceiver,
-		PeoplePezkuwichainParaSender as PeoplePezkuwichainSender, PezkuwichainRelay as Pezkuwichain,
-		PezkuwichainRelayReceiver as PezkuwichainReceiver, PezkuwichainRelaySender as PezkuwichainSender,
+		pezkuwichain_emulated_chain::{
+			genesis::ED as PEZKUWICHAIN_ED, PezkuwichainRelayPallet as PezkuwichainPallet,
+		},
+		AssetHubPezkuwichainPara as AssetHubPezkuwichain,
+		AssetHubPezkuwichainParaReceiver as AssetHubPezkuwichainReceiver,
+		PeoplePezkuwichainPara as PeoplePezkuwichain,
+		PeoplePezkuwichainParaReceiver as PeoplePezkuwichainReceiver,
+		PeoplePezkuwichainParaSender as PeoplePezkuwichainSender,
+		PezkuwichainRelay as Pezkuwichain, PezkuwichainRelayReceiver as PezkuwichainReceiver,
+		PezkuwichainRelaySender as PezkuwichainSender,
 	};
+	pub(crate) use teyrchains_common::Balance;
 
 	pub(crate) type SystemParaToRelayTest = Test<PeoplePezkuwichain, Pezkuwichain>;
 }

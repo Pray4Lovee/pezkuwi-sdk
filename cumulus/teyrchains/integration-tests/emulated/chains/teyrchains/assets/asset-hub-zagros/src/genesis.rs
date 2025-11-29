@@ -27,8 +27,8 @@ use emulated_integration_tests_common::{
 	PenpalBLocation, PenpalBSiblingSovereignAccount, PenpalBTeleportableAssetLocation,
 	RESERVABLE_ASSET_ID, SAFE_XCM_VERSION, USDT_ID,
 };
-use teyrchains_common::{AccountId, Balance};
 use testnet_teyrchains_constants::zagros::snowbridge::EthereumNetwork;
+use teyrchains_common::{AccountId, Balance};
 use xcm::{latest::prelude::*, opaque::latest::ZAGROS_GENESIS_HASH};
 use xcm_builder::ExternalConsensusLocationsConverterFor;
 
@@ -78,8 +78,8 @@ pub fn genesis() -> Storage {
 				.into_iter()
 				.map(|(acc, aura)| {
 					(
-						acc.clone(),                                     // account id
-						acc,                                             // validator id
+						acc.clone(),                                    // account id
+						acc,                                            // validator id
 						asset_hub_zagros_runtime::SessionKeys { aura }, // session keys
 					)
 				})
@@ -162,7 +162,6 @@ pub fn genesis() -> Storage {
 
 	build_genesis_storage(
 		&genesis_config,
-		asset_hub_zagros_runtime::WASM_BINARY
-			.expect("WASM binary was not built, please build it!"),
+		asset_hub_zagros_runtime::WASM_BINARY.expect("WASM binary was not built, please build it!"),
 	)
 }

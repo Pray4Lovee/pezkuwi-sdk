@@ -22,11 +22,11 @@ pub mod test_data;
 extern crate alloc;
 
 pub use bp_test_utils::test_header;
-pub use teyrchains_runtimes_test_utils::*;
 use sp_runtime::Perbill;
 pub use test_cases::helpers::for_pallet_xcm_bridge_hub::{
 	ensure_opened_bridge, open_bridge_with_extrinsic, open_bridge_with_storage,
 };
+pub use teyrchains_runtimes_test_utils::*;
 
 /// A helper function for comparing the actual value of a fee constant with its estimated value. The
 /// estimated value can be overestimated (`overestimate_in_percent`), and if the difference to the

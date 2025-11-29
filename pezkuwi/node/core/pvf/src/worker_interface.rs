@@ -20,8 +20,8 @@ use crate::LOG_TARGET;
 use codec::Encode;
 use futures::FutureExt as _;
 use futures_timer::Delay;
-use pin_project::pin_project;
 use pezkuwi_node_core_pvf_common::{SecurityStatus, WorkerHandshake};
+use pin_project::pin_project;
 use rand::Rng;
 use std::{
 	fmt, mem,

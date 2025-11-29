@@ -18,15 +18,12 @@
 
 use crate::{
 	teyrchains::{
-		TeyrchainsPipelineAdapter, SubmitTeyrchainHeadsCallBuilder, SubstrateTeyrchainsPipeline,
+		SubmitTeyrchainHeadsCallBuilder, SubstrateTeyrchainsPipeline, TeyrchainsPipelineAdapter,
 	},
 	TransactionParams,
 };
 
 use async_trait::async_trait;
-use bp_teyrchains::{
-	ImportedParaHeadsKeyProvider, ParaInfo, ParaStoredHeaderData, ParasInfoKeyProvider,
-};
 use bp_pezkuwi_core::{
 	teyrchains::{ParaHash, ParaHeadsProof, ParaId},
 	BlockNumber as RelayBlockNumber,
@@ -35,14 +32,17 @@ use bp_runtime::{
 	Chain as ChainBase, HeaderId, HeaderIdProvider, StorageDoubleMapKeyProvider,
 	StorageMapKeyProvider,
 };
-use teyrchains_relay::teyrchains_loop::TargetClient;
+use bp_teyrchains::{
+	ImportedParaHeadsKeyProvider, ParaInfo, ParaStoredHeaderData, ParasInfoKeyProvider,
+};
 use relay_substrate_client::{
 	AccountIdOf, AccountKeyPairOf, BlockNumberOf, Chain, Client, Error as SubstrateError,
-	HeaderIdOf, TeyrchainBase, RelayChain, TransactionEra, TransactionTracker, UnsignedTransaction,
+	HeaderIdOf, RelayChain, TeyrchainBase, TransactionEra, TransactionTracker, UnsignedTransaction,
 };
 use relay_utils::relay_loop::Client as RelayClient;
 use sp_core::Pair;
 use sp_runtime::traits::Header;
+use teyrchains_relay::teyrchains_loop::TargetClient;
 
 /// Substrate client as teyrchain heads source.
 pub struct TeyrchainsTarget<P: SubstrateTeyrchainsPipeline, SourceClnt, TargetClnt> {

@@ -21,11 +21,11 @@ use emulated_integration_tests_common::{
 	impls::AccountId32,
 };
 use frame_support::{assert_ok, sp_runtime::traits::Dispatchable};
+use xcm_executor::traits::ConvertLocation;
 use zagros_system_emulated_network::{
 	asset_hub_zagros_emulated_chain::asset_hub_zagros_runtime::RuntimeOrigin as AssetHubRuntimeOrigin,
 	bridge_hub_zagros_emulated_chain::bridge_hub_zagros_runtime::RuntimeOrigin as BridgeHubRuntimeOrigin,
 };
-use xcm_executor::traits::ConvertLocation;
 
 #[test]
 fn test_set_asset_claimer_within_a_chain() {
@@ -57,8 +57,7 @@ fn test_set_asset_claimer_within_a_chain() {
 		.dispatch(AssetHubRuntimeOrigin::signed(alice_account.clone())));
 	});
 
-	let balance_after_trap =
-		<AssetHubZagros as Chain>::account_data_of(alice_account.clone()).free;
+	let balance_after_trap = <AssetHubZagros as Chain>::account_data_of(alice_account.clone()).free;
 	assert_eq!(alice_balance_after - balance_after_trap, trap_amount);
 
 	let bob_balance_before = <AssetHubZagros as Chain>::account_data_of(bob_account.clone()).free;

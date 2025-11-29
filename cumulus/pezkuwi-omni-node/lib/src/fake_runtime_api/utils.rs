@@ -16,7 +16,6 @@
 
 pub(crate) mod imports {
 	pub use cumulus_primitives_core::ParaId;
-	pub use teyrchains_common::{AccountId, Balance, Nonce};
 	pub use sp_core::{crypto::KeyTypeId, OpaqueMetadata};
 	pub use sp_runtime::{
 		traits::Block as BlockT,
@@ -24,6 +23,7 @@ pub(crate) mod imports {
 		ApplyExtrinsicResult,
 	};
 	pub use sp_weights::Weight;
+	pub use teyrchains_common::{AccountId, Balance, Nonce};
 }
 
 macro_rules! impl_node_runtime_apis {

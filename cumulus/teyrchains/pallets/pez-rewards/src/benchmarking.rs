@@ -2,16 +2,12 @@
 
 #![cfg(feature = "runtime-benchmarks")]
 
-use super::{Config, Call, BalanceOf};
-use crate::Pallet as PezRewards;
-use crate::Pallet;
+use super::{BalanceOf, Call, Config};
+use crate::{Pallet as PezRewards, Pallet};
 use frame_benchmarking::v2::*;
-use frame_support::traits::{
-	fungibles::Mutate,
-	Get, Currency,
-};
-use frame_system::{RawOrigin, Pallet as System};
-use sp_runtime::traits::{Saturating, Bounded, StaticLookup, Zero}; // AccountIdConversion removed
+use frame_support::traits::{fungibles::Mutate, Currency, Get};
+use frame_system::{Pallet as System, RawOrigin};
+use sp_runtime::traits::{Bounded, Saturating, StaticLookup, Zero}; // AccountIdConversion removed
 
 const SEED: u32 = 0;
 
@@ -37,9 +33,8 @@ fn setup_reward_pool<T: Config>(epoch_index: u32) {
 
 #[benchmarks(where T: pallet_balances::Config)]
 mod benchmarks {
-	use pallet_balances::Pallet as Balances;
 	use super::*;
-
+	use pallet_balances::Pallet as Balances;
 
 	#[benchmark]
 	fn initialize_rewards_system() {
@@ -88,7 +83,9 @@ mod benchmarks {
 		PezRewards::<T>::do_initialize_rewards_system().unwrap();
 
 		let incentive_pot = PezRewards::<T>::incentive_pot_account_id();
-		let large_amount: BalanceOf<T> = 1_000_000_000_000u128.try_into().unwrap_or_else(|_| BalanceOf::<T>::max_value() / 2u32.into());
+		let large_amount: BalanceOf<T> = 1_000_000_000_000u128
+			.try_into()
+			.unwrap_or_else(|_| BalanceOf::<T>::max_value() / 2u32.into());
 		T::Assets::mint_into(T::PezAssetId::get(), &incentive_pot, large_amount).unwrap();
 
 		let target_block = System::<T>::block_number() + crate::pallet::BLOCKS_PER_EPOCH.into();
@@ -116,7 +113,6 @@ mod benchmarks {
 		assert!(crate::ClaimedRewards::<T>::contains_key(epoch_index, &caller));
 	}
 
-
 	#[benchmark]
 	fn close_epoch() {
 		let epoch_index = 0u32;
@@ -134,15 +130,15 @@ mod benchmarks {
 	}
 
 	#[benchmark]
-    fn register_parliamentary_nft_owner() {
-        let owner: T::AccountId = account("owner", 0, SEED);
-        let nft_id = 1u32;
+	fn register_parliamentary_nft_owner() {
+		let owner: T::AccountId = account("owner", 0, SEED);
+		let nft_id = 1u32;
 
-        #[extrinsic_call]
-        register_parliamentary_nft_owner(RawOrigin::Root, nft_id, owner.clone());
+		#[extrinsic_call]
+		register_parliamentary_nft_owner(RawOrigin::Root, nft_id, owner.clone());
 
-        assert_eq!(PezRewards::<T>::parliamentary_nft_owners(nft_id), Some(owner));
-    }
+		assert_eq!(PezRewards::<T>::parliamentary_nft_owners(nft_id), Some(owner));
+	}
 
 	impl_benchmark_test_suite!(PezRewards, crate::mock::new_test_ext(), crate::mock::Test);
 }

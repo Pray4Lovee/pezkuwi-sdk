@@ -452,16 +452,14 @@ mod tests {
 				"PvfPrepTimeout(Prepare)",
 				base.clone(),
 				ExecutorParams::from(
-					&[ExecutorParam::PvfPrepTimeout(pezkuwi_primitives::PvfPrepKind::Prepare, 2)]
-						[..],
+					&[ExecutorParam::PvfPrepTimeout(pezkuwi_primitives::PvfPrepKind::Prepare, 2)][..],
 				),
 			),
 			(
 				"PvfExecTimeout(Backing)",
 				base.clone(),
 				ExecutorParams::from(
-					&[ExecutorParam::PvfExecTimeout(pezkuwi_primitives::PvfExecKind::Backing, 1)]
-						[..],
+					&[ExecutorParam::PvfExecTimeout(pezkuwi_primitives::PvfExecKind::Backing, 1)][..],
 				),
 			),
 			(

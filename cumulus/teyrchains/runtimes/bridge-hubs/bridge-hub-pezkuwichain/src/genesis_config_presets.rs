@@ -19,10 +19,10 @@ use crate::*;
 use alloc::{vec, vec::Vec};
 use cumulus_primitives_core::ParaId;
 use frame_support::build_struct_json_patch;
-use teyrchains_common::{AccountId, AuraId};
 use sp_genesis_builder::PresetId;
 use sp_keyring::Sr25519Keyring;
 use testnet_teyrchains_constants::pezkuwichain::xcm_version::SAFE_XCM_VERSION;
+use teyrchains_common::{AccountId, AuraId};
 use xcm::latest::ZAGROS_GENESIS_HASH;
 
 const BRIDGE_HUB_PEZKUWICHAIN_ED: Balance = ExistentialDeposit::get();
@@ -65,9 +65,7 @@ fn bridge_hub_pezkuwichain_genesis(
 			owner: bridges_pallet_owner.clone(),
 		},
 		bridge_zagros_grandpa: BridgeZagrosGrandpaConfig { owner: bridges_pallet_owner.clone() },
-		bridge_zagros_messages: BridgeZagrosMessagesConfig {
-			owner: bridges_pallet_owner.clone(),
-		},
+		bridge_zagros_messages: BridgeZagrosMessagesConfig { owner: bridges_pallet_owner.clone() },
 		xcm_over_pezkuwi_bulletin: XcmOverPezkuwiBulletinConfig {
 			opened_bridges: vec![(
 				Location::new(1, [Teyrchain(1004)]),

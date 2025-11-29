@@ -12,22 +12,22 @@ fn create_presale_works() {
 		// Alice creates a presale
 		assert_ok!(Presale::create_presale(
 			RuntimeOrigin::signed(1),
-			2, // wUSDT payment asset
-			1, // PEZ reward asset
+			2,                          // wUSDT payment asset
+			1,                          // PEZ reward asset
 			10_000_000_000_000_000_000, // 10,000 PEZ tokens for sale (10^12 decimals)
-			100, // 100 blocks duration
-			false, // public presale
-			10_000_000, // min 10 USDT (10^6 decimals)
-			1_000_000_000, // max 1000 USDT
-			5_000_000_000, // soft cap 5,000 USDT
-			10_000_000_000, // hard cap 10,000 USDT
-			false, // no vesting
+			100,                        // 100 blocks duration
+			false,                      // public presale
+			10_000_000,                 // min 10 USDT (10^6 decimals)
+			1_000_000_000,              // max 1000 USDT
+			5_000_000_000,              // soft cap 5,000 USDT
+			10_000_000_000,             // hard cap 10,000 USDT
+			false,                      // no vesting
 			0,
 			0,
 			0,
 			24, // 24 blocks grace period
-			5, // 5% refund fee
-			2, // 2% grace refund fee
+			5,  // 5% refund fee
+			2,  // 2% grace refund fee
 		));
 
 		// Check presale created
@@ -39,7 +39,10 @@ fn create_presale_works() {
 		assert_eq!(presale.duration, 100);
 
 		// Check event
-		System::assert_last_event(Event::PresaleCreated { presale_id: 0, owner: 1, payment_asset: 2, reward_asset: 1 }.into());
+		System::assert_last_event(
+			Event::PresaleCreated { presale_id: 0, owner: 1, payment_asset: 2, reward_asset: 1 }
+				.into(),
+		);
 
 		// Check NextPresaleId incremented
 		assert_eq!(Presale::next_presale_id(), 1);
@@ -56,17 +59,43 @@ fn create_multiple_presales_works() {
 		// Alice creates first presale
 		assert_ok!(Presale::create_presale(
 			RuntimeOrigin::signed(1),
-			2, 1, 10_000_000_000_000_000_000, 100, false,
-			10_000_000, 1_000_000_000, 5_000_000_000, 10_000_000_000,
-			false, 0, 0, 0, 24, 5, 2,
+			2,
+			1,
+			10_000_000_000_000_000_000,
+			100,
+			false,
+			10_000_000,
+			1_000_000_000,
+			5_000_000_000,
+			10_000_000_000,
+			false,
+			0,
+			0,
+			0,
+			24,
+			5,
+			2,
 		));
 
 		// Bob creates second presale
 		assert_ok!(Presale::create_presale(
 			RuntimeOrigin::signed(2),
-			2, 1, 20_000_000_000_000_000_000, 200, false,
-			20_000_000, 2_000_000_000, 10_000_000_000, 20_000_000_000,
-			false, 0, 0, 0, 48, 10, 5,
+			2,
+			1,
+			20_000_000_000_000_000_000,
+			200,
+			false,
+			20_000_000,
+			2_000_000_000,
+			10_000_000_000,
+			20_000_000_000,
+			false,
+			0,
+			0,
+			0,
+			48,
+			10,
+			5,
 		));
 
 		// Check both presales exist
@@ -91,9 +120,22 @@ fn contribute_works() {
 		mint_assets(1, 1, 100_000_000_000_000_000_000);
 		assert_ok!(Presale::create_presale(
 			RuntimeOrigin::signed(1),
-			2, 1, 10_000_000_000_000_000_000, 100, false,
-			10_000_000, 1_000_000_000, 5_000_000_000, 10_000_000_000,
-			false, 0, 0, 0, 24, 5, 2,
+			2,
+			1,
+			10_000_000_000_000_000_000,
+			100,
+			false,
+			10_000_000,
+			1_000_000_000,
+			5_000_000_000,
+			10_000_000_000,
+			false,
+			0,
+			0,
+			0,
+			24,
+			5,
+			2,
 		));
 
 		// Mint wUSDT to Bob
@@ -126,8 +168,8 @@ fn contribute_works() {
 
 		// Verify platform fee distribution (50% treasury, 25% staking, 25% burned)
 		let expected_to_treasury = platform_fee * 50 / 100; // 1_000_000
-		let expected_to_staking = platform_fee * 25 / 100;  // 500_000
-		let expected_burned = platform_fee * 25 / 100;      // 500_000
+		let expected_to_staking = platform_fee * 25 / 100; // 500_000
+		let expected_burned = platform_fee * 25 / 100; // 500_000
 
 		// Check platform treasury received 50%
 		assert_eq!(Assets::balance(2, 999), expected_to_treasury);
@@ -146,7 +188,8 @@ fn contribute_works() {
 
 		// Check event
 		System::assert_last_event(
-			Event::Contributed { presale_id: 0, who: 2, amount: contribution, bonus_amount: 0 }.into(),
+			Event::Contributed { presale_id: 0, who: 2, amount: contribution, bonus_amount: 0 }
+				.into(),
 		);
 	});
 }
@@ -160,9 +203,22 @@ fn contribute_multiple_times_works() {
 
 		assert_ok!(Presale::create_presale(
 			RuntimeOrigin::signed(1),
-			2, 1, 10_000_000_000_000_000_000, 100, false,
-			10_000_000, 1_000_000_000, 5_000_000_000, 10_000_000_000,
-			false, 0, 0, 0, 24, 5, 2,
+			2,
+			1,
+			10_000_000_000_000_000_000,
+			100,
+			false,
+			10_000_000,
+			1_000_000_000,
+			5_000_000_000,
+			10_000_000_000,
+			false,
+			0,
+			0,
+			0,
+			24,
+			5,
+			2,
 		));
 
 		// First contribution
@@ -193,9 +249,22 @@ fn contribute_to_different_presales_works() {
 		// Create two presales
 		assert_ok!(Presale::create_presale(
 			RuntimeOrigin::signed(1),
-			2, 1, 10_000_000_000_000_000_000, 100, false,
-			10_000_000, 1_000_000_000, 5_000_000_000, 10_000_000_000,
-			false, 0, 0, 0, 24, 5, 2,
+			2,
+			1,
+			10_000_000_000_000_000_000,
+			100,
+			false,
+			10_000_000,
+			1_000_000_000,
+			5_000_000_000,
+			10_000_000_000,
+			false,
+			0,
+			0,
+			0,
+			24,
+			5,
+			2,
 		));
 
 		// Fund presale 0 treasury with reward tokens
@@ -203,9 +272,22 @@ fn contribute_to_different_presales_works() {
 
 		assert_ok!(Presale::create_presale(
 			RuntimeOrigin::signed(1),
-			2, 1, 15_000_000_000_000_000_000, 100, false,
-			10_000_000, 1_000_000_000, 5_000_000_000, 10_000_000_000,
-			false, 0, 0, 0, 24, 5, 2,
+			2,
+			1,
+			15_000_000_000_000_000_000,
+			100,
+			false,
+			10_000_000,
+			1_000_000_000,
+			5_000_000_000,
+			10_000_000_000,
+			false,
+			0,
+			0,
+			0,
+			24,
+			5,
+			2,
 		));
 
 		// Fund presale 1 treasury with reward tokens
@@ -244,9 +326,22 @@ fn contribute_below_min_fails() {
 
 		assert_ok!(Presale::create_presale(
 			RuntimeOrigin::signed(1),
-			2, 1, 10_000_000_000_000_000_000, 100, false,
-			10_000_000, 1_000_000_000, 5_000_000_000, 10_000_000_000,
-			false, 0, 0, 0, 24, 5, 2,
+			2,
+			1,
+			10_000_000_000_000_000_000,
+			100,
+			false,
+			10_000_000,
+			1_000_000_000,
+			5_000_000_000,
+			10_000_000_000,
+			false,
+			0,
+			0,
+			0,
+			24,
+			5,
+			2,
 		));
 
 		// Try to contribute less than minimum (10 USDT)
@@ -266,9 +361,22 @@ fn contribute_above_max_fails() {
 
 		assert_ok!(Presale::create_presale(
 			RuntimeOrigin::signed(1),
-			2, 1, 10_000_000_000_000_000_000, 100, false,
-			10_000_000, 1_000_000_000, 5_000_000_000, 10_000_000_000,
-			false, 0, 0, 0, 24, 5, 2,
+			2,
+			1,
+			10_000_000_000_000_000_000,
+			100,
+			false,
+			10_000_000,
+			1_000_000_000,
+			5_000_000_000,
+			10_000_000_000,
+			false,
+			0,
+			0,
+			0,
+			24,
+			5,
+			2,
 		));
 
 		// Try to contribute more than maximum (1000 USDT)
@@ -288,9 +396,22 @@ fn contribute_exceeding_hard_cap_fails() {
 
 		assert_ok!(Presale::create_presale(
 			RuntimeOrigin::signed(1),
-			2, 1, 10_000_000_000_000_000_000, 100, false,
-			10_000_000, 1_000_000_000, 5_000_000_000, 10_000_000_000, // Soft cap: 5,000 USDT, Hard cap: 10,000 USDT
-			false, 0, 0, 0, 24, 5, 2,
+			2,
+			1,
+			10_000_000_000_000_000_000,
+			100,
+			false,
+			10_000_000,
+			1_000_000_000,
+			5_000_000_000,
+			10_000_000_000, // Soft cap: 5,000 USDT, Hard cap: 10,000 USDT
+			false,
+			0,
+			0,
+			0,
+			24,
+			5,
+			2,
 		));
 
 		// Multiple contributors reach near hard cap (9,000 USDT total)
@@ -301,8 +422,9 @@ fn contribute_exceeding_hard_cap_fails() {
 		}
 
 		// Bob tries to contribute 2,000 USDT but max is 1000
-		// Even 1000 would exceed hard cap (9000 + 1000 = 10000 is ok, but 9000 + 2000 = 11000 exceeds)
-		// So contribute 500 to not exceed max, then try to contribute another 1000 to exceed hard cap
+		// Even 1000 would exceed hard cap (9000 + 1000 = 10000 is ok, but 9000 + 2000 = 11000
+		// exceeds) So contribute 500 to not exceed max, then try to contribute another 1000 to
+		// exceed hard cap
 		mint_assets(2, 2, 2_010_000_000);
 		assert_ok!(Presale::contribute(RuntimeOrigin::signed(2), 0, 1_000_000_000)); // Now at 10,000 hard cap
 
@@ -324,9 +446,22 @@ fn contribute_after_presale_ended_fails() {
 
 		assert_ok!(Presale::create_presale(
 			RuntimeOrigin::signed(1),
-			2, 1, 10_000_000_000_000_000_000, 100, false,
-			10_000_000, 1_000_000_000, 5_000_000_000, 10_000_000_000,
-			false, 0, 0, 0, 24, 5, 2,
+			2,
+			1,
+			10_000_000_000_000_000_000,
+			100,
+			false,
+			10_000_000,
+			1_000_000_000,
+			5_000_000_000,
+			10_000_000_000,
+			false,
+			0,
+			0,
+			0,
+			24,
+			5,
+			2,
 		));
 
 		// Move past presale end (block 1 + 100 = 101)
@@ -348,9 +483,22 @@ fn finalize_presale_works() {
 		mint_assets(1, 1, 100_000_000_000_000_000_000); // 100,000 PEZ
 		assert_ok!(Presale::create_presale(
 			RuntimeOrigin::signed(1),
-			2, 1, 10_000_000_000_000_000_000, 100, false,
-			10_000_000, 1_000_000_000, 5_000_000_000, 10_000_000_000,
-			false, 0, 0, 0, 24, 5, 2,
+			2,
+			1,
+			10_000_000_000_000_000_000,
+			100,
+			false,
+			10_000_000,
+			1_000_000_000,
+			5_000_000_000,
+			10_000_000_000,
+			false,
+			0,
+			0,
+			0,
+			24,
+			5,
+			2,
 		));
 
 		// Mint PEZ to presale treasury for distribution
@@ -390,8 +538,11 @@ fn finalize_presale_works() {
 			// Allow for small rounding differences (within 0.1%)
 			assert!(
 				contributor_pez >= expected_pez - 10_000_000_000_000_000 &&
-				contributor_pez <= expected_pez + 10_000_000_000_000_000,
-				"Contributor {} PEZ: {} (expected ~{})", i, contributor_pez, expected_pez
+					contributor_pez <= expected_pez + 10_000_000_000_000_000,
+				"Contributor {} PEZ: {} (expected ~{})",
+				i,
+				contributor_pez,
+				expected_pez
 			);
 		}
 
@@ -410,9 +561,22 @@ fn finalize_presale_before_end_fails() {
 
 		assert_ok!(Presale::create_presale(
 			RuntimeOrigin::signed(1),
-			2, 1, 10_000_000_000_000_000_000, 100, false,
-			10_000_000, 1_000_000_000, 5_000_000_000, 10_000_000_000,
-			false, 0, 0, 0, 24, 5, 2,
+			2,
+			1,
+			10_000_000_000_000_000_000,
+			100,
+			false,
+			10_000_000,
+			1_000_000_000,
+			5_000_000_000,
+			10_000_000_000,
+			false,
+			0,
+			0,
+			0,
+			24,
+			5,
+			2,
 		));
 
 		// Try to finalize immediately (use root to test the actual business logic error)
@@ -431,9 +595,22 @@ fn finalize_presale_non_root_fails() {
 
 		assert_ok!(Presale::create_presale(
 			RuntimeOrigin::signed(1),
-			2, 1, 10_000_000_000_000_000_000, 100, false,
-			10_000_000, 1_000_000_000, 5_000_000_000, 10_000_000_000,
-			false, 0, 0, 0, 24, 5, 2,
+			2,
+			1,
+			10_000_000_000_000_000_000,
+			100,
+			false,
+			10_000_000,
+			1_000_000_000,
+			5_000_000_000,
+			10_000_000_000,
+			false,
+			0,
+			0,
+			0,
+			24,
+			5,
+			2,
 		));
 
 		System::set_block_number(101);
@@ -455,9 +632,22 @@ fn refund_works() {
 
 		assert_ok!(Presale::create_presale(
 			RuntimeOrigin::signed(1),
-			2, 1, 10_000_000_000_000_000_000, 100, false,
-			10_000_000, 1_000_000_000, 5_000_000_000, 10_000_000_000,
-			false, 0, 0, 0, 24, 5, 2,
+			2,
+			1,
+			10_000_000_000_000_000_000,
+			100,
+			false,
+			10_000_000,
+			1_000_000_000,
+			5_000_000_000,
+			10_000_000_000,
+			false,
+			0,
+			0,
+			0,
+			24,
+			5,
+			2,
 		));
 
 		// Bob contributes
@@ -511,9 +701,19 @@ fn refund_in_grace_period_lower_fee() {
 
 		assert_ok!(Presale::create_presale(
 			RuntimeOrigin::signed(1),
-			2, 1, 10_000_000_000_000_000_000, 100, false,
-			10_000_000, 1_000_000_000, 5_000_000_000, 10_000_000_000,
-			false, 0, 0, 0,
+			2,
+			1,
+			10_000_000_000_000_000_000,
+			100,
+			false,
+			10_000_000,
+			1_000_000_000,
+			5_000_000_000,
+			10_000_000_000,
+			false,
+			0,
+			0,
+			0,
 			24, // 24 blocks grace period (block 1 + 24 = 25)
 			5,  // 5% regular refund fee
 			2,  // 2% grace refund fee
@@ -554,16 +754,26 @@ fn refund_with_no_contribution_fails() {
 
 		assert_ok!(Presale::create_presale(
 			RuntimeOrigin::signed(1),
-			2, 1, 10_000_000_000_000_000_000, 100, false,
-			10_000_000, 1_000_000_000, 5_000_000_000, 10_000_000_000,
-			false, 0, 0, 0, 24, 5, 2,
+			2,
+			1,
+			10_000_000_000_000_000_000,
+			100,
+			false,
+			10_000_000,
+			1_000_000_000,
+			5_000_000_000,
+			10_000_000_000,
+			false,
+			0,
+			0,
+			0,
+			24,
+			5,
+			2,
 		));
 
 		// Bob tries to refund without contributing
-		assert_noop!(
-			Presale::refund(RuntimeOrigin::signed(2), 0),
-			Error::<Test>::NoContribution
-		);
+		assert_noop!(Presale::refund(RuntimeOrigin::signed(2), 0), Error::<Test>::NoContribution);
 	});
 }
 
@@ -576,9 +786,22 @@ fn cancel_presale_works() {
 
 		assert_ok!(Presale::create_presale(
 			RuntimeOrigin::signed(1),
-			2, 1, 10_000_000_000_000_000_000, 100, false,
-			10_000_000, 1_000_000_000, 5_000_000_000, 10_000_000_000,
-			false, 0, 0, 0, 24, 5, 2,
+			2,
+			1,
+			10_000_000_000_000_000_000,
+			100,
+			false,
+			10_000_000,
+			1_000_000_000,
+			5_000_000_000,
+			10_000_000_000,
+			false,
+			0,
+			0,
+			0,
+			24,
+			5,
+			2,
 		));
 
 		// Bob contributes
@@ -604,9 +827,22 @@ fn cancel_presale_non_authorized_fails() {
 
 		assert_ok!(Presale::create_presale(
 			RuntimeOrigin::signed(1),
-			2, 1, 10_000_000_000_000_000_000, 100, false,
-			10_000_000, 1_000_000_000, 5_000_000_000, 10_000_000_000,
-			false, 0, 0, 0, 24, 5, 2,
+			2,
+			1,
+			10_000_000_000_000_000_000,
+			100,
+			false,
+			10_000_000,
+			1_000_000_000,
+			5_000_000_000,
+			10_000_000_000,
+			false,
+			0,
+			0,
+			0,
+			24,
+			5,
+			2,
 		));
 
 		// Non-authorized user tries to cancel (needs EmergencyOrigin or Root)
@@ -625,9 +861,22 @@ fn emergency_cancel_by_root_works() {
 
 		assert_ok!(Presale::create_presale(
 			RuntimeOrigin::signed(1),
-			2, 1, 10_000_000_000_000_000_000, 100, false,
-			10_000_000, 1_000_000_000, 5_000_000_000, 10_000_000_000,
-			false, 0, 0, 0, 24, 5, 2,
+			2,
+			1,
+			10_000_000_000_000_000_000,
+			100,
+			false,
+			10_000_000,
+			1_000_000_000,
+			5_000_000_000,
+			10_000_000_000,
+			false,
+			0,
+			0,
+			0,
+			24,
+			5,
+			2,
 		));
 
 		// Root can cancel any presale (emergency)
@@ -648,10 +897,22 @@ fn whitelist_presale_works() {
 		// Create whitelist presale
 		assert_ok!(Presale::create_presale(
 			RuntimeOrigin::signed(1),
-			2, 1, 10_000_000_000_000_000_000, 100,
+			2,
+			1,
+			10_000_000_000_000_000_000,
+			100,
 			true, // whitelist enabled
-			10_000_000, 1_000_000_000, 5_000_000_000, 10_000_000_000,
-			false, 0, 0, 0, 24, 5, 2,
+			10_000_000,
+			1_000_000_000,
+			5_000_000_000,
+			10_000_000_000,
+			false,
+			0,
+			0,
+			0,
+			24,
+			5,
+			2,
 		));
 
 		// Bob tries to contribute (not whitelisted)
@@ -676,9 +937,22 @@ fn add_to_whitelist_non_owner_fails() {
 
 		assert_ok!(Presale::create_presale(
 			RuntimeOrigin::signed(1),
-			2, 1, 10_000_000_000_000_000_000, 100, true,
-			10_000_000, 1_000_000_000, 5_000_000_000, 10_000_000_000,
-			false, 0, 0, 0, 24, 5, 2,
+			2,
+			1,
+			10_000_000_000_000_000_000,
+			100,
+			true,
+			10_000_000,
+			1_000_000_000,
+			5_000_000_000,
+			10_000_000_000,
+			false,
+			0,
+			0,
+			0,
+			24,
+			5,
+			2,
 		));
 
 		// Charlie tries to add Bob to Alice's presale whitelist
@@ -701,9 +975,22 @@ fn finalize_presale_soft_cap_reached_success() {
 		mint_assets(1, 1, 100_000_000_000_000_000_000); // 100,000 PEZ
 		assert_ok!(Presale::create_presale(
 			RuntimeOrigin::signed(1),
-			2, 1, 10_000_000_000_000_000_000, 100, false,
-			10_000_000, 1_000_000_000, 5_000_000_000, 10_000_000_000,
-			false, 0, 0, 0, 24, 5, 2,
+			2,
+			1,
+			10_000_000_000_000_000_000,
+			100,
+			false,
+			10_000_000,
+			1_000_000_000,
+			5_000_000_000,
+			10_000_000_000,
+			false,
+			0,
+			0,
+			0,
+			24,
+			5,
+			2,
 		));
 
 		// Mint PEZ to presale treasury
@@ -751,9 +1038,22 @@ fn finalize_presale_soft_cap_not_reached_fails() {
 		mint_assets(1, 1, 100_000_000_000_000_000_000);
 		assert_ok!(Presale::create_presale(
 			RuntimeOrigin::signed(1),
-			2, 1, 10_000_000_000_000_000_000, 100, false,
-			10_000_000, 1_000_000_000, 5_000_000_000, 10_000_000_000,
-			false, 0, 0, 0, 24, 5, 2,
+			2,
+			1,
+			10_000_000_000_000_000_000,
+			100,
+			false,
+			10_000_000,
+			1_000_000_000,
+			5_000_000_000,
+			10_000_000_000,
+			false,
+			0,
+			0,
+			0,
+			24,
+			5,
+			2,
 		));
 
 		// Contributors below soft cap (max is 1000 USDT each)
@@ -766,7 +1066,8 @@ fn finalize_presale_soft_cap_not_reached_fails() {
 		assert_ok!(Presale::contribute(RuntimeOrigin::signed(3), 0, 1_000_000_000));
 		assert_ok!(Presale::contribute(RuntimeOrigin::signed(4), 0, 1_000_000_000));
 
-		// total_raised tracks gross amounts: 1000 + 1000 + 1000 = 3,000 USDT < soft cap (5,000 USDT) ❌
+		// total_raised tracks gross amounts: 1000 + 1000 + 1000 = 3,000 USDT < soft cap (5,000
+		// USDT) ❌
 		let total_gross = 3_000_000_000;
 		assert_eq!(Presale::total_raised(0), total_gross);
 
@@ -795,9 +1096,22 @@ fn batch_refund_failed_presale_works() {
 		mint_assets(1, 1, 100_000_000_000_000_000_000);
 		assert_ok!(Presale::create_presale(
 			RuntimeOrigin::signed(1),
-			2, 1, 10_000_000_000_000_000_000, 100, false,
-			10_000_000, 1_000_000_000, 5_000_000_000, 10_000_000_000,
-			false, 0, 0, 0, 24, 5, 2,
+			2,
+			1,
+			10_000_000_000_000_000_000,
+			100,
+			false,
+			10_000_000,
+			1_000_000_000,
+			5_000_000_000,
+			10_000_000_000,
+			false,
+			0,
+			0,
+			0,
+			24,
+			5,
+			2,
 		));
 
 		// Fund presale treasury with wUSDT for refunds
@@ -827,9 +1141,9 @@ fn batch_refund_failed_presale_works() {
 		// Anyone can call batch_refund_failed_presale
 		assert_ok!(Presale::batch_refund_failed_presale(
 			RuntimeOrigin::signed(4), // Random account (not owner)
-			0, // presale_id
-			0, // start_index
-			10, // batch_size (refund up to 10 contributors)
+			0,                        // presale_id
+			0,                        // start_index
+			10,                       // batch_size (refund up to 10 contributors)
 		));
 
 		// Check contributors got full refunds (NO FEE for failed presale)
@@ -851,9 +1165,22 @@ fn batch_refund_successful_presale_fails() {
 		mint_assets(1, 1, 100_000_000_000_000_000_000);
 		assert_ok!(Presale::create_presale(
 			RuntimeOrigin::signed(1),
-			2, 1, 10_000_000_000_000_000_000, 100, false,
-			10_000_000, 1_000_000_000, 5_000_000_000, 10_000_000_000,
-			false, 0, 0, 0, 24, 5, 2,
+			2,
+			1,
+			10_000_000_000_000_000_000,
+			100,
+			false,
+			10_000_000,
+			1_000_000_000,
+			5_000_000_000,
+			10_000_000_000,
+			false,
+			0,
+			0,
+			0,
+			24,
+			5,
+			2,
 		));
 
 		let treasury = presale_treasury(0);
@@ -880,12 +1207,7 @@ fn batch_refund_successful_presale_fails() {
 
 		// Try to batch refund a successful presale (should fail)
 		assert_noop!(
-			Presale::batch_refund_failed_presale(
-				RuntimeOrigin::signed(4),
-				0,
-				0,
-				10,
-			),
+			Presale::batch_refund_failed_presale(RuntimeOrigin::signed(4), 0, 0, 10,),
 			Error::<Test>::PresaleNotFailed
 		);
 	});
@@ -901,12 +1223,22 @@ fn create_presale_with_soft_cap_greater_than_hard_cap_fails() {
 		assert_noop!(
 			Presale::create_presale(
 				RuntimeOrigin::signed(1),
-				2, 1, 10_000_000_000_000_000_000, 100, false,
+				2,
+				1,
+				10_000_000_000_000_000_000,
+				100,
+				false,
 				10_000_000,
 				1_000_000_000,
 				15_000_000_000, // soft_cap: 15,000 USDT
 				10_000_000_000, // hard_cap: 10,000 USDT (INVALID!)
-				false, 0, 0, 0, 24, 5, 2,
+				false,
+				0,
+				0,
+				0,
+				24,
+				5,
+				2,
 			),
 			Error::<Test>::InvalidTokensForSale
 		);
@@ -914,51 +1246,57 @@ fn create_presale_with_soft_cap_greater_than_hard_cap_fails() {
 }
 #[test]
 fn debug_finalize_presale() {
-    use crate::mock::*;
-    use frame_support::{assert_ok, traits::fungibles::Mutate};
-    
-    new_test_ext().execute_with(|| {
-        create_assets();
-        
-        // Mint reward tokens to owner
-        mint_assets(1, 1, 100_000_000_000_000_000_000);
-        
-        // Create presale
-        assert_ok!(Presale::create_presale(
-            RuntimeOrigin::signed(1),
-            2, // payment asset (wUSDT)
-            1, // reward asset (PEZ)
-            10_000_000_000, // tokens_for_sale
-            100,
-            false,
-            10_000_000,
-            1_000_000_000,
-            5_000_000_000, // soft_cap
-            10_000_000_000,
-            false, 0, 0, 0, 24, 5, 2
-        ));
-        
-        // Fund presale treasury with reward tokens
-        let treasury = presale_treasury(0);
-        mint_assets(1, treasury, 1_000_000_000_000_000_000_000);
-        
-        // Fund platform accounts
-        mint_assets(2, 999, 100_000_000_000);
-        mint_assets(2, 998, 100_000_000_000);
-        
-        // Create 25 contributors
-        for i in 2..27 {
-            mint_assets(2, i, 220_000_000); // payment asset
-            mint_assets(1, i, 1_000_000_000); // reward asset
-            assert_ok!(Presale::contribute(RuntimeOrigin::signed(i), 0, 200_000_000));
-        }
-        
-        // Move to end
-        System::set_block_number(150);
-        
-        // Try to finalize
-        let result = Presale::finalize_presale(RuntimeOrigin::root(), 0);
-        println!("Finalize result: {:?}", result);
-        assert_ok!(result);
-    });
+	use crate::mock::*;
+	use frame_support::{assert_ok, traits::fungibles::Mutate};
+
+	new_test_ext().execute_with(|| {
+		create_assets();
+
+		// Mint reward tokens to owner
+		mint_assets(1, 1, 100_000_000_000_000_000_000);
+
+		// Create presale
+		assert_ok!(Presale::create_presale(
+			RuntimeOrigin::signed(1),
+			2,              // payment asset (wUSDT)
+			1,              // reward asset (PEZ)
+			10_000_000_000, // tokens_for_sale
+			100,
+			false,
+			10_000_000,
+			1_000_000_000,
+			5_000_000_000, // soft_cap
+			10_000_000_000,
+			false,
+			0,
+			0,
+			0,
+			24,
+			5,
+			2
+		));
+
+		// Fund presale treasury with reward tokens
+		let treasury = presale_treasury(0);
+		mint_assets(1, treasury, 1_000_000_000_000_000_000_000);
+
+		// Fund platform accounts
+		mint_assets(2, 999, 100_000_000_000);
+		mint_assets(2, 998, 100_000_000_000);
+
+		// Create 25 contributors
+		for i in 2..27 {
+			mint_assets(2, i, 220_000_000); // payment asset
+			mint_assets(1, i, 1_000_000_000); // reward asset
+			assert_ok!(Presale::contribute(RuntimeOrigin::signed(i), 0, 200_000_000));
+		}
+
+		// Move to end
+		System::set_block_number(150);
+
+		// Try to finalize
+		let result = Presale::finalize_presale(RuntimeOrigin::root(), 0);
+		println!("Finalize result: {:?}", result);
+		assert_ok!(result);
+	});
 }

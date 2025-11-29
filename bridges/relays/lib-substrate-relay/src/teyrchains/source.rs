@@ -17,21 +17,21 @@
 //! Teyrchain heads source.
 
 use crate::{
-	teyrchains::{TeyrchainsPipelineAdapter, SubstrateTeyrchainsPipeline},
 	proofs::to_raw_storage_proof,
+	teyrchains::{SubstrateTeyrchainsPipeline, TeyrchainsPipelineAdapter},
 };
 use async_std::sync::{Arc, Mutex};
 use async_trait::async_trait;
-use bp_teyrchains::teyrchain_head_storage_key_at_source;
 use bp_pezkuwi_core::teyrchains::{ParaHash, ParaHead, ParaHeadsProof, ParaId};
 use bp_runtime::HeaderIdProvider;
+use bp_teyrchains::teyrchain_head_storage_key_at_source;
 use codec::Decode;
-use teyrchains_relay::teyrchains_loop::{AvailableHeader, SourceClient};
 use relay_substrate_client::{
-	is_ancient_block, Chain, Client, Error as SubstrateError, HeaderIdOf, HeaderOf, TeyrchainBase,
-	RelayChain,
+	is_ancient_block, Chain, Client, Error as SubstrateError, HeaderIdOf, HeaderOf, RelayChain,
+	TeyrchainBase,
 };
 use relay_utils::relay_loop::Client as RelayClient;
+use teyrchains_relay::teyrchains_loop::{AvailableHeader, SourceClient};
 
 /// Shared updatable reference to the maximal teyrchain header id that we want to sync from the
 /// source.

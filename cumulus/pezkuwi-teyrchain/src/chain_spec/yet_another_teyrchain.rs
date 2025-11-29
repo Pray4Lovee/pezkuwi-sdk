@@ -14,11 +14,11 @@
 // limitations under the License.
 
 //! ChainSpecs dedicated to teyrchain setups for testing and example purposes
-use teyrchains_common::AccountId;
 use pezkuwi_omni_node_lib::chain_spec::{Extensions, GenericChainSpec};
 use sc_chain_spec::ChainType;
 use sp_core::{hex2array, sr25519::Pair as SrPair, Pair};
 use sp_keyring::Sr25519Keyring as Keyring;
+use teyrchains_common::AccountId;
 
 const NUM_ACCOUNT_PAIRS: usize = 16000;
 

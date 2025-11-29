@@ -16,7 +16,7 @@
 
 use crate::{validate_block::MemoryOptimizedValidationParams, *};
 use codec::{Decode, DecodeAll, Encode};
-use cumulus_primitives_core::{relay_chain, TeyrchainBlockData, PersistedValidationData};
+use cumulus_primitives_core::{relay_chain, PersistedValidationData, TeyrchainBlockData};
 use cumulus_test_client::{
 	generate_extrinsic, generate_extrinsic_with_pair,
 	runtime::{

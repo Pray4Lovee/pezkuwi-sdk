@@ -41,9 +41,7 @@ pub use sp_consensus_babe::{
 	Randomness as BabeRandomness,
 };
 
-pub use pezkuwi_teyrchain_primitives::primitives::{
-	BlockData, HorizontalMessages, UpwardMessages,
-};
+pub use pezkuwi_teyrchain_primitives::primitives::{BlockData, HorizontalMessages, UpwardMessages};
 
 pub mod approval;
 

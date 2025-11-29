@@ -71,7 +71,9 @@ use frame_system::{
 	limits::{BlockLength, BlockWeights},
 	EnsureRoot,
 };
-use testnet_teyrchains_constants::pezkuwichain::{consensus::*, currency::*, fee::WeightToFee, time::*};
+use testnet_teyrchains_constants::pezkuwichain::{
+	consensus::*, currency::*, fee::WeightToFee, time::*,
+};
 
 use bp_runtime::HeaderId;
 use bridge_hub_common::{
@@ -1620,15 +1622,16 @@ mod tests {
 
 			// for BridgeHubPezkuwichain
 			{
-				let bhr_indirect_payload = bp_bridge_hub_pezkuwichain::TransactionExtension::from_params(
-					VERSION.spec_version,
-					VERSION.transaction_version,
-					bp_runtime::TransactionEra::Immortal,
-					System::block_hash(BlockNumber::zero()),
-					10,
-					10,
-					(((), ()), ((), ())),
-				);
+				let bhr_indirect_payload =
+					bp_bridge_hub_pezkuwichain::TransactionExtension::from_params(
+						VERSION.spec_version,
+						VERSION.transaction_version,
+						bp_runtime::TransactionEra::Immortal,
+						System::block_hash(BlockNumber::zero()),
+						10,
+						10,
+						(((), ()), ((), ())),
+					);
 				assert_eq!(payload.encode().split_last().unwrap().1, bhr_indirect_payload.encode());
 				assert_eq!(
 					TxExtension::implicit(&payload).unwrap().encode().split_last().unwrap().1,

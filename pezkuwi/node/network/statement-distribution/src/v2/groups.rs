@@ -16,9 +16,7 @@
 
 //! A utility for tracking groups and their members within a session.
 
-use pezkuwi_primitives::{
-	effective_minimum_backing_votes, GroupIndex, IndexedVec, ValidatorIndex,
-};
+use pezkuwi_primitives::{effective_minimum_backing_votes, GroupIndex, IndexedVec, ValidatorIndex};
 
 use std::collections::HashMap;
 

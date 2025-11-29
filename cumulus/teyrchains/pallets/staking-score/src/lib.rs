@@ -103,16 +103,16 @@ pub struct BenchmarkStakingInfoProvider;
 #[cfg(feature = "runtime-benchmarks")]
 impl<AccountId, Balance> StakingInfoProvider<AccountId, Balance> for BenchmarkStakingInfoProvider
 where
-    Balance: From<u128>,
+	Balance: From<u128>,
 {
-    fn get_staking_details(_who: &AccountId) -> Option<StakingDetails<Balance>> {
-        // Always return valid stake for benchmarking
-        Some(StakingDetails {
-            staked_amount: (1000u128 * UNITS).into(),
-            nominations_count: 5,
-            unlocking_chunks_count: 2,
-        })
-    }
+	fn get_staking_details(_who: &AccountId) -> Option<StakingDetails<Balance>> {
+		// Always return valid stake for benchmarking
+		Some(StakingDetails {
+			staked_amount: (1000u128 * UNITS).into(),
+			nominations_count: 5,
+			unlocking_chunks_count: 2,
+		})
+	}
 }
 
 #[cfg(feature = "runtime-benchmarks")]
@@ -128,10 +128,13 @@ pub mod weights;
 #[frame_support::pallet]
 pub mod pallet {
 	use super::weights::WeightInfo; // Properly importing WeightInfo from parent module.
+	use core::ops::Div;
 	use frame_support::pallet_prelude::*;
 	use frame_system::pallet_prelude::*;
-	use sp_runtime::{traits::{Saturating, Zero}, Perbill};
-	use core::ops::Div;
+	use sp_runtime::{
+		traits::{Saturating, Zero},
+		Perbill,
+	};
 
 	// --- Sabitler ---
 	pub const MONTH_IN_BLOCKS: u32 = 30 * 24 * 60 * 10;
@@ -168,7 +171,8 @@ pub mod pallet {
 	// --- Depolama (Storage) ---
 	#[pallet::storage]
 	#[pallet::getter(fn staking_start_block)]
-	pub type StakingStartBlock<T: Config> = StorageMap<_, Blake2_128Concat, T::AccountId, BlockNumberFor<T>, OptionQuery>;
+	pub type StakingStartBlock<T: Config> =
+		StorageMap<_, Blake2_128Concat, T::AccountId, BlockNumberFor<T>, OptionQuery>;
 
 	#[pallet::event]
 	#[pallet::generate_deposit(pub(super) fn deposit_event)]
@@ -193,13 +197,18 @@ pub mod pallet {
 		#[pallet::weight(T::WeightInfo::start_score_tracking())]
 		pub fn start_score_tracking(origin: OriginFor<T>) -> DispatchResult {
 			let who = ensure_signed(origin)?;
-			
+
 			// 1. Kullanıcının puan takibini daha önce başlatıp başlatmadığını kontrol et.
-			ensure!(StakingStartBlock::<T>::get(&who).is_none(), Error::<T>::TrackingAlreadyStarted);
+			ensure!(
+				StakingStartBlock::<T>::get(&who).is_none(),
+				Error::<T>::TrackingAlreadyStarted
+			);
 
 			// 2. Kullanıcının ana staking paletinde stake'i var mı diye kontrol et.
-			// `get_staking_details` artık Option döndürdüğü için `ok_or` ile hata yönetimi yapıyoruz.
-			let details = T::StakingInfo::get_staking_details(&who).ok_or(Error::<T>::NoStakeFound)?;
+			// `get_staking_details` artık Option döndürdüğü için `ok_or` ile hata yönetimi
+			// yapıyoruz.
+			let details =
+				T::StakingInfo::get_staking_details(&who).ok_or(Error::<T>::NoStakeFound)?;
 			ensure!(!details.staked_amount.is_zero(), Error::<T>::NoStakeFound);
 
 			// 3. O anki blok numarasını kaydet.
@@ -224,7 +233,7 @@ pub mod pallet {
 		pub nominations_count: u32,
 		pub unlocking_chunks_count: u32,
 	}
-	
+
 	/// Bu paletin dış dünyaya sunduğu arayüz.
 	pub trait StakingScoreProvider<AccountId, BlockNumber> {
 		/// Returns the score and the duration in blocks used for calculation.
@@ -268,14 +277,15 @@ pub mod pallet {
 			};
 
 			// Süreye dayalı çarpanı ve duration'ı hesapla.
-			let (_duration_multiplier, duration_for_return) = match StakingStartBlock::<T>::get(who) {
+			let (_duration_multiplier, duration_for_return) = match StakingStartBlock::<T>::get(who)
+			{
 				// Eğer kullanıcı `start_score_tracking` çağırdıysa...
 				Some(start_block) => {
 					let current_block = frame_system::Pallet::<T>::block_number();
 					let duration_in_blocks = current_block.saturating_sub(start_block);
 
 					let multiplier = if duration_in_blocks >= (12 * MONTH_IN_BLOCKS).into() {
-					Perbill::from_rational(2u32, 1u32) // x2.0 (12 ay ve üstü)
+						Perbill::from_rational(2u32, 1u32) // x2.0 (12 ay ve üstü)
 					} else if duration_in_blocks >= (6 * MONTH_IN_BLOCKS).into() {
 						Perbill::from_rational(17u32, 10u32) // x1.7 (6-11 ay)
 					} else if duration_in_blocks >= (3 * MONTH_IN_BLOCKS).into() {
@@ -285,7 +295,7 @@ pub mod pallet {
 					} else {
 						Perbill::from_rational(1u32, 1u32) // x1.0 (< 1 ay)
 					};
-					
+
 					(multiplier, duration_in_blocks)
 				},
 				// Eğer takip başlatılmadıysa, çarpan 1.0'dır.
@@ -312,7 +322,7 @@ pub mod pallet {
 				},
 				None => amount_score, // Takip başlatılmadıysa çarpan yok
 			};
-			
+
 			(final_score.min(100), duration_for_return)
 		}
 	}

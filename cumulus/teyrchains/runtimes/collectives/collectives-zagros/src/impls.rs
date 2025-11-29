@@ -113,8 +113,8 @@ pub mod benchmarks {
 		Get,
 	};
 	use pallet_ranked_collective::Rank;
-	use teyrchains_common::{AccountId, Balance};
 	use sp_runtime::traits::Convert;
+	use teyrchains_common::{AccountId, Balance};
 
 	/// Rank to salary conversion helper type.
 	pub struct RankToSalary<Fungible>(PhantomData<Fungible>);

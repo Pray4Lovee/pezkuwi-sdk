@@ -18,15 +18,16 @@
 
 use cumulus_primitives_core::ParaId;
 use hex_literal::hex;
-use teyrchains_common::AccountId;
 use pezkuwi_omni_node_lib::chain_spec::{Extensions, GenericChainSpec};
 use pezkuwichain_teyrchain_runtime::AuraId;
 use sc_chain_spec::ChainType;
 use sp_core::crypto::UncheckedInto;
+use teyrchains_common::AccountId;
 
 pub fn pezkuwichain_teyrchain_local_config() -> GenericChainSpec {
 	GenericChainSpec::builder(
-		pezkuwichain_teyrchain_runtime::WASM_BINARY.expect("WASM binary was not built, please build it!"),
+		pezkuwichain_teyrchain_runtime::WASM_BINARY
+			.expect("WASM binary was not built, please build it!"),
 		Extensions::new_with_relay_chain("pezkuwichain-local".into()),
 	)
 	.with_name("Pezkuwichain Teyrchain Local")
@@ -38,7 +39,8 @@ pub fn pezkuwichain_teyrchain_local_config() -> GenericChainSpec {
 
 pub fn staging_pezkuwichain_teyrchain_local_config() -> GenericChainSpec {
 	GenericChainSpec::builder(
-		pezkuwichain_teyrchain_runtime::WASM_BINARY.expect("WASM binary was not built, please build it!"),
+		pezkuwichain_teyrchain_runtime::WASM_BINARY
+			.expect("WASM binary was not built, please build it!"),
 		Extensions::new_with_relay_chain("pezkuwichain-local".into()),
 	)
 	.with_name("Staging Pezkuwichain Teyrchain Local")

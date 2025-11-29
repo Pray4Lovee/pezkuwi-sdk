@@ -18,7 +18,7 @@ use super::*;
 use core::num::NonZeroU32;
 use cumulus_pallet_teyrchain_system::{
 	consensus_hook::ExpectParentIncluded, Ancestor, AnyRelayNumber, ConsensusHook,
-	TeyrchainSetCode, RelayChainStateProof, UsedBandwidth,
+	RelayChainStateProof, TeyrchainSetCode, UsedBandwidth,
 };
 use cumulus_primitives_core::ParaId;
 use frame_support::{

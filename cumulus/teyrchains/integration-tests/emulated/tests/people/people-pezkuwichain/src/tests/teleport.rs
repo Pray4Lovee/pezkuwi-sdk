@@ -15,15 +15,20 @@
 
 use crate::imports::*;
 use emulated_integration_tests_common::{
-	test_teyrchain_is_trusted_teleporter, test_teyrchain_is_trusted_teleporter_for_relay,
-	test_relay_is_trusted_teleporter,
+	test_relay_is_trusted_teleporter, test_teyrchain_is_trusted_teleporter,
+	test_teyrchain_is_trusted_teleporter_for_relay,
 };
 
 #[test]
 fn teleport_via_limited_teleport_assets_from_and_to_relay() {
 	let amount = PEZKUWICHAIN_ED * 100;
 
-	test_relay_is_trusted_teleporter!(Pezkuwichain, vec![PeoplePezkuwichain], amount, limited_teleport_assets);
+	test_relay_is_trusted_teleporter!(
+		Pezkuwichain,
+		vec![PeoplePezkuwichain],
+		amount,
+		limited_teleport_assets
+	);
 
 	test_teyrchain_is_trusted_teleporter_for_relay!(
 		PeoplePezkuwichain,
@@ -37,9 +42,19 @@ fn teleport_via_limited_teleport_assets_from_and_to_relay() {
 fn teleport_via_transfer_assets_from_and_to_relay() {
 	let amount = PEZKUWICHAIN_ED * 100;
 
-	test_relay_is_trusted_teleporter!(Pezkuwichain, vec![PeoplePezkuwichain], amount, transfer_assets);
+	test_relay_is_trusted_teleporter!(
+		Pezkuwichain,
+		vec![PeoplePezkuwichain],
+		amount,
+		transfer_assets
+	);
 
-	test_teyrchain_is_trusted_teleporter_for_relay!(PeoplePezkuwichain, Pezkuwichain, amount, transfer_assets);
+	test_teyrchain_is_trusted_teleporter_for_relay!(
+		PeoplePezkuwichain,
+		Pezkuwichain,
+		amount,
+		transfer_assets
+	);
 }
 
 #[test]
@@ -118,7 +133,10 @@ fn limited_teleport_native_assets_from_system_para_to_relay_fails() {
 	let fee_asset_id: AssetId = Parent.into();
 
 	// Fund a sender
-	PeoplePezkuwichain::fund_accounts(vec![(PeoplePezkuwichainSender::get(), PEZKUWICHAIN_ED * 2_000u128)]);
+	PeoplePezkuwichain::fund_accounts(vec![(
+		PeoplePezkuwichainSender::get(),
+		PEZKUWICHAIN_ED * 2_000u128,
+	)]);
 
 	let test_args = TestContext {
 		sender: PeoplePezkuwichainSender::get(),

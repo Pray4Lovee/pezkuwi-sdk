@@ -21,8 +21,9 @@ use crate::{
 	},
 	tests::{
 		assert_bridge_hub_pezkuwichain_message_received, assert_bridge_hub_zagros_message_accepted,
-		asset_hub_pezkuwichain_location, asset_hub_zagros_global_location, bridged_roc_at_ah_zagros,
-		bridged_wnd_at_ah_pezkuwichain, create_foreign_on_ah_pezkuwichain, create_foreign_on_ah_zagros,
+		asset_hub_pezkuwichain_location, asset_hub_zagros_global_location,
+		bridged_roc_at_ah_zagros, bridged_wnd_at_ah_pezkuwichain,
+		create_foreign_on_ah_pezkuwichain, create_foreign_on_ah_zagros,
 		penpal_emulated_chain::penpal_runtime,
 		snowbridge_common::{bridge_hub, ethereum, register_roc_on_bh, snowbridge_sovereign},
 	},
@@ -355,10 +356,9 @@ fn send_eth_asset_from_asset_hub_to_ethereum_and_back() {
 			[AccountKey20 { network: None, key: ETHEREUM_DESTINATION_ADDRESS.into() }],
 		));
 
-		let free_balance_before =
-			<AssetHubZagros as AssetHubZagrosPallet>::Balances::free_balance(
-				AssetHubZagrosReceiver::get(),
-			);
+		let free_balance_before = <AssetHubZagros as AssetHubZagrosPallet>::Balances::free_balance(
+			AssetHubZagrosReceiver::get(),
+		);
 		// Send the Weth back to Ethereum
 		let fee_asset_id: AssetId = AssetId(origin_location.clone());
 		<AssetHubZagros as AssetHubZagrosPallet>::PezkuwiXcm::limited_reserve_transfer_assets(
@@ -669,10 +669,9 @@ fn send_weth_asset_from_asset_hub_to_ethereum() {
 			[AccountKey20 { network: None, key: ETHEREUM_DESTINATION_ADDRESS.into() }],
 		));
 
-		let free_balance_before =
-			<AssetHubZagros as AssetHubZagrosPallet>::Balances::free_balance(
-				AssetHubZagrosReceiver::get(),
-			);
+		let free_balance_before = <AssetHubZagros as AssetHubZagrosPallet>::Balances::free_balance(
+			AssetHubZagrosReceiver::get(),
+		);
 		// Send the Weth back to Ethereum
 		let fee_asset_id: AssetId = AssetId(Location::new(
 			2,
@@ -815,10 +814,8 @@ fn transfer_relay_token() {
 	BridgeHubZagros::fund_accounts(vec![(assethub_sovereign.clone(), INITIAL_FUND)]);
 
 	let asset_id: Location = Location { parents: 1, interior: [].into() };
-	let expected_asset_id: Location = Location {
-		parents: 1,
-		interior: [GlobalConsensus(ByGenesis(ZAGROS_GENESIS_HASH))].into(),
-	};
+	let expected_asset_id: Location =
+		Location { parents: 1, interior: [GlobalConsensus(ByGenesis(ZAGROS_GENESIS_HASH))].into() };
 
 	let expected_token_id = TokenIdOf::convert_location(&expected_asset_id).unwrap();
 
@@ -1151,7 +1148,11 @@ fn send_weth_from_ethereum_to_ahw_to_ahr_back_to_ahw_and_ethereum() {
 
 	let bridged_wnd_at_asset_hub_pezkuwichain = bridged_wnd_at_ah_pezkuwichain();
 	let wnd_reserve = vec![(asset_hub_zagros_global_location(), false).into()];
-	create_foreign_on_ah_pezkuwichain(bridged_wnd_at_asset_hub_pezkuwichain.clone(), true, wnd_reserve);
+	create_foreign_on_ah_pezkuwichain(
+		bridged_wnd_at_asset_hub_pezkuwichain.clone(),
+		true,
+		wnd_reserve,
+	);
 	create_pool_with_native_on!(
 		AssetHubPezkuwichain,
 		bridged_wnd_at_asset_hub_pezkuwichain.clone(),
@@ -1208,8 +1209,10 @@ fn send_weth_from_ethereum_to_ahw_to_ahr_back_to_ahw_and_ethereum() {
 		);
 	});
 
-	let beneficiary =
-		Location::new(0, [AccountId32 { network: None, id: AssetHubPezkuwichainReceiver::get().into() }]);
+	let beneficiary = Location::new(
+		0,
+		[AccountId32 { network: None, id: AssetHubPezkuwichainReceiver::get().into() }],
+	);
 	let weth_location = Location::new(
 		2,
 		[GlobalConsensus(EthereumNetwork::get()), AccountKey20 { network: None, key: WETH }],
@@ -1280,10 +1283,8 @@ fn send_weth_from_ethereum_to_ahw_to_ahr_back_to_ahw_and_ethereum() {
 		);
 	});
 
-	let beneficiary = Location::new(
-		0,
-		[AccountId32 { network: None, id: AssetHubZagrosReceiver::get().into() }],
-	);
+	let beneficiary =
+		Location::new(0, [AccountId32 { network: None, id: AssetHubZagrosReceiver::get().into() }]);
 	let fee = bridged_wnd_at_asset_hub_pezkuwichain;
 	let fees_asset: AssetId = fee.clone().into();
 	let custom_xcm_on_dest =
@@ -1391,10 +1392,9 @@ fn send_weth_from_ethereum_to_ahw_to_ahr_back_to_ahw_and_ethereum() {
 			[AccountKey20 { network: None, key: ETHEREUM_DESTINATION_ADDRESS.into() }],
 		));
 
-		let free_balance_before =
-			<AssetHubZagros as AssetHubZagrosPallet>::Balances::free_balance(
-				AssetHubZagrosReceiver::get(),
-			);
+		let free_balance_before = <AssetHubZagros as AssetHubZagrosPallet>::Balances::free_balance(
+			AssetHubZagrosReceiver::get(),
+		);
 		// Send the Weth back to Ethereum
 		let fee_asset_id: AssetId = AssetId(Location::new(
 			2,
@@ -1615,16 +1615,14 @@ fn transfer_penpal_native_asset() {
 			vec![Asset { id: AssetId(pal_at_asset_hub.clone()), fun: Fungible(TOKEN_AMOUNT) }];
 
 		let fee_asset_id: AssetId = AssetId(pal_at_asset_hub.clone());
-		assert_ok!(
-			<AssetHubZagros as AssetHubZagrosPallet>::PezkuwiXcm::limited_teleport_assets(
-				RuntimeOrigin::signed(AssetHubZagrosSender::get()),
-				Box::new(VersionedLocation::from(destination)),
-				Box::new(VersionedLocation::from(beneficiary)),
-				Box::new(VersionedAssets::from(assets)),
-				Box::new(fee_asset_id.into()),
-				Unlimited,
-			)
-		);
+		assert_ok!(<AssetHubZagros as AssetHubZagrosPallet>::PezkuwiXcm::limited_teleport_assets(
+			RuntimeOrigin::signed(AssetHubZagrosSender::get()),
+			Box::new(VersionedLocation::from(destination)),
+			Box::new(VersionedLocation::from(beneficiary)),
+			Box::new(VersionedAssets::from(assets)),
+			Box::new(fee_asset_id.into()),
+			Unlimited,
+		));
 
 		assert_expected_events!(
 			AssetHubZagros,
@@ -2194,10 +2192,8 @@ fn register_pna_in_v5_while_transfer_in_v4_should_work() {
 	BridgeHubZagros::fund_accounts(vec![(assethub_sovereign.clone(), INITIAL_FUND)]);
 
 	let asset_id: Location = Location { parents: 1, interior: [].into() };
-	let expected_asset_id: Location = Location {
-		parents: 1,
-		interior: [GlobalConsensus(ByGenesis(ZAGROS_GENESIS_HASH))].into(),
-	};
+	let expected_asset_id: Location =
+		Location { parents: 1, interior: [GlobalConsensus(ByGenesis(ZAGROS_GENESIS_HASH))].into() };
 
 	let _expected_token_id = TokenIdOf::convert_location(&expected_asset_id).unwrap();
 

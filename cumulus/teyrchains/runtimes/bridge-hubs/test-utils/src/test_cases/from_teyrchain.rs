@@ -32,12 +32,12 @@ use bp_runtime::{Chain, Teyrchain};
 use frame_support::traits::{OnFinalize, OnInitialize};
 use frame_system::pallet_prelude::BlockNumberFor;
 use pallet_bridge_messages::{BridgedChainOf, LaneIdOf, ThisChainOf};
-use teyrchains_runtimes_test_utils::{
-	AccountIdOf, BasicTeyrchainRuntime, CollatorSessionKeys, RuntimeCallOf, SlotDurations,
-};
 use sp_core::Get;
 use sp_keyring::Sr25519Keyring::*;
 use sp_runtime::{traits::Header as HeaderT, AccountId32};
+use teyrchains_runtimes_test_utils::{
+	AccountIdOf, BasicTeyrchainRuntime, CollatorSessionKeys, RuntimeCallOf, SlotDurations,
+};
 use xcm::latest::prelude::*;
 
 /// Helper trait to test bridges with remote teyrchain.

@@ -117,9 +117,9 @@ pub use origin_aliases::*;
 
 mod origin_conversion;
 pub use origin_conversion::{
-	BackingToPlurality, ChildTeyrchainAsNative, ChildSystemTeyrchainAsSuperuser, EnsureXcmOrigin,
+	BackingToPlurality, ChildSystemTeyrchainAsSuperuser, ChildTeyrchainAsNative, EnsureXcmOrigin,
 	LocationAsSuperuser, OriginToPluralityVoice, ParentAsSuperuser, RelayChainAsNative,
-	SiblingTeyrchainAsNative, SiblingSystemTeyrchainAsSuperuser, SignedAccountId32AsNative,
+	SiblingSystemTeyrchainAsSuperuser, SiblingTeyrchainAsNative, SignedAccountId32AsNative,
 	SignedAccountKey20AsNative, SignedToAccountId32, SovereignSignedViaLocation,
 };
 

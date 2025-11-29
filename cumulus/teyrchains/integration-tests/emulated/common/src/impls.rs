@@ -55,8 +55,8 @@ pub use cumulus_primitives_core::{
 pub use teyrchains_common::{AccountId, Balance};
 pub use xcm_emulator::{
 	assert_expected_events, bx, helpers::weight_within_threshold, BridgeLaneId, BridgeMessage,
-	BridgeMessageDispatchError, BridgeMessageHandler, Chain, Network, Teyrchain, RelayChain,
-	TestExt,
+	BridgeMessageDispatchError, BridgeMessageHandler, Chain, Network, RelayChain, TestExt,
+	Teyrchain,
 };
 
 // Bridges

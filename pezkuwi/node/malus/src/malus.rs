@@ -66,11 +66,7 @@ impl MalusCli {
 			NemesisVariant::SuggestGarbageCandidate(opts) => {
 				let SuggestGarbageCandidateOptions { percentage, cli } = opts;
 
-				pezkuwi_cli::run_node(
-					cli,
-					SuggestGarbageCandidates { percentage },
-					finality_delay,
-				)?
+				pezkuwi_cli::run_node(cli, SuggestGarbageCandidates { percentage }, finality_delay)?
 			},
 			NemesisVariant::SupportDisabled(opts) => {
 				let SupportDisabledOptions { cli } = opts;

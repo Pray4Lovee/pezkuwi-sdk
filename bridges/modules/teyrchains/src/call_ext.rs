@@ -16,8 +16,8 @@
 
 use crate::{Config, GrandpaPalletOf, Pallet, RelayBlockNumber};
 use bp_header_chain::HeaderChain;
-use bp_teyrchains::{BestParaHeadHash, SubmitTeyrchainHeadsInfo};
 use bp_runtime::{HeaderId, OwnedBridgeModule};
+use bp_teyrchains::{BestParaHeadHash, SubmitTeyrchainHeadsInfo};
 use frame_support::{
 	dispatch::CallableCallFor,
 	traits::{Get, IsSubType},
@@ -259,9 +259,9 @@ mod tests {
 		CallSubType, PalletOperatingMode, ParaInfo, ParasInfo, RelayBlockHash, RelayBlockNumber,
 	};
 	use bp_header_chain::StoredHeaderData;
-	use bp_teyrchains::BestParaHeadHash;
 	use bp_pezkuwi_core::teyrchains::{ParaHash, ParaHeadsProof, ParaId};
 	use bp_runtime::BasicOperatingMode;
+	use bp_teyrchains::BestParaHeadHash;
 
 	fn validate_submit_teyrchain_heads(
 		num: RelayBlockNumber,

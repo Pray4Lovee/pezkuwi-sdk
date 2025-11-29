@@ -24,20 +24,26 @@ mod imports {
 
 	// Cumulus
 	pub(crate) use emulated_integration_tests_common::xcm_emulator::{
-		assert_expected_events, Chain, Teyrchain, TestExt,
+		assert_expected_events, Chain, TestExt, Teyrchain,
 	};
 	pub(crate) use pezkuwichain_system_emulated_network::{
 		asset_hub_pezkuwichain_emulated_chain::genesis::ED as ASSET_HUB_PEZKUWICHAIN_ED,
 		coretime_pezkuwichain_emulated_chain::{
 			coretime_pezkuwichain_runtime::ExistentialDeposit as CoretimePezkuwichainExistentialDeposit,
-			genesis::ED as CORETIME_PEZKUWICHAIN_ED, CoretimePezkuwichainParaPallet as CoretimePezkuwichainPallet,
+			genesis::ED as CORETIME_PEZKUWICHAIN_ED,
+			CoretimePezkuwichainParaPallet as CoretimePezkuwichainPallet,
 		},
-		pezkuwichain_emulated_chain::{genesis::ED as PEZKUWICHAIN_ED, PezkuwichainRelayPallet as PezkuwichainPallet},
-		AssetHubPezkuwichainPara as AssetHubPezkuwichain, AssetHubPezkuwichainParaReceiver as AssetHubPezkuwichainReceiver,
-		AssetHubPezkuwichainParaSender as AssetHubPezkuwichainSender, CoretimePezkuwichainPara as CoretimePezkuwichain,
+		pezkuwichain_emulated_chain::{
+			genesis::ED as PEZKUWICHAIN_ED, PezkuwichainRelayPallet as PezkuwichainPallet,
+		},
+		AssetHubPezkuwichainPara as AssetHubPezkuwichain,
+		AssetHubPezkuwichainParaReceiver as AssetHubPezkuwichainReceiver,
+		AssetHubPezkuwichainParaSender as AssetHubPezkuwichainSender,
+		CoretimePezkuwichainPara as CoretimePezkuwichain,
 		CoretimePezkuwichainParaReceiver as CoretimePezkuwichainReceiver,
-		CoretimePezkuwichainParaSender as CoretimePezkuwichainSender, PezkuwichainRelay as Pezkuwichain,
-		PezkuwichainRelayReceiver as PezkuwichainReceiver, PezkuwichainRelaySender as PezkuwichainSender,
+		CoretimePezkuwichainParaSender as CoretimePezkuwichainSender,
+		PezkuwichainRelay as Pezkuwichain, PezkuwichainRelayReceiver as PezkuwichainReceiver,
+		PezkuwichainRelaySender as PezkuwichainSender,
 	};
 }
 

@@ -20,9 +20,12 @@ mod benchmarks {
 
 	#[benchmark]
 	fn create_course() {
-		let name: BoundedVec<u8, T::MaxCourseNameLength> = create_bounded_vec(b"Substrate training");
-		let description: BoundedVec<u8, T::MaxCourseDescLength> = create_bounded_vec(b"This training covers Substrate basics.");
-		let content_link: BoundedVec<u8, T::MaxCourseLinkLength> = create_bounded_vec(b"http://example.com");
+		let name: BoundedVec<u8, T::MaxCourseNameLength> =
+			create_bounded_vec(b"Substrate training");
+		let description: BoundedVec<u8, T::MaxCourseDescLength> =
+			create_bounded_vec(b"This training covers Substrate basics.");
+		let content_link: BoundedVec<u8, T::MaxCourseLinkLength> =
+			create_bounded_vec(b"http://example.com");
 
 		// In benchmark environment, AdminOrigin is bypassed
 		// We use Root origin which will satisfy the origin check
@@ -43,8 +46,9 @@ mod benchmarks {
 			RawOrigin::Root.into(),
 			create_bounded_vec(b"Benchmark Course"),
 			create_bounded_vec(b"Description"),
-			create_bounded_vec(b"Link")
-		).unwrap();
+			create_bounded_vec(b"Link"),
+		)
+		.unwrap();
 
 		#[extrinsic_call]
 		enroll(RawOrigin::Signed(student.clone()), course_id);
@@ -63,8 +67,9 @@ mod benchmarks {
 			RawOrigin::Root.into(),
 			create_bounded_vec(b"Benchmark Course"),
 			create_bounded_vec(b"Description"),
-			create_bounded_vec(b"Link")
-		).unwrap();
+			create_bounded_vec(b"Link"),
+		)
+		.unwrap();
 		Perwerde::<T>::enroll(RawOrigin::Signed(student.clone()).into(), course_id).unwrap();
 
 		#[extrinsic_call]
@@ -84,8 +89,9 @@ mod benchmarks {
 			RawOrigin::Root.into(),
 			create_bounded_vec(b"Benchmark Course"),
 			create_bounded_vec(b"Description"),
-			create_bounded_vec(b"Link")
-		).unwrap();
+			create_bounded_vec(b"Link"),
+		)
+		.unwrap();
 
 		// Course owner is the creator, so we use Root to archive
 		#[extrinsic_call]

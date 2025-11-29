@@ -79,14 +79,16 @@ fn swap_locally_on_chain_using_local_assets() {
 
 		let path = vec![asset_native.clone(), asset_one.clone()];
 
-		assert_ok!(<AssetHubZagros as AssetHubZagrosPallet>::AssetConversion::swap_exact_tokens_for_tokens(
-			<AssetHubZagros as Chain>::RuntimeOrigin::signed(AssetHubZagrosSender::get()),
-			path,
-			100,
-			1,
-			AssetHubZagrosSender::get().into(),
-			true
-		));
+		assert_ok!(
+			<AssetHubZagros as AssetHubZagrosPallet>::AssetConversion::swap_exact_tokens_for_tokens(
+				<AssetHubZagros as Chain>::RuntimeOrigin::signed(AssetHubZagrosSender::get()),
+				path,
+				100,
+				1,
+				AssetHubZagrosSender::get().into(),
+				true
+			)
+		);
 
 		assert_expected_events!(
 			AssetHubZagros,

@@ -26,9 +26,9 @@ use frame_support::{
 		fungibles::{Inspect as FungiblesInspect, Mutate},
 	},
 };
-use teyrchains_common::AccountId;
 use pezkuwi_runtime_common::impls::VersionedLocatableAsset;
 use pezkuwichain_runtime_constants::currency::GRAND;
+use teyrchains_common::AccountId;
 use xcm_executor::traits::ConvertLocation;
 
 // Fund Treasury account on Asset Hub from Treasury account on Relay Chain with TYRs.
@@ -105,9 +105,11 @@ fn spend_roc_on_asset_hub() {
 		let treasury_origin: RuntimeOrigin =
 			pezkuwichain_governance::pallet_custom_origins::Origin::Treasurer.into();
 
-		let alice_location: Location =
-			[Junction::AccountId32 { network: None, id: Pezkuwichain::account_id_of(ALICE).into() }]
-				.into();
+		let alice_location: Location = [Junction::AccountId32 {
+			network: None,
+			id: Pezkuwichain::account_id_of(ALICE).into(),
+		}]
+		.into();
 		let asset_hub_location: Location = [Teyrchain(1000)].into();
 		let native_asset = Location::parent();
 

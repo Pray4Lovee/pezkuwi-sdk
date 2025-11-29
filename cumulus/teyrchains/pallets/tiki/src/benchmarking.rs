@@ -6,10 +6,10 @@ use crate::Pallet as Tiki;
 use frame_benchmarking::v2::*;
 use frame_system::RawOrigin;
 // Gerekli trait'leri import ediyoruz
-use frame_support::traits::{Get, Currency};
+use frame_support::traits::{Currency, Get};
+use pallet_balances::Pallet as Balances;
 use sp_runtime::traits::StaticLookup;
 use sp_std::vec;
-use pallet_balances::Pallet as Balances;
 
 // Gerekli trait kısıtlamalarını ana benchmarks bloğuna ekliyoruz.
 #[benchmarks(
@@ -49,24 +49,24 @@ mod benchmarks {
 		}
 	}
 
-    // Helper to ensure user has a citizen NFT
-    fn ensure_citizen_nft<T: Config>(who: T::AccountId) -> Result<(), DispatchError>
-    where
-        T::CollectionId: Copy + Default + PartialOrd,
-        T: pallet_balances::Config,
-    {
-        ensure_collection_exists::<T>();
+	// Helper to ensure user has a citizen NFT
+	fn ensure_citizen_nft<T: Config>(who: T::AccountId) -> Result<(), DispatchError>
+	where
+		T::CollectionId: Copy + Default + PartialOrd,
+		T: pallet_balances::Config,
+	{
+		ensure_collection_exists::<T>();
 
-        // Fund the user account with sufficient balance for NFT deposits
-        // Use a very large balance to ensure all deposit requirements can be met
-        let funding = Balances::<T>::minimum_balance() * 1_000_000_000u32.into();
-        Balances::<T>::make_free_balance_be(&who, funding);
+		// Fund the user account with sufficient balance for NFT deposits
+		// Use a very large balance to ensure all deposit requirements can be met
+		let funding = Balances::<T>::minimum_balance() * 1_000_000_000u32.into();
+		Balances::<T>::make_free_balance_be(&who, funding);
 
-        if Tiki::<T>::citizen_nft(&who).is_none() {
-            Tiki::<T>::mint_citizen_nft_for_user(&who)?;
-        }
-        Ok(())
-    }
+		if Tiki::<T>::citizen_nft(&who).is_none() {
+			Tiki::<T>::mint_citizen_nft_for_user(&who)?;
+		}
+		Ok(())
+	}
 
 	#[benchmark]
 	fn grant_tiki() -> Result<(), BenchmarkError> {
@@ -74,9 +74,9 @@ mod benchmarks {
 		let dest: T::AccountId = whitelisted_caller();
 		// Appointed role kullan (Serok yerine Wezir)
 		let tiki = crate::Tiki::Wezir;
-		
-        // Ensure the dest account has a citizen NFT before granting a tiki
-        ensure_citizen_nft::<T>(dest.clone())?;
+
+		// Ensure the dest account has a citizen NFT before granting a tiki
+		ensure_citizen_nft::<T>(dest.clone())?;
 
 		#[extrinsic_call]
 		_(RawOrigin::Root, T::Lookup::unlookup(dest.clone()), tiki.clone());
@@ -91,10 +91,10 @@ mod benchmarks {
 		// NFT'yi alacak 'dest' hesabı olarak fonlanmış `whitelisted_caller`'ı kullanıyoruz.
 		let dest: T::AccountId = whitelisted_caller();
 		let tiki = crate::Tiki::Wezir; // Use appointed role
-		
-        // Ensure the dest account has a citizen NFT and the tiki before revoking
-        ensure_citizen_nft::<T>(dest.clone())?;
-        Tiki::<T>::internal_grant_role(&dest, tiki.clone())?; // Use internal function to grant without origin check
+
+		// Ensure the dest account has a citizen NFT and the tiki before revoking
+		ensure_citizen_nft::<T>(dest.clone())?;
+		Tiki::<T>::internal_grant_role(&dest, tiki.clone())?; // Use internal function to grant without origin check
 
 		// Verify the role was granted
 		assert!(Tiki::<T>::user_tikis(&dest).contains(&tiki));
@@ -102,8 +102,8 @@ mod benchmarks {
 		#[extrinsic_call]
 		_(RawOrigin::Root, T::Lookup::unlookup(dest.clone()), tiki.clone());
 
-        // User should no longer have this role
-        assert!(!Tiki::<T>::user_tikis(&dest).contains(&tiki));
+		// User should no longer have this role
+		assert!(!Tiki::<T>::user_tikis(&dest).contains(&tiki));
 		Ok(())
 	}
 

@@ -11,7 +11,9 @@
 
 use anyhow::anyhow;
 
-#[zombienet_sdk::subxt::subxt(runtime_metadata_path = "metadata-files/coretime-pezkuwichain-local.scale")]
+#[zombienet_sdk::subxt::subxt(
+	runtime_metadata_path = "metadata-files/coretime-pezkuwichain-local.scale"
+)]
 mod coretime_pezkuwichain {}
 
 #[zombienet_sdk::subxt::subxt(runtime_metadata_path = "metadata-files/pezkuwichain-local.scale")]

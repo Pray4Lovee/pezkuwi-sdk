@@ -27,7 +27,11 @@ mod benchmarks {
 			b"Benchmark User".to_vec().try_into().unwrap();
 		let email: BoundedVec<u8, <T as pallet_identity_kyc::Config>::MaxStringLength> =
 			b"bench@mark.com".to_vec().try_into().unwrap();
-		IdentityKycPallet::<T>::set_identity(RawOrigin::Signed(account.clone()).into(), name, email)?;
+		IdentityKycPallet::<T>::set_identity(
+			RawOrigin::Signed(account.clone()).into(),
+			name,
+			email,
+		)?;
 
 		let cids: BoundedVec<
 			BoundedVec<u8, <T as pallet_identity_kyc::Config>::MaxCidLength>,
@@ -35,7 +39,11 @@ mod benchmarks {
 		> = vec![b"cid1".to_vec().try_into().unwrap()].try_into().unwrap();
 		let notes: BoundedVec<u8, <T as pallet_identity_kyc::Config>::MaxStringLength> =
 			b"benchmark notes".to_vec().try_into().unwrap();
-		IdentityKycPallet::<T>::apply_for_kyc(RawOrigin::Signed(account.clone()).into(), cids, notes)?;
+		IdentityKycPallet::<T>::apply_for_kyc(
+			RawOrigin::Signed(account.clone()).into(),
+			cids,
+			notes,
+		)?;
 
 		IdentityKycPallet::<T>::approve_kyc(RawOrigin::Root.into(), account.clone())?;
 
@@ -63,7 +71,7 @@ mod benchmarks {
 		// BatchUpdateInProgress false olabilir (eğer tüm hesaplar işlendiyse)
 		assert!(
 			crate::BatchUpdateInProgress::<T>::get() == false ||
-			crate::BatchUpdateInProgress::<T>::get() == true
+				crate::BatchUpdateInProgress::<T>::get() == true
 		);
 	}
 

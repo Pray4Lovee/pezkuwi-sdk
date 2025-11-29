@@ -86,11 +86,11 @@ use frame_system::{
 	limits::{BlockLength, BlockWeights},
 	EnsureRoot,
 };
-use teyrchains_common::{AccountId, Signature};
 #[cfg(any(feature = "std", test))]
 pub use sp_runtime::BuildStorage;
 pub use sp_runtime::{Perbill, Permill};
 use testnet_teyrchains_constants::zagros::consensus::*;
+use teyrchains_common::{AccountId, Signature};
 
 impl_opaque_keys! {
 	pub struct SessionKeys {

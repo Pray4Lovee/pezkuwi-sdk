@@ -24,8 +24,8 @@ pub use call_info::{BridgeTeyrchainCall, SubmitTeyrchainHeadsInfo};
 
 use bp_pezkuwi_core::teyrchains::{ParaHash, ParaHead, ParaId};
 use bp_runtime::{
-	BlockNumberOf, Chain, HashOf, HeaderOf, Teyrchain, StorageDoubleMapKeyProvider,
-	StorageMapKeyProvider,
+	BlockNumberOf, Chain, HashOf, HeaderOf, StorageDoubleMapKeyProvider, StorageMapKeyProvider,
+	Teyrchain,
 };
 use codec::{Decode, Encode, MaxEncodedLen};
 use frame_support::{weights::Weight, Blake2_128Concat, Twox64Concat};

@@ -23,8 +23,7 @@ pub fn asset_hub_zagros_development_config() -> GenericChainSpec {
 	properties.insert("tokenDecimals".into(), 12.into());
 
 	GenericChainSpec::builder(
-		asset_hub_zagros_runtime::WASM_BINARY
-			.expect("WASM binary was not built, please build it!"),
+		asset_hub_zagros_runtime::WASM_BINARY.expect("WASM binary was not built, please build it!"),
 		Extensions::new_with_relay_chain("zagros".into()),
 	)
 	.with_name("Zagros Asset Hub Development")
@@ -41,8 +40,7 @@ pub fn asset_hub_zagros_local_config() -> GenericChainSpec {
 	properties.insert("tokenDecimals".into(), 12.into());
 
 	GenericChainSpec::builder(
-		asset_hub_zagros_runtime::WASM_BINARY
-			.expect("WASM binary was not built, please build it!"),
+		asset_hub_zagros_runtime::WASM_BINARY.expect("WASM binary was not built, please build it!"),
 		Extensions::new_with_relay_chain("zagros-local".into()),
 	)
 	.with_name("Zagros Asset Hub Local")
@@ -59,8 +57,7 @@ pub fn asset_hub_zagros_config() -> GenericChainSpec {
 	properties.insert("tokenDecimals".into(), 12.into());
 
 	GenericChainSpec::builder(
-		asset_hub_zagros_runtime::WASM_BINARY
-			.expect("WASM binary was not built, please build it!"),
+		asset_hub_zagros_runtime::WASM_BINARY.expect("WASM binary was not built, please build it!"),
 		Extensions::new_with_relay_chain("zagros".into()),
 	)
 	.with_name("Zagros Asset Hub")
@@ -89,7 +86,8 @@ fn asset_hub_pezkuwichain_like_development_config(
 	chain_id: &str,
 ) -> GenericChainSpec {
 	GenericChainSpec::builder(
-		asset_hub_pezkuwichain_runtime::WASM_BINARY.expect("WASM binary was not built, please build it!"),
+		asset_hub_pezkuwichain_runtime::WASM_BINARY
+			.expect("WASM binary was not built, please build it!"),
 		Extensions::new_with_relay_chain("pezkuwichain-dev".into()),
 	)
 	.with_name(name)
@@ -118,7 +116,8 @@ fn asset_hub_pezkuwichain_like_local_config(
 	chain_id: &str,
 ) -> GenericChainSpec {
 	GenericChainSpec::builder(
-		asset_hub_pezkuwichain_runtime::WASM_BINARY.expect("WASM binary was not built, please build it!"),
+		asset_hub_pezkuwichain_runtime::WASM_BINARY
+			.expect("WASM binary was not built, please build it!"),
 		Extensions::new_with_relay_chain("pezkuwichain-local".into()),
 	)
 	.with_name(name)
@@ -134,7 +133,8 @@ pub fn asset_hub_pezkuwichain_genesis_config() -> GenericChainSpec {
 	properties.insert("tokenSymbol".into(), "TYR".into());
 	properties.insert("tokenDecimals".into(), 12.into());
 	GenericChainSpec::builder(
-		asset_hub_pezkuwichain_runtime::WASM_BINARY.expect("WASM binary was not built, please build it!"),
+		asset_hub_pezkuwichain_runtime::WASM_BINARY
+			.expect("WASM binary was not built, please build it!"),
 		Extensions::new_with_relay_chain("pezkuwichain".into()),
 	)
 	.with_name("Pezkuwichain Asset Hub")

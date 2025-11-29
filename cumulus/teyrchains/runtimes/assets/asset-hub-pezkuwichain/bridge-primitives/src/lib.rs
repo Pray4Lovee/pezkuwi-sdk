@@ -137,11 +137,12 @@ pub type AccountSigner = MultiSigner;
 /// The address format for describing accounts.
 pub type Address = MultiAddress<AccountId, ()>;
 
-/// Name of the With-AssetHubPezkuwichain messages pallet instance that is deployed at bridged chains.
+/// Name of the With-AssetHubPezkuwichain messages pallet instance that is deployed at bridged
+/// chains.
 pub const WITH_ASSET_HUB_PEZKUWICHAIN_MESSAGES_PALLET_NAME: &str = "BridgePezkuwichainMessages";
 
-/// Name of the With-AssetHubPezkuwichain bridge-relayers pallet instance that is deployed at bridged
-/// chains.
+/// Name of the With-AssetHubPezkuwichain bridge-relayers pallet instance that is deployed at
+/// bridged chains.
 pub const WITH_ASSET_HUB_PEZKUWICHAIN_RELAYERS_PALLET_NAME: &str = "BridgeRelayers";
 
 /// Pallet index of `BridgeZagrosMessages: pallet_bridge_messages::<Instance1>`.

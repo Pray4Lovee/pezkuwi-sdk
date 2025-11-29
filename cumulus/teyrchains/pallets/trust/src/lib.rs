@@ -2,7 +2,8 @@
 
 //! # Trust Score Pallet
 //!
-//! A pallet for calculating and managing composite trust scores based on multiple ecosystem metrics.
+//! A pallet for calculating and managing composite trust scores based on multiple ecosystem
+//! metrics.
 //!
 //! ## Overview
 //!
@@ -104,16 +105,18 @@ mod tests;
 #[cfg(feature = "runtime-benchmarks")]
 mod benchmarking;
 
-pub use pallet_staking_score::{StakingScoreProvider, RawScore as StakingRawScore};
+pub use pallet_staking_score::{RawScore as StakingRawScore, StakingScoreProvider};
 /* use pezkuwi_primitives::traits::{
-    CitizenshipStatusProvider, PerwerdeScoreProvider, ReferralScoreProvider, RawScore,
-    StakingDetails, StakingScoreProvider, TikiScoreProvider, TrustScoreUpdater, TrustScoreProvider
+	CitizenshipStatusProvider, PerwerdeScoreProvider, ReferralScoreProvider, RawScore,
+	StakingDetails, StakingScoreProvider, TikiScoreProvider, TrustScoreUpdater, TrustScoreProvider
 }; */
 
-use frame_system::pallet_prelude::BlockNumberFor;
 use core::convert::TryFrom;
+use frame_system::pallet_prelude::BlockNumberFor;
 
-use frame_support::pallet_prelude::{Get, MaxEncodedLen, Member, IsType, Parameter, ValueQuery, OptionQuery};
+use frame_support::pallet_prelude::{
+	Get, IsType, MaxEncodedLen, Member, OptionQuery, Parameter, ValueQuery,
+};
 
 pub trait ReferralScoreProvider<AccountId> {
 	fn get_referral_score(who: &AccountId) -> u32;
@@ -136,11 +139,11 @@ pub trait TrustScoreProvider<AccountId> {
 
 pub trait TikiScoreProvider<AccountId> {
 	fn get_tiki_score(who: &AccountId) -> u32;
-} 
+}
 
 #[frame_support::pallet]
 pub mod pallet {
-	use super::{*, weights::WeightInfo};
+	use super::{weights::WeightInfo, *};
 	use frame_support::pallet_prelude::*;
 	use frame_system::pallet_prelude::*;
 	use sp_runtime::traits::{Saturating, Zero};
@@ -153,7 +156,17 @@ pub mod pallet {
 		type RuntimeEvent: From<Event<Self>> + IsType<<Self as frame_system::Config>::RuntimeEvent>;
 		type WeightInfo: WeightInfo;
 
-		type Score: Member + Parameter + MaxEncodedLen + Copy + Default + PartialOrd + Saturating + Zero + From<StakingRawScore> + Into<u128> + TryFrom<u128>;
+		type Score: Member
+			+ Parameter
+			+ MaxEncodedLen
+			+ Copy
+			+ Default
+			+ PartialOrd
+			+ Saturating
+			+ Zero
+			+ From<StakingRawScore>
+			+ Into<u128>
+			+ TryFrom<u128>;
 
 		#[pallet::constant]
 		type ScoreMultiplierBase: Get<u128>;
@@ -176,7 +189,8 @@ pub mod pallet {
 
 	#[pallet::storage]
 	#[pallet::getter(fn trust_score_of)]
-	pub type TrustScores<T: Config> = StorageMap<_, Blake2_128Concat, T::AccountId, T::Score, ValueQuery>;
+	pub type TrustScores<T: Config> =
+		StorageMap<_, Blake2_128Concat, T::AccountId, T::Score, ValueQuery>;
 
 	#[pallet::storage]
 	#[pallet::getter(fn total_active_trust_score)]
@@ -224,8 +238,9 @@ pub mod pallet {
 		fn build(&self) {
 			if self.start_periodic_updates {
 				// Schedule first periodic update for 1 day later
-				let _first_update_block = frame_system::Pallet::<T>::block_number() + T::UpdateInterval::get();
-				
+				let _first_update_block =
+					frame_system::Pallet::<T>::block_number() + T::UpdateInterval::get();
+
 				// Note: Scheduler may not be available during Genesis build
 				// In this case, manual start required or scheduled in runtime
 				// For now, we are just marking the flag
@@ -238,7 +253,10 @@ pub mod pallet {
 		/// To manually recalculate a specific user's Trust Score.
 		#[pallet::call_index(0)]
 		#[pallet::weight(<T as Config>::WeightInfo::force_recalculate_trust_score())]
-		pub fn force_recalculate_trust_score(origin: OriginFor<T>, who: T::AccountId) -> DispatchResult {
+		pub fn force_recalculate_trust_score(
+			origin: OriginFor<T>,
+			who: T::AccountId,
+		) -> DispatchResult {
 			ensure_root(origin)?;
 			Self::update_score_for_account(&who)?;
 			Ok(())
@@ -263,13 +281,13 @@ pub mod pallet {
 				Some(start_key) => {
 					// Resume from last processed account using iter_from
 					pallet_identity_kyc::KycStatuses::<T>::iter_from(
-						pallet_identity_kyc::KycStatuses::<T>::hashed_key_for(&start_key)
+						pallet_identity_kyc::KycStatuses::<T>::hashed_key_for(&start_key),
 					)
 				},
 				None => {
 					// Start from beginning
 					pallet_identity_kyc::KycStatuses::<T>::iter()
-				}
+				},
 			};
 
 			// Process accounts in batch
@@ -313,19 +331,19 @@ pub mod pallet {
 		#[pallet::weight(<T as Config>::WeightInfo::periodic_trust_score_update())]
 		pub fn periodic_trust_score_update(origin: OriginFor<T>) -> DispatchResult {
 			ensure_root(origin)?;
-			
+
 			// Eğer önceki update devam ediyorsa bekle
 			ensure!(!BatchUpdateInProgress::<T>::get(), Error::<T>::UpdateInProgress);
-			
+
 			// Yeni periyodik güncellemeyi başlat
 			Self::update_all_trust_scores(OriginFor::<T>::root())?;
-			
+
 			// Bir sonraki periyodik güncellemeyi schedule et
 			let current_block = frame_system::Pallet::<T>::block_number();
 			let next_update_block = current_block + T::UpdateInterval::get();
-			
+
 			Self::deposit_event(Event::PeriodicUpdateScheduled { next_block: next_update_block });
-			
+
 			Ok(())
 		}
 	}
@@ -343,10 +361,11 @@ pub mod pallet {
 			let referral_u128: u128 = T::ReferralScoreSource::get_referral_score(who).into();
 			let perwerde_u128: u128 = T::PerwerdeScoreSource::get_perwerde_score(who).into();
 			let tiki_u128: u128 = T::TikiScoreSource::get_tiki_score(who).into();
-			
+
 			let base = T::ScoreMultiplierBase::get();
 
-			let weighted_sum = staking_u128.saturating_mul(100)
+			let weighted_sum = staking_u128
+				.saturating_mul(100)
 				.saturating_add(referral_u128.saturating_mul(300))
 				.saturating_add(perwerde_u128.saturating_mul(300))
 				.saturating_add(tiki_u128.saturating_mul(300));
@@ -356,8 +375,9 @@ pub mod pallet {
 				.checked_div(base)
 				.ok_or(Error::<T>::CalculationOverflow)?;
 
-			let new_trust_score = T::Score::try_from(final_score_u128).map_err(|_| Error::<T>::CalculationOverflow)?;
-			
+			let new_trust_score = T::Score::try_from(final_score_u128)
+				.map_err(|_| Error::<T>::CalculationOverflow)?;
+
 			Ok(new_trust_score)
 		}
 
@@ -370,7 +390,11 @@ pub mod pallet {
 				let old_total = Self::total_active_trust_score();
 				let new_total = old_total.saturating_sub(old_score).saturating_add(new_score);
 				<TotalActiveTrustScore<T>>::put(new_total);
-				Self::deposit_event(Event::TrustScoreUpdated { who: who.clone(), old_score, new_score });
+				Self::deposit_event(Event::TrustScoreUpdated {
+					who: who.clone(),
+					old_score,
+					new_score,
+				});
 				Self::deposit_event(Event::TotalTrustScoreUpdated { new_total });
 			}
 			Ok(new_score)

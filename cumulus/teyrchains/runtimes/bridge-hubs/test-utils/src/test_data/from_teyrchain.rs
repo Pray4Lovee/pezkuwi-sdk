@@ -26,11 +26,11 @@ use bp_messages::{
 	target_chain::FromBridgedChainMessagesProof, ChainWithMessages, LaneState,
 	UnrewardedRelayersState, Weight,
 };
-use bp_teyrchains::{RelayBlockHash, RelayBlockNumber};
 use bp_runtime::{
 	AccountIdOf, BlockNumberOf, Chain, HeaderOf, Teyrchain, UnverifiedStorageProofParams,
 };
 use bp_test_utils::prepare_teyrchain_heads_proof;
+use bp_teyrchains::{RelayBlockHash, RelayBlockNumber};
 use codec::Encode;
 use pallet_bridge_grandpa::BridgedHeader;
 use sp_runtime::traits::Header as HeaderT;

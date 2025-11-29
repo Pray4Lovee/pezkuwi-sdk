@@ -16,8 +16,8 @@
 use super::{
 	governance::TreasuryAccount, AccountId, AllPalletsWithSystem, Assets, Balance, Balances,
 	BaseDeliveryFee, CollatorSelection, DepositPerByte, DepositPerItem, FeeAssetId,
-	FellowshipAdmin, ForeignAssets, GeneralAdmin, TeyrchainInfo, TeyrchainSystem, PezkuwiXcm,
-	PoolAssets, Runtime, RuntimeCall, RuntimeEvent, RuntimeHoldReason, RuntimeOrigin, StakingAdmin,
+	FellowshipAdmin, ForeignAssets, GeneralAdmin, PezkuwiXcm, PoolAssets, Runtime, RuntimeCall,
+	RuntimeEvent, RuntimeHoldReason, RuntimeOrigin, StakingAdmin, TeyrchainInfo, TeyrchainSystem,
 	ToPezkuwichainXcmRouter, TransactionByteFee, Treasurer, Uniques, WeightToFee, XcmpQueue,
 };
 use alloc::{collections::BTreeSet, vec, vec::Vec};
@@ -39,16 +39,13 @@ use frame_support::{
 };
 use frame_system::EnsureRoot;
 use pallet_xcm::{AuthorizedAliasers, XcmPassthrough};
-use teyrchains_common::xcm_config::{
-	AllSiblingSystemTeyrchains, ConcreteAssetFromSystem, RelayOrOtherSystemTeyrchains,
-};
-use pezkuwi_teyrchain_primitives::primitives::Sibling;
 use pezkuwi_runtime_common::xcm_sender::ExponentialPrice;
+use pezkuwi_teyrchain_primitives::primitives::Sibling;
 use snowbridge_outbound_queue_primitives::v2::exporter::PausableExporter;
 use sp_runtime::traits::{AccountIdConversion, TryConvertInto};
 use testnet_teyrchains_constants::zagros::locations::AssetHubParaId;
-use zagros_runtime_constants::{
-	system_teyrchain::COLLECTIVES_ID, xcm::body::FELLOWSHIP_ADMIN_INDEX,
+use teyrchains_common::xcm_config::{
+	AllSiblingSystemTeyrchains, ConcreteAssetFromSystem, RelayOrOtherSystemTeyrchains,
 };
 use xcm::latest::{prelude::*, PEZKUWICHAIN_GENESIS_HASH, ZAGROS_GENESIS_HASH};
 use xcm_builder::{
@@ -67,6 +64,9 @@ use xcm_builder::{
 	WithComputedOrigin, WithLatestLocationConverter, WithUniqueTopic, XcmFeeManagerFromComponents,
 };
 use xcm_executor::XcmExecutor;
+use zagros_runtime_constants::{
+	system_teyrchain::COLLECTIVES_ID, xcm::body::FELLOWSHIP_ADMIN_INDEX,
+};
 
 parameter_types! {
 	pub const RootLocation: Location = Location::here();
@@ -689,9 +689,12 @@ pub mod bridging {
 			}
 		}
 
-		/// Allow any asset native to the Pezkuwichain ecosystem if it comes from Pezkuwichain Asset Hub.
-		pub type PezkuwichainAssetFromAssetHubPezkuwichain =
-			matching::RemoteAssetFromLocation<StartsWith<PezkuwichainEcosystem>, AssetHubPezkuwichain>;
+		/// Allow any asset native to the Pezkuwichain ecosystem if it comes from Pezkuwichain Asset
+		/// Hub.
+		pub type PezkuwichainAssetFromAssetHubPezkuwichain = matching::RemoteAssetFromLocation<
+			StartsWith<PezkuwichainEcosystem>,
+			AssetHubPezkuwichain,
+		>;
 	}
 
 	pub mod to_ethereum {
@@ -786,15 +789,16 @@ pub mod bridging {
 	#[cfg(feature = "runtime-benchmarks")]
 	impl BridgingBenchmarksHelper {
 		pub fn prepare_universal_alias() -> Option<(Location, Junction)> {
-			let alias =
-				to_pezkuwichain::UniversalAliases::get().into_iter().find_map(|(location, junction)| {
+			let alias = to_pezkuwichain::UniversalAliases::get().into_iter().find_map(
+				|(location, junction)| {
 					match to_pezkuwichain::SiblingBridgeHubWithBridgeHubPezkuwichainInstance::get()
 						.eq(&location)
 					{
 						true => Some((location, junction)),
 						false => None,
 					}
-				});
+				},
+			);
 			Some(alias.expect("we expect here BridgeHubZagros to Pezkuwichain mapping at least"))
 		}
 	}

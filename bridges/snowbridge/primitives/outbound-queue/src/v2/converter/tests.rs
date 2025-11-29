@@ -1166,10 +1166,8 @@ fn xcm_converter_transfer_native_token_with_invalid_location_will_fail() {
 
 	let amount = 1000000;
 	// Invalid asset location from a different consensus
-	let asset_location = Location {
-		parents: 2,
-		interior: [GlobalConsensus(ByGenesis(ZAGROS_GENESIS_HASH))].into(),
-	};
+	let asset_location =
+		Location { parents: 2, interior: [GlobalConsensus(ByGenesis(ZAGROS_GENESIS_HASH))].into() };
 
 	let assets: Assets = vec![Asset { id: AssetId(asset_location), fun: Fungible(amount) }].into();
 	let filter: AssetFilter = assets.clone().into();

@@ -191,7 +191,7 @@ mod tests {
 	use super::{
 		AliasAccountId32FromSiblingSystemChain, AllSiblingSystemTeyrchains, Asset,
 		ConcreteAssetFromSystem, ContainsPair, GeneralIndex, Here, Location, PalletInstance,
-		Teyrchain, Parent,
+		Parent, Teyrchain,
 	};
 	use pezkuwi_primitives::LOWEST_PUBLIC_ID;
 	use xcm::latest::prelude::*;

@@ -1,6 +1,6 @@
 use codec::{Decode, Encode, MaxEncodedLen};
+use frame_support::pallet_prelude::RuntimeDebug;
 use scale_info::TypeInfo;
-use frame_support::pallet_prelude::{RuntimeDebug};
 
 // --- GENERAL TYPES ---
 
@@ -60,4 +60,3 @@ pub trait ReferralScoreProvider<AccountId> {
 	type Score;
 	fn get_referral_score(who: &AccountId) -> Self::Score;
 }
-

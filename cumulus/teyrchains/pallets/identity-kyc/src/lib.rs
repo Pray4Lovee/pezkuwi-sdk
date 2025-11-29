@@ -154,10 +154,9 @@ pub mod pallet {
 		type MaxCidLength: Get<u32>;
 	}
 
-	pub type BalanceOf<T> =
-		<<T as Config>::Currency as frame_support::traits::Currency<
-			<T as frame_system::Config>::AccountId,
-		>>::Balance;
+	pub type BalanceOf<T> = <<T as Config>::Currency as frame_support::traits::Currency<
+		<T as frame_system::Config>::AccountId,
+	>>::Balance;
 
 	// ============= STORAGE =============
 
@@ -171,7 +170,8 @@ pub mod pallet {
 	/// Current citizenship status per account
 	#[pallet::storage]
 	#[pallet::getter(fn kyc_status_of)]
-	pub type KycStatuses<T: Config> = StorageMap<_, Blake2_128Concat, T::AccountId, KycLevel, ValueQuery>;
+	pub type KycStatuses<T: Config> =
+		StorageMap<_, Blake2_128Concat, T::AccountId, KycLevel, ValueQuery>;
 
 	/// Identity hashes of approved citizens (for verification)
 	/// Can be used to prove citizenship without revealing identity
@@ -183,7 +183,8 @@ pub mod pallet {
 	/// Kept permanently for penalty system even after application is removed
 	#[pallet::storage]
 	#[pallet::getter(fn citizen_referrer)]
-	pub type CitizenReferrers<T: Config> = StorageMap<_, Blake2_128Concat, T::AccountId, T::AccountId>;
+	pub type CitizenReferrers<T: Config> =
+		StorageMap<_, Blake2_128Concat, T::AccountId, T::AccountId>;
 
 	// ============= LEGACY STORAGE (for migration) =============
 
@@ -234,16 +235,9 @@ pub mod pallet {
 	#[pallet::generate_deposit(pub(super) fn deposit_event)]
 	pub enum Event<T: Config> {
 		/// New citizenship application submitted
-		CitizenshipApplied {
-			applicant: T::AccountId,
-			referrer: T::AccountId,
-			identity_hash: H256,
-		},
+		CitizenshipApplied { applicant: T::AccountId, referrer: T::AccountId, identity_hash: H256 },
 		/// Referrer approved the application
-		ReferralApproved {
-			referrer: T::AccountId,
-			applicant: T::AccountId,
-		},
+		ReferralApproved { referrer: T::AccountId, applicant: T::AccountId },
 		/// Applicant self-confirmed their citizenship (Welati NFT minted)
 		CitizenshipConfirmed { who: T::AccountId },
 		/// Citizenship was revoked (by governance)
@@ -327,20 +321,13 @@ pub mod pallet {
 			T::Currency::reserve(&applicant, deposit)?;
 
 			// Store application (only hash, no personal data)
-			let application = CitizenshipApplication {
-				identity_hash,
-				referrer: referrer.clone(),
-			};
+			let application = CitizenshipApplication { identity_hash, referrer: referrer.clone() };
 			Applications::<T>::insert(&applicant, application);
 
 			// Update status
 			KycStatuses::<T>::insert(&applicant, KycLevel::PendingReferral);
 
-			Self::deposit_event(Event::CitizenshipApplied {
-				applicant,
-				referrer,
-				identity_hash,
-			});
+			Self::deposit_event(Event::CitizenshipApplied { applicant, referrer, identity_hash });
 			Ok(())
 		}
 
@@ -357,10 +344,7 @@ pub mod pallet {
 		/// - Application must be in PendingReferral state
 		#[pallet::call_index(1)]
 		#[pallet::weight(T::WeightInfo::approve_kyc())]
-		pub fn approve_referral(
-			origin: OriginFor<T>,
-			applicant: T::AccountId,
-		) -> DispatchResult {
+		pub fn approve_referral(origin: OriginFor<T>, applicant: T::AccountId) -> DispatchResult {
 			let caller = ensure_signed(origin)?;
 
 			// Must be in PendingReferral state
@@ -370,8 +354,8 @@ pub mod pallet {
 			);
 
 			// Get application
-			let application = Applications::<T>::get(&applicant)
-				.ok_or(Error::<T>::ApplicationNotFound)?;
+			let application =
+				Applications::<T>::get(&applicant).ok_or(Error::<T>::ApplicationNotFound)?;
 
 			// Only the referrer can approve
 			ensure!(application.referrer == caller, Error::<T>::NotTheReferrer);
@@ -379,10 +363,7 @@ pub mod pallet {
 			// Update status to ReferrerApproved
 			KycStatuses::<T>::insert(&applicant, KycLevel::ReferrerApproved);
 
-			Self::deposit_event(Event::ReferralApproved {
-				referrer: caller,
-				applicant,
-			});
+			Self::deposit_event(Event::ReferralApproved { referrer: caller, applicant });
 			Ok(())
 		}
 
@@ -409,8 +390,8 @@ pub mod pallet {
 			);
 
 			// Get application
-			let application = Applications::<T>::take(&applicant)
-				.ok_or(Error::<T>::ApplicationNotFound)?;
+			let application =
+				Applications::<T>::take(&applicant).ok_or(Error::<T>::ApplicationNotFound)?;
 
 			// Return deposit
 			let deposit = T::KycApplicationDeposit::get();
@@ -478,10 +459,7 @@ pub mod pallet {
 		pub fn renounce_citizenship(origin: OriginFor<T>) -> DispatchResult {
 			let who = ensure_signed(origin)?;
 
-			ensure!(
-				KycStatuses::<T>::get(&who) == KycLevel::Approved,
-				Error::<T>::NotACitizen
-			);
+			ensure!(KycStatuses::<T>::get(&who) == KycLevel::Approved, Error::<T>::NotACitizen);
 
 			// Burn citizen NFT
 			T::CitizenNftProvider::burn_citizen_nft(&who)?;

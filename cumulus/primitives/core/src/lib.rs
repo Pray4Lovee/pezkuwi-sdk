@@ -33,21 +33,21 @@ pub const REF_TIME_PER_CORE_IN_SECS: u64 = 2;
 
 pub mod teyrchain_block_data;
 
-pub use teyrchain_block_data::TeyrchainBlockData;
 pub use pezkuwi_core_primitives::InboundDownwardMessage;
-pub use pezkuwi_teyrchain_primitives::primitives::{
-	DmpMessageHandler, Id as ParaId, IsSystem, UpwardMessage, ValidationParams, XcmpMessageFormat,
-	XcmpMessageHandler,
-};
 pub use pezkuwi_primitives::{
 	AbridgedHostConfiguration, AbridgedHrmpChannel, ClaimQueueOffset, CoreSelector,
 	PersistedValidationData,
+};
+pub use pezkuwi_teyrchain_primitives::primitives::{
+	DmpMessageHandler, Id as ParaId, IsSystem, UpwardMessage, ValidationParams, XcmpMessageFormat,
+	XcmpMessageHandler,
 };
 pub use sp_runtime::{
 	generic::{Digest, DigestItem},
 	traits::Block as BlockT,
 	ConsensusEngineId,
 };
+pub use teyrchain_block_data::TeyrchainBlockData;
 pub use xcm::latest::prelude::*;
 
 /// A module that re-exports relevant relay chain definitions.

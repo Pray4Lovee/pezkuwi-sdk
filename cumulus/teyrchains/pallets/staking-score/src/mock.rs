@@ -3,7 +3,7 @@
 use crate as pallet_staking_score;
 use frame_support::{
 	construct_runtime, derive_impl, parameter_types,
-	traits::{ConstU32, ConstU64, ConstU128, Everything, Hooks},
+	traits::{ConstU128, ConstU32, ConstU64, Everything, Hooks},
 	weights::constants::RocksDbWeight,
 };
 use frame_system::EnsureRoot;
@@ -16,7 +16,7 @@ use sp_staking::{StakerStatus, StakingAccount};
 use std::collections::BTreeMap;
 
 // Paletimizdeki sabitleri import ediyoruz.
-use crate::{UNITS, MONTH_IN_BLOCKS};
+use crate::{MONTH_IN_BLOCKS, UNITS};
 
 // --- Tip Takma Adları ---
 type Block = frame_system::mocking::MockBlock<Test>;
@@ -235,7 +235,13 @@ impl Default for ExtBuilder {
 }
 
 impl ExtBuilder {
-	pub fn add_staker(mut self, stash: AccountId, ctrl: AccountId, stake: Balance, status: StakerStatus<AccountId>) -> Self {
+	pub fn add_staker(
+		mut self,
+		stash: AccountId,
+		ctrl: AccountId,
+		stake: Balance,
+		status: StakerStatus<AccountId>,
+	) -> Self {
 		self.stakers.push((stash, ctrl, stake, status));
 		self
 	}
@@ -268,17 +274,21 @@ impl ExtBuilder {
 		pallet_staking::GenesisConfig::<Test> {
 			stakers: self.stakers.clone(),
 			validator_count: self.stakers.len() as u32, // Staker sayısını dinamik yap
-			minimum_validator_count: 0, // En az 0 validator olmasına izin ver
-			invulnerables: self.stakers.iter().filter_map(|(stash, _, _, status)| {
-				if let StakerStatus::Validator = status {
-					Some(stash.clone())
-				} else {
-					None
-				}
-			}).collect(),
+			minimum_validator_count: 0,                 // En az 0 validator olmasına izin ver
+			invulnerables: self
+				.stakers
+				.iter()
+				.filter_map(|(stash, _, _, status)| {
+					if let StakerStatus::Validator = status {
+						Some(stash.clone())
+					} else {
+						None
+					}
+				})
+				.collect(),
 			force_era: pallet_staking::Forcing::ForceNew, // Yeni era başlatmaya zorla
-			min_nominator_bond: MinNominatorBond::get(), // Tanımlanan minimum değerleri kullan
-			min_validator_bond: MinValidatorBond::get(), // Tanımlanan minimum değerleri kullan
+			min_nominator_bond: MinNominatorBond::get(),  // Tanımlanan minimum değerleri kullan
+			min_validator_bond: MinValidatorBond::get(),  // Tanımlanan minimum değerleri kullan
 			..Default::default()
 		}
 		.assimilate_storage(&mut storage)
@@ -290,11 +300,7 @@ impl ExtBuilder {
 				.iter()
 				.filter_map(|(stash, ctrl, _, status)| {
 					if let StakerStatus::Validator = status {
-						Some((
-							*stash,
-							*ctrl,
-							MockSessionKeys { dummy: (*stash).into() },
-						))
+						Some((*stash, *ctrl, MockSessionKeys { dummy: (*stash).into() }))
 					} else {
 						None
 					}

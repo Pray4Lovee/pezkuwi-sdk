@@ -91,8 +91,7 @@ fn pezkuwichain_session_keys(
 }
 
 fn default_teyrchains_host_configuration(
-) -> pezkuwi_runtime_teyrchains::configuration::HostConfiguration<pezkuwi_primitives::BlockNumber>
-{
+) -> pezkuwi_runtime_teyrchains::configuration::HostConfiguration<pezkuwi_primitives::BlockNumber> {
 	use pezkuwi_primitives::{
 		node_features::FeatureIndex, AsyncBackingParams, MAX_CODE_SIZE, MAX_POV_SIZE,
 	};
@@ -434,7 +433,11 @@ fn pezkuwichain_staging_testnet_config_genesis() -> serde_json::Value {
 		session: SessionConfig {
 			keys: initial_authorities
 				.into_iter()
-				.map(|x| (x.0.clone(), x.0, pezkuwichain_session_keys(x.2, x.3, x.4, x.5, x.6, x.7)))
+				.map(|x| (
+					x.0.clone(),
+					x.0,
+					pezkuwichain_session_keys(x.2, x.3, x.4, x.5, x.6, x.7)
+				))
 				.collect::<Vec<_>>(),
 		},
 		babe: BabeConfig { epoch_config: BABE_GENESIS_EPOCH_CONFIG },

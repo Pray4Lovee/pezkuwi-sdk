@@ -43,7 +43,14 @@ macro_rules! identify_chain {
 
 					let call = $generic_code;
 
-					Ok(pezkuwichain_sign_call(call, $nonce, $current_block, $period, $genesis, $signer))
+					Ok(pezkuwichain_sign_call(
+						call,
+						$nonce,
+						$current_block,
+						$period,
+						$genesis,
+						$signer,
+					))
 				}
 
 				#[cfg(not(feature = "pezkuwichain-native"))]

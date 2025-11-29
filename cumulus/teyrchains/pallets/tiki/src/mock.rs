@@ -1,15 +1,14 @@
 use crate as pallet_tiki;
+use crate::Tiki as TikiEnum;
 use frame_support::{
-	construct_runtime, parameter_types,
+	assert_ok, construct_runtime, parameter_types,
 	traits::{AsEnsureOriginWithArg, ConstU128, ConstU16, ConstU32, ConstU64},
-    assert_ok,
 };
 use sp_core::H256;
 use sp_runtime::{
 	traits::{BlakeTwo256, IdentityLookup},
 	BuildStorage,
 };
-use crate::Tiki as TikiEnum;
 
 type Block = frame_system::mocking::MockBlock<Test>;
 pub type AccountId = u64;
@@ -106,7 +105,8 @@ impl pallet_identity::Config for Test {
 	type RegistrarOrigin = frame_system::EnsureRoot<AccountId>;
 	type WeightInfo = ();
 	type OffchainSignature = sp_runtime::testing::TestSignature;
-	type SigningPublicKey = <sp_runtime::testing::TestSignature as sp_runtime::traits::Verify>::Signer;
+	type SigningPublicKey =
+		<sp_runtime::testing::TestSignature as sp_runtime::traits::Verify>::Signer;
 	type UsernameAuthorityOrigin = frame_system::EnsureRoot<AccountId>;
 	type UsernameDeposit = UsernameDeposit;
 	type PendingUsernameExpiration = PendingUsernameExpiration;
@@ -221,41 +221,42 @@ impl crate::Config for Test {
 // Helper functions for tests
 // Updated for trustless model - directly sets KYC status and hash
 pub fn setup_kyc_for_user(account: AccountId) {
-    // Give balance to user
-    let _ = Balances::force_set_balance(RuntimeOrigin::root(), account, 10000);
+	// Give balance to user
+	let _ = Balances::force_set_balance(RuntimeOrigin::root(), account, 10000);
 
-    // Directly set KYC status to Approved (for test purposes)
-    // In real runtime this would go through apply_for_citizenship -> approve_referral -> confirm_citizenship
-    pallet_identity_kyc::KycStatuses::<Test>::insert(
-        account,
-        pallet_identity_kyc::types::KycLevel::Approved
-    );
+	// Directly set KYC status to Approved (for test purposes)
+	// In real runtime this would go through apply_for_citizenship -> approve_referral ->
+	// confirm_citizenship
+	pallet_identity_kyc::KycStatuses::<Test>::insert(
+		account,
+		pallet_identity_kyc::types::KycLevel::Approved,
+	);
 
-    // Set identity hash
-    pallet_identity_kyc::IdentityHashes::<Test>::insert(
-        account,
-        sp_core::H256::from_low_u64_be(account)
-    );
+	// Set identity hash
+	pallet_identity_kyc::IdentityHashes::<Test>::insert(
+		account,
+		sp_core::H256::from_low_u64_be(account),
+	);
 }
 
 // Legacy function - kept for backwards compatibility
 pub fn setup_identity_for_user(account: AccountId) {
-    setup_kyc_for_user(account);
+	setup_kyc_for_user(account);
 }
 
 pub fn advance_blocks(blocks: u64) {
-    for _i in 0..blocks {
-        let current_block = System::block_number();
-        System::set_block_number(current_block + 1);
-        // Trigger hooks for the new block
-        <pallet_tiki::Pallet<Test> as frame_support::traits::Hooks<u64>>::on_initialize(current_block + 1);
-    }
+	for _i in 0..blocks {
+		let current_block = System::block_number();
+		System::set_block_number(current_block + 1);
+		// Trigger hooks for the new block
+		<pallet_tiki::Pallet<Test> as frame_support::traits::Hooks<u64>>::on_initialize(
+			current_block + 1,
+		);
+	}
 }
 
 pub fn new_test_ext() -> sp_io::TestExternalities {
-	let mut t = frame_system::GenesisConfig::<Test>::default()
-		.build_storage()
-		.unwrap();
+	let mut t = frame_system::GenesisConfig::<Test>::default().build_storage().unwrap();
 
 	pallet_balances::GenesisConfig::<Test> {
 		balances: vec![(1, 10000), (2, 10000), (3, 10000), (4, 10000), (5, 10000)],

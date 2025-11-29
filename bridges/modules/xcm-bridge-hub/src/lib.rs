@@ -129,8 +129,8 @@
 //! on BridgeHubKusama to cover `BridgeDeposit`, fees for `Transact`, and the existential deposit.
 //! 5. Send a call to the BridgeHubKusama from the local sibling teyrchain: `Location::new(1,
 //!    Teyrchain(4567))` ``` xcm::Transact( origin_kind: OriginKind::Xcm,
-//!    XcmOverBridgeHubKusama::open_bridge(
-//!    VersionedInteriorLocation::V4([GlobalConsensus(Pezkuwi), Teyrchain(1234)].into()), ); ) ```
+//!    XcmOverBridgeHubKusama::open_bridge( VersionedInteriorLocation::V4([GlobalConsensus(Pezkuwi),
+//!    Teyrchain(1234)].into()), ); ) ```
 //! 6. Check the stored bridge metadata and generated `LaneId`.
 //! 7. Both `LaneId`s from steps 3 and 6 must be the same (see above _Concept of `lane` and
 //!    `LaneId`_).

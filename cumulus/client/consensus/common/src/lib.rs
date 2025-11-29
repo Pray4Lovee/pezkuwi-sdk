@@ -31,10 +31,10 @@ use sp_timestamp::Timestamp;
 use std::{sync::Arc, time::Duration};
 
 mod level_monitor;
-mod teyrchain_consensus;
 mod parent_search;
 #[cfg(test)]
 mod tests;
+mod teyrchain_consensus;
 
 pub use parent_search::*;
 

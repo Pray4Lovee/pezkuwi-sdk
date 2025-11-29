@@ -37,7 +37,6 @@ pub fn new_av_store(dependencies: &TestEnvironmentDependencies) -> AvailabilityS
 
 fn test_store() -> Arc<dyn Database> {
 	let db = kvdb_memorydb::create(columns::NUM_COLUMNS);
-	let db =
-		pezkuwi_node_subsystem_util::database::kvdb_impl::DbAdapter::new(db, &[columns::META]);
+	let db = pezkuwi_node_subsystem_util::database::kvdb_impl::DbAdapter::new(db, &[columns::META]);
 	Arc::new(db)
 }

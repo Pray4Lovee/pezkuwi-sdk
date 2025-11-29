@@ -484,8 +484,7 @@ impl AssignmentCriteria for MockAssignmentCriteria {
 		_relay_vrf_story: pezkuwi_node_primitives::approval::v1::RelayVRFStory,
 		_assignment: &pezkuwi_node_primitives::approval::v2::AssignmentCertV2,
 		_backing_groups: Vec<pezkuwi_primitives::GroupIndex>,
-	) -> Result<pezkuwi_node_primitives::approval::v1::DelayTranche, criteria::InvalidAssignment>
-	{
+	) -> Result<pezkuwi_node_primitives::approval::v1::DelayTranche, criteria::InvalidAssignment> {
 		self.tranche
 	}
 }

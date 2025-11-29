@@ -24,7 +24,7 @@ use crate::{
 		ExtrinsicBuilder,
 	},
 	overhead::{
-		command::ChainType::{Teyrchain, Relaychain, Unknown},
+		command::ChainType::{Relaychain, Teyrchain, Unknown},
 		fake_runtime_api,
 		remark_builder::SubstrateRemarkBuilder,
 		template::TemplateData,

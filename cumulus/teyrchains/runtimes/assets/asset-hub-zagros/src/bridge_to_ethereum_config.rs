@@ -26,9 +26,9 @@ use crate::{
 use assets_common::{matching::FromSiblingTeyrchain, AssetIdForTrustBackedAssetsConvert};
 use frame_support::{parameter_types, traits::EitherOf};
 use frame_system::EnsureRootWithSuccess;
-use teyrchains_common::AssetIdForTrustBackedAssets;
 use snowbridge_runtime_common::{ForeignAssetOwner, LocalAssetOwner};
 use testnet_teyrchains_constants::zagros::snowbridge::{EthereumNetwork, FRONTEND_PALLET_INDEX};
+use teyrchains_common::AssetIdForTrustBackedAssets;
 use xcm::prelude::{InteriorLocation, Location, PalletInstance};
 use xcm_executor::XcmExecutor;
 

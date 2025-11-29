@@ -656,8 +656,8 @@ use sp_core::traits::SpawnNamed;
 mod tests {
 	use super::*;
 	use futures::executor::block_on;
-	use pezkuwi_teyrchain_primitives::primitives::{ValidationParams, ValidationResult};
 	use pezkuwi_primitives::{Hash, PersistedValidationData};
+	use pezkuwi_teyrchain_primitives::primitives::{ValidationParams, ValidationResult};
 
 	#[test]
 	fn collator_works() {

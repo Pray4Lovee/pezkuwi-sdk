@@ -22,8 +22,8 @@
 //! GRANDPA tracking pallet only needs to be aware of one chain.
 
 use super::{weights, AccountId, Balance, Balances, BlockNumber, Runtime, RuntimeEvent};
-use bp_teyrchains::SingleParaStoredHeaderDataBuilder;
 use bp_relayers::RewardsAccountParams;
+use bp_teyrchains::SingleParaStoredHeaderDataBuilder;
 use frame_support::{parameter_types, traits::ConstU32};
 
 parameter_types! {

@@ -30,8 +30,8 @@ use crate::{
 		headers::OnDemandHeadersRelay, teyrchains::OnDemandTeyrchainsRelay, OnDemandRelay,
 	},
 };
-use bp_teyrchains::{RelayBlockHash, RelayBlockHasher, RelayBlockNumber};
 use bp_pezkuwi_core::teyrchains::ParaHash;
+use bp_teyrchains::{RelayBlockHash, RelayBlockHasher, RelayBlockNumber};
 use relay_substrate_client::{
 	AccountIdOf, AccountKeyPairOf, Chain, ChainWithRuntimeVersion, ChainWithTransactions, Client,
 	Teyrchain,

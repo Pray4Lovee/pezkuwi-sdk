@@ -34,8 +34,8 @@ use staging_xcm_builder as xcm_builder;
 use staging_xcm_executor as xcm_executor;
 
 use cumulus_primitives_core::ParaId;
-use teyrchains_common::message_queue::{NarrowOriginToSibling, ParaIdToSibling};
 use pezkuwi_runtime_common::{prod_or_fast, xcm_sender::NoPriceForMessageDelivery};
+use teyrchains_common::message_queue::{NarrowOriginToSibling, ParaIdToSibling};
 
 use alloc::{borrow::Cow, vec, vec::Vec};
 use cumulus_pallet_teyrchain_system::RelayNumberMonotonicallyIncreases;
@@ -81,8 +81,8 @@ pub use sp_runtime::BuildStorage;
 pub use sp_runtime::{Perbill, Permill};
 
 use cumulus_primitives_core::AggregateMessageOrigin; //, ClaimQueueOffset, CoreSelector};
-use teyrchains_common::{AccountId, Signature};
 use staging_xcm::latest::prelude::BodyId;
+use teyrchains_common::{AccountId, Signature};
 
 pub type SessionHandlers = ();
 
@@ -398,8 +398,8 @@ pub struct WeightToFee;
 impl WeightToFeePolynomial for WeightToFee {
 	type Balance = Balance;
 	fn polynomial() -> WeightToFeeCoefficients<Self::Balance> {
-		// in Pezkuwichain, extrinsic base weight (smallest non-zero weight) is mapped to 1 MILLI_UNIT:
-		// in our template, we map to 1/10 of that, or 1/10 MILLI_UNIT
+		// in Pezkuwichain, extrinsic base weight (smallest non-zero weight) is mapped to 1
+		// MILLI_UNIT: in our template, we map to 1/10 of that, or 1/10 MILLI_UNIT
 		let p = YAP / 10;
 		let q = 100 *
 			Balance::from(

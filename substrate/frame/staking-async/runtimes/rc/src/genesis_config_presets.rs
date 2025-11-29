@@ -88,8 +88,7 @@ fn zagros_session_keys(
 }
 
 fn default_teyrchains_host_configuration(
-) -> pezkuwi_runtime_teyrchains::configuration::HostConfiguration<pezkuwi_primitives::BlockNumber>
-{
+) -> pezkuwi_runtime_teyrchains::configuration::HostConfiguration<pezkuwi_primitives::BlockNumber> {
 	use pezkuwi_primitives::{
 		node_features::FeatureIndex, ApprovalVotingParams, AsyncBackingParams, MAX_CODE_SIZE,
 		MAX_POV_SIZE,

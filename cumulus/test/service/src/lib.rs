@@ -52,8 +52,8 @@ use cumulus_client_consensus_common::TeyrchainBlockImport as TTeyrchainBlockImpo
 use cumulus_client_pov_recovery::{RecoveryDelayRange, RecoveryHandle};
 use cumulus_client_service::{
 	build_network, prepare_node_config, start_relay_chain_tasks, BuildNetworkParams,
-	CollatorSybilResistance, DARecoveryProfile, TeyrchainTracingExecuteBlock,
-	StartRelayChainTasksParams,
+	CollatorSybilResistance, DARecoveryProfile, StartRelayChainTasksParams,
+	TeyrchainTracingExecuteBlock,
 };
 use cumulus_primitives_core::{relay_chain::ValidationCode, GetTeyrchainInfo, ParaId};
 use cumulus_relay_chain_inprocess_interface::RelayChainInProcessInterface;

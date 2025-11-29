@@ -22,12 +22,12 @@ use frame_support::{
 	RuntimeDebugNoBound,
 };
 use pallet_identity::{Data, IdentityInformationProvider};
-use teyrchains_common::{impls::ToParentTreasury, DAYS};
 use scale_info::TypeInfo;
 use sp_runtime::{
 	traits::{AccountIdConversion, Verify},
 	RuntimeDebug,
 };
+use teyrchains_common::{impls::ToParentTreasury, DAYS};
 
 parameter_types! {
 	//   27 | Min encoded size of `Registration`

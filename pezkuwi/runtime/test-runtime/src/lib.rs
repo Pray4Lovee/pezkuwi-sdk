@@ -98,10 +98,10 @@ pub use pallet_balances::Call as BalancesCall;
 pub use pallet_staking::StakerStatus;
 pub use pallet_sudo::Call as SudoCall;
 pub use pallet_timestamp::Call as TimestampCall;
-pub use teyrchains_paras::Call as ParasCall;
 pub use paras_sudo_wrapper::Call as ParasSudoWrapperCall;
 #[cfg(any(feature = "std", test))]
 pub use sp_runtime::BuildStorage;
+pub use teyrchains_paras::Call as ParasCall;
 
 /// Constant values used within the runtime.
 use test_runtime_constants::{currency::*, fee::*, time::*};
@@ -376,8 +376,7 @@ parameter_types! {
 pub struct OnChainSeqPhragmen;
 impl onchain::Config for OnChainSeqPhragmen {
 	type System = Runtime;
-	type Solver =
-		SequentialPhragmen<AccountId, pezkuwi_runtime_common::elections::OnChainAccuracy>;
+	type Solver = SequentialPhragmen<AccountId, pezkuwi_runtime_common::elections::OnChainAccuracy>;
 	type DataProvider = Staking;
 	type WeightInfo = ();
 	type Bounds = ElectionBoundsOnChain;

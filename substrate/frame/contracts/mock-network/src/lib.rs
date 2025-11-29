@@ -15,9 +15,9 @@
 // along with Substrate.  If not, see <http://www.gnu.org/licenses/>.
 
 pub mod mocks;
-pub mod teyrchain;
 pub mod primitives;
 pub mod relay_chain;
+pub mod teyrchain;
 
 #[cfg(test)]
 mod tests;
@@ -28,7 +28,7 @@ use sp_runtime::BuildStorage;
 use xcm::latest::prelude::*;
 use xcm_executor::traits::ConvertLocation;
 pub use xcm_simulator::TestExt;
-use xcm_simulator::{decl_test_network, decl_test_teyrchain, decl_test_relay_chain};
+use xcm_simulator::{decl_test_network, decl_test_relay_chain, decl_test_teyrchain};
 
 // Accounts
 pub const ADMIN: sp_runtime::AccountId32 = sp_runtime::AccountId32::new([0u8; 32]);

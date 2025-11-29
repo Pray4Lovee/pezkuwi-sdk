@@ -1,7 +1,7 @@
 use crate as pallet_perwerde;
 use frame_support::{
 	construct_runtime, parameter_types,
-	traits::{ConstU16, ConstU32, ConstU64, ConstU128, Everything, SortedMembers},
+	traits::{ConstU128, ConstU16, ConstU32, ConstU64, Everything, SortedMembers},
 };
 use frame_system::EnsureRoot;
 use sp_core::H256;
@@ -52,13 +52,13 @@ impl frame_system::Config for Test {
 	type SS58Prefix = ConstU16<42>;
 	type OnSetCode = ();
 	type MaxConsumers = ConstU32<16>;
-    type RuntimeTask = ();
-    type ExtensionsWeightInfo = ();
-    type SingleBlockMigrations = ();
-    type MultiBlockMigrator = ();
-    type PreInherents = ();
-    type PostInherents = ();
-    type PostTransactions = ();
+	type RuntimeTask = ();
+	type ExtensionsWeightInfo = ();
+	type SingleBlockMigrations = ();
+	type MultiBlockMigrator = ();
+	type PreInherents = ();
+	type PostInherents = ();
+	type PostTransactions = ();
 }
 
 // pallet_balances için implementasyon.
@@ -76,7 +76,7 @@ impl pallet_balances::Config for Test {
 	type MaxFreezes = ConstU32<1>;
 	type RuntimeHoldReason = ();
 	type RuntimeFreezeReason = ();
-    type DoneSlashHandler = ();
+	type DoneSlashHandler = ();
 }
 
 parameter_types! {
@@ -140,7 +140,8 @@ impl pallet_collective::Config<Instance1> for Test {
 
 pub fn new_test_ext() -> sp_io::TestExternalities {
 	let t = frame_system::GenesisConfig::<Test>::default().build_storage().unwrap();
-	// `pallet-collective`'in genesis'ini de kurmamıza gerek kalmadı çünkü artık testimiz ona bağlı değil.
+	// `pallet-collective`'in genesis'ini de kurmamıza gerek kalmadı çünkü artık testimiz ona bağlı
+	// değil.
 	let mut ext = sp_io::TestExternalities::new(t);
 	ext.execute_with(|| System::set_block_number(1));
 	ext

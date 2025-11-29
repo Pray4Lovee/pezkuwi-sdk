@@ -23,11 +23,11 @@ use bp_messages::{
 	target_chain::{DispatchMessage, MessageDispatch},
 	ChainWithMessages, HashedLaneId, LaneIdType, MessageNonce,
 };
-use bp_teyrchains::SingleParaStoredHeaderDataBuilder;
 use bp_relayers::{
 	PayRewardFromAccount, PaymentProcedure, RewardsAccountOwner, RewardsAccountParams,
 };
 use bp_runtime::{messages::MessageDispatchResult, Chain, ChainId, Teyrchain};
+use bp_teyrchains::SingleParaStoredHeaderDataBuilder;
 use codec::Encode;
 use frame_support::{
 	derive_impl, parameter_types,

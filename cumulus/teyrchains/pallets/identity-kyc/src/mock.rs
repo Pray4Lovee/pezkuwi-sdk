@@ -110,7 +110,7 @@ pub fn new_test_ext() -> sp_io::TestExternalities {
 	// Add founding citizen via genesis config
 	pallet_identity_kyc::GenesisConfig::<Test> {
 		founding_citizens: vec![
-			(FOUNDER, H256::from_low_u64_be(1)),  // Founder is pre-approved
+			(FOUNDER, H256::from_low_u64_be(1)),   // Founder is pre-approved
 			(CITIZEN_1, H256::from_low_u64_be(2)), // Citizen 1 is pre-approved
 		],
 		_phantom: Default::default(),
@@ -128,11 +128,7 @@ pub fn new_test_ext_empty() -> sp_io::TestExternalities {
 	let mut t = frame_system::GenesisConfig::<Test>::default().build_storage().unwrap();
 
 	pallet_balances::GenesisConfig::<Test> {
-		balances: vec![
-			(FOUNDER, 1_000_000),
-			(CITIZEN_1, 10_000),
-			(APPLICANT, 10_000),
-		],
+		balances: vec![(FOUNDER, 1_000_000), (CITIZEN_1, 10_000), (APPLICANT, 10_000)],
 		..Default::default()
 	}
 	.assimilate_storage(&mut t)

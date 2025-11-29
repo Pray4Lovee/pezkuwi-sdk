@@ -23,7 +23,7 @@ mod imports {
 
 	// Cumulus
 	pub(crate) use emulated_integration_tests_common::xcm_emulator::{
-		assert_expected_events, bx, Chain, Teyrchain as Para, TestExt,
+		assert_expected_events, bx, Chain, TestExt, Teyrchain as Para,
 	};
 	pub(crate) use zagros_system_emulated_network::{
 		self,
@@ -40,8 +40,7 @@ mod imports {
 			PeopleZagrosParaPallet as PeopleZagrosPallet,
 		},
 		zagros_emulated_chain::{genesis::ED as ZAGROS_ED, ZagrosRelayPallet as ZagrosPallet},
-		AssetHubZagrosPara as AssetHubZagros,
-		AssetHubZagrosParaReceiver as AssetHubZagrosReceiver,
+		AssetHubZagrosPara as AssetHubZagros, AssetHubZagrosParaReceiver as AssetHubZagrosReceiver,
 		BridgeHubZagrosPara as BridgeHubZagros, CollectivesZagrosPara as CollectivesZagros,
 		CoretimeZagrosPara as CoretimeZagros, PenpalBPara as PenpalB,
 		PeopleZagrosPara as PeopleZagros, PeopleZagrosParaReceiver as PeopleZagrosReceiver,

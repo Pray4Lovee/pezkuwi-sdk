@@ -360,12 +360,18 @@ pub(crate) fn set_up_eth_and_hez_pool_on_penpal() {
 }
 
 pub(crate) fn set_up_eth_and_hez_pool_on_pezkuwichain() {
-	let sa_of_wah_on_rah = AssetHubPezkuwichain::sovereign_account_of_teyrchain_on_other_global_consensus(
-		ByGenesis(ZAGROS_GENESIS_HASH),
-		AssetHubZagros::para_id(),
-	);
+	let sa_of_wah_on_rah =
+		AssetHubPezkuwichain::sovereign_account_of_teyrchain_on_other_global_consensus(
+			ByGenesis(ZAGROS_GENESIS_HASH),
+			AssetHubZagros::para_id(),
+		);
 	AssetHubPezkuwichain::fund_accounts(vec![(sa_of_wah_on_rah.clone(), INITIAL_FUND)]);
-	create_pool_with_native_on!(AssetHubPezkuwichain, eth_location(), true, sa_of_wah_on_rah.clone());
+	create_pool_with_native_on!(
+		AssetHubPezkuwichain,
+		eth_location(),
+		true,
+		sa_of_wah_on_rah.clone()
+	);
 }
 
 pub fn register_pal_on_bh() {

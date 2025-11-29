@@ -28,9 +28,7 @@ use pezkuwi_node_network_protocol::{
 };
 use pezkuwi_node_subsystem::{messages::NetworkBridgeTxMessage, overseer};
 use pezkuwi_node_subsystem_util::{metrics, nesting_sender::NestingSender, runtime::RuntimeInfo};
-use pezkuwi_primitives::{
-	AuthorityDiscoveryId, CandidateHash, Hash, SessionIndex, ValidatorIndex,
-};
+use pezkuwi_primitives::{AuthorityDiscoveryId, CandidateHash, Hash, SessionIndex, ValidatorIndex};
 
 use super::error::{FatalError, Result};
 

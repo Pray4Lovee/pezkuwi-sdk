@@ -94,10 +94,10 @@
 //! ```
 
 pub use pallet::*;
-pub mod weights;
-pub mod types; // Adding our new types module
 #[cfg(test)]
 mod mock;
+pub mod types; // Adding our new types module
+pub mod weights;
 
 #[cfg(test)]
 mod tests;
@@ -110,12 +110,10 @@ use crate::weights::WeightInfo;
 #[frame_support::pallet]
 pub mod pallet {
 	use super::*;
+	use crate::types::{InviterProvider, RawScore, ReferralScoreProvider, ReferrerStats};
 	use frame_support::pallet_prelude::*;
 	use frame_system::pallet_prelude::*;
-	use pallet_identity_kyc::types::{KycStatus, OnKycApproved, OnCitizenshipRevoked};
-	use crate::types::{
-		InviterProvider, ReferralScoreProvider, RawScore, ReferrerStats
-	};
+	use pallet_identity_kyc::types::{KycStatus, OnCitizenshipRevoked, OnKycApproved};
 
 	#[pallet::pallet]
 	pub struct Pallet<T>(_);
@@ -149,7 +147,8 @@ pub mod pallet {
 	/// (Referrer AccountId -> Count)
 	#[pallet::storage]
 	#[pallet::getter(fn referral_count)]
-	pub type ReferralCount<T: Config> = StorageMap<_, Blake2_128Concat, T::AccountId, u32, ValueQuery>;
+	pub type ReferralCount<T: Config> =
+		StorageMap<_, Blake2_128Concat, T::AccountId, u32, ValueQuery>;
 
 	/// Holds who a user invited and transaction details.
 	/// (Referred AccountId -> ReferralInfo)
@@ -178,7 +177,11 @@ pub mod pallet {
 		/// When a user invites another user.
 		ReferralInitiated { referrer: T::AccountId, referred: T::AccountId },
 		/// When invited user successfully completes KYC process.
-		ReferralConfirmed { referrer: T::AccountId, referred: T::AccountId, new_referrer_count: u32 },
+		ReferralConfirmed {
+			referrer: T::AccountId,
+			referred: T::AccountId,
+			new_referrer_count: u32,
+		},
 		/// When a referral is penalized due to revoked citizenship
 		/// DIRECT RESPONSIBILITY: Only the referrer is affected
 		ReferralPenalized {
@@ -204,10 +207,7 @@ pub mod pallet {
 		/// Initiates a referral record to invite another user to the system.
 		#[pallet::call_index(0)]
 		#[pallet::weight(<T as Config>::WeightInfo::initiate_referral())]
-		pub fn initiate_referral(
-			origin: OriginFor<T>,
-			referred: T::AccountId,
-		) -> DispatchResult {
+		pub fn initiate_referral(origin: OriginFor<T>, referred: T::AccountId) -> DispatchResult {
 			let referrer = ensure_signed(origin)?;
 			ensure!(referrer != referred, Error::<T>::SelfReferral);
 			ensure!(!Referrals::<T>::contains_key(&referred), Error::<T>::AlreadyReferred);
@@ -262,7 +262,9 @@ pub mod pallet {
 		fn on_kyc_approved(who: &T::AccountId, referrer: &T::AccountId) {
 			// Security check: Verify on-chain that the user's KYC status is actually
 			// "Approved" before confirming the referral.
-			if pallet_identity_kyc::Pallet::<T>::get_kyc_status(who) == pallet_identity_kyc::types::KycLevel::Approved {
+			if pallet_identity_kyc::Pallet::<T>::get_kyc_status(who) ==
+				pallet_identity_kyc::types::KycLevel::Approved
+			{
 				// Check if this referral already exists (prevent double-counting)
 				if Referrals::<T>::contains_key(who) {
 					return; // Already processed
@@ -314,7 +316,8 @@ pub mod pallet {
 				// Only the direct referrer is penalized, not the chain
 				ReferrerStatsStorage::<T>::mutate(&referrer, |stats| {
 					stats.revoked_referrals = stats.revoked_referrals.saturating_add(1);
-					stats.penalty_score = stats.penalty_score.saturating_add(penalty_per_revocation);
+					stats.penalty_score =
+						stats.penalty_score.saturating_add(penalty_per_revocation);
 				});
 
 				let updated_stats = ReferrerStatsStorage::<T>::get(&referrer);

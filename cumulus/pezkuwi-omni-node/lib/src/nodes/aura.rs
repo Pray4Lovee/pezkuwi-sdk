@@ -18,7 +18,7 @@ use crate::{
 	cli::{AuthoringPolicy, DevSealMode},
 	common::{
 		aura::{AuraIdT, AuraRuntimeApi},
-		rpc::{BuildTeyrchainRpcExtensions, BuildRpcExtensions},
+		rpc::{BuildRpcExtensions, BuildTeyrchainRpcExtensions},
 		spec::{
 			BaseNodeSpec, BuildImportQueue, ClientBlockImport, DynNodeSpec, InitBlockImport,
 			NodeSpec, StartConsensus,
@@ -47,8 +47,8 @@ use cumulus_client_consensus_aura::{
 };
 use cumulus_client_consensus_proposer::ProposerInterface;
 use cumulus_client_consensus_relay_chain::Verifier as RelayChainVerifier;
-use cumulus_client_teyrchain_inherent::MockValidationDataInherentDataProvider;
 use cumulus_client_service::CollatorSybilResistance;
+use cumulus_client_teyrchain_inherent::MockValidationDataInherentDataProvider;
 use cumulus_primitives_core::{
 	relay_chain::ValidationCode, CollectCollationInfo, GetTeyrchainInfo, ParaId,
 };

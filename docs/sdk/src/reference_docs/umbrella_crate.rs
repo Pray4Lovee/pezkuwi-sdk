@@ -83,8 +83,8 @@
 //! ## Dependencies
 //!
 //! The umbrella crate re-exports all published crates, with a few exceptions:
-//! - Runtime crates like `pezkuwichain-runtime` etc are not exported. This otherwise leads to very weird
-//!   compile errors and should not be needed anyway.
+//! - Runtime crates like `pezkuwichain-runtime` etc are not exported. This otherwise leads to very
+//!   weird compile errors and should not be needed anyway.
 //! - Example and fuzzing crates are not exported. This is currently detected by checking the name
 //!   of the crate for these magic words. In the future, it will utilize custom metadata, as it is
 //!   done in the `pezkuwichain-runtime` crate.

@@ -27,7 +27,7 @@ use frame_support::{
 	traits::{BatchFootprint, Hooks},
 	StorageNoopGuard,
 };
-use mock::{new_test_ext, FirstPagePos, TeyrchainSystem, RuntimeOrigin as Origin, Test, XcmpQueue};
+use mock::{new_test_ext, FirstPagePos, RuntimeOrigin as Origin, Test, TeyrchainSystem, XcmpQueue};
 use sp_runtime::traits::{BadOrigin, Zero};
 use std::iter::{once, repeat};
 use xcm::{MAX_INSTRUCTIONS_TO_DECODE, MAX_XCM_DECODE_DEPTH};

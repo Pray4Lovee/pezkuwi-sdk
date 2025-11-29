@@ -16,9 +16,9 @@
 pub mod genesis;
 
 pub use bridge_hub_pezkuwichain_runtime::{
-	self as bridge_hub_pezkuwichain_runtime, xcm_config::XcmConfig as BridgeHubPezkuwichainXcmConfig,
-	EthereumBeaconClient, EthereumInboundQueue,
-	ExistentialDeposit as BridgeHubPezkuwichainExistentialDeposit,
+	self as bridge_hub_pezkuwichain_runtime,
+	xcm_config::XcmConfig as BridgeHubPezkuwichainXcmConfig, EthereumBeaconClient,
+	EthereumInboundQueue, ExistentialDeposit as BridgeHubPezkuwichainExistentialDeposit,
 	RuntimeOrigin as BridgeHubPezkuwichainRuntimeOrigin,
 };
 

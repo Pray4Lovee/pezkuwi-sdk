@@ -1,6 +1,6 @@
 use crate::{
-	AccountId, BalancesConfig, CollatorSelectionConfig, TeyrchainInfoConfig, PezkuwiXcmConfig,
-	RuntimeGenesisConfig, SessionConfig, SessionKeys, SudoConfig, EXISTENTIAL_DEPOSIT,
+	AccountId, BalancesConfig, CollatorSelectionConfig, PezkuwiXcmConfig, RuntimeGenesisConfig,
+	SessionConfig, SessionKeys, SudoConfig, TeyrchainInfoConfig, EXISTENTIAL_DEPOSIT,
 };
 
 use alloc::{vec, vec::Vec};
@@ -9,10 +9,10 @@ use pezkuwi_sdk::{staging_xcm as xcm, *};
 
 use cumulus_primitives_core::ParaId;
 use frame_support::build_struct_json_patch;
-use teyrchains_common::AuraId;
 use serde_json::Value;
 use sp_genesis_builder::PresetId;
 use sp_keyring::Sr25519Keyring;
+use teyrchains_common::AuraId;
 
 /// The default XCM version to set in genesis config.
 const SAFE_XCM_VERSION: u32 = xcm::prelude::XCM_VERSION;

@@ -377,24 +377,23 @@ fn deposit_reserve_asset_works_for_any_xcm_sender() {
 	let mut block_builder = client.init_pezkuwi_block_builder();
 
 	// Make the para available, so that `DMP` doesn't reject the XCM because the para is unknown.
-	let make_para_available =
-		construct_extrinsic(
-			&client,
-			pezkuwi_test_runtime::RuntimeCall::Sudo(pallet_sudo::Call::sudo {
-				call: Box::new(pezkuwi_test_runtime::RuntimeCall::System(
-					frame_system::Call::set_storage {
-						items: vec![(
+	let make_para_available = construct_extrinsic(
+		&client,
+		pezkuwi_test_runtime::RuntimeCall::Sudo(pallet_sudo::Call::sudo {
+			call: Box::new(pezkuwi_test_runtime::RuntimeCall::System(
+				frame_system::Call::set_storage {
+					items: vec![(
 							pezkuwi_runtime_teyrchains::paras::Heads::<
 								pezkuwi_test_runtime::Runtime,
 							>::hashed_key_for(2000u32),
 							vec![1, 2, 3],
 						)],
-					},
-				)),
-			}),
-			sp_keyring::Sr25519Keyring::Alice,
-			0,
-		);
+				},
+			)),
+		}),
+		sp_keyring::Sr25519Keyring::Alice,
+		0,
+	);
 
 	// Simulate execution of an incoming XCM message at the reserve chain
 	let execute = construct_extrinsic(

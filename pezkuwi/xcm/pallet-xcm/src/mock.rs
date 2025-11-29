@@ -24,8 +24,8 @@ use frame_support::{
 	weights::Weight,
 };
 use frame_system::EnsureRoot;
-use pezkuwi_teyrchain_primitives::primitives::Id as ParaId;
 use pezkuwi_runtime_teyrchains::origin;
+use pezkuwi_teyrchain_primitives::primitives::Id as ParaId;
 use sp_core::H256;
 use sp_runtime::{
 	traits::{Convert, IdentityLookup},
@@ -34,8 +34,8 @@ use sp_runtime::{
 use xcm::prelude::*;
 use xcm_builder::{
 	AccountId32Aliases, AllowKnownQueryResponses, AllowSubscriptionsFrom,
-	AllowTopLevelPaidExecutionFrom, Case, ChildTeyrchainAsNative, ChildTeyrchainConvertsVia,
-	ChildSystemTeyrchainAsSuperuser, DescribeAllTerminal, EnsureDecodableXcm, FixedRateOfFungible,
+	AllowTopLevelPaidExecutionFrom, Case, ChildSystemTeyrchainAsSuperuser, ChildTeyrchainAsNative,
+	ChildTeyrchainConvertsVia, DescribeAllTerminal, EnsureDecodableXcm, FixedRateOfFungible,
 	FixedWeightBounds, FrameTransactionalProcessor, FungibleAdapter, FungiblesAdapter,
 	HashedDescription, IsConcrete, MatchedConvertedConcreteId, NoChecking, SendXcmFeeToAccount,
 	SignedAccountId32AsNative, SignedToAccountId32, SovereignSignedViaLocation, TakeWeightCredit,

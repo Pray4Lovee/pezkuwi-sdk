@@ -24,12 +24,12 @@ use frame_support::{
 };
 use frame_system::EnsureRootWithSuccess;
 use pallet_xcm::{EnsureXcm, IsVoiceOfBody};
-use teyrchains_common::pay::{LocalPay, VersionedLocatableAccount};
 use pezkuwi_runtime_common::{
 	impls::{ContainsParts, VersionedLocatableAsset},
 	prod_or_fast,
 };
 use sp_runtime::{traits::IdentityLookup, Percent};
+use teyrchains_common::pay::{LocalPay, VersionedLocatableAccount};
 use xcm::latest::BodyId;
 
 mod origins;

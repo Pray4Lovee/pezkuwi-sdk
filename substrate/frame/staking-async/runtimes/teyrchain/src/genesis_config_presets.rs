@@ -25,14 +25,12 @@ use alloc::{
 };
 use cumulus_primitives_core::ParaId;
 use frame_support::build_struct_json_patch;
-use teyrchains_common::{AccountId, AuraId};
 use sp_core::{crypto::get_public_from_string_or_panic, sr25519};
 use sp_genesis_builder::PresetId;
 use sp_keyring::Sr25519Keyring;
 use sp_staking::StakerStatus;
-use testnet_teyrchains_constants::zagros::{
-	currency::UNITS as ZGR, xcm_version::SAFE_XCM_VERSION,
-};
+use testnet_teyrchains_constants::zagros::{currency::UNITS as ZGR, xcm_version::SAFE_XCM_VERSION};
+use teyrchains_common::{AccountId, AuraId};
 
 const STAKING_ASYNC_PARA_ED: Balance = ExistentialDeposit::get();
 

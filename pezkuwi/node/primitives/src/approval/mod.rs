@@ -227,9 +227,7 @@ pub mod v2 {
 	use std::ops::BitOr;
 
 	use bitvec::{prelude::Lsb0, vec::BitVec};
-	use pezkuwi_primitives::{
-		CandidateIndex, CoreIndex, Hash, ValidatorIndex, ValidatorSignature,
-	};
+	use pezkuwi_primitives::{CandidateIndex, CoreIndex, Hash, ValidatorIndex, ValidatorSignature};
 
 	/// A static context associated with producing randomness for a core.
 	pub const CORE_RANDOMNESS_CONTEXT: &[u8] = b"A&V CORE v2";

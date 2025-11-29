@@ -16,10 +16,11 @@
 // limitations under the License.
 
 use crate::{
-	teyrchain::{self, Runtime},
-	teyrchain_account_sovereign_account_id,
 	primitives::{AccountId, CENTS},
-	relay_chain, MockNet, ParaA, TeyrchainBalances, Relay, ALICE, BOB, INITIAL_BALANCE,
+	relay_chain,
+	teyrchain::{self, Runtime},
+	teyrchain_account_sovereign_account_id, MockNet, ParaA, Relay, TeyrchainBalances, ALICE, BOB,
+	INITIAL_BALANCE,
 };
 use codec::{Decode, Encode};
 use frame_support::traits::{fungibles::Mutate, Currency};

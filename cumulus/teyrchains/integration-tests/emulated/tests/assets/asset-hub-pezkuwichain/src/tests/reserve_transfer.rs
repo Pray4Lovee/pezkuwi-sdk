@@ -628,24 +628,27 @@ fn para_to_para_through_relay_limited_reserve_transfer_assets(
 #[test]
 fn reserve_transfer_native_asset_from_relay_to_asset_hub_fails() {
 	// Init values for Relay Chain
-	let signed_origin = <Pezkuwichain as Chain>::RuntimeOrigin::signed(PezkuwichainSender::get().into());
+	let signed_origin =
+		<Pezkuwichain as Chain>::RuntimeOrigin::signed(PezkuwichainSender::get().into());
 	let destination = Pezkuwichain::child_location_of(AssetHubPezkuwichain::para_id());
 	let beneficiary: Location =
-		AccountId32Junction { network: None, id: AssetHubPezkuwichainReceiver::get().into() }.into();
+		AccountId32Junction { network: None, id: AssetHubPezkuwichainReceiver::get().into() }
+			.into();
 	let amount_to_send: Balance = PEZKUWICHAIN_ED * 1000;
 	let assets: Assets = (Here, amount_to_send).into();
 	let fee_asset_id: AssetId = Here.into();
 
 	// this should fail
 	Pezkuwichain::execute_with(|| {
-		let result = <Pezkuwichain as PezkuwichainPallet>::XcmPallet::limited_reserve_transfer_assets(
-			signed_origin,
-			bx!(destination.into()),
-			bx!(beneficiary.into()),
-			bx!(assets.into()),
-			bx!(fee_asset_id.into()),
-			WeightLimit::Unlimited,
-		);
+		let result =
+			<Pezkuwichain as PezkuwichainPallet>::XcmPallet::limited_reserve_transfer_assets(
+				signed_origin,
+				bx!(destination.into()),
+				bx!(beneficiary.into()),
+				bx!(assets.into()),
+				bx!(fee_asset_id.into()),
+				WeightLimit::Unlimited,
+			);
 		assert_err!(
 			result,
 			DispatchError::Module(sp_runtime::ModuleError {
@@ -661,8 +664,9 @@ fn reserve_transfer_native_asset_from_relay_to_asset_hub_fails() {
 #[test]
 fn reserve_transfer_native_asset_from_asset_hub_to_relay_fails() {
 	// Init values for Asset Hub
-	let signed_origin =
-		<AssetHubPezkuwichain as Chain>::RuntimeOrigin::signed(AssetHubPezkuwichainSender::get().into());
+	let signed_origin = <AssetHubPezkuwichain as Chain>::RuntimeOrigin::signed(
+		AssetHubPezkuwichainSender::get().into(),
+	);
 	let destination = AssetHubPezkuwichain::parent_location();
 	let beneficiary_id = PezkuwichainReceiver::get();
 	let beneficiary: Location =
@@ -770,7 +774,8 @@ fn reserve_transfer_native_asset_from_para_to_relay() {
 	// Init values for Relay
 	let receiver = PezkuwichainReceiver::get();
 	let penpal_location_as_seen_by_relay = Pezkuwichain::child_location_of(PenpalA::para_id());
-	let sov_penpal_on_relay = Pezkuwichain::sovereign_account_id_of(penpal_location_as_seen_by_relay);
+	let sov_penpal_on_relay =
+		Pezkuwichain::sovereign_account_id_of(penpal_location_as_seen_by_relay);
 
 	// fund Teyrchain's SA on Relay with the native tokens held in reserve
 	Pezkuwichain::fund_accounts(vec![(sov_penpal_on_relay.into(), amount_to_send * 2)]);
@@ -904,8 +909,10 @@ fn reserve_transfer_native_asset_from_para_to_asset_hub() {
 
 	// Init values for Asset Hub
 	let receiver = AssetHubPezkuwichainReceiver::get();
-	let penpal_location_as_seen_by_ahr = AssetHubPezkuwichain::sibling_location_of(PenpalA::para_id());
-	let sov_penpal_on_ahr = AssetHubPezkuwichain::sovereign_account_id_of(penpal_location_as_seen_by_ahr);
+	let penpal_location_as_seen_by_ahr =
+		AssetHubPezkuwichain::sibling_location_of(PenpalA::para_id());
+	let sov_penpal_on_ahr =
+		AssetHubPezkuwichain::sovereign_account_id_of(penpal_location_as_seen_by_ahr);
 
 	// fund Teyrchain's SA on Asset Hub with the native tokens held in reserve
 	AssetHubPezkuwichain::fund_accounts(vec![(sov_penpal_on_ahr.into(), amount_to_send * 2)]);
@@ -969,7 +976,8 @@ fn reserve_transfer_multiple_assets_from_asset_hub_to_para() {
 	let fee_amount_to_send = ASSET_HUB_PEZKUWICHAIN_ED * 10000;
 	let asset_amount_to_send = PENPAL_ED * 10000;
 	let asset_owner = AssetHubPezkuwichainAssetOwner::get();
-	let asset_owner_signer = <AssetHubPezkuwichain as Chain>::RuntimeOrigin::signed(asset_owner.clone());
+	let asset_owner_signer =
+		<AssetHubPezkuwichain as Chain>::RuntimeOrigin::signed(asset_owner.clone());
 	let assets: Assets = vec![
 		(Parent, fee_amount_to_send).into(),
 		(
@@ -988,7 +996,10 @@ fn reserve_transfer_multiple_assets_from_asset_hub_to_para() {
 	);
 
 	// Create SA-of-Penpal-on-AHR with ED.
-	AssetHubPezkuwichain::fund_accounts(vec![(sov_penpal_on_ahr.into(), ASSET_HUB_PEZKUWICHAIN_ED)]);
+	AssetHubPezkuwichain::fund_accounts(vec![(
+		sov_penpal_on_ahr.into(),
+		ASSET_HUB_PEZKUWICHAIN_ED,
+	)]);
 
 	// Init values for Teyrchain
 	let receiver = PenpalAReceiver::get();
@@ -1109,10 +1120,13 @@ fn reserve_transfer_multiple_assets_from_para_to_asset_hub() {
 	let receiver: sp_runtime::AccountId32 =
 		get_public_from_string_or_panic::<sr25519::Public>(DUMMY_EMPTY).into();
 	// Init values for Asset Hub
-	let penpal_location_as_seen_by_ahr = AssetHubPezkuwichain::sibling_location_of(PenpalA::para_id());
-	let sov_penpal_on_ahr = AssetHubPezkuwichain::sovereign_account_id_of(penpal_location_as_seen_by_ahr);
+	let penpal_location_as_seen_by_ahr =
+		AssetHubPezkuwichain::sibling_location_of(PenpalA::para_id());
+	let sov_penpal_on_ahr =
+		AssetHubPezkuwichain::sovereign_account_id_of(penpal_location_as_seen_by_ahr);
 	let ah_asset_owner = AssetHubPezkuwichainAssetOwner::get();
-	let ah_asset_owner_signer = <AssetHubPezkuwichain as Chain>::RuntimeOrigin::signed(ah_asset_owner);
+	let ah_asset_owner_signer =
+		<AssetHubPezkuwichain as Chain>::RuntimeOrigin::signed(ah_asset_owner);
 
 	// Fund SA-of-Penpal-on-AHR to be able to pay for the fees.
 	AssetHubPezkuwichain::fund_accounts(vec![(
@@ -1283,7 +1297,10 @@ fn reserve_transfer_usdt_from_asset_hub_to_para() {
 
 	// Create SA-of-Penpal-on-AHW with ED.
 	// This ED isn't reflected in any derivative in a PenpalA account.
-	AssetHubPezkuwichain::fund_accounts(vec![(penpal_sov_account.clone().into(), ASSET_HUB_PEZKUWICHAIN_ED)]);
+	AssetHubPezkuwichain::fund_accounts(vec![(
+		penpal_sov_account.clone().into(),
+		ASSET_HUB_PEZKUWICHAIN_ED,
+	)]);
 
 	let sender = AssetHubPezkuwichainSender::get();
 	let receiver = PenpalAReceiver::get();
@@ -1304,8 +1321,8 @@ fn reserve_transfer_usdt_from_asset_hub_to_para() {
 	let usdt_from_asset_hub = PenpalUsdtFromAssetHub::get();
 
 	// Setup the pool between `relay_asset_penpal_pov` and `usdt_from_asset_hub` on PenpalA.
-	// So we can swap the custom asset that comes from AssetHubPezkuwichain for native asset to pay for
-	// fees.
+	// So we can swap the custom asset that comes from AssetHubPezkuwichain for native asset to pay
+	// for fees.
 	PenpalA::execute_with(|| {
 		type RuntimeEvent = <PenpalA as Chain>::RuntimeEvent;
 
@@ -1426,10 +1443,12 @@ fn reserve_transfer_usdt_from_para_to_para_through_asset_hub() {
 	let sender = PenpalASender::get();
 	let asset_amount_to_send: Balance = PEZKUWICHAIN_ED * 10000;
 	let fee_amount_to_send: Balance = PEZKUWICHAIN_ED * 10000;
-	let sender_chain_as_seen_by_asset_hub = AssetHubPezkuwichain::sibling_location_of(PenpalA::para_id());
+	let sender_chain_as_seen_by_asset_hub =
+		AssetHubPezkuwichain::sibling_location_of(PenpalA::para_id());
 	let sov_of_sender_on_asset_hub =
 		AssetHubPezkuwichain::sovereign_account_id_of(sender_chain_as_seen_by_asset_hub);
-	let receiver_as_seen_by_asset_hub = AssetHubPezkuwichain::sibling_location_of(PenpalB::para_id());
+	let receiver_as_seen_by_asset_hub =
+		AssetHubPezkuwichain::sibling_location_of(PenpalB::para_id());
 	let sov_of_receiver_on_asset_hub =
 		AssetHubPezkuwichain::sovereign_account_id_of(receiver_as_seen_by_asset_hub);
 
@@ -1464,17 +1483,23 @@ fn reserve_transfer_usdt_from_para_to_para_through_asset_hub() {
 		type RuntimeEvent = <AssetHubPezkuwichain as Chain>::RuntimeEvent;
 
 		assert_ok!(<AssetHubPezkuwichain as AssetHubPezkuwichainPallet>::Assets::mint(
-			<AssetHubPezkuwichain as Chain>::RuntimeOrigin::signed(AssetHubPezkuwichainSender::get()),
+			<AssetHubPezkuwichain as Chain>::RuntimeOrigin::signed(
+				AssetHubPezkuwichainSender::get()
+			),
 			usdt_id.into(),
 			AssetHubPezkuwichainSender::get().into(),
 			10_000_000_000_000, // For it to have more than enough.
 		));
 
-		assert_ok!(<AssetHubPezkuwichain as AssetHubPezkuwichainPallet>::AssetConversion::create_pool(
-			<AssetHubPezkuwichain as Chain>::RuntimeOrigin::signed(AssetHubPezkuwichainSender::get()),
-			Box::new(native_asset.clone()),
-			Box::new(usdt.clone()),
-		));
+		assert_ok!(
+			<AssetHubPezkuwichain as AssetHubPezkuwichainPallet>::AssetConversion::create_pool(
+				<AssetHubPezkuwichain as Chain>::RuntimeOrigin::signed(
+					AssetHubPezkuwichainSender::get()
+				),
+				Box::new(native_asset.clone()),
+				Box::new(usdt.clone()),
+			)
+		);
 
 		assert_expected_events!(
 			AssetHubPezkuwichain,
@@ -1483,16 +1508,20 @@ fn reserve_transfer_usdt_from_para_to_para_through_asset_hub() {
 			]
 		);
 
-		assert_ok!(<AssetHubPezkuwichain as AssetHubPezkuwichainPallet>::AssetConversion::add_liquidity(
-			<AssetHubPezkuwichain as Chain>::RuntimeOrigin::signed(AssetHubPezkuwichainSender::get()),
-			Box::new(native_asset),
-			Box::new(usdt),
-			1_000_000_000_000,
-			2_000_000_000_000, // usdt is worth half of `native_asset`
-			0,
-			0,
-			AssetHubPezkuwichainSender::get().into()
-		));
+		assert_ok!(
+			<AssetHubPezkuwichain as AssetHubPezkuwichainPallet>::AssetConversion::add_liquidity(
+				<AssetHubPezkuwichain as Chain>::RuntimeOrigin::signed(
+					AssetHubPezkuwichainSender::get()
+				),
+				Box::new(native_asset),
+				Box::new(usdt),
+				1_000_000_000_000,
+				2_000_000_000_000, // usdt is worth half of `native_asset`
+				0,
+				0,
+				AssetHubPezkuwichainSender::get().into()
+			)
+		);
 
 		assert_expected_events!(
 			AssetHubPezkuwichain,
@@ -1630,8 +1659,9 @@ fn reserve_transfer_usdt_from_para_to_para_through_asset_hub() {
 fn reserve_withdraw_from_untrusted_reserve_fails() {
 	// Init values for Teyrchain Origin
 	let destination = AssetHubPezkuwichain::sibling_location_of(PenpalA::para_id());
-	let signed_origin =
-		<AssetHubPezkuwichain as Chain>::RuntimeOrigin::signed(AssetHubPezkuwichainSender::get().into());
+	let signed_origin = <AssetHubPezkuwichain as Chain>::RuntimeOrigin::signed(
+		AssetHubPezkuwichainSender::get().into(),
+	);
 	let roc_to_send: Balance = PEZKUWICHAIN_ED * 10000;
 	let roc_location = RelayLocation::get();
 

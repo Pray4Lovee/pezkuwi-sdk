@@ -15,8 +15,8 @@
 
 use super::{
 	AccountId, AllPalletsWithSystem, Assets, Balance, Balances, BaseDeliveryFee, CollatorSelection,
-	FeeAssetId, ForeignAssets, TeyrchainInfo, TeyrchainSystem, PezkuwiXcm, PoolAssets, Runtime,
-	RuntimeCall, RuntimeEvent, RuntimeHoldReason, RuntimeOrigin, ToZagrosXcmRouter,
+	FeeAssetId, ForeignAssets, PezkuwiXcm, PoolAssets, Runtime, RuntimeCall, RuntimeEvent,
+	RuntimeHoldReason, RuntimeOrigin, TeyrchainInfo, TeyrchainSystem, ToZagrosXcmRouter,
 	TransactionByteFee, Uniques, WeightToFee, XcmpQueue,
 };
 use assets_common::{
@@ -36,19 +36,19 @@ use frame_support::{
 };
 use frame_system::EnsureRoot;
 use pallet_xcm::{AuthorizedAliasers, XcmPassthrough};
+use pezkuwi_runtime_common::xcm_sender::ExponentialPrice;
+use pezkuwi_teyrchain_primitives::primitives::Sibling;
+use pezkuwichain_runtime_constants::system_teyrchain::ASSET_HUB_ID;
+use sp_runtime::traits::{AccountIdConversion, TryConvertInto};
+use testnet_teyrchains_constants::pezkuwichain::snowbridge::{
+	EthereumNetwork, INBOUND_QUEUE_PALLET_INDEX,
+};
 use teyrchains_common::{
 	xcm_config::{
 		AllSiblingSystemTeyrchains, ConcreteAssetFromSystem, ParentRelayOrSiblingTeyrchains,
 		RelayOrOtherSystemTeyrchains,
 	},
 	TREASURY_PALLET_ID,
-};
-use pezkuwi_teyrchain_primitives::primitives::Sibling;
-use pezkuwi_runtime_common::xcm_sender::ExponentialPrice;
-use pezkuwichain_runtime_constants::system_teyrchain::ASSET_HUB_ID;
-use sp_runtime::traits::{AccountIdConversion, TryConvertInto};
-use testnet_teyrchains_constants::pezkuwichain::snowbridge::{
-	EthereumNetwork, INBOUND_QUEUE_PALLET_INDEX,
 };
 use xcm::latest::{prelude::*, PEZKUWICHAIN_GENESIS_HASH, ZAGROS_GENESIS_HASH};
 use xcm_builder::{
@@ -301,9 +301,9 @@ pub type WaivedLocations = (
 
 // Asset Hub trusts only particular, pre-configured bridged locations from a different consensus
 // as reserve locations (we trust the Bridge Hub to relay the message that a reserve is being
-// held). On Pezkuwichain Asset Hub, we allow Zagros Asset Hub to act as reserve for any asset native
-// to the Zagros ecosystem. We also allow Ethereum contracts to act as reserves for the foreign
-// assets identified by the same respective contracts locations.
+// held). On Pezkuwichain Asset Hub, we allow Zagros Asset Hub to act as reserve for any asset
+// native to the Zagros ecosystem. We also allow Ethereum contracts to act as reserves for the
+// foreign assets identified by the same respective contracts locations.
 pub type TrustedReserves = (
 	bridging::to_zagros::ZagrosOrEthereumAssetFromAssetHubZagros,
 	bridging::to_ethereum::EthereumAssetFromEthereum,
@@ -662,16 +662,14 @@ pub mod bridging {
 	impl BridgingBenchmarksHelper {
 		pub fn prepare_universal_alias() -> Option<(Location, Junction)> {
 			let alias =
-				to_zagros::UniversalAliases::get()
-					.into_iter()
-					.find_map(|(location, junction)| {
-						match to_zagros::SiblingBridgeHubWithBridgeHubZagrosInstance::get()
-							.eq(&location)
-						{
-							true => Some((location, junction)),
-							false => None,
-						}
-					});
+				to_zagros::UniversalAliases::get().into_iter().find_map(|(location, junction)| {
+					match to_zagros::SiblingBridgeHubWithBridgeHubZagrosInstance::get()
+						.eq(&location)
+					{
+						true => Some((location, junction)),
+						false => None,
+					}
+				});
 			Some(alias.expect("we expect here BridgeHubPezkuwichain to Zagros mapping at least"))
 		}
 	}

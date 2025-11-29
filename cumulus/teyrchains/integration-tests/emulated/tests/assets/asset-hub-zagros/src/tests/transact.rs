@@ -87,8 +87,7 @@ fn transact_from_para_to_para_through_asset_hub() {
 	let destination = PenpalA::sibling_location_of(PenpalB::para_id());
 	let sender = PenpalASender::get();
 	let fee_amount_to_send: Balance = ZAGROS_ED * 10000;
-	let sender_chain_as_seen_by_asset_hub =
-		AssetHubZagros::sibling_location_of(PenpalA::para_id());
+	let sender_chain_as_seen_by_asset_hub = AssetHubZagros::sibling_location_of(PenpalA::para_id());
 	let sov_of_sender_on_asset_hub =
 		AssetHubZagros::sovereign_account_id_of(sender_chain_as_seen_by_asset_hub);
 	let receiver_as_seen_by_asset_hub = AssetHubZagros::sibling_location_of(PenpalB::para_id());
@@ -384,8 +383,7 @@ fn transact_using_authorized_alias_from_para_to_asset_hub_and_back_to_para() {
 
 		let mq_prc_id = find_mq_processed_id::<AssetHubZagros>().expect("Missing Processed Event");
 		topic_id_tracker.insert("AssetHubZagros_received", mq_prc_id);
-		let msg_sent_id =
-			find_xcm_sent_message_id::<AssetHubZagros>().expect("Missing Sent Event");
+		let msg_sent_id = find_xcm_sent_message_id::<AssetHubZagros>().expect("Missing Sent Event");
 		topic_id_tracker.insert("AssetHubZagros_sent", msg_sent_id.into());
 	});
 
@@ -594,8 +592,7 @@ fn transact_using_sov_account_from_para_to_asset_hub_and_back_to_para() {
 
 		let mq_prc_id = find_mq_processed_id::<AssetHubZagros>().expect("Missing Processed Event");
 		topic_id_tracker.insert("AssetHubZagros_received", mq_prc_id);
-		let msg_sent_id =
-			find_xcm_sent_message_id::<AssetHubZagros>().expect("Missing Sent Event");
+		let msg_sent_id = find_xcm_sent_message_id::<AssetHubZagros>().expect("Missing Sent Event");
 		topic_id_tracker.insert("AssetHubZagros_sent", msg_sent_id.into());
 	});
 

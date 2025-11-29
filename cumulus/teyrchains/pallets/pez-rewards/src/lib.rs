@@ -54,7 +54,8 @@
 //!
 //! - `initialize_rewards_system()` - Start the first epoch (one-time, root)
 //! - `finalize_epoch()` - Calculate rewards and start claim period (scheduler/root)
-//! - `close_epoch(epoch_index)` - Close claim period and claw back unclaimed rewards (scheduler/root)
+//! - `close_epoch(epoch_index)` - Close claim period and claw back unclaimed rewards
+//!   (scheduler/root)
 //!
 //! ### Storage
 //!
@@ -103,12 +104,19 @@ mod tests;
 #[cfg(feature = "runtime-benchmarks")]
 mod benchmarking;
 
-use frame_support::{traits::{fungibles::{Inspect, Mutate}, tokens::Preservation, Get}, PalletId, Parameter};
+use codec::{Decode, Encode, MaxEncodedLen};
+use frame_support::{
+	traits::{
+		fungibles::{Inspect, Mutate},
+		tokens::Preservation,
+		Get,
+	},
+	PalletId, Parameter,
+};
 use frame_system::pallet_prelude::BlockNumberFor;
-use sp_runtime::traits::{AccountIdConversion, Saturating, Zero, Member};
 use pallet_trust::TrustScoreProvider;
-use codec::{Encode, Decode, MaxEncodedLen};
 use scale_info::TypeInfo;
+use sp_runtime::traits::{AccountIdConversion, Member, Saturating, Zero};
 
 #[frame_support::pallet]
 pub mod pallet {
@@ -168,17 +176,20 @@ pub mod pallet {
 	/// Storage holding total reward pool for each epoch
 	#[pallet::storage]
 	#[pallet::getter(fn epoch_reward_pools)]
-	pub type EpochRewardPools<T: Config> = StorageMap<_, Blake2_128Concat, u32, EpochRewardPool<T>, OptionQuery>;
+	pub type EpochRewardPools<T: Config> =
+		StorageMap<_, Blake2_128Concat, u32, EpochRewardPool<T>, OptionQuery>;
 
 	/// Storage holding user's trust score for a specific epoch
 	#[pallet::storage]
 	#[pallet::getter(fn user_epoch_scores)]
 	pub type UserEpochScores<T: Config> = StorageDoubleMap<
 		_,
-		Blake2_128Concat, u32, // epoch_index
-		Blake2_128Concat, T::AccountId, // user
-		u128, // trust_score
-		OptionQuery
+		Blake2_128Concat,
+		u32, // epoch_index
+		Blake2_128Concat,
+		T::AccountId, // user
+		u128,         // trust_score
+		OptionQuery,
 	>;
 
 	/// Storage tracking whether user has claimed reward from a specific epoch
@@ -186,10 +197,12 @@ pub mod pallet {
 	#[pallet::getter(fn claimed_rewards)]
 	pub type ClaimedRewards<T: Config> = StorageDoubleMap<
 		_,
-		Blake2_128Concat, u32, // epoch_index
-		Blake2_128Concat, T::AccountId, // user
+		Blake2_128Concat,
+		u32, // epoch_index
+		Blake2_128Concat,
+		T::AccountId, // user
 		BalanceOf<T>, // claimed_amount
-		OptionQuery
+		OptionQuery,
 	>;
 
 	/// Storage holding epoch state (Open, ClaimPeriod, Closed)
@@ -204,7 +217,7 @@ pub mod pallet {
 	pub type ParliamentaryNftOwners<T: Config> = StorageMap<
 		_,
 		Blake2_128Concat,
-		u32, // nft_id
+		u32,          // nft_id
 		T::AccountId, // owner
 		OptionQuery,
 	>;
@@ -220,32 +233,27 @@ pub mod pallet {
 	pub struct EpochRewardPool<T: Config> {
 		pub epoch_index: u32,
 		pub total_reward_pool: BalanceOf<T>, // Total reward for this epoch
-		pub total_trust_score: u128, // Total trust score in this epoch
+		pub total_trust_score: u128,         // Total trust score in this epoch
 		pub reward_per_trust_point: BalanceOf<T>, // Reward per trust point
-		pub participants_count: u32, // Number of participants
+		pub participants_count: u32,         // Number of participants
 		pub claim_deadline: BlockNumberFor<T>, // Claim deadline
 	}
 
-	#[derive(Encode, Decode, Clone, Copy, PartialEq, Eq, RuntimeDebug, TypeInfo, MaxEncodedLen)]
-	#[derive(Default)]
- pub enum EpochState {
+	#[derive(
+		Encode, Decode, Clone, Copy, PartialEq, Eq, RuntimeDebug, TypeInfo, MaxEncodedLen, Default,
+	)]
+	pub enum EpochState {
 		#[default]
-  Open,        // Active epoch - scores being collected
+		Open, // Active epoch - scores being collected
 		ClaimPeriod, // Claim period - claims can be made for 1 week
 		Closed,      // Closed - unclaimed rewards have been clawed back
 	}
 
 	impl<T: Config> Default for EpochData<T> {
 		fn default() -> Self {
-			Self {
-				current_epoch: 0,
-				epoch_start_block: Zero::zero(),
-				total_epochs_completed: 0,
-			}
+			Self { current_epoch: 0, epoch_start_block: Zero::zero(), total_epochs_completed: 0 }
 		}
 	}
-
-	
 
 	// Part to be added to Event enum in lib.rs (around line ~174)
 
@@ -253,10 +261,7 @@ pub mod pallet {
 	#[pallet::generate_deposit(pub(super) fn deposit_event)]
 	pub enum Event<T: Config> {
 		/// New epoch started
-		NewEpochStarted {
-			epoch_index: u32,
-			start_block: BlockNumberFor<T>,
-		},
+		NewEpochStarted { epoch_index: u32, start_block: BlockNumberFor<T> },
 		/// Epoch reward pool calculated and claim period started
 		EpochRewardPoolCalculated {
 			epoch_index: u32,
@@ -266,11 +271,7 @@ pub mod pallet {
 			claim_deadline: BlockNumberFor<T>,
 		},
 		/// User claimed their reward
-		RewardClaimed {
-			user: T::AccountId,
-			epoch_index: u32,
-			amount: BalanceOf<T>,
-		},
+		RewardClaimed { user: T::AccountId, epoch_index: u32, amount: BalanceOf<T> },
 		/// Epoch claim period ended and unclaimed rewards were clawed back
 		EpochClosed {
 			epoch_index: u32,
@@ -278,11 +279,7 @@ pub mod pallet {
 			clawback_recipient: T::AccountId,
 		},
 		/// User's trust score recorded for epoch
-		TrustScoreRecorded {
-			user: T::AccountId,
-			epoch_index: u32,
-			trust_score: u128,
-		},
+		TrustScoreRecorded { user: T::AccountId, epoch_index: u32, trust_score: u128 },
 		/// Parliamentary NFT reward automatically distributed
 		ParliamentaryNftRewardDistributed {
 			nft_id: u32,
@@ -291,10 +288,7 @@ pub mod pallet {
 			epoch: u32,
 		},
 		/// Parliamentary NFT owner registered (NEW EVENT - for tests.rs:590)
-		ParliamentaryOwnerRegistered {
-			nft_id: u32,
-			owner: T::AccountId,
-		},
+		ParliamentaryOwnerRegistered { nft_id: u32, owner: T::AccountId },
 	}
 
 	#[pallet::error]
@@ -320,11 +314,11 @@ pub mod pallet {
 		/// Calculation overflow
 		CalculationOverflow,
 		/// System already initialized
-        AlreadyInitialized, // ADD THIS LINE (for tests.rs:37)
-        /// User has no reward to claim from this epoch
-        NoRewardToClaim, // ADD THIS LINE (for tests.rs:251 and 333)
-        // EpochNotFinished already exists in lib.rs as shown in 'help'
-    }
+		AlreadyInitialized, // ADD THIS LINE (for tests.rs:37)
+		/// User has no reward to claim from this epoch
+		NoRewardToClaim, /* ADD THIS LINE (for tests.rs:251 and 333)
+		                  * EpochNotFinished already exists in lib.rs as shown in 'help' */
+	}
 
 	#[pallet::genesis_config]
 	#[derive(frame_support::DefaultNoBound)]
@@ -391,7 +385,7 @@ pub mod pallet {
 		pub fn register_parliamentary_nft_owner(
 			origin: OriginFor<T>,
 			nft_id: u32,
-			owner: T::AccountId
+			owner: T::AccountId,
 		) -> DispatchResult {
 			<T as Config>::ForceOrigin::ensure_origin(origin)?;
 			Self::do_register_parliamentary_nft_owner(nft_id, owner);
@@ -411,9 +405,9 @@ pub mod pallet {
 			if EpochInfo::<T>::exists() {
 				return Err(Error::<T>::AlreadyInitialized.into());
 			}
-			
+
 			let current_block = frame_system::Pallet::<T>::block_number();
-			
+
 			let epoch_data = EpochData {
 				current_epoch: 0,
 				epoch_start_block: current_block,
@@ -464,10 +458,7 @@ pub mod pallet {
 
 			// Check if epoch has finished
 			let epoch_duration = current_block.saturating_sub(epoch_data.epoch_start_block);
-			ensure!(
-				epoch_duration >= BLOCKS_PER_EPOCH.into(),
-				Error::<T>::EpochNotFinished
-			);
+			ensure!(epoch_duration >= BLOCKS_PER_EPOCH.into(), Error::<T>::EpochNotFinished);
 
 			// GUARD: Epoch already finalized?
 			let epoch_state = EpochStatus::<T>::get(current_epoch);
@@ -477,10 +468,7 @@ pub mod pallet {
 			let incentive_pot = Self::incentive_pot_account_id();
 			let total_reward_pool = T::Assets::balance(T::PezAssetId::get(), &incentive_pot);
 
-			ensure!(
-				total_reward_pool > Zero::zero(),
-				Error::<T>::InsufficientIncentivePot
-			);
+			ensure!(total_reward_pool > Zero::zero(), Error::<T>::InsufficientIncentivePot);
 
 			// Parliamentary rewards distribute et (10%)
 			Self::distribute_parliamentary_rewards(current_epoch, total_reward_pool)?;
@@ -500,8 +488,7 @@ pub mod pallet {
 			let reward_per_trust_point = if total_trust_score > 0 {
 				let trust_score_balance = BalanceOf::<T>::try_from(total_trust_score)
 					.map_err(|_| Error::<T>::CalculationOverflow)?;
-				trust_score_pool.checked_div(&trust_score_balance)
-					.unwrap_or_else(Zero::zero)
+				trust_score_pool.checked_div(&trust_score_balance).unwrap_or_else(Zero::zero)
 			} else {
 				Zero::zero()
 			};
@@ -520,7 +507,7 @@ pub mod pallet {
 			};
 
 			EpochRewardPools::<T>::insert(current_epoch, reward_pool);
-			
+
 			// FIX: Set epoch state to ClaimPeriod (not Closed!)
 			EpochStatus::<T>::insert(current_epoch, EpochState::ClaimPeriod);
 
@@ -535,7 +522,7 @@ pub mod pallet {
 			// FIX: Show trust_score_pool in event (not total_reward_pool)
 			Self::deposit_event(Event::EpochRewardPoolCalculated {
 				epoch_index: current_epoch,
-				total_pool: trust_score_pool,  // ← 90% pool
+				total_pool: trust_score_pool, // ← 90% pool
 				total_trust_score,
 				participants_count,
 				claim_deadline,
@@ -563,17 +550,15 @@ pub mod pallet {
 			let reward_pool = EpochRewardPools::<T>::get(epoch_index)
 				.ok_or(Error::<T>::RewardPoolNotCalculated)?;
 
-			ensure!(
-				current_block <= reward_pool.claim_deadline,
-				Error::<T>::ClaimPeriodExpired
-			);
+			ensure!(current_block <= reward_pool.claim_deadline, Error::<T>::ClaimPeriodExpired);
 
 			let user_trust_score = UserEpochScores::<T>::get(epoch_index, who)
 				.ok_or(Error::<T>::NoTrustScoreForEpoch)?;
 
 			let user_trust_balance = BalanceOf::<T>::try_from(user_trust_score)
 				.map_err(|_| Error::<T>::CalculationOverflow)?;
-			let reward_amount = reward_pool.reward_per_trust_point
+			let reward_amount = reward_pool
+				.reward_per_trust_point
 				.checked_mul(&user_trust_balance)
 				.ok_or(Error::<T>::CalculationOverflow)?;
 
@@ -609,10 +594,7 @@ pub mod pallet {
 			let reward_pool = EpochRewardPools::<T>::get(epoch_index)
 				.ok_or(Error::<T>::RewardPoolNotCalculated)?;
 
-			ensure!(
-				current_block > reward_pool.claim_deadline,
-				Error::<T>::ClaimPeriodExpired
-			);
+			ensure!(current_block > reward_pool.claim_deadline, Error::<T>::ClaimPeriodExpired);
 
 			let incentive_pot = Self::incentive_pot_account_id();
 			let remaining_balance = T::Assets::balance(T::PezAssetId::get(), &incentive_pot);
@@ -624,7 +606,8 @@ pub mod pallet {
 					&incentive_pot,
 					&clawback_recipient,
 					remaining_balance,
-					Preservation::Expendable, // Allow source account to be deleted even if it has no tokens during fund transfer
+					Preservation::Expendable, /* Allow source account to be deleted even if it
+					                           * has no tokens during fund transfer */
 				)?;
 			}
 
@@ -650,7 +633,10 @@ pub mod pallet {
 		}
 
 		/// Return user's trust score for specific epoch
-		pub fn get_user_trust_score_for_epoch(epoch_index: u32, who: &T::AccountId) -> Option<u128> {
+		pub fn get_user_trust_score_for_epoch(
+			epoch_index: u32,
+			who: &T::AccountId,
+		) -> Option<u128> {
 			UserEpochScores::<T>::get(epoch_index, who)
 		}
 
@@ -662,9 +648,10 @@ pub mod pallet {
 		/// Distribute rewards to parliamentary NFT holders automatically
 		pub fn distribute_parliamentary_rewards(
 			epoch: u32,
-			total_incentive_pool: BalanceOf<T>
+			total_incentive_pool: BalanceOf<T>,
 		) -> DispatchResult {
-			let parliamentary_allocation = total_incentive_pool * PARLIAMENTARY_REWARD_PERCENT.into() / 100u32.into();
+			let parliamentary_allocation =
+				total_incentive_pool * PARLIAMENTARY_REWARD_PERCENT.into() / 100u32.into();
 			let per_nft_reward = parliamentary_allocation / PARLIAMENTARY_NFT_COUNT.into();
 
 			let incentive_pot = Self::incentive_pot_account_id();
@@ -676,7 +663,8 @@ pub mod pallet {
 						&incentive_pot,
 						&owner,
 						per_nft_reward,
-						Preservation::Expendable, // Allow source account to be deleted even if it has no tokens during fund transfer
+						Preservation::Expendable, /* Allow source account to be deleted even if
+						                           * it has no tokens during fund transfer */
 					)?;
 
 					Self::deposit_event(Event::ParliamentaryNftRewardDistributed {
@@ -701,10 +689,7 @@ pub mod pallet {
 			ParliamentaryNftOwners::<T>::insert(nft_id, owner.clone());
 
 			// NEW: Emit event
-			Self::deposit_event(Event::ParliamentaryOwnerRegistered {
-				nft_id,
-				owner,
-			});
+			Self::deposit_event(Event::ParliamentaryOwnerRegistered { nft_id, owner });
 		}
 	}
 }

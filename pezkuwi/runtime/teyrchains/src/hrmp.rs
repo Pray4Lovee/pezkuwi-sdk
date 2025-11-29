@@ -27,11 +27,11 @@ use codec::{Decode, Encode};
 use core::{fmt, mem};
 use frame_support::{pallet_prelude::*, traits::ReservableCurrency, DefaultNoBound};
 use frame_system::pallet_prelude::*;
-use pezkuwi_teyrchain_primitives::primitives::{HorizontalMessages, IsSystem};
 use pezkuwi_primitives::{
 	Balance, Hash, HrmpChannelId, Id as ParaId, InboundHrmpMessage, OutboundHrmpMessage,
 	SessionIndex,
 };
+use pezkuwi_teyrchain_primitives::primitives::{HorizontalMessages, IsSystem};
 use scale_info::TypeInfo;
 use sp_runtime::{
 	traits::{AccountIdConversion, BlakeTwo256, Hash as HashT, UniqueSaturatedInto, Zero},

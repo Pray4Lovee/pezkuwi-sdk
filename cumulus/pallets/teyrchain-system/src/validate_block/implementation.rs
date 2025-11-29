@@ -21,7 +21,7 @@ use alloc::vec::Vec;
 use codec::{Decode, Encode};
 use cumulus_primitives_core::{
 	relay_chain::{BlockNumber as RNumber, Hash as RHash, UMPSignal, UMP_SEPARATOR},
-	ClaimQueueOffset, CoreSelector, TeyrchainBlockData, PersistedValidationData,
+	ClaimQueueOffset, CoreSelector, PersistedValidationData, TeyrchainBlockData,
 };
 use frame_support::{
 	traits::{ExecuteBlock, Get, IsSubType},

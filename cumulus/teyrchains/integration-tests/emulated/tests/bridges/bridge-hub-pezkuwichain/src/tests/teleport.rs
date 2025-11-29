@@ -68,7 +68,12 @@ fn teleport_via_limited_teleport_assets_from_and_to_relay() {
 fn teleport_via_transfer_assets_from_and_to_relay() {
 	let amount = PEZKUWICHAIN_ED * 100;
 
-	test_relay_is_trusted_teleporter!(Pezkuwichain, vec![BridgeHubPezkuwichain], amount, transfer_assets);
+	test_relay_is_trusted_teleporter!(
+		Pezkuwichain,
+		vec![BridgeHubPezkuwichain],
+		amount,
+		transfer_assets
+	);
 
 	test_teyrchain_is_trusted_teleporter_for_relay!(
 		BridgeHubPezkuwichain,

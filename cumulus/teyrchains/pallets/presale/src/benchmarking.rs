@@ -4,7 +4,7 @@ use super::*;
 #[allow(unused)]
 use crate::Pallet as Presale;
 use frame_benchmarking::v2::*;
-use frame_support::traits::{fungibles, fungibles::Mutate, Currency, Get, tokens::Preservation};
+use frame_support::traits::{fungibles, fungibles::Mutate, tokens::Preservation, Currency, Get};
 use frame_system::RawOrigin;
 use log::info;
 use pallet_balances::Pallet as Balances;
@@ -41,41 +41,41 @@ mod benchmarks {
 		);
 
 		// Fund caller with reward tokens for presale
-		        <pallet_assets::Pallet<T> as Mutate<T::AccountId>>::mint_into(
-		            reward_asset.clone(),
-		            &caller,
-		            100_000_000_000_000_000_000u128.try_into().ok().unwrap(),
-		        )
-		        .ok();
-		
-		        // Touch the presale treasury account to create the AssetAccount before transfer
-		        let presale_treasury_account = Presale::<T>::presale_account_id(0);
-		        <pallet_assets::Pallet<T> as Mutate<T::AccountId>>::mint_into(
-		            reward_asset.clone(),
-		            &presale_treasury_account,
-		            1u128.try_into().ok().unwrap(),
-		        ).unwrap();
-		
-		
+		<pallet_assets::Pallet<T> as Mutate<T::AccountId>>::mint_into(
+			reward_asset.clone(),
+			&caller,
+			100_000_000_000_000_000_000u128.try_into().ok().unwrap(),
+		)
+		.ok();
+
+		// Touch the presale treasury account to create the AssetAccount before transfer
+		let presale_treasury_account = Presale::<T>::presale_account_id(0);
+		<pallet_assets::Pallet<T> as Mutate<T::AccountId>>::mint_into(
+			reward_asset.clone(),
+			&presale_treasury_account,
+			1u128.try_into().ok().unwrap(),
+		)
+		.unwrap();
+
 		#[extrinsic_call]
 		create_presale(
 			RawOrigin::Signed(caller),
 			payment_asset,
 			reward_asset,
 			10_000_000_000u128, // tokens_for_sale
-			100u32.into(),  // duration
-			false,      // is_whitelist
-			10_000_000u128, // min_contribution
-			1_000_000_000u128, // max_contribution
-			5_000_000_000u128, // soft_cap
+			100u32.into(),      // duration
+			false,              // is_whitelist
+			10_000_000u128,     // min_contribution
+			1_000_000_000u128,  // max_contribution
+			5_000_000_000u128,  // soft_cap
 			10_000_000_000u128, // hard_cap
-			false,      // enable_vesting
-			0u8,        // vesting_immediate_percent
-			0u32.into(),    // vesting_duration_blocks
-			0u32.into(),    // vesting_cliff_blocks
-			24u32.into(),   // grace_period_blocks
-			5u8,        // refund_fee_percent
-			2u8,        // grace_refund_fee_percent
+			false,              // enable_vesting
+			0u8,                // vesting_immediate_percent
+			0u32.into(),        // vesting_duration_blocks
+			0u32.into(),        // vesting_cliff_blocks
+			24u32.into(),       // grace_period_blocks
+			5u8,                // refund_fee_percent
+			2u8,                // grace_refund_fee_percent
 		);
 
 		assert_eq!(NextPresaleId::<T>::get(), 1);
@@ -124,7 +124,13 @@ mod benchmarks {
 			1_000_000_000u128,
 			5_000_000_000u128, // soft_cap
 			10_000_000_000u128,
-			false, 0u8, 0u32.into(), 0u32.into(), 24u32.into(), 5u8, 2u8,
+			false,
+			0u8,
+			0u32.into(),
+			0u32.into(),
+			24u32.into(),
+			5u8,
+			2u8,
 		);
 
 		// Fund presale treasury with reward tokens (required for contributions)
@@ -144,7 +150,8 @@ mod benchmarks {
 		)
 		.ok();
 
-		// Fund platform treasury and stakers pool with payment asset (needed for distribute_platform_fee)
+		// Fund platform treasury and stakers pool with payment asset (needed for
+		// distribute_platform_fee)
 		let treasury = T::PlatformTreasury::get();
 		let stakers_pool = T::StakingRewardPool::get();
 		<pallet_assets::Pallet<T> as Mutate<T::AccountId>>::mint_into(
@@ -168,7 +175,8 @@ mod benchmarks {
 	}
 
 	#[benchmark]
-	fn finalize_presale(n: Linear<25, 100>) { // Min 25 to reach 5B soft_cap (25 * 200M = 5B)
+	fn finalize_presale(n: Linear<25, 100>) {
+		// Min 25 to reach 5B soft_cap (25 * 200M = 5B)
 		let owner: T::AccountId = account("owner", 0, 0);
 		let payment_asset: <T as pallet_assets::Config>::AssetId = 1000u32.into();
 		let reward_asset: <T as pallet_assets::Config>::AssetId = 1u32.into(); // Unique ID for benchmark
@@ -176,9 +184,14 @@ mod benchmarks {
 
 		// Fund owner and presale treasury with native currency for existential deposits
 		let existential_deposit = Balances::<T>::minimum_balance();
-		let _ = <Balances<T> as Currency<T::AccountId>>::make_free_balance_be(&owner, existential_deposit * 1000u32.into());
-		let _ = <Balances<T> as Currency<T::AccountId>>::make_free_balance_be(&presale_treasury_account, existential_deposit * 1000u32.into());
-
+		let _ = <Balances<T> as Currency<T::AccountId>>::make_free_balance_be(
+			&owner,
+			existential_deposit * 1000u32.into(),
+		);
+		let _ = <Balances<T> as Currency<T::AccountId>>::make_free_balance_be(
+			&presale_treasury_account,
+			existential_deposit * 1000u32.into(),
+		);
 
 		// Create assets first
 		let _ = pallet_assets::Pallet::<T>::force_create(
@@ -201,7 +214,9 @@ mod benchmarks {
 		<pallet_assets::Pallet<T> as Mutate<T::AccountId>>::mint_into(
 			reward_asset.clone(),
 			&owner,
-			1_000_000_000_000_000_000_000_000u128.try_into().ok().unwrap(), // 100 quintillion * 1000 = 100 sextillion
+			1_000_000_000_000_000_000_000_000u128.try_into().ok().unwrap(), /* 100 quintillion *
+			                                                                 * 1000 = 100
+			                                                                 * sextillion */
 		)
 		.ok();
 
@@ -214,25 +229,38 @@ mod benchmarks {
 			false,
 			10_000_000u128,
 			1_000_000_000u128,
-			5_000_000_000u128, // soft_cap (n=25 * 200M = 5B)
-			            25_000_000_000u128, // hard_cap (n=100 * 200M = 20B, rounded to 25B)
-						false, 0u8, 0u32.into(), 0u32.into(), 24u32.into(), 5u8, 2u8,
-					);
-			
-					// MANUALLY transfer tokens_for_sale to bypass internal transfer issues in benchmark env
-					let tokens_for_sale = 1_000_000_000_000u128;
-							<pallet_assets::Pallet<T> as Mutate<T::AccountId>>::transfer(
-								reward_asset.clone(),
-								&owner,
-								&presale_treasury_account,
-								tokens_for_sale.try_into().ok().unwrap(),
-								Preservation::Preserve,
-							).unwrap();			
-			
-		let presale_treasury_account = Presale::<T>::presale_account_id(0);
-		let treasury_balance_after_creation = <pallet_assets::Pallet<T> as fungibles::Inspect<T::AccountId>>::balance(reward_asset.clone(), &presale_treasury_account);
-		info!("create_presale sonrası presale hazine bakiyesi: {:?}", treasury_balance_after_creation);
+			5_000_000_000u128,  // soft_cap (n=25 * 200M = 5B)
+			25_000_000_000u128, // hard_cap (n=100 * 200M = 20B, rounded to 25B)
+			false,
+			0u8,
+			0u32.into(),
+			0u32.into(),
+			24u32.into(),
+			5u8,
+			2u8,
+		);
 
+		// MANUALLY transfer tokens_for_sale to bypass internal transfer issues in benchmark env
+		let tokens_for_sale = 1_000_000_000_000u128;
+		<pallet_assets::Pallet<T> as Mutate<T::AccountId>>::transfer(
+			reward_asset.clone(),
+			&owner,
+			&presale_treasury_account,
+			tokens_for_sale.try_into().ok().unwrap(),
+			Preservation::Preserve,
+		)
+		.unwrap();
+
+		let presale_treasury_account = Presale::<T>::presale_account_id(0);
+		let treasury_balance_after_creation = <pallet_assets::Pallet<T> as fungibles::Inspect<
+			T::AccountId,
+		>>::balance(
+			reward_asset.clone(), &presale_treasury_account
+		);
+		info!(
+			"create_presale sonrası presale hazine bakiyesi: {:?}",
+			treasury_balance_after_creation
+		);
 
 		// create_presale automatically transfers tokens_for_sale from owner to treasury
 
@@ -265,12 +293,17 @@ mod benchmarks {
 			<pallet_assets::Pallet<T> as Mutate<T::AccountId>>::mint_into(
 				payment_asset.clone(),
 				&contributor,
-				(contribution_amount + 1_000_000_000_000u128).try_into().ok().unwrap(), // 1B buffer
+				(contribution_amount + 1_000_000_000_000u128).try_into().ok().unwrap(), /* 1B buffer */
 			)
 			.unwrap();
 
 			// Contribute - MUST succeed
-			Presale::<T>::contribute(RawOrigin::Signed(contributor).into(), 0u32, contribution_amount).unwrap();
+			Presale::<T>::contribute(
+				RawOrigin::Signed(contributor).into(),
+				0u32,
+				contribution_amount,
+			)
+			.unwrap();
 		}
 
 		// Move to end of presale
@@ -327,7 +360,13 @@ mod benchmarks {
 			1_000_000_000u128,
 			5_000_000_000u128, // soft_cap
 			10_000_000_000u128,
-			false, 0u8, 0u32.into(), 0u32.into(), 24u32.into(), 5u8, 2u8,
+			false,
+			0u8,
+			0u32.into(),
+			0u32.into(),
+			24u32.into(),
+			5u8,
+			2u8,
 		);
 
 		// Fund presale treasury with reward tokens
@@ -364,13 +403,15 @@ mod benchmarks {
 		)
 		.unwrap();
 
-		// Contribute - MUST succeed (will transfer 98M to presale treasury, distribute 2M fee from caller)
+		// Contribute - MUST succeed (will transfer 98M to presale treasury, distribute 2M fee from
+		// caller)
 		Presale::<T>::contribute(RawOrigin::Signed(caller.clone()).into(), 0u32, amount).unwrap();
 
 		// Treasury now has 98M from contribution
 		// Refund will calculate: net = 98M, fee = 4.9M, refund_amount = 93.1M
 		// Treasury will distribute 4.9M as: 2.45M treasury + 1.225M burn + 1.225M stakers
-		// After refund, treasury should have: 98M - 93.1M - 4.9M = 0M (account can be destroyed with Expendable)
+		// After refund, treasury should have: 98M - 93.1M - 4.9M = 0M (account can be destroyed
+		// with Expendable)
 
 		// Refund is for Active presales, so don't finalize
 
@@ -423,7 +464,13 @@ mod benchmarks {
 			1_000_000_000u128,
 			5_000_000_000u128, // soft_cap
 			10_000_000_000u128,
-			false, 0u8, 0u32.into(), 0u32.into(), 24u32.into(), 5u8, 2u8,
+			false,
+			0u8,
+			0u32.into(),
+			0u32.into(),
+			24u32.into(),
+			5u8,
+			2u8,
 		);
 
 		#[extrinsic_call]
@@ -476,7 +523,13 @@ mod benchmarks {
 			1_000_000_000u128,
 			5_000_000_000u128, // soft_cap
 			10_000_000_000u128,
-			false, 0u8, 0u32.into(), 0u32.into(), 24u32.into(), 5u8, 2u8,
+			false,
+			0u8,
+			0u32.into(),
+			0u32.into(),
+			24u32.into(),
+			5u8,
+			2u8,
 		);
 
 		#[extrinsic_call]

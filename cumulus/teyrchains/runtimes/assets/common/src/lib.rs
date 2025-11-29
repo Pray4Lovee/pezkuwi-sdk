@@ -35,9 +35,9 @@ use alloc::vec::Vec;
 use codec::{Decode, EncodeLike};
 use core::{cmp::PartialEq, marker::PhantomData};
 use frame_support::traits::{Contains, Equals, EverythingBut};
-use teyrchains_common::{AssetIdForTrustBackedAssets, CollectionId, ItemId};
 use sp_core::H160;
 use sp_runtime::traits::{MaybeEquivalence, TryConvertInto};
+use teyrchains_common::{AssetIdForTrustBackedAssets, CollectionId, ItemId};
 use xcm::prelude::*;
 use xcm_builder::{
 	AsPrefixedGeneralIndex, MatchedConvertedConcreteId, StartsWith, WithLatestLocationConverter,

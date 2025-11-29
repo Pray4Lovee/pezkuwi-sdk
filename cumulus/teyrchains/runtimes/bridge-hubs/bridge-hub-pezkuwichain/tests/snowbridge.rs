@@ -26,7 +26,6 @@ use bridge_hub_pezkuwichain_runtime::{
 use codec::{Decode, Encode};
 use cumulus_primitives_core::XcmError::FailedToTransactAsset;
 use frame_support::parameter_types;
-use teyrchains_common::{AccountId, AuraId, Balance};
 use snowbridge_pallet_ethereum_client::WeightInfo;
 use sp_core::H160;
 use sp_keyring::Sr25519Keyring::Alice;
@@ -34,6 +33,7 @@ use sp_runtime::{
 	generic::{Era, SignedPayload},
 	AccountId32,
 };
+use teyrchains_common::{AccountId, AuraId, Balance};
 
 parameter_types! {
 		pub const DefaultBridgeHubEthereumBaseFee: Balance = 3_833_568_200_000;

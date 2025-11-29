@@ -33,9 +33,6 @@ use pezkuwi_runtime_common::{
 	ToAuthor,
 };
 use sp_core::ConstU32;
-use zagros_runtime_constants::{
-	currency::CENTS, system_teyrchain::*, xcm::body::FELLOWSHIP_ADMIN_INDEX,
-};
 use xcm::latest::{prelude::*, ZAGROS_GENESIS_HASH};
 use xcm_builder::{
 	AccountId32Aliases, AliasChildLocation, AllowExplicitUnpaidExecutionFrom,
@@ -48,6 +45,9 @@ use xcm_builder::{
 	XcmFeeManagerFromComponents,
 };
 use xcm_executor::XcmExecutor;
+use zagros_runtime_constants::{
+	currency::CENTS, system_teyrchain::*, xcm::body::FELLOWSHIP_ADMIN_INDEX,
+};
 
 parameter_types! {
 	pub const TokenLocation: Location = Here.into_location();

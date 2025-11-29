@@ -634,8 +634,7 @@ mod tests {
 		let path = syn::parse2::<syn::Path>(quote::quote!(frame_system::Config)).unwrap();
 
 		let frame_system =
-			syn::parse2::<syn::Path>(quote::quote!(pezkuwi_sdk_frame::deps::frame_system))
-				.unwrap();
+			syn::parse2::<syn::Path>(quote::quote!(pezkuwi_sdk_frame::deps::frame_system)).unwrap();
 		assert!(has_expected_system_config(path.clone(), &frame_system));
 
 		let frame_system =
@@ -646,8 +645,7 @@ mod tests {
 	#[test]
 	fn has_expected_system_config_works_with_frame_full_path() {
 		let frame_system =
-			syn::parse2::<syn::Path>(quote::quote!(pezkuwi_sdk_frame::deps::frame_system))
-				.unwrap();
+			syn::parse2::<syn::Path>(quote::quote!(pezkuwi_sdk_frame::deps::frame_system)).unwrap();
 		let path =
 			syn::parse2::<syn::Path>(quote::quote!(pezkuwi_sdk_frame::deps::frame_system::Config))
 				.unwrap();
@@ -689,8 +687,7 @@ mod tests {
 	#[test]
 	fn has_expected_system_config_does_not_works_with_other_mixed_frame_full_path() {
 		let frame_system =
-			syn::parse2::<syn::Path>(quote::quote!(pezkuwi_sdk_frame::deps::frame_system))
-				.unwrap();
+			syn::parse2::<syn::Path>(quote::quote!(pezkuwi_sdk_frame::deps::frame_system)).unwrap();
 		let path =
 			syn::parse2::<syn::Path>(quote::quote!(pezkuwi_sdk_frame::xyz::frame_system::Config))
 				.unwrap();

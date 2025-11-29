@@ -24,7 +24,7 @@ use crate::{
 };
 use bp_teyrchains::{RelayBlockHash, RelayBlockHasher, RelayBlockNumber};
 use relay_substrate_client::{
-	Chain, ChainWithRuntimeVersion, ChainWithTransactions, Teyrchain, RelayChain,
+	Chain, ChainWithRuntimeVersion, ChainWithTransactions, RelayChain, Teyrchain,
 };
 
 /// Minimal bridge representation that can be used from the CLI.

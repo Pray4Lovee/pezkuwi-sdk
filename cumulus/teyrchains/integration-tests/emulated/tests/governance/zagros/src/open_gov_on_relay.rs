@@ -16,13 +16,12 @@ use crate::{common::*, imports::*};
 use emulated_integration_tests_common::{
 	assert_whitelisted,
 	impls::RelayChain,
-	xcm_emulator::{Chain, Teyrchain, TestExt},
+	xcm_emulator::{Chain, TestExt, Teyrchain},
 };
 use zagros_runtime::governance::pallet_custom_origins::Origin;
 use zagros_system_emulated_network::{
 	AssetHubZagrosPara as AssetHubZagros, BridgeHubZagrosPara as BridgeHubZagros,
-	CoretimeZagrosPara as CoretimeZagros, PeopleZagrosPara as PeopleZagros,
-	ZagrosRelay as Zagros,
+	CoretimeZagrosPara as CoretimeZagros, PeopleZagrosPara as PeopleZagros, ZagrosRelay as Zagros,
 };
 
 use zagros_system_emulated_network::zagros_emulated_chain::zagros_runtime::Dmp;
@@ -87,10 +86,7 @@ fn relaychain_can_authorize_upgrade_for_itself() {
 
 	// check after - authorized
 	Zagros::execute_with(|| {
-		assert_eq!(
-			<Zagros as Chain>::System::authorized_upgrade().unwrap().code_hash(),
-			&code_hash
-		)
+		assert_eq!(<Zagros as Chain>::System::authorized_upgrade().unwrap().code_hash(), &code_hash)
 	});
 }
 

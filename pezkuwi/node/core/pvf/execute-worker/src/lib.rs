@@ -19,9 +19,7 @@
 #![deny(unused_crate_dependencies)]
 #![warn(missing_docs)]
 
-pub use pezkuwi_node_core_pvf_common::{
-	error::ExecuteError, executor_interface::execute_artifact,
-};
+pub use pezkuwi_node_core_pvf_common::{error::ExecuteError, executor_interface::execute_artifact};
 use pezkuwi_teyrchain_primitives::primitives::ValidationParams;
 
 // NOTE: Initializing logging in e.g. tests will not have an effect in the workers, as they are
@@ -55,8 +53,8 @@ use pezkuwi_node_core_pvf_common::{
 	worker_dir, ArtifactChecksum,
 };
 use pezkuwi_node_primitives::{BlockData, PoV, POV_BOMB_LIMIT};
-use pezkuwi_teyrchain_primitives::primitives::ValidationResult;
 use pezkuwi_primitives::{ExecutorParams, PersistedValidationData};
+use pezkuwi_teyrchain_primitives::primitives::ValidationResult;
 use std::{
 	io::{self, Read},
 	os::{

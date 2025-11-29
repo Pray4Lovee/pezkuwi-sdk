@@ -4,9 +4,8 @@ use crate as pallet_pez_rewards;
 use frame_support::{
 	assert_ok, construct_runtime, parameter_types,
 	traits::{
-		AsEnsureOriginWithArg, ConstU128, ConstU32, ConstU64,
-		OnFinalize, OnInitialize,
-		fungibles::Mutate,
+		fungibles::Mutate, AsEnsureOriginWithArg, ConstU128, ConstU32, ConstU64, OnFinalize,
+		OnInitialize,
 	},
 	PalletId,
 };
@@ -20,23 +19,33 @@ use sp_runtime::{
 // --- Dummy Trait Implementations for pallet-trust ---
 pub struct MockStakingScoreProvider;
 impl pallet_trust::StakingScoreProvider<H256, u64> for MockStakingScoreProvider {
-	fn get_staking_score(_who: &H256) -> (u32, u64) { (0, 0) }
+	fn get_staking_score(_who: &H256) -> (u32, u64) {
+		(0, 0)
+	}
 }
 pub struct MockReferralScoreProvider;
 impl pallet_trust::ReferralScoreProvider<H256> for MockReferralScoreProvider {
-	fn get_referral_score(_who: &H256) -> u32 { 0 }
+	fn get_referral_score(_who: &H256) -> u32 {
+		0
+	}
 }
 pub struct MockPerwerdeScoreProvider;
 impl pallet_trust::PerwerdeScoreProvider<H256> for MockPerwerdeScoreProvider {
-	fn get_perwerde_score(_who: &H256) -> u32 { 0 }
+	fn get_perwerde_score(_who: &H256) -> u32 {
+		0
+	}
 }
 pub struct MockTikiScoreProvider;
 impl pallet_trust::TikiScoreProvider<H256> for MockTikiScoreProvider {
-	fn get_tiki_score(_who: &H256) -> u32 { 0 }
+	fn get_tiki_score(_who: &H256) -> u32 {
+		0
+	}
 }
 pub struct MockCitizenshipStatusProvider;
 impl pallet_trust::CitizenshipStatusProvider<H256> for MockCitizenshipStatusProvider {
-	fn is_citizen(_who: &H256) -> bool { false }
+	fn is_citizen(_who: &H256) -> bool {
+		false
+	}
 }
 
 type Block = frame_system::mocking::MockBlock<Test>;
@@ -201,10 +210,15 @@ impl pallet_identity_kyc::Config for Test {
 pub struct MockTrustScore;
 impl pallet_trust::TrustScoreProvider<H256> for MockTrustScore {
 	fn trust_score_of(account: &H256) -> u128 {
-		if *account == alice() { 100 }
-		else if *account == bob() { 50 }
-		else if *account == charlie() { 75 }
-		else { 0 }
+		if *account == alice() {
+			100
+		} else if *account == bob() {
+			50
+		} else if *account == charlie() {
+			75
+		} else {
+			0
+		}
 	}
 }
 parameter_types! {
@@ -233,12 +247,24 @@ parameter_types! {
 }
 pub struct MockWeightInfo;
 impl crate::weights::WeightInfo for MockWeightInfo {
-	fn initialize_rewards_system() -> Weight { Weight::zero() }
-	fn record_trust_score() -> Weight { Weight::zero() }
-	fn finalize_epoch() -> Weight { Weight::zero() }
-	fn claim_reward() -> Weight { Weight::zero() }
-	fn close_epoch() -> Weight { Weight::zero() }
-	fn register_parliamentary_nft_owner() -> Weight { Weight::zero() }
+	fn initialize_rewards_system() -> Weight {
+		Weight::zero()
+	}
+	fn record_trust_score() -> Weight {
+		Weight::zero()
+	}
+	fn finalize_epoch() -> Weight {
+		Weight::zero()
+	}
+	fn claim_reward() -> Weight {
+		Weight::zero()
+	}
+	fn close_epoch() -> Weight {
+		Weight::zero()
+	}
+	fn register_parliamentary_nft_owner() -> Weight {
+		Weight::zero()
+	}
 }
 impl pallet_pez_rewards::Config for Test {
 	type RuntimeEvent = RuntimeEvent;
@@ -254,10 +280,18 @@ impl pallet_pez_rewards::Config for Test {
 }
 
 // --- Helper Fonksiyonlar ---
-pub fn alice() -> H256 { H256::from_low_u64_be(1) }
-pub fn bob() -> H256 { H256::from_low_u64_be(2) }
-pub fn charlie() -> H256 { H256::from_low_u64_be(3) }
-pub fn dave() -> H256 { H256::from_low_u64_be(4) }
+pub fn alice() -> H256 {
+	H256::from_low_u64_be(1)
+}
+pub fn bob() -> H256 {
+	H256::from_low_u64_be(2)
+}
+pub fn charlie() -> H256 {
+	H256::from_low_u64_be(3)
+}
+pub fn dave() -> H256 {
+	H256::from_low_u64_be(4)
+}
 
 // --- new_test_ext ---
 pub fn new_test_ext() -> sp_io::TestExternalities {
@@ -278,12 +312,8 @@ pub fn new_test_ext() -> sp_io::TestExternalities {
 	.unwrap();
 
 	pallet_assets::GenesisConfig::<Test> {
-		assets: vec![(
-			PezAssetId::get(), alice(), true, 1,
-		)],
-		metadata: vec![(
-			PezAssetId::get(), b"Pez Token".to_vec(), b"PEZ".to_vec(), 12,
-		)],
+		assets: vec![(PezAssetId::get(), alice(), true, 1)],
+		metadata: vec![(PezAssetId::get(), b"Pez Token".to_vec(), b"PEZ".to_vec(), 12)],
 		accounts: vec![(
 			PezAssetId::get(),
 			PezRewards::incentive_pot_account_id(),

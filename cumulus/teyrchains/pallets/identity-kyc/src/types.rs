@@ -5,7 +5,9 @@ use sp_core::H256;
 
 /// Citizenship status levels
 /// PRIVACY: No personal data stored on-chain, only status and hash
-#[derive(Encode, Decode, Clone, Eq, PartialEq, RuntimeDebug, TypeInfo, MaxEncodedLen, Copy, Default)]
+#[derive(
+	Encode, Decode, Clone, Eq, PartialEq, RuntimeDebug, TypeInfo, MaxEncodedLen, Copy, Default,
+)]
 pub enum KycLevel {
 	/// No citizenship application
 	#[default]
@@ -69,8 +71,16 @@ where
 			.path(scale_info::Path::new("IdentityInfo", "pallet_identity_kyc::types"))
 			.composite(
 				scale_info::build::Fields::named()
-					.field(|f| f.ty::<BoundedVec<u8, MaxStringLength>>().name("name").type_name("BoundedVec<u8, MaxStringLength>"))
-					.field(|f| f.ty::<BoundedVec<u8, MaxStringLength>>().name("email").type_name("BoundedVec<u8, MaxStringLength>")),
+					.field(|f| {
+						f.ty::<BoundedVec<u8, MaxStringLength>>()
+							.name("name")
+							.type_name("BoundedVec<u8, MaxStringLength>")
+					})
+					.field(|f| {
+						f.ty::<BoundedVec<u8, MaxStringLength>>()
+							.name("email")
+							.type_name("BoundedVec<u8, MaxStringLength>")
+					}),
 			)
 	}
 }

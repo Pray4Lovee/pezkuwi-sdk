@@ -22,9 +22,9 @@ use frame::deps::{
 	sp_io::TestExternalities,
 	sp_runtime::{AccountId32, BuildStorage},
 };
-use xcm_simulator::{decl_test_network, decl_test_teyrchain, decl_test_relay_chain, TestExt};
+use xcm_simulator::{decl_test_network, decl_test_relay_chain, decl_test_teyrchain, TestExt};
 
-use super::{teyrchain, relay_chain};
+use super::{relay_chain, teyrchain};
 
 pub const ALICE: AccountId32 = AccountId32::new([0u8; 32]);
 pub const BOB: AccountId32 = AccountId32::new([1u8; 32]);

@@ -15,8 +15,8 @@
 
 use crate::imports::*;
 use emulated_integration_tests_common::{
-	test_teyrchain_is_trusted_teleporter, test_teyrchain_is_trusted_teleporter_for_relay,
-	test_relay_is_trusted_teleporter,
+	test_relay_is_trusted_teleporter, test_teyrchain_is_trusted_teleporter,
+	test_teyrchain_is_trusted_teleporter_for_relay,
 };
 
 #[test]

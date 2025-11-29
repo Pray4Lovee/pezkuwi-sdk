@@ -1,4 +1,4 @@
-use crate::{mock::*, Error, Event, types::KycLevel};
+use crate::{mock::*, types::KycLevel, Error, Event};
 use frame_support::{assert_noop, assert_ok, traits::Currency};
 use sp_core::H256;
 use sp_runtime::DispatchError;
@@ -54,11 +54,10 @@ fn apply_for_citizenship_works() {
 		assert_eq!(Balances::reserved_balance(APPLICANT), KycApplicationDepositAmount::get());
 
 		// Check event was emitted
-		System::assert_last_event(Event::CitizenshipApplied {
-			applicant: APPLICANT,
-			referrer: CITIZEN_1,
-			identity_hash,
-		}.into());
+		System::assert_last_event(
+			Event::CitizenshipApplied { applicant: APPLICANT, referrer: CITIZEN_1, identity_hash }
+				.into(),
+		);
 	});
 }
 
@@ -70,7 +69,7 @@ fn apply_for_citizenship_fails_if_self_referral() {
 			IdentityKycPallet::apply_for_citizenship(
 				RuntimeOrigin::signed(CITIZEN_1),
 				H256::from_low_u64_be(999),
-				CITIZEN_1  // Same as caller
+				CITIZEN_1 // Same as caller
 			),
 			Error::<Test>::SelfReferral
 		);
@@ -85,7 +84,7 @@ fn apply_for_citizenship_fails_if_referrer_not_citizen() {
 			IdentityKycPallet::apply_for_citizenship(
 				RuntimeOrigin::signed(CITIZEN_2),
 				H256::from_low_u64_be(999),
-				APPLICANT  // Not a citizen
+				APPLICANT // Not a citizen
 			),
 			Error::<Test>::ReferrerNotCitizen
 		);
@@ -158,10 +157,9 @@ fn approve_referral_works() {
 		assert_eq!(IdentityKycPallet::kyc_status_of(APPLICANT), KycLevel::ReferrerApproved);
 
 		// Check event
-		System::assert_last_event(Event::ReferralApproved {
-			referrer: CITIZEN_1,
-			applicant: APPLICANT,
-		}.into());
+		System::assert_last_event(
+			Event::ReferralApproved { referrer: CITIZEN_1, applicant: APPLICANT }.into(),
+		);
 	});
 }
 
@@ -177,10 +175,7 @@ fn approve_referral_fails_if_not_referrer() {
 
 		// FOUNDER (different citizen) cannot approve
 		assert_noop!(
-			IdentityKycPallet::approve_referral(
-				RuntimeOrigin::signed(FOUNDER),
-				APPLICANT
-			),
+			IdentityKycPallet::approve_referral(RuntimeOrigin::signed(FOUNDER), APPLICANT),
 			Error::<Test>::NotTheReferrer
 		);
 	});
@@ -191,10 +186,7 @@ fn approve_referral_fails_if_not_pending() {
 	new_test_ext().execute_with(|| {
 		// Try to approve referral for someone who hasn't applied
 		assert_noop!(
-			IdentityKycPallet::approve_referral(
-				RuntimeOrigin::signed(CITIZEN_1),
-				APPLICANT
-			),
+			IdentityKycPallet::approve_referral(RuntimeOrigin::signed(CITIZEN_1), APPLICANT),
 			Error::<Test>::CannotApproveInCurrentState
 		);
 	});
@@ -224,9 +216,7 @@ fn confirm_citizenship_works() {
 		));
 
 		// Self-confirm
-		assert_ok!(IdentityKycPallet::confirm_citizenship(
-			RuntimeOrigin::signed(APPLICANT)
-		));
+		assert_ok!(IdentityKycPallet::confirm_citizenship(RuntimeOrigin::signed(APPLICANT)));
 
 		// Check status is Approved
 		assert_eq!(IdentityKycPallet::kyc_status_of(APPLICANT), KycLevel::Approved);
@@ -354,7 +344,7 @@ fn cancel_application_allows_reapplication() {
 		assert_ok!(IdentityKycPallet::apply_for_citizenship(
 			RuntimeOrigin::signed(APPLICANT),
 			H256::from_low_u64_be(99999),
-			FOUNDER  // Different referrer this time
+			FOUNDER // Different referrer this time
 		));
 
 		assert_eq!(IdentityKycPallet::kyc_status_of(APPLICANT), KycLevel::PendingReferral);
@@ -383,10 +373,7 @@ fn revoke_citizenship_works() {
 		assert_eq!(IdentityKycPallet::kyc_status_of(APPLICANT), KycLevel::Approved);
 
 		// Governance revokes
-		assert_ok!(IdentityKycPallet::revoke_citizenship(
-			RuntimeOrigin::root(),
-			APPLICANT
-		));
+		assert_ok!(IdentityKycPallet::revoke_citizenship(RuntimeOrigin::root(), APPLICANT));
 
 		// Status should be Revoked
 		assert_eq!(IdentityKycPallet::kyc_status_of(APPLICANT), KycLevel::Revoked);
@@ -401,10 +388,7 @@ fn revoke_citizenship_fails_for_bad_origin() {
 	new_test_ext().execute_with(|| {
 		// Non-root cannot revoke
 		assert_noop!(
-			IdentityKycPallet::revoke_citizenship(
-				RuntimeOrigin::signed(CITIZEN_1),
-				FOUNDER
-			),
+			IdentityKycPallet::revoke_citizenship(RuntimeOrigin::signed(CITIZEN_1), FOUNDER),
 			DispatchError::BadOrigin
 		);
 	});
@@ -415,10 +399,7 @@ fn revoke_citizenship_fails_if_not_citizen() {
 	new_test_ext().execute_with(|| {
 		// APPLICANT is not a citizen
 		assert_noop!(
-			IdentityKycPallet::revoke_citizenship(
-				RuntimeOrigin::root(),
-				APPLICANT
-			),
+			IdentityKycPallet::revoke_citizenship(RuntimeOrigin::root(), APPLICANT),
 			Error::<Test>::CannotRevokeInCurrentState
 		);
 	});
@@ -494,7 +475,7 @@ fn full_citizenship_workflow() {
 		assert_ok!(IdentityKycPallet::apply_for_citizenship(
 			RuntimeOrigin::signed(new_user),
 			H256::from_low_u64_be(99999),
-			APPLICANT  // APPLICANT is now the referrer
+			APPLICANT // APPLICANT is now the referrer
 		));
 		assert_eq!(IdentityKycPallet::kyc_status_of(new_user), KycLevel::PendingReferral);
 	});
@@ -523,8 +504,8 @@ fn renounce_and_reapply_workflow() {
 		// Can reapply (free world principle)
 		assert_ok!(IdentityKycPallet::apply_for_citizenship(
 			RuntimeOrigin::signed(APPLICANT),
-			H256::from_low_u64_be(99999),  // Different hash
-			FOUNDER  // Different referrer
+			H256::from_low_u64_be(99999), // Different hash
+			FOUNDER                       // Different referrer
 		));
 		assert_eq!(IdentityKycPallet::kyc_status_of(APPLICANT), KycLevel::PendingReferral);
 	});

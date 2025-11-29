@@ -22,10 +22,10 @@ extern crate alloc;
 
 use alloc::vec::Vec;
 use codec::{Decode, Encode};
-use pezkuwi_teyrchain_primitives::primitives::UpwardMessages;
 use pezkuwi_primitives::{
 	ClaimQueueOffset, CoreSelector, UMPSignal, DEFAULT_CLAIM_QUEUE_OFFSET, UMP_SEPARATOR,
 };
+use pezkuwi_teyrchain_primitives::primitives::UpwardMessages;
 use tiny_keccak::{Hasher as _, Keccak};
 
 #[cfg(not(feature = "std"))]

@@ -221,8 +221,12 @@ fn post_process(input_path: &Path, output_path: &Path) -> Result<()> {
 	config.set_strip(strip);
 	config.set_optimize(optimize);
 	let orig = fs::read(input_path).with_context(|| format!("Failed to read {input_path:?}"))?;
-	let linked = polkavm_linker::program_from_elf(config, polkavm_linker::TargetInstructionSet::Latest, orig.as_ref())
-		.map_err(|err| anyhow::format_err!("Failed to link polkavm program: {}", err))?;
+	let linked = polkavm_linker::program_from_elf(
+		config,
+		polkavm_linker::TargetInstructionSet::Latest,
+		orig.as_ref(),
+	)
+	.map_err(|err| anyhow::format_err!("Failed to link polkavm program: {}", err))?;
 	fs::write(output_path, linked).with_context(|| format!("Failed to write {output_path:?}"))?;
 	Ok(())
 }

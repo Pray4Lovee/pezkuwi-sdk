@@ -987,7 +987,9 @@ fn export_message_from_asset_hub_to_ethereum_is_banned_when_set_operating_mode()
 		assert_ok!(
 			<AssetHubZagros as AssetHubZagrosPallet>::SnowbridgeSystemFrontend::set_operating_mode(
 				RuntimeOrigin::root(),
-				BasicOperatingMode::Halted));
+				BasicOperatingMode::Halted
+			)
+		);
 	});
 
 	AssetHubZagros::execute_with(|| {

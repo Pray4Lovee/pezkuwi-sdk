@@ -9,7 +9,7 @@ use sp_keyring::sr25519::Keyring;
 use xcm::{
 	latest::{Assets, Error as XcmError, Location},
 	opaque::latest::{Asset, AssetId, AssetInstance, Fungibility},
-	prelude::{GeneralIndex, Teyrchain, SendError},
+	prelude::{GeneralIndex, SendError, Teyrchain},
 	VersionedLocation,
 };
 

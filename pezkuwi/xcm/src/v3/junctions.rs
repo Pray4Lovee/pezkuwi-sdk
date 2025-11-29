@@ -680,10 +680,7 @@ mod tests {
 		);
 
 		// Ancestors with one child.
-		assert_eq!(
-			X1(Pezkuwi.into()).relative_to(&base),
-			(Parent, Parent, Parent, Pezkuwi).into()
-		);
+		assert_eq!(X1(Pezkuwi.into()).relative_to(&base), (Parent, Parent, Parent, Pezkuwi).into());
 		assert_eq!(
 			X2(Kusama.into(), Teyrchain(2)).relative_to(&base),
 			(Parent, Parent, Teyrchain(2)).into()

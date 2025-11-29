@@ -21,7 +21,7 @@ use criterion::{criterion_group, criterion_main, BatchSize, Criterion};
 use cumulus_primitives_core::{relay_chain::AccountId, PersistedValidationData, ValidationParams};
 use cumulus_test_client::{
 	generate_extrinsic_with_pair, BlockBuilderAndSupportData, BuildTeyrchainBlockData, Client,
-	InitBlockBuilder, TeyrchainBlockData, TestClientBuilder, ValidationResult,
+	InitBlockBuilder, TestClientBuilder, TeyrchainBlockData, ValidationResult,
 };
 use cumulus_test_relay_sproof_builder::RelayStateSproofBuilder;
 use cumulus_test_runtime::{Block, GluttonCall, Header, SudoCall};

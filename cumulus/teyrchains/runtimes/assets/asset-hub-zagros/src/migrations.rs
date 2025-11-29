@@ -21,9 +21,9 @@ use assets_common::{
 };
 use frame_support::traits::Contains;
 use testnet_teyrchains_constants::zagros::snowbridge::EthereumLocation;
-use zagros_runtime_constants::system_teyrchain::ASSET_HUB_ID;
 use xcm::v5::{Junction, Location};
 use xcm_builder::StartsWith;
+use zagros_runtime_constants::system_teyrchain::ASSET_HUB_ID;
 
 /// This type provides reserves information for `asset_id`. Meant to be used in a migration running
 /// on the Asset Hub Zagros upgrade which changes the Foreign Assets reserve-transfers and
@@ -35,7 +35,8 @@ use xcm_builder::StartsWith;
 ///  ----> `ForeignAssetReserveData { reserve: "Asset's native chain", teleport: true }`
 /// 2. Foreign assets native to Ethereum Ecosystem have Ethereum as trusted reserve.
 ///  ----> `ForeignAssetReserveData { reserve: "Ethereum", teleport: false }`
-/// 3. Foreign assets native to Pezkuwichain Ecosystem have Asset Hub Pezkuwichain as trusted reserve.
+/// 3. Foreign assets native to Pezkuwichain Ecosystem have Asset Hub Pezkuwichain as trusted
+///    reserve.
 ///  ----> `ForeignAssetReserveData { reserve: "Asset Hub Pezkuwichain", teleport: false }`
 pub struct AssetHubZagrosForeignAssetsReservesProvider;
 impl ForeignAssetsReservesProvider for AssetHubZagrosForeignAssetsReservesProvider {
@@ -79,8 +80,10 @@ impl ForeignAssetsReservesProvider for AssetHubZagrosForeignAssetsReservesProvid
 	#[cfg(feature = "try-runtime")]
 	fn check_reserves_for(asset_id: &Location, reserves: Vec<Self::ReserveData>) -> bool {
 		if StartsWith::<PezkuwichainEcosystem>::contains(asset_id) {
-			let expected =
-				ForeignAssetReserveData { reserve: AssetHubPezkuwichain::get(), teleportable: false };
+			let expected = ForeignAssetReserveData {
+				reserve: AssetHubPezkuwichain::get(),
+				teleportable: false,
+			};
 			// rule 3: pezkuwichain asset
 			reserves.len() == 1 && expected.eq(reserves.get(0).unwrap())
 		} else if StartsWith::<EthereumLocation>::contains(asset_id) {

@@ -210,8 +210,10 @@ fn transfer_foreign_assets_from_asset_hub_to_para() {
 	let assets_owner = PenpalAssetOwner::get();
 	// Foreign asset used: bridged TYR
 	let foreign_amount_to_send = ASSET_HUB_ZAGROS_ED * 10_000_000;
-	let roc_at_zagros_teyrchains =
-		Location::new(2, [Junction::GlobalConsensus(NetworkId::ByGenesis(PEZKUWICHAIN_GENESIS_HASH))]);
+	let roc_at_zagros_teyrchains = Location::new(
+		2,
+		[Junction::GlobalConsensus(NetworkId::ByGenesis(PEZKUWICHAIN_GENESIS_HASH))],
+	);
 
 	// Configure destination chain to trust AH as reserve of TYR
 	PenpalA::execute_with(|| {
@@ -339,8 +341,10 @@ fn transfer_foreign_assets_from_para_to_asset_hub() {
 
 	// Foreign asset used: bridged TYR
 	let foreign_amount_to_send = ASSET_HUB_ZAGROS_ED * 10_000_000;
-	let roc_at_zagros_teyrchains =
-		Location::new(2, [Junction::GlobalConsensus(NetworkId::ByGenesis(PEZKUWICHAIN_GENESIS_HASH))]);
+	let roc_at_zagros_teyrchains = Location::new(
+		2,
+		[Junction::GlobalConsensus(NetworkId::ByGenesis(PEZKUWICHAIN_GENESIS_HASH))],
+	);
 
 	// Configure destination chain to trust AH as reserve of TYR
 	PenpalA::execute_with(|| {
@@ -384,8 +388,7 @@ fn transfer_foreign_assets_from_para_to_asset_hub() {
 	// Init values for System Teyrchain
 	let receiver = AssetHubZagrosReceiver::get();
 	let penpal_location_as_seen_by_ahr = AssetHubZagros::sibling_location_of(PenpalA::para_id());
-	let sov_penpal_on_ahr =
-		AssetHubZagros::sovereign_account_id_of(penpal_location_as_seen_by_ahr);
+	let sov_penpal_on_ahr = AssetHubZagros::sovereign_account_id_of(penpal_location_as_seen_by_ahr);
 
 	// fund Teyrchain's SA on AssetHub with the assets held in reserve
 	AssetHubZagros::fund_accounts(vec![(
@@ -517,8 +520,10 @@ fn transfer_foreign_assets_from_para_to_para_through_asset_hub() {
 	});
 
 	// Register TYR as foreign asset and transfer it around the Zagros ecosystem
-	let roc_at_zagros_teyrchains =
-		Location::new(2, [Junction::GlobalConsensus(NetworkId::ByGenesis(PEZKUWICHAIN_GENESIS_HASH))]);
+	let roc_at_zagros_teyrchains = Location::new(
+		2,
+		[Junction::GlobalConsensus(NetworkId::ByGenesis(PEZKUWICHAIN_GENESIS_HASH))],
+	);
 	AssetHubZagros::force_create_foreign_asset(
 		roc_at_zagros_teyrchains.clone().try_into().unwrap(),
 		assets_owner.clone(),
@@ -923,9 +928,8 @@ fn transfer_native_asset_from_penpal_to_relay_through_asset_hub() {
 	let sov_penpal_on_ah_before = AssetHubZagros::execute_with(|| {
 		<AssetHubZagros as AssetHubZagrosPallet>::Balances::free_balance(sov_penpal_on_ah.clone())
 	});
-	let receiver_balance_before = Zagros::execute_with(|| {
-		<Zagros as ZagrosPallet>::Balances::free_balance(receiver.clone())
-	});
+	let receiver_balance_before =
+		Zagros::execute_with(|| <Zagros as ZagrosPallet>::Balances::free_balance(receiver.clone()));
 
 	fn transfer_assets_dispatchable(t: PenpalToRelayThroughAHTest) -> DispatchResult {
 		let fee: Asset = t
@@ -986,9 +990,8 @@ fn transfer_native_asset_from_penpal_to_relay_through_asset_hub() {
 	let sov_penpal_on_ah_after = AssetHubZagros::execute_with(|| {
 		<AssetHubZagros as AssetHubZagrosPallet>::Balances::free_balance(sov_penpal_on_ah.clone())
 	});
-	let receiver_balance_after = Zagros::execute_with(|| {
-		<Zagros as ZagrosPallet>::Balances::free_balance(receiver.clone())
-	});
+	let receiver_balance_after =
+		Zagros::execute_with(|| <Zagros as ZagrosPallet>::Balances::free_balance(receiver.clone()));
 
 	// Sender's asset balance is reduced by amount sent plus delivery fees
 	assert!(sender_balance_after < sender_balance_before - amount_to_send);

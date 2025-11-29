@@ -15,13 +15,13 @@
 // limitations under the License.
 
 use crate::common::{types::TeyrchainClient, ConstructNodeRuntimeApi, NodeBlock};
-use teyrchains_common::Hash;
 use sc_network::{
 	config::FullNetworkConfiguration, service::traits::NetworkService, NetworkBackend,
 };
 use sc_service::{Configuration, TaskManager};
 use sc_statement_store::Store;
 use std::sync::Arc;
+use teyrchains_common::Hash;
 
 /// Helper function to setup the statement store in `NodeSpec::start_node`.
 ///

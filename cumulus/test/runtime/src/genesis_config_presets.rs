@@ -15,8 +15,8 @@
 // along with Cumulus.  If not, see <http://www.gnu.org/licenses/>.
 
 use super::{
-	AccountId, AuraConfig, AuraId, BalancesConfig, TeyrchainInfoConfig, RuntimeGenesisConfig,
-	SudoConfig,
+	AccountId, AuraConfig, AuraId, BalancesConfig, RuntimeGenesisConfig, SudoConfig,
+	TeyrchainInfoConfig,
 };
 use alloc::{vec, vec::Vec};
 

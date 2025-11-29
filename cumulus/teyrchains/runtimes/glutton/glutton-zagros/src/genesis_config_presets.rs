@@ -19,9 +19,9 @@ use crate::*;
 use alloc::vec::Vec;
 use cumulus_primitives_core::ParaId;
 use frame_support::build_struct_json_patch;
-use teyrchains_common::AuraId;
 use sp_genesis_builder::PresetId;
 use sp_keyring::Sr25519Keyring;
+use teyrchains_common::AuraId;
 
 /// Default value, unused in a testnet setup currently because
 /// we want to supply varying para-ids from the CLI for Glutton.

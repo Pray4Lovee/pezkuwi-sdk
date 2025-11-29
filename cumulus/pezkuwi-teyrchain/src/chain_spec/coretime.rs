@@ -53,7 +53,8 @@ impl FromStr for CoretimeRuntimeType {
 			pezkuwi::CORETIME_PEZKUWI_LOCAL => Ok(CoretimeRuntimeType::PezkuwiLocal),
 			pezkuwichain::CORETIME_PEZKUWICHAIN => Ok(CoretimeRuntimeType::Pezkuwichain),
 			pezkuwichain::CORETIME_PEZKUWICHAIN_LOCAL => Ok(CoretimeRuntimeType::PezkuwichainLocal),
-			pezkuwichain::CORETIME_PEZKUWICHAIN_DEVELOPMENT => Ok(CoretimeRuntimeType::PezkuwichainDevelopment),
+			pezkuwichain::CORETIME_PEZKUWICHAIN_DEVELOPMENT =>
+				Ok(CoretimeRuntimeType::PezkuwichainDevelopment),
 			zagros::CORETIME_ZAGROS => Ok(CoretimeRuntimeType::Zagros),
 			zagros::CORETIME_ZAGROS_LOCAL => Ok(CoretimeRuntimeType::ZagrosLocal),
 			zagros::CORETIME_ZAGROS_DEVELOPMENT => Ok(CoretimeRuntimeType::ZagrosDevelopment),
@@ -71,7 +72,8 @@ impl From<CoretimeRuntimeType> for &str {
 			CoretimeRuntimeType::PezkuwiLocal => pezkuwi::CORETIME_PEZKUWI_LOCAL,
 			CoretimeRuntimeType::Pezkuwichain => pezkuwichain::CORETIME_PEZKUWICHAIN,
 			CoretimeRuntimeType::PezkuwichainLocal => pezkuwichain::CORETIME_PEZKUWICHAIN_LOCAL,
-			CoretimeRuntimeType::PezkuwichainDevelopment => pezkuwichain::CORETIME_PEZKUWICHAIN_DEVELOPMENT,
+			CoretimeRuntimeType::PezkuwichainDevelopment =>
+				pezkuwichain::CORETIME_PEZKUWICHAIN_DEVELOPMENT,
 			CoretimeRuntimeType::Zagros => zagros::CORETIME_ZAGROS,
 			CoretimeRuntimeType::ZagrosLocal => zagros::CORETIME_ZAGROS_LOCAL,
 			CoretimeRuntimeType::ZagrosDevelopment => zagros::CORETIME_ZAGROS_DEVELOPMENT,
@@ -90,8 +92,8 @@ impl From<CoretimeRuntimeType> for ChainType {
 			CoretimeRuntimeType::PezkuwiLocal |
 			CoretimeRuntimeType::PezkuwichainLocal |
 			CoretimeRuntimeType::ZagrosLocal => ChainType::Local,
-			CoretimeRuntimeType::PezkuwichainDevelopment | CoretimeRuntimeType::ZagrosDevelopment =>
-				ChainType::Development,
+			CoretimeRuntimeType::PezkuwichainDevelopment |
+			CoretimeRuntimeType::ZagrosDevelopment => ChainType::Development,
 		}
 	}
 }

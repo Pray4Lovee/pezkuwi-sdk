@@ -159,8 +159,7 @@ fn multi_hop_works() {
 	let assets: Assets = (Parent, amount_to_send).into();
 	let relay_native_asset_location = Location::parent();
 	let sender_as_seen_by_ah = AssetHubZagros::sibling_location_of(PenpalA::para_id());
-	let sov_of_sender_on_ah =
-		AssetHubZagros::sovereign_account_id_of(sender_as_seen_by_ah.clone());
+	let sov_of_sender_on_ah = AssetHubZagros::sovereign_account_id_of(sender_as_seen_by_ah.clone());
 
 	// fund Teyrchain's sender account
 	PenpalA::mint_foreign_asset(
@@ -366,8 +365,7 @@ fn usdt_fee_estimation_in_usdt_works() {
 		Location::new(0, [PalletInstance(ASSETS_PALLET_ID), GeneralIndex(USDT_ID.into())]);
 
 	let penpal_as_seen_by_ah = AssetHubZagros::sibling_location_of(PenpalA::para_id());
-	let sov_of_penpal_on_ah =
-		AssetHubZagros::sovereign_account_id_of(penpal_as_seen_by_ah.clone());
+	let sov_of_penpal_on_ah = AssetHubZagros::sovereign_account_id_of(penpal_as_seen_by_ah.clone());
 
 	// fund PenpalA's sender account with USDT
 	PenpalA::mint_foreign_asset(

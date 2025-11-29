@@ -28,9 +28,7 @@ use pezkuwi_overseer::Handle;
 use pezkuwi_primitives::{Balance, CollatorPair, HeadData, Id as ParaId, ValidationCode};
 use pezkuwi_runtime_common::BlockHashCount;
 use pezkuwi_runtime_teyrchains::paras::{ParaGenesisArgs, ParaKind};
-use pezkuwi_service::{
-	Error, FullClient, IsTeyrchainNode, NewFull, OverseerGen, PrometheusConfig,
-};
+use pezkuwi_service::{Error, FullClient, IsTeyrchainNode, NewFull, OverseerGen, PrometheusConfig};
 use pezkuwi_test_runtime::{
 	ParasCall, ParasSudoWrapperCall, Runtime, SignedPayload, SudoCall, TxExtension,
 	UncheckedExtrinsic, VERSION,

@@ -18,9 +18,7 @@ use super::*;
 
 use alloc::collections::btree_map::BTreeMap;
 use frame_support::assert_ok;
-use pezkuwi_primitives::{
-	BlockNumber, SchedulerParams, SessionIndex, ValidationCode, ValidatorId,
-};
+use pezkuwi_primitives::{BlockNumber, SchedulerParams, SessionIndex, ValidationCode, ValidatorId};
 use sp_keyring::Sr25519Keyring;
 
 use crate::{

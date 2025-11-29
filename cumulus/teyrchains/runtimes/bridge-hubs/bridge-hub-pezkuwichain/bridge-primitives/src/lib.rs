@@ -13,8 +13,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//! Module with configuration which reflects BridgeHubPezkuwichain runtime setup (AccountId, Headers,
-//! Hashes...)
+//! Module with configuration which reflects BridgeHubPezkuwichain runtime setup (AccountId,
+//! Headers, Hashes...)
 
 #![warn(missing_docs)]
 #![cfg_attr(not(feature = "std"), no_std)]
@@ -85,11 +85,12 @@ pub type Address = MultiAddress<AccountId, ()>;
 /// Identifier of BridgeHubPezkuwichain in the Pezkuwichain relay chain.
 pub const BRIDGE_HUB_PEZKUWICHAIN_TEYRCHAIN_ID: u32 = 1013;
 
-/// Name of the With-BridgeHubPezkuwichain messages pallet instance that is deployed at bridged chains.
+/// Name of the With-BridgeHubPezkuwichain messages pallet instance that is deployed at bridged
+/// chains.
 pub const WITH_BRIDGE_HUB_PEZKUWICHAIN_MESSAGES_PALLET_NAME: &str = "BridgePezkuwichainMessages";
 
-/// Name of the With-BridgeHubPezkuwichain bridge-relayers pallet instance that is deployed at bridged
-/// chains.
+/// Name of the With-BridgeHubPezkuwichain bridge-relayers pallet instance that is deployed at
+/// bridged chains.
 pub const WITH_BRIDGE_HUB_PEZKUWICHAIN_RELAYERS_PALLET_NAME: &str = "BridgeRelayers";
 
 /// Pallet index of `BridgeZagrosMessages: pallet_bridge_messages::<Instance3>`.

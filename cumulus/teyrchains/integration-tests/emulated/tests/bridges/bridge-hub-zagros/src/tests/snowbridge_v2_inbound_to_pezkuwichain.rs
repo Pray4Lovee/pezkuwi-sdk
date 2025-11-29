@@ -70,7 +70,8 @@ fn send_token_to_pezkuwichain_v2() {
 	AssetHubZagros::force_xcm_version(asset_hub_pezkuwichain_location(), XCM_VERSION);
 
 	// To pay fees on Pezkuwichain.
-	let eth_fee_pezkuwichain_ah: xcm::prelude::Asset = (eth_location(), 3_000_000_000_000u128).into();
+	let eth_fee_pezkuwichain_ah: xcm::prelude::Asset =
+		(eth_location(), 3_000_000_000_000u128).into();
 
 	// To satisfy ED
 	AssetHubPezkuwichain::fund_accounts(vec![(
@@ -84,13 +85,15 @@ fn send_token_to_pezkuwichain_v2() {
 	AssetHubPezkuwichain::execute_with(|| {
 		type RuntimeOrigin = <AssetHubPezkuwichain as Chain>::RuntimeOrigin;
 
-		assert_ok!(<AssetHubPezkuwichain as AssetHubPezkuwichainPallet>::ForeignAssets::force_create(
-			RuntimeOrigin::root(),
-			token_location.clone().try_into().unwrap(),
-			snowbridge_sovereign.clone().into(),
-			true,
-			1000,
-		));
+		assert_ok!(
+			<AssetHubPezkuwichain as AssetHubPezkuwichainPallet>::ForeignAssets::force_create(
+				RuntimeOrigin::root(),
+				token_location.clone().try_into().unwrap(),
+				snowbridge_sovereign.clone().into(),
+				true,
+				1000,
+			)
+		);
 
 		assert!(<AssetHubPezkuwichain as AssetHubPezkuwichainPallet>::ForeignAssets::asset_exists(
 			token_location.clone().try_into().unwrap(),
@@ -122,7 +125,9 @@ fn send_token_to_pezkuwichain_v2() {
 						Teyrchain(1000u32),
 					],
 				),
-				remote_fees: Some(ReserveDeposit(Definite(vec![eth_fee_pezkuwichain_ah.clone()].into()))),
+				remote_fees: Some(ReserveDeposit(Definite(
+					vec![eth_fee_pezkuwichain_ah.clone()].into(),
+				))),
 				preserve_origin: false,
 				assets: BoundedVec::truncate_from(vec![ReserveDeposit(Definite(
 					vec![token_asset_ah.clone()].into(),
@@ -264,7 +269,8 @@ fn send_ether_to_pezkuwichain_v2() {
 	AssetHubZagros::force_xcm_version(asset_hub_pezkuwichain_location(), XCM_VERSION);
 
 	// To pay fees on Pezkuwichain.
-	let eth_fee_pezkuwichain_ah: xcm::prelude::Asset = (eth_location(), 2_000_000_000_000u128).into();
+	let eth_fee_pezkuwichain_ah: xcm::prelude::Asset =
+		(eth_location(), 2_000_000_000_000u128).into();
 	let ether_asset_ah: xcm::prelude::Asset = (eth_location(), 4_000_000_000_000u128).into();
 
 	BridgeHubZagros::fund_para_sovereign(AssetHubZagros::para_id(), INITIAL_FUND);
@@ -284,7 +290,9 @@ fn send_ether_to_pezkuwichain_v2() {
 						Teyrchain(1000u32),
 					],
 				),
-				remote_fees: Some(ReserveDeposit(Definite(vec![eth_fee_pezkuwichain_ah.clone()].into()))),
+				remote_fees: Some(ReserveDeposit(Definite(
+					vec![eth_fee_pezkuwichain_ah.clone()].into(),
+				))),
 				preserve_origin: false,
 				assets: BoundedVec::truncate_from(vec![ReserveDeposit(Definite(
 					vec![ether_asset_ah.clone()].into(),
@@ -405,8 +413,10 @@ fn send_roc_from_ethereum_to_pezkuwichain() {
 
 	let claimer = AccountId32 { network: None, id: H256::random().into() };
 	let claimer_bytes = claimer.encode();
-	let beneficiary =
-		Location::new(0, AccountId32 { network: None, id: AssetHubPezkuwichainReceiver::get().into() });
+	let beneficiary = Location::new(
+		0,
+		AccountId32 { network: None, id: AssetHubPezkuwichainReceiver::get().into() },
+	);
 
 	BridgeHubZagros::fund_para_sovereign(AssetHubZagros::para_id(), INITIAL_FUND);
 
@@ -437,13 +447,15 @@ fn send_roc_from_ethereum_to_pezkuwichain() {
 	BridgeHubZagros::force_xcm_version(asset_hub_pezkuwichain_location(), XCM_VERSION);
 	AssetHubZagros::force_xcm_version(asset_hub_pezkuwichain_location(), XCM_VERSION);
 
-	let eth_fee_pezkuwichain_ah: xcm::prelude::Asset = (eth_location(), 2_000_000_000_000u128).into();
+	let eth_fee_pezkuwichain_ah: xcm::prelude::Asset =
+		(eth_location(), 2_000_000_000_000u128).into();
 
 	let roc = Location::new(1, [GlobalConsensus(ByGenesis(PEZKUWICHAIN_GENESIS_HASH))]);
 	let token_id = TokenIdOf::convert_location(&roc).unwrap();
 
 	let roc_reachored: xcm::prelude::Asset =
-		(Location::new(2, [GlobalConsensus(ByGenesis(PEZKUWICHAIN_GENESIS_HASH))]), TOKEN_AMOUNT).into();
+		(Location::new(2, [GlobalConsensus(ByGenesis(PEZKUWICHAIN_GENESIS_HASH))]), TOKEN_AMOUNT)
+			.into();
 
 	let assets = vec![
 		// the token being transferred
@@ -461,10 +473,11 @@ fn send_roc_from_ethereum_to_pezkuwichain() {
 	});
 
 	// fund the AHW's SA on AHR with the TYR tokens held in reserve
-	let sov_ahw_on_ahr = AssetHubPezkuwichain::sovereign_account_of_teyrchain_on_other_global_consensus(
-		ByGenesis(ZAGROS_GENESIS_HASH),
-		AssetHubZagros::para_id(),
-	);
+	let sov_ahw_on_ahr =
+		AssetHubPezkuwichain::sovereign_account_of_teyrchain_on_other_global_consensus(
+			ByGenesis(ZAGROS_GENESIS_HASH),
+			AssetHubZagros::para_id(),
+		);
 	AssetHubPezkuwichain::fund_accounts(vec![(sov_ahw_on_ahr.clone(), INITIAL_FUND)]);
 
 	BridgeHubZagros::execute_with(|| {
@@ -480,7 +493,9 @@ fn send_roc_from_ethereum_to_pezkuwichain() {
 						Teyrchain(1000u32),
 					],
 				),
-				remote_fees: Some(ReserveDeposit(Definite(vec![eth_fee_pezkuwichain_ah.clone()].into()))),
+				remote_fees: Some(ReserveDeposit(Definite(
+					vec![eth_fee_pezkuwichain_ah.clone()].into(),
+				))),
 				preserve_origin: false,
 				assets: BoundedVec::truncate_from(vec![ReserveWithdraw(Definite(
 					vec![roc_reachored.clone()].into(),

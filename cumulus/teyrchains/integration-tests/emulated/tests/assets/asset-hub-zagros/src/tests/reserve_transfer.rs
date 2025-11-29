@@ -903,8 +903,7 @@ fn reserve_transfer_native_asset_from_para_to_asset_hub() {
 	// Init values for Asset Hub
 	let receiver = AssetHubZagrosReceiver::get();
 	let penpal_location_as_seen_by_ahr = AssetHubZagros::sibling_location_of(PenpalA::para_id());
-	let sov_penpal_on_ahr =
-		AssetHubZagros::sovereign_account_id_of(penpal_location_as_seen_by_ahr);
+	let sov_penpal_on_ahr = AssetHubZagros::sovereign_account_id_of(penpal_location_as_seen_by_ahr);
 
 	// fund Teyrchain's SA on Asset Hub with the native tokens held in reserve
 	AssetHubZagros::fund_accounts(vec![(sov_penpal_on_ahr.into(), amount_to_send * 2)]);
@@ -1094,8 +1093,7 @@ fn reserve_transfer_multiple_assets_from_para_to_asset_hub() {
 		get_public_from_string_or_panic::<sr25519::Public>(DUMMY_EMPTY).into();
 	// Init values for Asset Hub
 	let penpal_location_as_seen_by_ahr = AssetHubZagros::sibling_location_of(PenpalA::para_id());
-	let sov_penpal_on_ahr =
-		AssetHubZagros::sovereign_account_id_of(penpal_location_as_seen_by_ahr);
+	let sov_penpal_on_ahr = AssetHubZagros::sovereign_account_id_of(penpal_location_as_seen_by_ahr);
 	let ah_asset_owner = AssetHubZagrosAssetOwner::get();
 	let ah_asset_owner_signer = <AssetHubZagros as Chain>::RuntimeOrigin::signed(ah_asset_owner);
 
@@ -1347,8 +1345,7 @@ fn reserve_transfer_usdt_from_para_to_para_through_asset_hub() {
 	let sender = PenpalASender::get();
 	let asset_amount_to_send: Balance = ZAGROS_ED * 10000;
 	let fee_amount_to_send: Balance = ZAGROS_ED * 10000;
-	let sender_chain_as_seen_by_asset_hub =
-		AssetHubZagros::sibling_location_of(PenpalA::para_id());
+	let sender_chain_as_seen_by_asset_hub = AssetHubZagros::sibling_location_of(PenpalA::para_id());
 	let sov_of_sender_on_asset_hub =
 		AssetHubZagros::sovereign_account_id_of(sender_chain_as_seen_by_asset_hub);
 	let receiver_as_seen_by_asset_hub = AssetHubZagros::sibling_location_of(PenpalB::para_id());

@@ -307,8 +307,8 @@ async fn statement_store_memory_stress_bench() -> Result<(), anyhow::Error> {
 	Ok(())
 }
 
-/// Spawns a network using a custom chain spec (people-pezkuwichain-spec.json) which validates any signed
-/// statement in the statement-store without additional verification.
+/// Spawns a network using a custom chain spec (people-pezkuwichain-spec.json) which validates any
+/// signed statement in the statement-store without additional verification.
 async fn spawn_network(collators: &[&str]) -> Result<Network<LocalFileSystem>, anyhow::Error> {
 	assert!(collators.len() >= 2);
 	let images = zombienet_sdk::environment::get_images_from_env();

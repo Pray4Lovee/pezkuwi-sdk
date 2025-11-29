@@ -17,8 +17,8 @@ use crate::imports::*;
 
 use codec::Encode;
 use frame_support::sp_runtime::traits::Dispatchable;
-use teyrchains_common::AccountId;
 use people_zagros_runtime::people::IdentityInfo;
+use teyrchains_common::AccountId;
 use zagros_runtime::{
 	governance::pallet_custom_origins::Origin::GeneralAdmin as GeneralAdminOrigin, Dmp,
 };
@@ -200,9 +200,7 @@ fn relay_commands_kill_identity() {
 
 		let kill_identity_call =
 			PeopleCall::Identity(pallet_identity::Call::<PeopleRuntime>::kill_identity {
-				target: people_zagros_runtime::MultiAddress::Id(PeopleZagros::account_id_of(
-					ALICE,
-				)),
+				target: people_zagros_runtime::MultiAddress::Id(PeopleZagros::account_id_of(ALICE)),
 			});
 
 		let xcm_message = RuntimeCall::XcmPallet(pallet_xcm::Call::<Runtime>::send {

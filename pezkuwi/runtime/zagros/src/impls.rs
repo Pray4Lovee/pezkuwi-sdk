@@ -22,9 +22,9 @@ use frame_support::pallet_prelude::DispatchResult;
 use frame_system::RawOrigin;
 use pezkuwi_primitives::Balance;
 use pezkuwi_runtime_common::identity_migrator::{OnReapIdentity, WeightInfo};
-use zagros_runtime_constants::currency::*;
 use xcm::{latest::prelude::*, VersionedLocation, VersionedXcm};
 use xcm_executor::traits::TransactAsset;
+use zagros_runtime_constants::currency::*;
 
 /// A type containing the encoding of the People Chain pallets in its runtime. Used to construct any
 /// remote calls. The codec index must correspond to the index of `IdentityMigrator` in the
