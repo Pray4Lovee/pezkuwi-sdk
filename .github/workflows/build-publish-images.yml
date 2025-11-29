@@ -496,8 +496,8 @@ jobs:
         with:
           image-name: "test-teyrchain"
           dockerfile: "docker/dockerfiles/test-teyrchain_injected.Dockerfile"
-          username: ${{ secrets.PARITYPR_DOCKERHUB_USERNAME }}
-          password: ${{ secrets.PARITYPR_DOCKERHUB_PASSWORD }}
+          username: ${{ secrets.PEZKUWI_DOCKERHUB_USERNAME }}
+          password: ${{ secrets.PEZKUWI_DOCKERHUB_PASSWORD }}
 
   #
   #
@@ -522,8 +522,8 @@ jobs:
         with:
           image-name: "polkadot-debug"
           dockerfile: "docker/dockerfiles/polkadot/polkadot_injected_debug.Dockerfile"
-          username: ${{ secrets.PARITYPR_DOCKERHUB_USERNAME }}
-          password: ${{ secrets.PARITYPR_DOCKERHUB_PASSWORD }}
+          username: ${{ secrets.PEZKUWI_DOCKERHUB_USERNAME }}
+          password: ${{ secrets.PEZKUWI_DOCKERHUB_PASSWORD }}
 
   #
   #
@@ -548,8 +548,8 @@ jobs:
         with:
           image-name: "colander"
           dockerfile: "docker/dockerfiles/collator_injected.Dockerfile"
-          username: ${{ secrets.PARITYPR_DOCKERHUB_USERNAME }}
-          password: ${{ secrets.PARITYPR_DOCKERHUB_PASSWORD }}
+          username: ${{ secrets.PEZKUWI_DOCKERHUB_USERNAME }}
+          password: ${{ secrets.PEZKUWI_DOCKERHUB_PASSWORD }}
 
   #
   #
@@ -574,8 +574,8 @@ jobs:
         with:
           image-name: "malus"
           dockerfile: "docker/dockerfiles/malus_injected.Dockerfile"
-          username: ${{ secrets.PARITYPR_DOCKERHUB_USERNAME }}
-          password: ${{ secrets.PARITYPR_DOCKERHUB_PASSWORD }}
+          username: ${{ secrets.PEZKUWI_DOCKERHUB_USERNAME }}
+          password: ${{ secrets.PEZKUWI_DOCKERHUB_PASSWORD }}
 
   #
   #
@@ -600,8 +600,8 @@ jobs:
         with:
           image-name: "substrate"
           dockerfile: "docker/dockerfiles/substrate_injected.Dockerfile"
-          username: ${{ secrets.PARITYPR_DOCKERHUB_USERNAME }}
-          password: ${{ secrets.PARITYPR_DOCKERHUB_PASSWORD }}
+          username: ${{ secrets.PEZKUWI_DOCKERHUB_USERNAME }}
+          password: ${{ secrets.PEZKUWI_DOCKERHUB_PASSWORD }}
 
   #
   #
@@ -651,8 +651,8 @@ jobs:
         with:
           image-name: "bridges-zombienet-tests"
           dockerfile: "docker/dockerfiles/bridges_zombienet_tests_injected.Dockerfile"
-          username: ${{ secrets.PARITYPR_DOCKERHUB_USERNAME }}
-          password: ${{ secrets.PARITYPR_DOCKERHUB_PASSWORD }}
+          username: ${{ secrets.PEZKUWI_DOCKERHUB_USERNAME }}
+          password: ${{ secrets.PEZKUWI_DOCKERHUB_PASSWORD }}
 
   #
   #
@@ -677,8 +677,8 @@ jobs:
         with:
           image-name: "polkadot-teyrchain-debug"
           dockerfile: "docker/dockerfiles/polkadot-teyrchain/polkadot-teyrchain-debug_unsigned_injected.Dockerfile"
-          username: ${{ secrets.PARITYPR_DOCKERHUB_USERNAME }}
-          password: ${{ secrets.PARITYPR_DOCKERHUB_PASSWORD }}
+          username: ${{ secrets.PEZKUWI_DOCKERHUB_USERNAME }}
+          password: ${{ secrets.PEZKUWI_DOCKERHUB_PASSWORD }}
 
   confirm-required-build-jobs-passed:
     runs-on: ubuntu-latest

@@ -18,13 +18,13 @@ scale-info = { default-features = false, features = ["derive"], workspace = true
 frame-benchmarking = { default-features = false, optional = true, workspace = true }
 frame-support = { default-features = false, workspace = true }
 frame-system = { default-features = false, workspace = true }
-pallet-identity-kyc = { path = "../identity-kyc", default-features = false }
+pallet-identity-kyc = { workspace = true, default-features = false }
 log = { default-features = false, workspace = true }
 sp-runtime = { default-features = false, workspace = true }
 sp-std = { default-features = false, workspace = true }
 
 # Projemizin özel tiplerini ve trait'lerini içeren kütüphane
-pezkuwi-primitives = { path = "../../../../pezkuwi/primitives", default-features = false }
+pezkuwi-primitives = { workspace = true, default-features = false }
 
 [dev-dependencies]
 sp-core = { workspace = true }

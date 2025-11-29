@@ -25,7 +25,7 @@ sp-runtime = { default-features = false, workspace = true }
 sp-std = { default-features = false, workspace = true }
 
 # PezkuwiChain'in özel tiplerini ve trait'lerini içeren kütüphane
-pezkuwi-primitives = { path = "../../../../pezkuwi/primitives", default-features = false }
+pezkuwi-primitives = { workspace = true, default-features = false }
 
 # Mock ve benchmark için gerekli olanlar buraya optional olarak eklendi
 pallet-balances = { workspace = true, default-features = false, optional = true }

@@ -24,17 +24,17 @@ sp-runtime = { default-features = false, workspace = true }
 sp-std = { default-features = false, workspace = true }
 
 # PezkuwiChain'in özel tiplerini ve trait'lerini içeren kütüphane
-pezkuwi-primitives = { path = "../../../../pezkuwi/primitives", default-features = false }
+pezkuwi-primitives = { workspace = true, default-features = false }
 
 # Palet bağımlılıkları (Trust puanı hesaplaması için gerekli)
 # Standart Substrate paletleri için path belirtilmez, workspace=true kullanılır.
 pallet-balances = { default-features = false, workspace = true } 
-# Özel PezkuwiChain paletleri için göreli path kullanılır.
-pallet-staking-score = { path = "../staking-score", default-features = false } 
-pallet-referral = { path = "../referral", default-features = false } 
-pallet-perwerde = { path = "../perwerde", default-features = false } 
-pallet-tiki = { path = "../tiki", default-features = false }
-pallet-identity-kyc = { path = "../identity-kyc", default-features = false }
+# Özel PezkuwiChain paletleri için workspace inheritance kullanılır.
+pallet-staking-score = { workspace = true, default-features = false }
+pallet-referral = { workspace = true, default-features = false }
+pallet-perwerde = { workspace = true, default-features = false }
+pallet-tiki = { workspace = true, default-features = false }
+pallet-identity-kyc = { workspace = true, default-features = false }
 
 
 # --- Test ve Benchmark için Gerekli İsteğe Bağlı Bağımlılıklar ---

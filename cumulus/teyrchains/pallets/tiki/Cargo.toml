@@ -21,7 +21,7 @@ frame-benchmarking = { default-features = false, optional = true, workspace = tr
 log = { default-features = false, workspace = true }
 pallet-nfts = { default-features = false, workspace = true }
 pallet-identity = { default-features = false, workspace = true }
-pallet-identity-kyc = { path = "../identity-kyc", default-features = false }
+pallet-identity-kyc = { workspace = true, default-features = false }
 pallet-balances = { default-features = false, optional = true, workspace = true }
 sp-runtime = { default-features = false, workspace = true }
 sp-std = { default-features = false, workspace = true }

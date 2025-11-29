@@ -32,8 +32,8 @@ pallet-scheduler = { default-features = false, workspace = true }
 pallet-nfts = { default-features = false, workspace = true }
 
 # PezkuwiChain özel paletleri
-pallet-trust = { path = "../trust", default-features = false }
-pallet-pez-treasury = { path = "../pez-treasury", default-features = false }
+pallet-trust = { workspace = true, default-features = false }
+pallet-pez-treasury = { workspace = true, default-features = false }
 
 # Test ve Benchmark için Gerekli İsteğe Bağlı Bağımlılıklar
 frame-benchmarking = { default-features = false, optional = true, workspace = true }
@@ -47,8 +47,8 @@ sp-io = { workspace = true, default-features = false, features = ["std"] }
 frame-system = { workspace = true, default-features = false, features = ["std"] }
 pallet-balances = { workspace = true, default-features = false, features = ["std"] }
 pallet-assets = { workspace = true, default-features = false, features = ["std"] }
-pallet-identity-kyc = { path = "../identity-kyc", default-features = false, features = ["std"] }
-pallet-trust = { path = "../trust", default-features = false, features = ["std"] }
+pallet-identity-kyc = { workspace = true, default-features = false, features = ["std"] }
+pallet-trust = { workspace = true, default-features = false, features = ["std"] }
 
 [features]
 default = ["std"]

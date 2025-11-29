@@ -57,10 +57,10 @@ All branches must follow these naming patterns:
 
 ### In General
 
-* A Pull Request (PR) needs to be reviewed and approved by project maintainers.
-* If a change does not alter any logic (e.g. comments, dependencies, docs), then it may be tagged `A1-insubstantial` and
+- A Pull Request (PR) needs to be reviewed and approved by project maintainers.
+- If a change does not alter any logic (e.g. comments, dependencies, docs), then it may be tagged `A1-insubstantial` and
 merged faster.
-* No PR should be merged until all reviews' comments are addressed.
+- No PR should be merged until all reviews' comments are addressed.
 
 ### Labels
 
@@ -97,8 +97,8 @@ approval unless there are issues that would result in:
 
 The reviewers are also responsible to check:
 
-* if the PR description is well written to facilitate integration, in case it contains breaking changes.
-* the PR has an impact on docs.
+- if the PR description is well written to facilitate integration, in case it contains breaking changes.
+- the PR has an impact on docs.
 
 **Reviews may not be used as an effective veto for a PR because**:
 1. There exists a somewhat cleaner/better/faster way of accomplishing the same feature/fix.
@@ -189,13 +189,13 @@ tests are sensible to any changes in the macro generated code or to switching th
 only run when the `RUN_UI_TESTS` environment variable is set. So, when the CI is for example complaining about failing
 UI tests and it is expected that they fail these tests need to be executed locally. To simplify the updating of the UI
 test output there is a script
-* `./scripts/update-ui-tests.sh`   to update the tests for a current rust version locally
-* `./scripts/update-ui-tests.sh 1.70` # to update the tests for a specific rust version locally
+- `./scripts/update-ui-tests.sh`   to update the tests for a current rust version locally
+- `./scripts/update-ui-tests.sh 1.70` # to update the tests for a specific rust version locally
 
 Or if you have opened PR and you're member of `paritytech` - you can use [/cmd](./commands-readme.md)
 to run the tests for you in CI:
-* `/cmd update-ui` - will run the tests for the current rust version
-* `/cmd update-ui --image docker.io/paritytech/ci-unified:bullseye-1.70.0-2023-05-23` -
+- `/cmd update-ui` - will run the tests for the current rust version
+- `/cmd update-ui --image docker.io/paritytech/ci-unified:bullseye-1.70.0-2023-05-23` -
 will run the tests for the specified rust version and specified image
 
 ## Feature Propagation

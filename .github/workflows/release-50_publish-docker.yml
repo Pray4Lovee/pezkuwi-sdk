@@ -276,8 +276,8 @@ jobs:
         if: ${{ env.BINARY == 'polkadot' }}
         uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef # v3.6.0
         with:
-          username: ${{ secrets.POLKADOT_DOCKERHUB_USERNAME }}
-          password: ${{ secrets.POLKADOT_DOCKERHUB_TOKEN }}
+          username: ${{ secrets.PEZKUWI_DOCKERHUB_USERNAME }}
+          password: ${{ secrets.PEZKUWI_DOCKERHUB_TOKEN }}
 
       - name: Login to Dockerhub to publish polkadot-omni-node/polkadot-teyrchain/chain-spec-builder
         if: ${{ env.BINARY == 'polkadot-omni-node' || env.BINARY == 'polkadot-teyrchain' || env.BINARY == 'chain-spec-builder' }}

@@ -1024,7 +1024,7 @@ workspace = true
 [dependencies.assets-common]
 default-features = false
 optional = true
-path = "../cumulus/teyrchains/runtimes/assets/common"
+workspace = true
 
 [dependencies.binary-merkle-tree]
 default-features = false
