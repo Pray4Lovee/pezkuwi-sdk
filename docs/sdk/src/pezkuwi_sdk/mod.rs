@@ -1,6 +1,6 @@
 //! # Pezkuwi SDK
 //!
-//! [Pezkuwi SDK](https://github.com/pezkuwichain/pezkuwichain-sdk) provides the main resources needed to
+//! [Pezkuwi SDK](https://github.com/pezkuwichain/pezkuwi-sdk) provides the main resources needed to
 //! start building on the [Pezkuwi network](https://pezkuwichain.io/), a scalable, multi-chain
 //! blockchain platform that enables different blockchains to securely interoperate.
 //!
@@ -29,9 +29,9 @@
 //!
 //! #### Substrate
 //!
-//! [![Substrate-license](https://img.shields.io/badge/License-GPL3%2FApache2.0-blue)](https://github.com/pezkuwichain/pezkuwichain-sdk/blob/master/substrate/LICENSE-APACHE2)
+//! [![Substrate-license](https://img.shields.io/badge/License-GPL3%2FApache2.0-blue)](https://github.com/pezkuwichain/pezkuwi-sdk/blob/master/substrate/LICENSE-APACHE2)
 //! [![GitHub
-//! Repo](https://img.shields.io/badge/github-substrate-2324CC85)](https://github.com/pezkuwichain/pezkuwichain-sdk/blob/master/substrate)
+//! Repo](https://img.shields.io/badge/github-substrate-2324CC85)](https://github.com/pezkuwichain/pezkuwi-sdk/blob/master/substrate)
 //!
 //! [`substrate`] is the base blockchain framework used to power the Pezkuwi SDK. It is a full
 //! toolkit to create sovereign blockchains, including but not limited to those which connect to
@@ -39,9 +39,9 @@
 //!
 //! #### FRAME
 //!
-//! [![Substrate-license](https://img.shields.io/badge/License-Apache2.0-blue)](https://github.com/pezkuwichain/pezkuwichain-sdk/blob/master/substrate/LICENSE-APACHE2)
+//! [![Substrate-license](https://img.shields.io/badge/License-Apache2.0-blue)](https://github.com/pezkuwichain/pezkuwi-sdk/blob/master/substrate/LICENSE-APACHE2)
 //! [![GitHub
-//! Repo](https://img.shields.io/badge/github-frame-2324CC85)](https://github.com/pezkuwichain/pezkuwichain-sdk/blob/master/substrate/frame)
+//! Repo](https://img.shields.io/badge/github-frame-2324CC85)](https://github.com/pezkuwichain/pezkuwi-sdk/blob/master/substrate/frame)
 //!
 //! [`frame`] is the framework used to create Substrate-based application logic, aka. runtimes.
 //! Learn more about the distinction of a runtime and node in
@@ -49,27 +49,27 @@
 //!
 //! #### Cumulus
 //!
-//! [![Cumulus-license](https://img.shields.io/badge/License-GPL3-blue)](https://github.com/pezkuwichain/pezkuwichain-sdk/blob/master/cumulus/LICENSE)
+//! [![Cumulus-license](https://img.shields.io/badge/License-GPL3-blue)](https://github.com/pezkuwichain/pezkuwi-sdk/blob/master/cumulus/LICENSE)
 //! [![GitHub
-//! Repo](https://img.shields.io/badge/github-cumulus-white)](https://github.com/pezkuwichain/pezkuwichain-sdk/blob/master/cumulus)
+//! Repo](https://img.shields.io/badge/github-cumulus-white)](https://github.com/pezkuwichain/pezkuwi-sdk/blob/master/cumulus)
 //!
 //! [`cumulus`] transforms FRAME-based runtimes into Pezkuwi-compatible teyrchain runtimes, and
 //! Substrate-based nodes into Pezkuwi/Teyrchain-compatible nodes.
 //!
 //! #### XCM
 //!
-//! [![XCM-license](https://img.shields.io/badge/License-GPL3-blue)](https://github.com/pezkuwichain/pezkuwichain-sdk/blob/master/polkadot/LICENSE)
+//! [![XCM-license](https://img.shields.io/badge/License-GPL3-blue)](https://github.com/pezkuwichain/pezkuwi-sdk/blob/master/polkadot/LICENSE)
 //! [![GitHub
-//! Repo](https://img.shields.io/badge/github-XCM-e6007a?logo=polkadot)](https://github.com/pezkuwichain/pezkuwichain-sdk/blob/master/polkadot/xcm)
+//! Repo](https://img.shields.io/badge/github-XCM-e6007a?logo=polkadot)](https://github.com/pezkuwichain/pezkuwi-sdk/blob/master/polkadot/xcm)
 //!
 //! [`xcm`], short for "cross consensus message", is the primary format that is used for
 //! communication between teyrchains, but is intended to be extensible to other use cases as well.
 //!
 //! #### Pezkuwi
 //!
-//! [![Pezkuwi-license](https://img.shields.io/badge/License-GPL3-blue)](https://github.com/pezkuwichain/pezkuwichain-sdk/blob/master/polkadot/LICENSE)
+//! [![Pezkuwi-license](https://img.shields.io/badge/License-GPL3-blue)](https://github.com/pezkuwichain/pezkuwi-sdk/blob/master/polkadot/LICENSE)
 //! [![GitHub
-//! Repo](https://img.shields.io/badge/github-polkadot-e6007a?logo=polkadot)](https://github.com/pezkuwichain/pezkuwichain-sdk/blob/master/polkadot)
+//! Repo](https://img.shields.io/badge/github-polkadot-e6007a?logo=polkadot)](https://github.com/pezkuwichain/pezkuwi-sdk/blob/master/polkadot)
 //!
 //! [`pezkuwi`] is an implementation of a Pezkuwi node in Rust, by `@paritytech`. The Pezkuwi
 //! runtimes are located under the

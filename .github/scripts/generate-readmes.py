@@ -31,7 +31,7 @@ README_TEMPLATE = """<div align="center">
 
 # {name}
 
-This crate is part of the [Polkadot SDK](https://github.com/pezkuwichain/pezkuwichain-sdk/).
+This crate is part of the [Polkadot SDK](https://github.com/pezkuwichain/pezkuwi-sdk/).
 
 </div>
 

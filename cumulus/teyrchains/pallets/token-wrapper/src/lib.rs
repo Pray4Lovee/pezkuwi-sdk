@@ -61,8 +61,11 @@ pub mod pallet {
         /// Native currency (HEZ)
         type Currency: Currency<Self::AccountId>;
 
+        /// Asset ID type
+        type AssetId: Parameter + Member + Copy + MaybeSerializeDeserialize + MaxEncodedLen;
+
         /// Fungible assets (for wHEZ)
-        type Assets: Inspect<Self::AccountId, AssetId = u32, Balance = BalanceOf<Self>>
+        type Assets: Inspect<Self::AccountId, AssetId = Self::AssetId, Balance = BalanceOf<Self>>
             + Mutate<Self::AccountId>
             + Create<Self::AccountId>;
 
@@ -72,7 +75,7 @@ pub mod pallet {
 
         /// Asset ID for wrapped token (wHEZ)
         #[pallet::constant]
-        type WrapperAssetId: Get<u32>;
+        type WrapperAssetId: Get<Self::AssetId>;
     }
 
     // ============================================================================

@@ -1192,7 +1192,7 @@ parameter_types! {
 
 /// Migration to initialize storage versions for pallets added after genesis.
 ///
-/// This is now done automatically (see <https://github.com/pezkuwichain/pezkuwichain-sdk/pull/1297>),
+/// This is now done automatically (see <https://github.com/pezkuwichain/pezkuwi-sdk/pull/1297>),
 /// but some pallets had made it in and had storage set in them for this teyrchain before it was
 /// merged.
 pub struct InitStorageVersions;
@@ -1646,15 +1646,15 @@ impl_runtime_apis! {
 	    		}
 	    	}
 	    
-	    	impl pallet_token_wrapper::Config for Runtime {
-	    		type RuntimeEvent = RuntimeEvent;
-	    		type WeightInfo = pallet_token_wrapper::weights::SubstrateWeight<Runtime>;
-	    		type Currency = Balances;
-	    		type Assets = Assets; // Using pallet_assets::Instance1
-	    		type PalletId = TokenWrapperPalletId;
-	    				type WrapperAssetId = WrappedTokenAssetId;
-	    			}
-	    		
+	    		impl pallet_token_wrapper::Config for Runtime {
+	    			type RuntimeEvent = RuntimeEvent;
+	    			type WeightInfo = pallet_token_wrapper::weights::SubstrateWeight<Runtime>;
+	    			type Currency = Balances;
+	    	        type AssetId = AssetIdForTrustBackedAssets;
+	    			type Assets = Assets; // Using pallet_assets::Instance1
+	    			type PalletId = TokenWrapperPalletId;
+	    			type WrapperAssetId = WrappedTokenAssetId;
+	    		}	    		
 	    		parameter_types! {
 	    		    pub const PezAssetId: AssetIdForTrustBackedAssets = AssetIdForTrustBackedAssets::from(1); // Assuming PEZ is asset ID 1
 	    		    pub const TreasuryPalletId: PalletId = PalletId(*b"PezTreas");
@@ -1750,11 +1750,15 @@ impl_runtime_apis! {
 	    		            
 	    		                                    
 	    		            
-	    		                                        type AssetsConfig = Assets; // `Assets` (pallet_assets::<TrustBackedAssetsInstance>) is the AssetsConfig
+	    		                                        type AssetId = AssetIdForTrustBackedAssets;
 	    		            
 	    		                                    
 	    		            
-	    		                                        type AssetInstance = TrustBackedAssetsInstance;
+	    		                                        type Balance = Balance;
+	    		            
+	    		                                    
+	    		            
+	    		                                        type Assets = Assets;
 	    		            
 	    		                                    
 	    		            
@@ -1802,7 +1806,7 @@ impl_runtime_apis! {
 	    		            
 	    		                                    
 	    		            
-	    		                                    impl pallet_asset_rewards::AssetRewards<Block, Balance> for Runtime> {
+	    		                                    impl pallet_asset_rewards::AssetRewards<Block, Balance> for Runtime {
 	    		            
 	    		                	    		fn pool_creation_cost() -> Balance {
 	    			StakePoolCreationDeposit::get()

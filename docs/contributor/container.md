@@ -35,7 +35,7 @@ To reproduce the clean CI environment locally you can use the following commands
 ```bash
 export $(curl https://raw.githubusercontent.com/paritytech/polkadot-sdk/refs/heads/master/.github/env | tr -d '"')
 docker run -it --rm $IMAGE bash
-root@e2ff8a3f347b:/builds# git clone https://github.com/pezkuwichain/pezkuwichain-sdk.git && cd pezkuwi-sdk
+root@e2ff8a3f347b:/builds# git clone https://github.com/pezkuwichain/pezkuwi-sdk.git && cd pezkuwi-sdk
 root@e2ff8a3f347b:/builds# <your cargo command goes here>
 ```
 

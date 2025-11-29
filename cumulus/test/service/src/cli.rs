@@ -275,7 +275,7 @@ impl SubstrateCli for TestCollatorCli {
 	}
 
 	fn support_url() -> String {
-		"https://github.com/pezkuwichain/pezkuwichain-sdk/issues/new".into()
+		"https://github.com/pezkuwichain/pezkuwi-sdk/issues/new".into()
 	}
 
 	fn copyright_start_year() -> i32 {
@@ -360,7 +360,7 @@ impl SubstrateCli for RelayChainCli {
 	}
 
 	fn support_url() -> String {
-		"https://github.com/pezkuwichain/pezkuwichain-sdk/issues/new".into()
+		"https://github.com/pezkuwichain/pezkuwi-sdk/issues/new".into()
 	}
 
 	fn copyright_start_year() -> i32 {

@@ -47,7 +47,7 @@
   use-zombienet-sdk: true
 
 # Disabled, occasionally fails
-# See https://github.com/pezkuwichain/pezkuwichain-sdk/issues/8986
+# See https://github.com/pezkuwichain/pezkuwi-sdk/issues/8986
 - job-name: "zombienet-cumulus-0009-elastic_scaling_pov_recovery"
   test-filter: "zombie_ci::elastic_scaling::pov_recovery::elastic_scaling_pov_recovery"
   runner-type: "default"
@@ -55,7 +55,7 @@
   use-zombienet-sdk: true
 
 # Disabled, occasionally fails.
-# See https://github.com/pezkuwichain/pezkuwichain-sdk/issues/8999
+# See https://github.com/pezkuwichain/pezkuwi-sdk/issues/8999
 - job-name: "zombienet-cumulus-0010-elastic_scaling_multiple_block_per_slot"
   test-filter: "zombie_ci::elastic_scaling::multiple_blocks_per_slot::elastic_scaling_multiple_blocks_per_slot"
   runner-type: "default"

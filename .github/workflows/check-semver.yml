@@ -147,7 +147,7 @@ jobs:
           It is recommended to add all changed crates to the prdoc.
 
           Please check the output above and see the following links for more help:
-          - https://github.com/pezkuwichain/pezkuwichain-sdk/blob/master/docs/contributor/prdoc.md#record-semver-changes
+          - https://github.com/pezkuwichain/pezkuwi-sdk/blob/master/docs/contributor/prdoc.md#record-semver-changes
           - https://forum.polkadot.network/t/psa-polkadot-sdk-to-use-semver
 
           Otherwise feel free to ask in the Merge Request or in Matrix chat.
@@ -170,7 +170,7 @@ jobs:
           👋 Hello developer! The SemVer information that you declared in the prdoc file did not match what the CI detected.
 
           Please check the output above and see the following links for more help:
-          - https://github.com/pezkuwichain/pezkuwichain-sdk/blob/master/docs/contributor/prdoc.md#record-semver-changes
+          - https://github.com/pezkuwichain/pezkuwi-sdk/blob/master/docs/contributor/prdoc.md#record-semver-changes
           - https://forum.polkadot.network/t/psa-polkadot-sdk-to-use-semver
 
           Otherwise feel free to ask in the Merge Request or in Matrix chat.
@@ -246,7 +246,7 @@ jobs:
 
           if [ "$error_found" = true ]; then
               echo "❌ Error: Found major bump without 'validate: false'"
-              echo "📘 See: https://github.com/pezkuwichain/pezkuwichain-sdk/blob/master/docs/contributor/prdoc.md#backporting-prs"
+              echo "📘 See: https://github.com/pezkuwichain/pezkuwi-sdk/blob/master/docs/contributor/prdoc.md#backporting-prs"
               echo "🔧 Add 'validate: false' after the major bump in $prdoc_file with justification."
               exit 1
           fi

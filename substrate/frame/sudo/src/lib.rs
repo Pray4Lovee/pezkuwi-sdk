@@ -17,7 +17,7 @@
 
 //! > Made with *Substrate*, for *Pezkuwi*.
 //!
-//! [![github]](https://github.com/pezkuwichain/pezkuwichain-sdk/tree/master/substrate/frame/sudo)
+//! [![github]](https://github.com/pezkuwichain/pezkuwi-sdk/tree/master/substrate/frame/sudo)
 //! [![pezkuwi]](https://pezkuwichain.io)
 //!
 //! [github]: https://img.shields.io/badge/github-8da0cb?style=for-the-badge&labelColor=555555&logo=github

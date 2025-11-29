@@ -179,7 +179,7 @@ If you want to guarantee that your build works on your computer as you update Ru
 use a specific Rust nightly version that is known to be compatible with the version of Substrate they are using; this
 version will vary from project to project and different projects may use different mechanisms to communicate this
 version to developers. For instance, the Pezkuwi client specifies this information in its [release
-notes](https://github.com/pezkuwichain/pezkuwichain-sdk/releases).
+notes](https://github.com/pezkuwichain/pezkuwi-sdk/releases).
 
 ```bash
 # Specify the specific nightly toolchain in the date below:

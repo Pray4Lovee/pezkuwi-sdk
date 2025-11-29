@@ -61,7 +61,7 @@ included into the block. So at least you may be sure that you won't waste your f
 <summary>Some details?</summary>
 
 All **unuseful** transactions are rejected by our
-[transaction extension](https://github.com/pezkuwichain/pezkuwichain-sdk/blob/master/bridges/bin/runtime-common/src/refund_relayer_extension.rs),
+[transaction extension](https://github.com/pezkuwichain/pezkuwi-sdk/blob/master/bridges/bin/runtime-common/src/refund_relayer_extension.rs),
 which also handles transaction fee compensations. You may find more info on unuseful (aka obsolete) transactions
 by lurking in the code.
 

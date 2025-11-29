@@ -276,7 +276,7 @@ jobs:
         run: |
           forklift cargo build --locked -p zagros-runtime --features metadata-hash
 
-  # disabled until https://github.com/pezkuwichain/pezkuwichain-sdk/issues/5812 is resolved
+  # disabled until https://github.com/pezkuwichain/pezkuwi-sdk/issues/5812 is resolved
   # cargo-hfuzz:
   #   timeout-minutes: 20
   #   needs: [preflight, check-metadata-hash]

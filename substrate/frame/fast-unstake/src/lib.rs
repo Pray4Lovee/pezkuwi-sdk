@@ -17,7 +17,7 @@
 
 //! > Made with *Substrate*, for *Pezkuwi*.
 //!
-//! [![github]](https://github.com/pezkuwichain/pezkuwichain-sdk/tree/master/substrate/frame/fast-unstake) -
+//! [![github]](https://github.com/pezkuwichain/pezkuwi-sdk/tree/master/substrate/frame/fast-unstake) -
 //! [![pezkuwi]](https://pezkuwichain.io)
 //!
 //! [pezkuwi]: https://img.shields.io/badge/polkadot-E6007A?style=for-the-badge&logo=polkadot&logoColor=white

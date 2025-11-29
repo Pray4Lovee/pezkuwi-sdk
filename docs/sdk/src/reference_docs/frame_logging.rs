@@ -151,5 +151,5 @@
 //! }
 //! ```
 //!
-//! Please read [this issue](https://github.com/pezkuwichain/pezkuwichain-sdk/issues/8735) for one
+//! Please read [this issue](https://github.com/pezkuwichain/pezkuwi-sdk/issues/8735) for one
 //! instance of the consensus issues caused by this mistake.

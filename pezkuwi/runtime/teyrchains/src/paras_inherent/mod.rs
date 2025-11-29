@@ -196,7 +196,7 @@ pub mod pallet {
 
 		fn on_finalize(_: BlockNumberFor<T>) {
 			if Included::<T>::take().is_none() {
-				panic!("TeyrchainInherent was not executed in this block. This is a bug. Please report this at https://github.com/pezkuwichain/pezkuwichain-sdk/issues.");
+				panic!("TeyrchainInherent was not executed in this block. This is a bug. Please report this at https://github.com/pezkuwichain/pezkuwi-sdk/issues.");
 			}
 		}
 	}

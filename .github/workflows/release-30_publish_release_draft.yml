@@ -303,4 +303,4 @@ jobs:
           server: m.parity.io
           message: |
             **New version of polkadot tagged**: ${{ needs.validate-inputs.outputs.release_tag }}<br/>
-            And release draft is release created in [polkadot-sdk repo](https://github.com/pezkuwichain/pezkuwichain-sdk/releases)
+            And release draft is release created in [polkadot-sdk repo](https://github.com/pezkuwichain/pezkuwi-sdk/releases)

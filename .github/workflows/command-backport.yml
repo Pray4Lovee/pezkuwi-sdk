@@ -84,7 +84,7 @@ jobs:
           pull_description: |
             Backport #${pull_number} into `${target_branch}` from ${pull_author}.
 
-            See the [documentation](https://github.com/pezkuwichain/pezkuwichain-sdk/blob/master/docs/BACKPORT.md) on how to use this bot.
+            See the [documentation](https://github.com/pezkuwichain/pezkuwi-sdk/blob/master/docs/BACKPORT.md) on how to use this bot.
 
             <!--
               # To be used by other automation, do not modify:

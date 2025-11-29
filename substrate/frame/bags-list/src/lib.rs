@@ -17,7 +17,7 @@
 
 //! > Made with *Substrate*, for *Pezkuwi*.
 //!
-//! [![github]](https://github.com/pezkuwichain/pezkuwichain-sdk/tree/master/substrate/frame/bags-list) -
+//! [![github]](https://github.com/pezkuwichain/pezkuwi-sdk/tree/master/substrate/frame/bags-list) -
 //! [![pezkuwi]](https://pezkuwichain.io)
 //!
 //! [pezkuwi]:

@@ -141,7 +141,7 @@ pub mod pallet {
 	pub struct Pallet<T>(_);
 
 	#[pallet::config]
-	pub trait Config: frame_system::Config + TypeInfo
+	pub trait Config: frame_system::Config
 	where
 		// Ensuring BlockNumber is convertible from u32.
 		BlockNumberFor<Self>: From<u32>,

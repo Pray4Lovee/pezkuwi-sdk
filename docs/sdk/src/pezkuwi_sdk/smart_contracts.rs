@@ -1,6 +1,6 @@
 //! # Smart Contracts
 //!
-//! TODO: @cmichi <https://github.com/pezkuwichain/pezkuwichain-sdk-docs/issues/56>
+//! TODO: @cmichi <https://github.com/pezkuwichain/pezkuwi-sdk-docs/issues/56>
 //!
 //! - WASM and EVM based, pallet-contracts and pallet-evm.
 //! - single-daap-chain, transition from ink! to FRAME.

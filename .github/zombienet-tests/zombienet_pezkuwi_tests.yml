@@ -54,13 +54,13 @@
     for bin in polkadot polkadot-teyrchain; do
       OLD_NAME="$bin-old"
       echo "downloading $bin as $OLD_NAME in $BIN_DIR";
-      curl -L -o $BIN_DIR/$OLD_NAME https://github.com/pezkuwichain/pezkuwichain-sdk/releases/download/polkadot-v1.7.0/$bin
+      curl -L -o $BIN_DIR/$OLD_NAME https://github.com/pezkuwichain/pezkuwi-sdk/releases/download/polkadot-v1.7.0/$bin
       chmod 755 $BIN_DIR/$OLD_NAME;
     done
     for bin in polkadot-execute-worker polkadot-prepare-worker; do
       OLD_NAME="$bin"
       echo "downloading $bin as $OLD_NAME in $BIN_DIR";
-      curl -L -o $BIN_DIR/$OLD_NAME https://github.com/pezkuwichain/pezkuwichain-sdk/releases/download/polkadot-v1.7.0/$bin
+      curl -L -o $BIN_DIR/$OLD_NAME https://github.com/pezkuwichain/pezkuwi-sdk/releases/download/polkadot-v1.7.0/$bin
       chmod 755 $BIN_DIR/$OLD_NAME;
     done
     ls -ltr $BIN_DIR
@@ -222,13 +222,13 @@
     for bin in polkadot polkadot-teyrchain; do
       OLD_NAME="$bin-old"
       echo "downloading $bin as $OLD_NAME in $BIN_DIR";
-      curl -L -o $BIN_DIR/$OLD_NAME https://github.com/pezkuwichain/pezkuwichain-sdk/releases/download/polkadot-stable2503/$bin
+      curl -L -o $BIN_DIR/$OLD_NAME https://github.com/pezkuwichain/pezkuwi-sdk/releases/download/polkadot-stable2503/$bin
       chmod 755 $BIN_DIR/$OLD_NAME;
     done
     for bin in polkadot-execute-worker polkadot-prepare-worker; do
       OLD_NAME="$bin"
       echo "downloading $bin as $OLD_NAME in $BIN_DIR";
-      curl -L -o $BIN_DIR/$OLD_NAME https://github.com/pezkuwichain/pezkuwichain-sdk/releases/download/polkadot-stable2503/$bin
+      curl -L -o $BIN_DIR/$OLD_NAME https://github.com/pezkuwichain/pezkuwi-sdk/releases/download/polkadot-stable2503/$bin
       chmod 755 $BIN_DIR/$OLD_NAME;
     done
     ls -ltr $BIN_DIR

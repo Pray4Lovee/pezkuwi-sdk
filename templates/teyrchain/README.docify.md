@@ -2,12 +2,12 @@
 
 # Pezkuwi SDK's Teyrchain Template
 
-<img height="70px" alt="Pezkuwi SDK Logo" src="https://github.com/pezkuwichain/pezkuwichain-sdk/raw/master/docs/images/Polkadot_Logo_Horizontal_Pink_White.png#gh-dark-mode-only"/>
-<img height="70px" alt="Pezkuwi SDK Logo" src="https://github.com/pezkuwichain/pezkuwichain-sdk/raw/master/docs/images/Polkadot_Logo_Horizontal_Pink_Black.png#gh-light-mode-only"/>
+<img height="70px" alt="Pezkuwi SDK Logo" src="https://github.com/pezkuwichain/pezkuwi-sdk/raw/master/docs/images/Polkadot_Logo_Horizontal_Pink_White.png#gh-dark-mode-only"/>
+<img height="70px" alt="Pezkuwi SDK Logo" src="https://github.com/pezkuwichain/pezkuwi-sdk/raw/master/docs/images/Polkadot_Logo_Horizontal_Pink_Black.png#gh-light-mode-only"/>
 
 > This is a template for creating a [teyrchain](https://wiki.network.pezkuwichain.io/docs/learn-parachains) based on Pezkuwi SDK.
 >
-> This template is automatically updated after releases in the main [Pezkuwi SDK monorepo](https://github.com/pezkuwichain/pezkuwichain-sdk).
+> This template is automatically updated after releases in the main [Pezkuwi SDK monorepo](https://github.com/pezkuwichain/pezkuwi-sdk).
 
 </div>
 
@@ -66,7 +66,7 @@ A Pezkuwi SDK based project such as this one consists of:
 Fetch teyrchain template code:
 
 ```sh
-git clone https://github.com/pezkuwichain/pezkuwichain-sdk-parachain-template.git teyrchain-template
+git clone https://github.com/pezkuwichain/pezkuwi-sdk-parachain-template.git teyrchain-template
 
 cd teyrchain-template
 ```
@@ -141,7 +141,7 @@ We can install `zombienet` as described [here](https://paritytech.github.io/zomb
 #### Relay chain prerequisites
 
 Download the `pezkuwi` (and the accompanying `pezkuwi-prepare-worker` and `pezkuwi-execute-worker`) binaries from
-[Pezkuwi SDK releases](https://github.com/pezkuwichain/pezkuwichain-sdk/releases). Then expose them on `PATH` like so:
+[Pezkuwi SDK releases](https://github.com/pezkuwichain/pezkuwi-sdk/releases). Then expose them on `PATH` like so:
 
 ```sh
 export PATH="$PATH:<path/to/binaries>"
@@ -247,22 +247,22 @@ relay chain network (see [Teyrchain Template node](#teyrchain-template-node) set
 
 ## Contributing
 
-- 🔄 This template is automatically updated after releases in the main [Pezkuwi SDK monorepo](https://github.com/pezkuwichain/pezkuwichain-sdk).
+- 🔄 This template is automatically updated after releases in the main [Pezkuwi SDK monorepo](https://github.com/pezkuwichain/pezkuwi-sdk).
 
-- ➡️ Any pull requests should be directed to this [source](https://github.com/pezkuwichain/pezkuwichain-sdk/tree/master/templates/parachain).
+- ➡️ Any pull requests should be directed to this [source](https://github.com/pezkuwichain/pezkuwi-sdk/tree/master/templates/parachain).
 
 - 😇 Please refer to the monorepo's
-  [contribution guidelines](https://github.com/pezkuwichain/pezkuwichain-sdk/blob/master/docs/contributor/CONTRIBUTING.md) and
-  [Code of Conduct](https://github.com/pezkuwichain/pezkuwichain-sdk/blob/master/docs/contributor/CODE_OF_CONDUCT.md).
+  [contribution guidelines](https://github.com/pezkuwichain/pezkuwi-sdk/blob/master/docs/contributor/CONTRIBUTING.md) and
+  [Code of Conduct](https://github.com/pezkuwichain/pezkuwi-sdk/blob/master/docs/contributor/CODE_OF_CONDUCT.md).
 
 ## Getting Help
 
 - 🧑‍🏫 To learn about Pezkuwi in general, [docs.Pezkuwi.com](https://docs.pezkuwichain.io/) website is a good starting point.
 
-- 🧑‍🔧 For technical introduction, [here](https://github.com/pezkuwichain/pezkuwichain-sdk#-documentation) are
+- 🧑‍🔧 For technical introduction, [here](https://github.com/pezkuwichain/pezkuwi-sdk#-documentation) are
   the Pezkuwi SDK documentation resources.
 
-- 👥 Additionally, there are [GitHub issues](https://github.com/pezkuwichain/pezkuwichain-sdk/issues) and
+- 👥 Additionally, there are [GitHub issues](https://github.com/pezkuwichain/pezkuwi-sdk/issues) and
   [Substrate StackExchange](https://exchange.pezkuwichain.app/).
 - 👥You can also reach out on the [Official Pezkuwi discord server](https://polkadot-discord.w3f.tools/)
 - 🧑Reach out on [Telegram](https://t.me/substratedevs) for more questions and discussions

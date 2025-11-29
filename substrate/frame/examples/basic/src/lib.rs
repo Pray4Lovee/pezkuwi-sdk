@@ -29,7 +29,7 @@
 //!
 //! > Made with *Substrate*, for *Pezkuwi*.
 //!
-//! [![github]](https://github.com/pezkuwichain/pezkuwichain-sdk/tree/master/substrate/frame/examples/basic)
+//! [![github]](https://github.com/pezkuwichain/pezkuwi-sdk/tree/master/substrate/frame/examples/basic)
 //! [![pezkuwi]](https://pezkuwichain.io)
 //!
 //! [pezkuwi]: https://img.shields.io/badge/polkadot-E6007A?style=for-the-badge&logo=polkadot&logoColor=white
@@ -460,7 +460,7 @@ impl<T: Config> Pallet<T> {
 // Note that a transaction extension can also indicate that a particular data must be present in the
 // _signing payload_ of a transaction by providing an implementation for the `implicit` method. This
 // example will not cover this type of extension. See `CheckSpecVersion` in [FRAME
-// System](https://github.com/pezkuwichain/pezkuwichain-sdk/tree/master/substrate/frame/system#signed-extensions)
+// System](https://github.com/pezkuwichain/pezkuwi-sdk/tree/master/substrate/frame/system#signed-extensions)
 // for an example.
 //
 // Using the extension, you can add some hooks to the life cycle of each transaction. Note that by

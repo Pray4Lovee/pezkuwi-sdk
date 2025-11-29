@@ -1496,7 +1496,7 @@ pub type Migrations = (
 );
 
 /// Asset Hub Zagros has some undecodable storage, delete it.
-/// See <https://github.com/pezkuwichain/pezkuwichain-sdk/issues/2241> for more info.
+/// See <https://github.com/pezkuwichain/pezkuwi-sdk/issues/2241> for more info.
 ///
 /// First we remove the bad Hold, then the bad NFT collection.
 pub struct DeleteUndecodableStorage;
@@ -1567,7 +1567,7 @@ impl frame_support::traits::OnRuntimeUpgrade for DeleteUndecodableStorage {
 /// Migration to initialize storage versions for pallets added after genesis.
 ///
 /// Ideally this would be done automatically (see
-/// <https://github.com/pezkuwichain/pezkuwichain-sdk/pull/1297>), but it probably won't be ready for some
+/// <https://github.com/pezkuwichain/pezkuwi-sdk/pull/1297>), but it probably won't be ready for some
 /// time and it's beneficial to get try-runtime-cli on-runtime-upgrade checks into the CI, so we're
 /// doing it manually.
 pub struct InitStorageVersions;
