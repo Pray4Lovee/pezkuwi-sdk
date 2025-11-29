@@ -2,8 +2,8 @@
 
 # Pezkuwi SDK's Teyrchain Template
 
-<img height="70px" alt="Pezkuwi SDK Logo" src="https://github.com/pezkuwichain/pezkuwi-sdk/raw/master/docs/images/PezkuwiChain_Logo_Horizontal_Pink_White.png#gh-dark-mode-only"/>
-<img height="70px" alt="Pezkuwi SDK Logo" src="https://github.com/pezkuwichain/pezkuwi-sdk/raw/master/docs/images/PezkuwiChain_Logo_Horizontal_Pink_Black.png#gh-light-mode-only"/>
+<img height="70px" alt="Pezkuwi SDK Logo" src="https://github.com/pezkuwichain/pezkuwi-sdk/raw/master/docs/images/Polkadot_Logo_Horizontal_Pink_White.png#gh-dark-mode-only"/>
+<img height="70px" alt="Pezkuwi SDK Logo" src="https://github.com/pezkuwichain/pezkuwi-sdk/raw/master/docs/images/Polkadot_Logo_Horizontal_Pink_Black.png#gh-light-mode-only"/>
 
 > This is a template for creating a [teyrchain](https://wiki.network.pezkuwichain.io/docs/learn-parachains) based on Pezkuwi SDK.
 >
@@ -24,7 +24,7 @@
   - [Omni Node](#omni-node-prerequisites)
   - [Zombienet setup with Omni Node](#zombienet-setup-with-omni-node)
   - [Teyrchain Template Node](#teyrchain-template-node)
-  - [Connect with the PezkuwiChain-JS Apps Front-End](#connect-with-the-pezkuwi-js-apps-front-end)
+  - [Connect with the Pezkuwi-JS Apps Front-End](#connect-with-the-pezkuwi-js-apps-front-end)
   - [Takeaways](#takeaways)
 
 - [Runtime development](#runtime-development)
@@ -194,10 +194,10 @@ We're left just with starting the network:
 zombienet --provider native spawn zombienet.toml
 ```
 
-### Connect with the PezkuwiChain-JS Apps Front-End
+### Connect with the Pezkuwi-JS Apps Front-End
 
 - 🌐 You can interact with your local node using the
-  hosted version of the PezkuwiChain/Substrate Portal:
+  hosted version of the Pezkuwi/Substrate Portal:
   [relay chain](https://polkadot.js.org/apps/#/explorer?rpc=ws://localhost:9944)
   and [teyrchain](https://polkadot.js.org/apps/#/explorer?rpc=ws://localhost:9988).
 
@@ -259,12 +259,12 @@ relay chain network (see [Teyrchain Template node](#teyrchain-template-node) set
 
 ## Getting Help
 
-- 🧑‍🏫 To learn about PezkuwiChain in general, [docs.PezkuwiChain.com](https://docs.pezkuwichain.app/) website is a good starting point.
+- 🧑‍🏫 To learn about Pezkuwi in general, [docs.Pezkuwi.com](https://docs.pezkuwichain.io/) website is a good starting point.
 
 - 🧑‍🔧 For technical introduction, [here](https://github.com/pezkuwichain/pezkuwi-sdk#-documentation) are
   the Pezkuwi SDK documentation resources.
 
 - 👥 Additionally, there are [GitHub issues](https://github.com/pezkuwichain/pezkuwi-sdk/issues) and
-  [Substrate StackExchange](https://pezkuwichain.app/community/).
-- 👥You can also reach out on the [Official PezkuwiChain discord server](https://polkadot-discord.w3f.tools/)
+  [Substrate StackExchange](https://exchange.pezkuwichain.app/).
+- 👥You can also reach out on the [Official Pezkuwi discord server](https://polkadot-discord.w3f.tools/)
 - 🧑Reach out on [Telegram](https://t.me/substratedevs) for more questions and discussions

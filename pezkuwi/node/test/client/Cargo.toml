@@ -39,10 +39,10 @@ sp-keyring = { workspace = true, default-features = true }
 
 [features]
 runtime-benchmarks = [
-	"frame-benchmarking/runtime-benchmarks",
-	"pezkuwi-primitives/runtime-benchmarks",
-	"pezkuwi-test-runtime/runtime-benchmarks",
-	"pezkuwi-test-service/runtime-benchmarks",
-	"sc-service/runtime-benchmarks",
-	"sp-runtime/runtime-benchmarks",
+  "frame-benchmarking/runtime-benchmarks",
+  "pezkuwi-primitives/runtime-benchmarks",
+  "pezkuwi-test-runtime/runtime-benchmarks",
+  "pezkuwi-test-service/runtime-benchmarks",
+  "sc-service/runtime-benchmarks",
+  "sp-runtime/runtime-benchmarks",
 ]

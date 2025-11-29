@@ -58,16 +58,16 @@ tokio = { features = ["macros"], workspace = true, default-features = true }
 [features]
 runtime-metrics = ["pezkuwi-test-runtime/runtime-metrics"]
 runtime-benchmarks = [
-	"frame-system/runtime-benchmarks",
-	"pallet-balances/runtime-benchmarks",
-	"pallet-staking/runtime-benchmarks",
-	"pallet-transaction-payment/runtime-benchmarks",
-	"pezkuwi-teyrchain-primitives/runtime-benchmarks",
-	"pezkuwi-primitives/runtime-benchmarks",
-	"pezkuwi-runtime-common/runtime-benchmarks",
-	"pezkuwi-runtime-teyrchains/runtime-benchmarks",
-	"pezkuwi-service/runtime-benchmarks",
-	"pezkuwi-test-runtime/runtime-benchmarks",
-	"sc-service/runtime-benchmarks",
-	"sp-runtime/runtime-benchmarks",
+  "frame-system/runtime-benchmarks",
+  "pallet-balances/runtime-benchmarks",
+  "pallet-staking/runtime-benchmarks",
+  "pallet-transaction-payment/runtime-benchmarks",
+  "pezkuwi-teyrchain-primitives/runtime-benchmarks",
+  "pezkuwi-primitives/runtime-benchmarks",
+  "pezkuwi-runtime-common/runtime-benchmarks",
+  "pezkuwi-runtime-teyrchains/runtime-benchmarks",
+  "pezkuwi-service/runtime-benchmarks",
+  "pezkuwi-test-runtime/runtime-benchmarks",
+  "sc-service/runtime-benchmarks",
+  "sp-runtime/runtime-benchmarks",
 ]

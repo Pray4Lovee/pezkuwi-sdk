@@ -28,10 +28,10 @@ cumulus-primitives-core = { workspace = true }
 [features]
 default = ["std"]
 std = [
-	"codec/std",
-	"cumulus-primitives-core/std",
-	"pezkuwi-primitives/std",
-	"sp-runtime/std",
-	"sp-state-machine/std",
-	"sp-trie/std",
+  "codec/std",
+  "cumulus-primitives-core/std",
+  "pezkuwi-primitives/std",
+  "sp-runtime/std",
+  "sp-state-machine/std",
+  "sp-trie/std",
 ]

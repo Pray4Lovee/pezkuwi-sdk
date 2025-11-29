@@ -29,6 +29,6 @@ thiserror = { workspace = true }
 
 [features]
 runtime-benchmarks = [
-	"sc-service/runtime-benchmarks",
-	"sp-runtime/runtime-benchmarks",
+  "sc-service/runtime-benchmarks",
+  "sp-runtime/runtime-benchmarks",
 ]

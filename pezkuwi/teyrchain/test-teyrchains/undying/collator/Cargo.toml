@@ -26,7 +26,9 @@ pezkuwi-erasure-coding = { workspace = true, default-features = true }
 pezkuwi-node-primitives = { workspace = true, default-features = true }
 pezkuwi-node-subsystem = { workspace = true, default-features = true }
 pezkuwi-primitives = { workspace = true, default-features = true }
-pezkuwi-service = { features = ["pezkuwichain-native"], workspace = true, default-features = true }
+pezkuwi-service = { features = [
+  "pezkuwichain-native",
+], workspace = true, default-features = true }
 test-teyrchain-undying = { workspace = true }
 
 sc-cli = { workspace = true, default-features = true }
@@ -35,7 +37,9 @@ sc-service = { workspace = true, default-features = true }
 sp-core = { workspace = true, default-features = true }
 
 [dev-dependencies]
-pezkuwi-node-core-pvf = { features = ["test-utils"], workspace = true, default-features = true }
+pezkuwi-node-core-pvf = { features = [
+  "test-utils",
+], workspace = true, default-features = true }
 pezkuwi-teyrchain-primitives = { workspace = true, default-features = true }
 pezkuwi-test-service = { workspace = true }
 

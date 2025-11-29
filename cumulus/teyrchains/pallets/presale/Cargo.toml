@@ -13,8 +13,13 @@ repository.workspace = true
 targets = ["x86_64-unknown-linux-gnu"]
 
 [dependencies]
-codec = { package = "parity-scale-codec", version = "3.6.12", default-features = false, features = ["derive", "max-encoded-len"] }
-scale-info = { default-features = false, features = ["derive"], workspace = true }
+codec = { package = "parity-scale-codec", version = "3.6.12", default-features = false, features = [
+  "derive",
+  "max-encoded-len",
+] }
+scale-info = { default-features = false, features = [
+  "derive",
+], workspace = true }
 serde = { features = ["alloc", "derive"], workspace = true }
 log = { version = "0.4.14", default-features = false }
 
@@ -35,29 +40,34 @@ pallet-balances = { workspace = true }
 [features]
 default = ["std"]
 std = [
-    "codec/std",
-    "scale-info/std",
-    "serde/std",
-    "log/std",
-    "frame-support/std",
-    "frame-system/std",
-    "sp-std/std",
-    "sp-runtime/std",
-    "pallet-assets/std",
-    "pallet-balances?/std",
-    "sp-core/std",
-    "sp-io/std",
-    "frame-benchmarking?/std",
+  "codec/std",
+  "scale-info/std",
+  "serde/std",
+  "log/std",
+  "frame-support/std",
+  "frame-system/std",
+  "sp-std/std",
+  "sp-runtime/std",
+  "pallet-assets/std",
+  "pallet-balances?/std",
+  "sp-core/std",
+  "sp-io/std",
+  "frame-benchmarking?/std",
 ]
 runtime-benchmarks = [
-    "frame-benchmarking/runtime-benchmarks",
-    "frame-support/runtime-benchmarks",
-    "frame-system/runtime-benchmarks",
-    "pallet-assets/runtime-benchmarks",
-    "pallet-balances",
-    "log/std",
+	"frame-benchmarking/runtime-benchmarks",
+	"frame-support/runtime-benchmarks",
+	"frame-system/runtime-benchmarks",
+	"pallet-assets/runtime-benchmarks",
+	"pallet-balances",
+	"log/std",
+	"pallet-balances?/runtime-benchmarks",
+	"sp-runtime/runtime-benchmarks"
 ]
 try-runtime = [
-    "frame-support/try-runtime",
-    "frame-system/try-runtime",
+	"frame-support/try-runtime",
+	"frame-system/try-runtime",
+	"pallet-assets/try-runtime",
+	"pallet-balances?/try-runtime",
+	"sp-runtime/try-runtime"
 ]

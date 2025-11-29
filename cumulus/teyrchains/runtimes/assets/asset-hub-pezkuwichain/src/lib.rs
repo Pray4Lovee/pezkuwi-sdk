@@ -127,7 +127,7 @@ impl_opaque_keys! {
 
 #[sp_version::runtime_version]
 pub const VERSION: RuntimeVersion = RuntimeVersion {
-	spec_name: alloc::borrow::Cow::Borrowed("statemine"),
+	spec_name: alloc::borrow::Cow::Borrowed("asset-hub-pezkuwichain"),
 	impl_name: alloc::borrow::Cow::Borrowed("statemine"),
 	authoring_version: 1,
 	spec_version: 1_020_001,
@@ -1125,10 +1125,10 @@ construct_runtime!(
 
 		// Asset Hub Custom Pallets (Phase 3) - Gemini
 		StakingScore: pallet_staking_score = 100,
-		TokenWrapper: pallet_token_wrapper = 101,
-		PezTreasury: pallet_pez_treasury = 102,
-		PezRewards: pallet_pez_rewards = 103,
-		Presale: pallet_presale = 104,
+		// TokenWrapper: pallet_token_wrapper = 101,
+		// PezTreasury: pallet_pez_treasury = 102,
+		// PezRewards: pallet_pez_rewards = 103,
+		// Presale: pallet_presale = 104,
 
 		// TODO: the pallet instance should be removed once all pools have migrated
 		// to the new account IDs.
@@ -1620,10 +1620,12 @@ impl_runtime_apis! {
 
 	
 	
+	/*
 	parameter_types! {
 	    pub const TokenWrapperPalletId: PalletId = PalletId(*b"tokwrap");
 	    pub const WrappedTokenAssetId: u32 = 0; // Asset ID for wHEZ (or a custom ID)
 	}
+	*/
 	
 	impl pallet_staking_score::Config for Runtime {
 	    type RuntimeEvent = RuntimeEvent;
@@ -1646,6 +1648,7 @@ impl_runtime_apis! {
 	    		}
 	    	}
 	    
+	    		/*
 	    		impl pallet_token_wrapper::Config for Runtime {
 	    			type RuntimeEvent = RuntimeEvent;
 	    			type WeightInfo = pallet_token_wrapper::weights::SubstrateWeight<Runtime>;
@@ -1654,16 +1657,19 @@ impl_runtime_apis! {
 	    			type Assets = Assets; // Using pallet_assets::Instance1
 	    			type PalletId = TokenWrapperPalletId;
 	    			type WrapperAssetId = WrappedTokenAssetId;
-	    		}	    		
-	    		parameter_types! {
-	    		    pub const PezAssetId: AssetIdForTrustBackedAssets = AssetIdForTrustBackedAssets::from(1); // Assuming PEZ is asset ID 1
-	    		    pub const TreasuryPalletId: PalletId = PalletId(*b"PezTreas");
-	    		    pub const IncentivePotId: PalletId = PalletId(*b"PezIncen");
-	    		    pub const GovernmentPotId: PalletId = PalletId(*b"PezGover");
-	    		    pub PresaleAccount: AccountId = PalletId(*b"PezPreAc").into_account_truncating();
-	    		            pub FounderAccount: AccountId = PalletId(*b"PezFounA").into_account_truncating();
-	    		        }
-	    		        
+	    		}
+	    		*/	    		
+	    			    			/*
+	    			    			parameter_types! {
+	    			    			    pub const PezAssetId: AssetIdForTrustBackedAssets = AssetIdForTrustBackedAssets::from(1); // Assuming PEZ is asset ID 1
+	    			    			    pub const TreasuryPalletId: PalletId = PalletId(*b"PezTreas");
+	    			    			    pub const IncentivePotId: PalletId = PalletId(*b"PezIncen");
+	    			    			    pub const GovernmentPotId: PalletId = PalletId(*b"PezGover");
+	    			    			    pub PresaleAccount: AccountId = PalletId(*b"PezPreAc").into_account_truncating();
+	    			    			            pub FounderAccount: AccountId = PalletId(*b"PezFounA").into_account_truncating();
+	    			    			        }
+	    			    			*/	    		        
+	    		        /*
 	    		        parameter_types! {
 	    		            pub ClawbackRecipient: AccountId = PalletId(*b"ClawBack").into_account_truncating();
 	    		            }
@@ -1677,7 +1683,9 @@ impl_runtime_apis! {
 	    		                    0 // Placeholder
 	    		                }
 	    		            }
+	    		        */
 	    		            
+	    		            /*
 	    		            impl pallet_pez_treasury::Config for Runtime {
 	    		            
 	    		                type RuntimeEvent = RuntimeEvent;
@@ -1701,9 +1709,11 @@ impl_runtime_apis! {
 	    		                type ForceOrigin = EnsureRoot<AccountId>;
 	    		            
 	    		            }
+	    		            */
 	    		            
 	    		            
 	    		            
+	    		            /*
 	    		            impl pallet_pez_rewards::Config for Runtime {
 	    		            
 	    		                type RuntimeEvent = RuntimeEvent;
@@ -1727,9 +1737,11 @@ impl_runtime_apis! {
 	    		                    type ItemId = ItemId; // From pallet-nfts
 	    		            
 	    		                }
+	    		            */
 	    		            
 	    		                
 	    		            
+	    		                /*
 	    		                parameter_types! {
 	    		            
 	    		                    pub const PresalePalletId: PalletId = PalletId(*b"PezPreSa");
@@ -1739,9 +1751,10 @@ impl_runtime_apis! {
 	    		                                        pub StakingRewardPoolAccount: AccountId = PalletId(*b"StkRewPo").into_account_truncating();
 	    		            
 	    		                                    }
+	    		                */
 	    		            
 	    		                                    
-	    		            
+	    		            /*
 	    		                                    impl pallet_presale::Config for Runtime {
 	    		            
 	    		                                    
@@ -1803,6 +1816,7 @@ impl_runtime_apis! {
 	    		                                    
 	    		            
 	    		                                    }
+	    		            */
 	    		            
 	    		                                    
 	    		            

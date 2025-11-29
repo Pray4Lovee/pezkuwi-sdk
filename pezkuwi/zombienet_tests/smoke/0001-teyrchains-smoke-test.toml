@@ -6,23 +6,23 @@ default_image = "{{ZOMBIENET_INTEGRATION_TEST_IMAGE}}"
 chain = "pezkuwichain-local"
 command = "pezkuwi"
 
-  [[relaychain.nodes]]
-  name = "alice"
-  args = [ "--alice", "-lruntime=debug,teyrchain=trace" ]
+[[relaychain.nodes]]
+name = "alice"
+args = ["--alice", "-lruntime=debug,teyrchain=trace"]
 
-  [[relaychain.nodes]]
-  name = "bob"
-  args = [ "--bob", "-lruntime=debug,teyrchain=trace" ]
+[[relaychain.nodes]]
+name = "bob"
+args = ["--bob", "-lruntime=debug,teyrchain=trace"]
 
 [[teyrchains]]
 id = 100
 addToGenesis = false
 
-  [teyrchains.collator]
-  name = "collator01"
-  image = "{{COL_IMAGE}}"
-  command = "adder-collator"
-  args = [ "-lruntime=debug,teyrchain=trace" ]
+[teyrchains.collator]
+name = "collator01"
+image = "{{COL_IMAGE}}"
+command = "adder-collator"
+args = ["-lruntime=debug,teyrchain=trace"]
 
 [types.Header]
 number = "u64"

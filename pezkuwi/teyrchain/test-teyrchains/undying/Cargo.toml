@@ -28,9 +28,9 @@ substrate-wasm-builder = { workspace = true, default-features = true }
 [features]
 default = ["std"]
 std = [
-	"codec/std",
-	"log/std",
-	"pezkuwi-teyrchain-primitives/std",
-	"pezkuwi-primitives/std",
-	"sp-io/std",
+  "codec/std",
+  "log/std",
+  "pezkuwi-teyrchain-primitives/std",
+  "pezkuwi-primitives/std",
+  "sp-io/std",
 ]

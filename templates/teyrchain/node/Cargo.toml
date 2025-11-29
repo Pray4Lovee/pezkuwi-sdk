@@ -35,16 +35,12 @@ pezkuwi-sdk = { workspace = true, features = ["substrate-build-script-utils"] }
 
 [features]
 default = ["std"]
-std = [
-	"log/std",
-	"teyrchain-template-runtime/std",
-	"pezkuwi-sdk/std",
-]
+std = ["log/std", "teyrchain-template-runtime/std", "pezkuwi-sdk/std"]
 runtime-benchmarks = [
-	"teyrchain-template-runtime/runtime-benchmarks",
-	"pezkuwi-sdk/runtime-benchmarks",
+  "teyrchain-template-runtime/runtime-benchmarks",
+  "pezkuwi-sdk/runtime-benchmarks",
 ]
 try-runtime = [
-	"teyrchain-template-runtime/try-runtime",
-	"pezkuwi-sdk/try-runtime",
+  "teyrchain-template-runtime/try-runtime",
+  "pezkuwi-sdk/try-runtime",
 ]

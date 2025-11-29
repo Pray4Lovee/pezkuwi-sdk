@@ -87,7 +87,7 @@ substrate-state-trie-migration-rpc = { workspace = true, default-features = true
 
 # Pezkuwi
 pezkuwi-cli = { workspace = true, default-features = true, features = [
-	"service",
+  "service",
 ] }
 pezkuwi-primitives = { workspace = true, default-features = true }
 
@@ -119,23 +119,23 @@ default = []
 pezkuwichain-native = ["pezkuwi-cli/pezkuwichain-native"]
 zagros-native = ["pezkuwi-cli/zagros-native"]
 runtime-benchmarks = [
-	"cumulus-primitives-core/runtime-benchmarks",
-	"frame-benchmarking-cli/runtime-benchmarks",
-	"frame-benchmarking/runtime-benchmarks",
-	"frame-support/runtime-benchmarks",
-	"pallet-transaction-payment/runtime-benchmarks",
-	"teyrchains-common/runtime-benchmarks",
-	"pezkuwi-cli/runtime-benchmarks",
-	"pezkuwi-primitives/runtime-benchmarks",
-	"sc-client-db/runtime-benchmarks",
-	"sc-service/runtime-benchmarks",
-	"sp-runtime/runtime-benchmarks",
+  "cumulus-primitives-core/runtime-benchmarks",
+  "frame-benchmarking-cli/runtime-benchmarks",
+  "frame-benchmarking/runtime-benchmarks",
+  "frame-support/runtime-benchmarks",
+  "pallet-transaction-payment/runtime-benchmarks",
+  "teyrchains-common/runtime-benchmarks",
+  "pezkuwi-cli/runtime-benchmarks",
+  "pezkuwi-primitives/runtime-benchmarks",
+  "sc-client-db/runtime-benchmarks",
+  "sc-service/runtime-benchmarks",
+  "sp-runtime/runtime-benchmarks",
 ]
 try-runtime = [
-	"frame-support/try-runtime",
-	"frame-try-runtime/try-runtime",
-	"pallet-transaction-payment/try-runtime",
-	"teyrchains-common/try-runtime",
-	"pezkuwi-cli/try-runtime",
-	"sp-runtime/try-runtime",
+  "frame-support/try-runtime",
+  "frame-try-runtime/try-runtime",
+  "pallet-transaction-payment/try-runtime",
+  "teyrchains-common/try-runtime",
+  "pezkuwi-cli/try-runtime",
+  "sp-runtime/try-runtime",
 ]

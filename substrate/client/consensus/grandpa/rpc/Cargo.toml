@@ -14,9 +14,15 @@ workspace = true
 
 [dependencies]
 codec = { features = ["derive"], workspace = true, default-features = true }
-finality-grandpa = { features = ["derive-codec"], workspace = true, default-features = true }
+finality-grandpa = { features = [
+  "derive-codec",
+], workspace = true, default-features = true }
 futures = { workspace = true }
-jsonrpsee = { features = ["client-core", "macros", "server-core"], workspace = true }
+jsonrpsee = { features = [
+  "client-core",
+  "macros",
+  "server-core",
+], workspace = true }
 log = { workspace = true, default-features = true }
 sc-client-api = { workspace = true, default-features = true }
 sc-consensus-grandpa = { workspace = true, default-features = true }
@@ -29,7 +35,9 @@ thiserror = { workspace = true }
 
 [dev-dependencies]
 sc-block-builder = { workspace = true, default-features = true }
-sc-rpc = { features = ["test-helpers"], workspace = true, default-features = true }
+sc-rpc = { features = [
+  "test-helpers",
+], workspace = true, default-features = true }
 sp-consensus-grandpa = { workspace = true, default-features = true }
 sp-keyring = { workspace = true, default-features = true }
 substrate-test-runtime-client = { workspace = true }

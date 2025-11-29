@@ -33,13 +33,13 @@ cumulus-primitives-core = { workspace = true }
 [features]
 default = ["std"]
 std = [
-	"cumulus-primitives-core/std",
-	"frame-support/std",
-	"pezkuwi-core-primitives/std",
-	"pezkuwichain-runtime-constants?/std",
-	"sp-runtime/std",
-	"zagros-runtime-constants?/std",
-	"xcm/std",
+  "cumulus-primitives-core/std",
+  "frame-support/std",
+  "pezkuwi-core-primitives/std",
+  "pezkuwichain-runtime-constants?/std",
+  "sp-runtime/std",
+  "zagros-runtime-constants?/std",
+  "xcm/std",
 ]
 
 # Test runtimes specific features.

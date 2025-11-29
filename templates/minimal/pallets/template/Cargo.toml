@@ -17,7 +17,10 @@ targets = ["x86_64-unknown-linux-gnu"]
 
 [dependencies]
 codec = { features = ["derive"], workspace = true }
-pezkuwi-sdk = { workspace = true, default-features = false, features = ["experimental", "runtime"] }
+pezkuwi-sdk = { workspace = true, default-features = false, features = [
+  "experimental",
+  "runtime",
+] }
 scale-info = { features = ["derive"], workspace = true }
 
 [features]

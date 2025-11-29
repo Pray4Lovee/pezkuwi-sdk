@@ -32,7 +32,9 @@ hex = { workspace = true, default-features = true }
 kvdb-memorydb = { workspace = true }
 pezkuwi-availability-bitfield-distribution = { workspace = true, default-features = true }
 pezkuwi-availability-distribution = { workspace = true, default-features = true }
-pezkuwi-availability-recovery = { features = ["subsystem-benchmarks"], workspace = true, default-features = true }
+pezkuwi-availability-recovery = { features = [
+  "subsystem-benchmarks",
+], workspace = true, default-features = true }
 pezkuwi-dispute-distribution = { workspace = true, default-features = true }
 pezkuwi-node-core-av-store = { workspace = true, default-features = true }
 pezkuwi-node-core-dispute-coordinator = { workspace = true, default-features = true }
@@ -52,9 +54,15 @@ sha1 = { workspace = true }
 sp-core = { workspace = true, default-features = true }
 sp-keystore = { workspace = true, default-features = true }
 sp-tracing = { workspace = true }
-tikv-jemallocator = { features = ["profiling", "unprefixed_malloc_on_supported_platforms"], workspace = true, optional = true }
+tikv-jemallocator = { features = [
+  "profiling",
+  "unprefixed_malloc_on_supported_platforms",
+], workspace = true, optional = true }
 
-codec = { features = ["derive", "std"], workspace = true, default-features = true }
+codec = { features = [
+  "derive",
+  "std",
+], workspace = true, default-features = true }
 itertools = { workspace = true }
 pezkuwi-node-metrics = { workspace = true, default-features = true }
 pezkuwi-node-subsystem-test-helpers = { workspace = true }
@@ -70,7 +78,10 @@ serde_yaml = { workspace = true }
 sp-application-crypto = { workspace = true, default-features = true }
 sp-consensus = { workspace = true, default-features = true }
 sp-keyring = { workspace = true, default-features = true }
-tokio = { features = ["parking_lot", "rt-multi-thread"], workspace = true, default-features = true }
+tokio = { features = [
+  "parking_lot",
+  "rt-multi-thread",
+], workspace = true, default-features = true }
 
 pezkuwi-approval-distribution = { workspace = true, default-features = true }
 pezkuwi-node-core-approval-voting = { workspace = true, default-features = true }
@@ -88,6 +99,4 @@ strum = { features = ["derive"], workspace = true, default-features = true }
 
 [features]
 default = []
-memprofile = [
-	"dep:tikv-jemallocator",
-]
+memprofile = ["dep:tikv-jemallocator"]

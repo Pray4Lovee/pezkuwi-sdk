@@ -31,10 +31,6 @@ pub use bp_header_chain;
 #[cfg(feature = "bp-messages")]
 pub use bp_messages;
 
-/// Primitives of teyrchains module.
-#[cfg(feature = "bp-teyrchains")]
-pub use bp_teyrchains;
-
 /// Primitives of Pezkuwi-like runtime.
 #[cfg(feature = "bp-pezkuwi-core")]
 pub use bp_pezkuwi_core;
@@ -50,6 +46,10 @@ pub use bp_runtime;
 /// Utilities for testing substrate-based runtime bridge code.
 #[cfg(feature = "bp-test-utils")]
 pub use bp_test_utils;
+
+/// Primitives of teyrchains module.
+#[cfg(feature = "bp-teyrchains")]
+pub use bp_teyrchains;
 
 /// Primitives of the xcm-bridge-hub pallet.
 #[cfg(feature = "bp-xcm-bridge-hub")]
@@ -104,11 +104,6 @@ pub use cumulus_client_consensus_relay_chain;
 #[cfg(feature = "cumulus-client-network")]
 pub use cumulus_client_network;
 
-/// Inherent that needs to be present in every teyrchain block. Contains messages and a relay
-/// chain storage-proof.
-#[cfg(feature = "cumulus-client-teyrchain-inherent")]
-pub use cumulus_client_teyrchain_inherent;
-
 /// Teyrchain PoV recovery.
 #[cfg(feature = "cumulus-client-pov-recovery")]
 pub use cumulus_client_pov_recovery;
@@ -116,6 +111,11 @@ pub use cumulus_client_pov_recovery;
 /// Common functions used to assemble the components of a teyrchain node.
 #[cfg(feature = "cumulus-client-service")]
 pub use cumulus_client_service;
+
+/// Inherent that needs to be present in every teyrchain block. Contains messages and a relay
+/// chain storage-proof.
+#[cfg(feature = "cumulus-client-teyrchain-inherent")]
+pub use cumulus_client_teyrchain_inherent;
 
 /// AURA consensus extension pallet for teyrchains.
 #[cfg(feature = "cumulus-pallet-aura-ext")]
@@ -125,14 +125,6 @@ pub use cumulus_pallet_aura_ext;
 #[cfg(feature = "cumulus-pallet-dmp-queue")]
 pub use cumulus_pallet_dmp_queue;
 
-/// Base pallet for cumulus-based teyrchains.
-#[cfg(feature = "cumulus-pallet-teyrchain-system")]
-pub use cumulus_pallet_teyrchain_system;
-
-/// Proc macros provided by the teyrchain-system pallet.
-#[cfg(feature = "cumulus-pallet-teyrchain-system-proc-macro")]
-pub use cumulus_pallet_teyrchain_system_proc_macro;
-
 /// FRAME sessions pallet benchmarking.
 #[cfg(feature = "cumulus-pallet-session-benchmarking")]
 pub use cumulus_pallet_session_benchmarking;
@@ -140,6 +132,14 @@ pub use cumulus_pallet_session_benchmarking;
 /// Adds functionality to migrate from a Solo to a Teyrchain.
 #[cfg(feature = "cumulus-pallet-solo-to-para")]
 pub use cumulus_pallet_solo_to_para;
+
+/// Base pallet for cumulus-based teyrchains.
+#[cfg(feature = "cumulus-pallet-teyrchain-system")]
+pub use cumulus_pallet_teyrchain_system;
+
+/// Proc macros provided by the teyrchain-system pallet.
+#[cfg(feature = "cumulus-pallet-teyrchain-system-proc-macro")]
+pub use cumulus_pallet_teyrchain_system_proc_macro;
 
 /// pallet and transaction extensions for accurate proof size reclaim.
 #[cfg(feature = "cumulus-pallet-weight-reclaim")]
@@ -165,11 +165,6 @@ pub use cumulus_primitives_aura;
 #[cfg(feature = "cumulus-primitives-core")]
 pub use cumulus_primitives_core;
 
-/// Inherent that needs to be present in every teyrchain block. Contains messages and a relay
-/// chain storage-proof.
-#[cfg(feature = "cumulus-primitives-teyrchain-inherent")]
-pub use cumulus_primitives_teyrchain_inherent;
-
 /// Hostfunction exposing storage proof size to the runtime.
 #[cfg(feature = "cumulus-primitives-proof-size-hostfunction")]
 pub use cumulus_primitives_proof_size_hostfunction;
@@ -177,6 +172,11 @@ pub use cumulus_primitives_proof_size_hostfunction;
 /// Utilities to reclaim storage weight.
 #[cfg(feature = "cumulus-primitives-storage-weight-reclaim")]
 pub use cumulus_primitives_storage_weight_reclaim;
+
+/// Inherent that needs to be present in every teyrchain block. Contains messages and a relay
+/// chain storage-proof.
+#[cfg(feature = "cumulus-primitives-teyrchain-inherent")]
+pub use cumulus_primitives_teyrchain_inherent;
 
 /// Provides timestamp related functionality for teyrchains.
 #[cfg(feature = "cumulus-primitives-timestamp")]
@@ -394,13 +394,13 @@ pub use pallet_bridge_grandpa;
 #[cfg(feature = "pallet-bridge-messages")]
 pub use pallet_bridge_messages;
 
-/// Module that allows bridged relay chains to exchange information on their teyrchains' heads.
-#[cfg(feature = "pallet-bridge-teyrchains")]
-pub use pallet_bridge_teyrchains;
-
 /// Module used to store relayer rewards and coordinate relayers set.
 #[cfg(feature = "pallet-bridge-relayers")]
 pub use pallet_bridge_relayers;
+
+/// Module that allows bridged relay chains to exchange information on their teyrchains' heads.
+#[cfg(feature = "pallet-bridge-teyrchains")]
+pub use pallet_bridge_teyrchains;
 
 /// Brokerage tool for managing Pezkuwi Core scheduling.
 #[cfg(feature = "pallet-broker")]
@@ -811,14 +811,6 @@ pub use pallet_xcm_bridge_hub_router;
 #[cfg(feature = "pallet-xcm-precompiles")]
 pub use pallet_xcm_precompiles;
 
-/// Logic which is common to all teyrchain runtimes.
-#[cfg(feature = "teyrchains-common")]
-pub use teyrchains_common;
-
-/// Utils for Runtimes testing.
-#[cfg(feature = "teyrchains-runtimes-test-utils")]
-pub use teyrchains_runtimes_test_utils;
-
 /// Pezkuwi Approval Distribution subsystem for the distribution of assignments and approvals
 /// for approval checks on candidates over the network.
 #[cfg(feature = "pezkuwi-approval-distribution")]
@@ -843,8 +835,7 @@ pub use pezkuwi_availability_recovery;
 #[cfg(feature = "pezkuwi-cli")]
 pub use pezkuwi_cli;
 
-/// Pezkuwi Collator Protocol subsystem. Allows collators and validators to talk to each
-/// other.
+/// Pezkuwi Collator Protocol subsystem. Allows collators and validators to talk to each other.
 #[cfg(feature = "pezkuwi-collator-protocol")]
 pub use pezkuwi_collator_protocol;
 
@@ -852,8 +843,8 @@ pub use pezkuwi_collator_protocol;
 #[cfg(feature = "pezkuwi-core-primitives")]
 pub use pezkuwi_core_primitives;
 
-/// Pezkuwi Dispute Distribution subsystem, which ensures all concerned validators are aware
-/// of a dispute and have the relevant votes.
+/// Pezkuwi Dispute Distribution subsystem, which ensures all concerned validators are aware of
+/// a dispute and have the relevant votes.
 #[cfg(feature = "pezkuwi-dispute-distribution")]
 pub use pezkuwi_dispute_distribution;
 
@@ -914,10 +905,6 @@ pub use pezkuwi_node_core_chain_selection;
 #[cfg(feature = "pezkuwi-node-core-dispute-coordinator")]
 pub use pezkuwi_node_core_dispute_coordinator;
 
-/// Teyrchains inherent data provider for Pezkuwi node.
-#[cfg(feature = "pezkuwi-node-core-teyrchains-inherent")]
-pub use pezkuwi_node_core_teyrchains_inherent;
-
 /// The Prospective Teyrchains subsystem. Tracks and handles prospective teyrchain fragments.
 #[cfg(feature = "pezkuwi-node-core-prospective-teyrchains")]
 pub use pezkuwi_node_core_prospective_teyrchains;
@@ -956,6 +943,10 @@ pub use pezkuwi_node_core_pvf_prepare_worker;
 #[cfg(feature = "pezkuwi-node-core-runtime-api")]
 pub use pezkuwi_node_core_runtime_api;
 
+/// Teyrchains inherent data provider for Pezkuwi node.
+#[cfg(feature = "pezkuwi-node-core-teyrchains-inherent")]
+pub use pezkuwi_node_core_teyrchains_inherent;
+
 /// Subsystem metric helpers.
 #[cfg(feature = "pezkuwi-node-metrics")]
 pub use pezkuwi_node_metrics;
@@ -987,10 +978,6 @@ pub use pezkuwi_omni_node_lib;
 /// System overseer of the Pezkuwi node.
 #[cfg(feature = "pezkuwi-overseer")]
 pub use pezkuwi_overseer;
-
-/// Types and utilities for creating and working with teyrchains.
-#[cfg(feature = "pezkuwi-teyrchain-primitives")]
-pub use pezkuwi_teyrchain_primitives;
 
 /// Shared primitives used by Pezkuwi runtime.
 #[cfg(feature = "pezkuwi-primitives")]
@@ -1031,6 +1018,10 @@ pub use pezkuwi_statement_distribution;
 /// Stores messages other authorities issue about candidates in Pezkuwi.
 #[cfg(feature = "pezkuwi-statement-table")]
 pub use pezkuwi_statement_table;
+
+/// Types and utilities for creating and working with teyrchains.
+#[cfg(feature = "pezkuwi-teyrchain-primitives")]
+pub use pezkuwi_teyrchain_primitives;
 
 /// Collection of allocator implementations.
 #[cfg(feature = "sc-allocator")]
@@ -1547,6 +1538,14 @@ pub use substrate_wasm_builder;
 /// Common constants for Testnet Teyrchains runtimes.
 #[cfg(feature = "testnet-teyrchains-constants")]
 pub use testnet_teyrchains_constants;
+
+/// Logic which is common to all teyrchain runtimes.
+#[cfg(feature = "teyrchains-common")]
+pub use teyrchains_common;
+
+/// Utils for Runtimes testing.
+#[cfg(feature = "teyrchains-runtimes-test-utils")]
+pub use teyrchains_runtimes_test_utils;
 
 /// Stick logs together with the TraceID as provided by tempo.
 #[cfg(feature = "tracing-gum")]

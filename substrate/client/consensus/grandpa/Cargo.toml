@@ -22,7 +22,9 @@ array-bytes = { workspace = true, default-features = true }
 async-trait = { workspace = true }
 codec = { features = ["derive"], workspace = true, default-features = true }
 dyn-clone = { workspace = true }
-finality-grandpa = { features = ["derive-codec"], workspace = true, default-features = true }
+finality-grandpa = { features = [
+  "derive-codec",
+], workspace = true, default-features = true }
 fork-tree = { workspace = true, default-features = true }
 futures = { workspace = true }
 futures-timer = { workspace = true }
@@ -57,7 +59,10 @@ thiserror = { workspace = true }
 
 [dev-dependencies]
 assert_matches = { workspace = true }
-finality-grandpa = { features = ["derive-codec", "test-helpers"], workspace = true, default-features = true }
+finality-grandpa = { features = [
+  "derive-codec",
+  "test-helpers",
+], workspace = true, default-features = true }
 sc-network-test = { workspace = true }
 sp-keyring = { workspace = true, default-features = true }
 sp-tracing = { workspace = true, default-features = true }

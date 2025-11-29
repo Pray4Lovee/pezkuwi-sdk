@@ -37,7 +37,20 @@ fnv = { workspace = true }
 futures = { workspace = true }
 futures-timer = { workspace = true }
 ip_network = { workspace = true }
-libp2p = { features = ["dns", "identify", "kad", "macros", "mdns", "noise", "ping", "request-response", "tcp", "tokio", "websocket", "yamux"], workspace = true }
+libp2p = { features = [
+  "dns",
+  "identify",
+  "kad",
+  "macros",
+  "mdns",
+  "noise",
+  "ping",
+  "request-response",
+  "tcp",
+  "tokio",
+  "websocket",
+  "yamux",
+], workspace = true }
 linked_hash_set = { workspace = true }
 litep2p = { workspace = true }
 log = { workspace = true, default-features = true }
@@ -61,9 +74,15 @@ sp-blockchain = { workspace = true, default-features = true }
 sp-core = { workspace = true, default-features = true }
 sp-runtime = { workspace = true, default-features = true }
 thiserror = { workspace = true }
-tokio = { features = ["macros", "sync"], workspace = true, default-features = true }
+tokio = { features = [
+  "macros",
+  "sync",
+], workspace = true, default-features = true }
 tokio-stream = { workspace = true }
-unsigned-varint = { features = ["asynchronous_codec", "futures"], workspace = true }
+unsigned-varint = { features = [
+  "asynchronous_codec",
+  "futures",
+], workspace = true }
 void = { workspace = true }
 wasm-timer = { workspace = true }
 zeroize = { workspace = true, default-features = true }
@@ -78,10 +97,15 @@ sp-tracing = { workspace = true, default-features = true }
 substrate-test-runtime = { workspace = true }
 substrate-test-runtime-client = { workspace = true }
 tempfile = { workspace = true }
-tokio = { features = ["macros", "rt-multi-thread"], workspace = true, default-features = true }
+tokio = { features = [
+  "macros",
+  "rt-multi-thread",
+], workspace = true, default-features = true }
 tokio-util = { features = ["compat"], workspace = true }
 
-criterion = { workspace = true, default-features = true, features = ["async_tokio"] }
+criterion = { workspace = true, default-features = true, features = [
+  "async_tokio",
+] }
 
 [build-dependencies]
 prost-build = { workspace = true }

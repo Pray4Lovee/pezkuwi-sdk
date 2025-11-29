@@ -32,13 +32,13 @@ pezkuwi-primitives = { workspace = true }
 [features]
 default = ["std"]
 std = [
-	"bp-messages/std",
-	"bp-pezkuwi-core/std",
-	"bp-runtime/std",
-	"frame-support/std",
-	"frame-system/std",
-	"teyrchains-common/std",
-	"pezkuwi-primitives/std",
-	"sp-api/std",
-	"sp-std/std",
+  "bp-messages/std",
+  "bp-pezkuwi-core/std",
+  "bp-runtime/std",
+  "frame-support/std",
+  "frame-system/std",
+  "teyrchains-common/std",
+  "pezkuwi-primitives/std",
+  "sp-api/std",
+  "sp-std/std",
 ]

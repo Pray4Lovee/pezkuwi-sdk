@@ -23,7 +23,9 @@ path = "src/call.rs"
 [dependencies]
 honggfuzz = { workspace = true }
 
-pallet-nomination-pools = { features = ["fuzzing"], workspace = true, default-features = true }
+pallet-nomination-pools = { features = [
+  "fuzzing",
+], workspace = true, default-features = true }
 
 frame-support = { workspace = true, default-features = true }
 frame-system = { workspace = true, default-features = true }

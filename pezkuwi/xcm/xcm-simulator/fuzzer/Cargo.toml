@@ -18,7 +18,9 @@ name = "xcm-fuzzer"
 arbitrary = { workspace = true }
 codec = { workspace = true, default-features = true }
 honggfuzz = { workspace = true }
-scale-info = { features = ["derive"], workspace = true, default-features = true }
+scale-info = { features = [
+  "derive",
+], workspace = true, default-features = true }
 
 frame-executive = { workspace = true, default-features = true }
 frame-support = { workspace = true, default-features = true }
@@ -41,26 +43,26 @@ xcm-simulator = { workspace = true, default-features = true }
 
 [features]
 try-runtime = [
-	"frame-executive/try-runtime",
-	"frame-support/try-runtime",
-	"frame-system/try-runtime",
-	"frame-try-runtime/try-runtime",
-	"pallet-balances/try-runtime",
-	"pallet-message-queue/try-runtime",
-	"pallet-xcm/try-runtime",
-	"pezkuwi-runtime-teyrchains/try-runtime",
-	"sp-runtime/try-runtime",
+  "frame-executive/try-runtime",
+  "frame-support/try-runtime",
+  "frame-system/try-runtime",
+  "frame-try-runtime/try-runtime",
+  "pallet-balances/try-runtime",
+  "pallet-message-queue/try-runtime",
+  "pallet-xcm/try-runtime",
+  "pezkuwi-runtime-teyrchains/try-runtime",
+  "sp-runtime/try-runtime",
 ]
 runtime-benchmarks = [
-	"frame-support/runtime-benchmarks",
-	"frame-system/runtime-benchmarks",
-	"pallet-balances/runtime-benchmarks",
-	"pallet-message-queue/runtime-benchmarks",
-	"pallet-xcm/runtime-benchmarks",
-	"pezkuwi-teyrchain-primitives/runtime-benchmarks",
-	"pezkuwi-runtime-teyrchains/runtime-benchmarks",
-	"sp-runtime/runtime-benchmarks",
-	"xcm-builder/runtime-benchmarks",
-	"xcm-executor/runtime-benchmarks",
-	"xcm/runtime-benchmarks",
+  "frame-support/runtime-benchmarks",
+  "frame-system/runtime-benchmarks",
+  "pallet-balances/runtime-benchmarks",
+  "pallet-message-queue/runtime-benchmarks",
+  "pallet-xcm/runtime-benchmarks",
+  "pezkuwi-teyrchain-primitives/runtime-benchmarks",
+  "pezkuwi-runtime-teyrchains/runtime-benchmarks",
+  "sp-runtime/runtime-benchmarks",
+  "xcm-builder/runtime-benchmarks",
+  "xcm-executor/runtime-benchmarks",
+  "xcm/runtime-benchmarks",
 ]

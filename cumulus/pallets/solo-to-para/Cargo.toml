@@ -30,19 +30,19 @@ cumulus-pallet-teyrchain-system = { workspace = true }
 [features]
 default = ["std"]
 std = [
-	"codec/std",
-	"cumulus-pallet-teyrchain-system/std",
-	"frame-support/std",
-	"frame-system/std",
-	"pallet-sudo/std",
-	"pezkuwi-primitives/std",
-	"scale-info/std",
-	"sp-runtime/std",
+  "codec/std",
+  "cumulus-pallet-teyrchain-system/std",
+  "frame-support/std",
+  "frame-system/std",
+  "pallet-sudo/std",
+  "pezkuwi-primitives/std",
+  "scale-info/std",
+  "sp-runtime/std",
 ]
 try-runtime = [
-	"cumulus-pallet-teyrchain-system/try-runtime",
-	"frame-support/try-runtime",
-	"frame-system/try-runtime",
-	"pallet-sudo/try-runtime",
-	"sp-runtime/try-runtime",
+  "cumulus-pallet-teyrchain-system/try-runtime",
+  "frame-support/try-runtime",
+  "frame-system/try-runtime",
+  "pallet-sudo/try-runtime",
+  "sp-runtime/try-runtime",
 ]

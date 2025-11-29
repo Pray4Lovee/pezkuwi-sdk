@@ -41,7 +41,10 @@ sp-consensus-grandpa = { workspace = true, default-features = true }
 sp-core = { workspace = true, default-features = true }
 sp-runtime = { workspace = true, default-features = true }
 thiserror = { workspace = true }
-tokio = { features = ["macros", "time"], workspace = true, default-features = true }
+tokio = { features = [
+  "macros",
+  "time",
+], workspace = true, default-features = true }
 tokio-stream = { workspace = true }
 
 [dev-dependencies]

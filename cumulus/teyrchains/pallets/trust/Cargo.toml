@@ -14,8 +14,12 @@ targets = ["x86_64-unknown-linux-gnu"]
 
 [dependencies]
 codec = { workspace = true, default-features = false, features = ["derive"] }
-scale-info = { default-features = false, features = ["derive"], workspace = true }
-serde = { version = "1.0", default-features = false, features = ["derive"], optional = true }
+scale-info = { default-features = false, features = [
+  "derive",
+], workspace = true }
+serde = { version = "1.0", default-features = false, features = [
+  "derive",
+], optional = true }
 
 frame-support = { default-features = false, workspace = true }
 frame-system = { default-features = false, workspace = true }
@@ -28,7 +32,7 @@ pezkuwi-primitives = { workspace = true, default-features = false }
 
 # Palet bağımlılıkları (Trust puanı hesaplaması için gerekli)
 # Standart Substrate paletleri için path belirtilmez, workspace=true kullanılır.
-pallet-balances = { default-features = false, workspace = true } 
+pallet-balances = { default-features = false, workspace = true }
 # Özel PezkuwiChain paletleri için workspace inheritance kullanılır.
 pallet-staking-score = { workspace = true, default-features = false }
 pallet-referral = { workspace = true, default-features = false }
@@ -50,48 +54,52 @@ sp-io = { workspace = true, default-features = false }
 [features]
 default = ["std"]
 std = [
-    "codec/std",
-    "frame-benchmarking?/std",
-    "frame-support/std",
-    "frame-system/std",
-    "log/std",
-    # Diğer paletlerin std özellikleri
-    "pallet-balances/std", 
-    "pallet-staking-score/std", 
-    "pallet-referral/std", 
-    "pallet-perwerde/std", 
-    "pallet-tiki/std",
-    "pallet-identity-kyc/std",
-    "scale-info/std",
-    "serde", # serde'yi doğrudan feature olarak ekliyoruz
-    "sp-core?/std",
-    "sp-io?/std",
-    "sp-runtime/std",
-    "sp-std/std",
-    "pezkuwi-primitives/std",
+	"codec/std",
+	"frame-benchmarking?/std",
+	"frame-support/std",
+	"frame-system/std",
+	"log/std",
+  # Diğer paletlerin std özellikleri
+	"pallet-balances/std",
+	"pallet-staking-score/std",
+	"pallet-referral/std",
+	"pallet-perwerde/std",
+	"pallet-tiki/std",
+	"pallet-identity-kyc/std",
+	"scale-info/std",
+	"serde",# serde'yi doğrudan feature olarak ekliyoruz
+	"sp-core?/std",
+	"sp-io?/std",
+	"sp-runtime/std",
+	"sp-std/std",
+	"pezkuwi-primitives/std",
+	"serde?/std"
 ]
 runtime-benchmarks = [
-    "frame-benchmarking/runtime-benchmarks",
-    "frame-support/runtime-benchmarks",
-    "frame-system/runtime-benchmarks",
-    # Diğer paletlerin runtime-benchmarks özellikleri
-    "pallet-balances/runtime-benchmarks", 
-    "pallet-staking-score/runtime-benchmarks", 
-    "pallet-referral/runtime-benchmarks", 
-    "pallet-perwerde/runtime-benchmarks", 
-    "pallet-tiki/runtime-benchmarks",
-    "pallet-identity-kyc/runtime-benchmarks",
-    "sp-runtime/runtime-benchmarks",
-    "sp-core",
-    "sp-io",
-    "pezkuwi-primitives/runtime-benchmarks",
+  "frame-benchmarking/runtime-benchmarks",
+  "frame-support/runtime-benchmarks",
+  "frame-system/runtime-benchmarks",
+  # Diğer paletlerin runtime-benchmarks özellikleri
+  "pallet-balances/runtime-benchmarks",
+  "pallet-staking-score/runtime-benchmarks",
+  "pallet-referral/runtime-benchmarks",
+  "pallet-perwerde/runtime-benchmarks",
+  "pallet-tiki/runtime-benchmarks",
+  "pallet-identity-kyc/runtime-benchmarks",
+  "sp-runtime/runtime-benchmarks",
+  "sp-core",
+  "sp-io",
+  "pezkuwi-primitives/runtime-benchmarks",
 ]
 try-runtime = [
-    "frame-support/try-runtime",
-    "frame-system/try-runtime",
-    # Diğer paletlerin try-runtime özellikleri
-    "pallet-staking-score/try-runtime", 
-    "pallet-referral/try-runtime", 
-    "pallet-perwerde/try-runtime", 
-    "pallet-tiki/try-runtime",
+	"frame-support/try-runtime",
+	"frame-system/try-runtime",
+  # Diğer paletlerin try-runtime özellikleri
+	"pallet-staking-score/try-runtime",
+	"pallet-referral/try-runtime",
+	"pallet-perwerde/try-runtime",
+	"pallet-tiki/try-runtime",
+	"pallet-balances/try-runtime",
+	"pallet-identity-kyc/try-runtime",
+	"sp-runtime/try-runtime"
 ]

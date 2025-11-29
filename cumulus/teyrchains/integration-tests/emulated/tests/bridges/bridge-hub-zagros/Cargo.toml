@@ -45,7 +45,10 @@ cumulus-pallet-xcmp-queue = { workspace = true }
 emulated-integration-tests-common = { workspace = true }
 teyrchains-common = { workspace = true, default-features = true }
 pezkuwichain-zagros-system-emulated-network = { workspace = true }
-testnet-teyrchains-constants = { features = ["pezkuwichain", "zagros"], workspace = true, default-features = true }
+testnet-teyrchains-constants = { features = [
+  "pezkuwichain",
+  "zagros",
+], workspace = true, default-features = true }
 
 # Snowbridge
 snowbridge-core = { workspace = true }

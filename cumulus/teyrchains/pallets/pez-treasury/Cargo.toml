@@ -14,8 +14,12 @@ targets = ["x86_64-unknown-linux-gnu"]
 
 [dependencies]
 codec = { workspace = true, default-features = false, features = ["derive"] }
-scale-info = { default-features = false, features = ["derive"], workspace = true }
-serde = { version = "1.0", default-features = false, features = ["derive"], optional = true }
+scale-info = { default-features = false, features = [
+  "derive",
+], workspace = true }
+serde = { version = "1.0", default-features = false, features = [
+  "derive",
+], optional = true }
 
 frame-support = { default-features = false, workspace = true }
 frame-system = { default-features = false, workspace = true }
@@ -39,43 +43,48 @@ sp-io = { workspace = true, default-features = false, optional = true }
 # Test için gerekli olan bağımlılıklar
 sp-core = { workspace = true, default-features = false }
 sp-io = { workspace = true, default-features = false }
-pallet-assets = { workspace = true, default-features = false, features = ["std"] } # <-- BU SATIRI EKLEYİN
+pallet-assets = { workspace = true, default-features = false, features = [
+  "std",
+] } # <-- BU SATIRI EKLEYİN
 
 [features]
 default = ["std"]
 std = [
-    "codec/std",
-    "frame-benchmarking?/std",
-    "frame-support/std",
-    "frame-system/std",
-    "log/std",
-    "pallet-assets/std",
-    "pallet-balances/std",    
-    "pallet-scheduler/std",
-    "scale-info/std",
-    "serde",
-    "sp-core?/std",
-    "sp-io?/std",
-    "sp-runtime/std",
-    "sp-std/std",
-    "pezkuwi-primitives/std",
+	"codec/std",
+	"frame-benchmarking?/std",
+	"frame-support/std",
+	"frame-system/std",
+	"log/std",
+	"pallet-assets/std",
+	"pallet-balances/std",
+	"pallet-scheduler/std",
+	"scale-info/std",
+	"serde",
+	"sp-core?/std",
+	"sp-io?/std",
+	"sp-runtime/std",
+	"sp-std/std",
+	"pezkuwi-primitives/std",
+	"serde?/std"
 ]
 runtime-benchmarks = [
-    "frame-benchmarking",
-    "frame-benchmarking/runtime-benchmarks",
-    "frame-support/runtime-benchmarks",
-    "frame-system/runtime-benchmarks",
-    "pallet-assets/runtime-benchmarks",
-    "pallet-balances/runtime-benchmarks",
-    "pallet-scheduler/runtime-benchmarks",
-    "sp-runtime/runtime-benchmarks",
-    "sp-core",
-    "sp-io",
-    "pezkuwi-primitives/runtime-benchmarks",
+  "frame-benchmarking",
+  "frame-benchmarking/runtime-benchmarks",
+  "frame-support/runtime-benchmarks",
+  "frame-system/runtime-benchmarks",
+  "pallet-assets/runtime-benchmarks",
+  "pallet-balances/runtime-benchmarks",
+  "pallet-scheduler/runtime-benchmarks",
+  "sp-runtime/runtime-benchmarks",
+  "sp-core",
+  "sp-io",
+  "pezkuwi-primitives/runtime-benchmarks",
 ]
 try-runtime = [
-    "frame-support/try-runtime",
-    "frame-system/try-runtime",
-    "pallet-balances/try-runtime",
-    "pallet-scheduler/try-runtime",
+	"frame-support/try-runtime",
+	"frame-system/try-runtime",
+	"pallet-balances/try-runtime",
+	"pallet-scheduler/try-runtime",
+	"pallet-assets/try-runtime",
+	"sp-runtime/try-runtime"
 ]

@@ -51,25 +51,22 @@ db = ["pezkuwi-service/db"]
 metadata-hash = ["pezkuwi-service/metadata-hash"]
 service = ["dep:pezkuwi-service"]
 cli = [
-	"clap",
-	"frame-benchmarking-cli",
-	"sc-cli",
-	"sc-service",
-	"sc-tracing",
-	"service",
+  "clap",
+  "frame-benchmarking-cli",
+  "sc-cli",
+  "sc-service",
+  "sc-tracing",
+  "service",
 ]
 runtime-benchmarks = [
-	"frame-benchmarking-cli?/runtime-benchmarks",
-	"pezkuwi-node-metrics/runtime-benchmarks",
-	"pezkuwi-service?/runtime-benchmarks",
-	"sc-service?/runtime-benchmarks",
-	"sp-runtime/runtime-benchmarks",
+  "frame-benchmarking-cli?/runtime-benchmarks",
+  "pezkuwi-node-metrics/runtime-benchmarks",
+  "pezkuwi-service?/runtime-benchmarks",
+  "sc-service?/runtime-benchmarks",
+  "sp-runtime/runtime-benchmarks",
 ]
 full-node = ["pezkuwi-service/full-node"]
-try-runtime = [
-	"pezkuwi-service?/try-runtime",
-	"sp-runtime/try-runtime",
-]
+try-runtime = ["pezkuwi-service?/try-runtime", "sp-runtime/try-runtime"]
 fast-runtime = ["pezkuwi-service/fast-runtime"]
 pyroscope = ["dep:pyroscope", "pyroscope_pprofrs"]
 
@@ -79,6 +76,6 @@ pezkuwichain-native = ["pezkuwi-service/pezkuwichain-native"]
 
 malus = ["full-node", "pezkuwi-service/malus"]
 runtime-metrics = [
-	"pezkuwi-node-metrics/runtime-metrics",
-	"pezkuwi-service/runtime-metrics",
+  "pezkuwi-node-metrics/runtime-metrics",
+  "pezkuwi-service/runtime-metrics",
 ]

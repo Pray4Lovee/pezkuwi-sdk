@@ -30,7 +30,4 @@ pezkuwi-sdk = { workspace = true, features = ["substrate-build-script-utils"] }
 
 [features]
 default = ["std"]
-std = [
-	"pezkuwi-sdk/std",
-	"revive-dev-runtime/std",
-]
+std = ["pezkuwi-sdk/std", "revive-dev-runtime/std"]

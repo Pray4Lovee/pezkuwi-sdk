@@ -36,13 +36,18 @@ sp-crypto-hashing = { workspace = true }
 syn = { features = ["full", "parsing", "visit-mut"], workspace = true }
 
 [dev-dependencies]
-codec = { features = ["derive", "max-encoded-len"], workspace = true, default-features = true }
+codec = { features = [
+  "derive",
+  "max-encoded-len",
+], workspace = true, default-features = true }
 frame-benchmarking = { workspace = true, default-features = true }
 frame-support = { workspace = true, default-features = true }
 frame-system = { workspace = true, default-features = true }
 pretty_assertions = { workspace = true }
 regex = { workspace = true }
-scale-info = { features = ["derive"], workspace = true, default-features = true }
+scale-info = { features = [
+  "derive",
+], workspace = true, default-features = true }
 sp-io = { workspace = true, default-features = true }
 sp-metadata-ir = { workspace = true, default-features = true }
 sp-runtime = { features = ["serde"], workspace = true, default-features = true }
@@ -50,14 +55,14 @@ sp-runtime = { features = ["serde"], workspace = true, default-features = true }
 [features]
 default = ["std"]
 std = [
-	"codec/std",
-	"frame-benchmarking/std",
-	"frame-support/std",
-	"frame-system/std",
-	"scale-info/std",
-	"sp-crypto-hashing/std",
-	"sp-metadata-ir/std",
-	"sp-runtime/std",
+  "codec/std",
+  "frame-benchmarking/std",
+  "frame-support/std",
+  "frame-system/std",
+  "scale-info/std",
+  "sp-crypto-hashing/std",
+  "sp-metadata-ir/std",
+  "sp-runtime/std",
 ]
 no-metadata-docs = []
 experimental = []

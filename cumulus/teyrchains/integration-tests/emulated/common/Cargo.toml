@@ -33,7 +33,9 @@ sp-keyring = { workspace = true, default-features = true }
 sp-runtime = { workspace = true, default-features = true }
 
 # Pezkuwi
-pallet-xcm = { features = ["test-utils"], workspace = true, default-features = true }
+pallet-xcm = { features = [
+  "test-utils",
+], workspace = true, default-features = true }
 pezkuwi-teyrchain-primitives = { workspace = true, default-features = true }
 pezkuwi-primitives = { workspace = true, default-features = true }
 pezkuwi-runtime-teyrchains = { workspace = true, default-features = true }

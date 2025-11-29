@@ -15,7 +15,9 @@ workspace = true
 bounded-collections = { workspace = true }
 codec = { features = ["derive"], workspace = true }
 scale-info = { features = ["derive"], workspace = true }
-serde = { optional = true, features = ["derive"], workspace = true, default-features = true }
+serde = { optional = true, features = [
+  "derive",
+], workspace = true, default-features = true }
 tracing = { workspace = true }
 
 frame-support = { workspace = true }
@@ -44,43 +46,43 @@ xcm-simulator = { workspace = true, default-features = true }
 [features]
 default = ["std"]
 std = [
-	"bounded-collections/std",
-	"codec/std",
-	"frame-benchmarking?/std",
-	"frame-support/std",
-	"frame-system/std",
-	"pallet-balances/std",
-	"scale-info/std",
-	"serde",
-	"sp-core/std",
-	"sp-io/std",
-	"sp-runtime/std",
-	"tracing/std",
-	"xcm-builder/std",
-	"xcm-executor/std",
-	"xcm-runtime-apis/std",
-	"xcm/std",
+  "bounded-collections/std",
+  "codec/std",
+  "frame-benchmarking?/std",
+  "frame-support/std",
+  "frame-system/std",
+  "pallet-balances/std",
+  "scale-info/std",
+  "serde",
+  "sp-core/std",
+  "sp-io/std",
+  "sp-runtime/std",
+  "tracing/std",
+  "xcm-builder/std",
+  "xcm-executor/std",
+  "xcm-runtime-apis/std",
+  "xcm/std",
 ]
 runtime-benchmarks = [
-	"frame-benchmarking/runtime-benchmarks",
-	"frame-support/runtime-benchmarks",
-	"frame-system/runtime-benchmarks",
-	"pallet-assets/runtime-benchmarks",
-	"pallet-balances/runtime-benchmarks",
-	"pezkuwi-teyrchain-primitives/runtime-benchmarks",
-	"pezkuwi-runtime-teyrchains/runtime-benchmarks",
-	"sp-runtime/runtime-benchmarks",
-	"xcm-builder/runtime-benchmarks",
-	"xcm-executor/runtime-benchmarks",
-	"xcm-runtime-apis/runtime-benchmarks",
-	"xcm/runtime-benchmarks",
+  "frame-benchmarking/runtime-benchmarks",
+  "frame-support/runtime-benchmarks",
+  "frame-system/runtime-benchmarks",
+  "pallet-assets/runtime-benchmarks",
+  "pallet-balances/runtime-benchmarks",
+  "pezkuwi-teyrchain-primitives/runtime-benchmarks",
+  "pezkuwi-runtime-teyrchains/runtime-benchmarks",
+  "sp-runtime/runtime-benchmarks",
+  "xcm-builder/runtime-benchmarks",
+  "xcm-executor/runtime-benchmarks",
+  "xcm-runtime-apis/runtime-benchmarks",
+  "xcm/runtime-benchmarks",
 ]
 test-utils = ["std"]
 try-runtime = [
-	"frame-support/try-runtime",
-	"frame-system/try-runtime",
-	"pallet-assets/try-runtime",
-	"pallet-balances/try-runtime",
-	"pezkuwi-runtime-teyrchains/try-runtime",
-	"sp-runtime/try-runtime",
+  "frame-support/try-runtime",
+  "frame-system/try-runtime",
+  "pallet-assets/try-runtime",
+  "pallet-balances/try-runtime",
+  "pezkuwi-runtime-teyrchains/try-runtime",
+  "sp-runtime/try-runtime",
 ]

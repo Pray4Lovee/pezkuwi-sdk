@@ -16,7 +16,10 @@ workspace = true
 color-eyre = { workspace = true }
 
 # Local
-pezkuwi-omni-node-lib = { workspace = true, features = ["pezkuwichain-native", "zagros-native"] }
+pezkuwi-omni-node-lib = { workspace = true, features = [
+  "pezkuwichain-native",
+  "zagros-native",
+] }
 
 [dev-dependencies]
 assert_cmd = { workspace = true }
@@ -26,9 +29,5 @@ substrate-build-script-utils = { workspace = true, default-features = true }
 
 [features]
 default = []
-runtime-benchmarks = [
-	"pezkuwi-omni-node-lib/runtime-benchmarks",
-]
-try-runtime = [
-	"pezkuwi-omni-node-lib/try-runtime",
-]
+runtime-benchmarks = ["pezkuwi-omni-node-lib/runtime-benchmarks"]
+try-runtime = ["pezkuwi-omni-node-lib/try-runtime"]

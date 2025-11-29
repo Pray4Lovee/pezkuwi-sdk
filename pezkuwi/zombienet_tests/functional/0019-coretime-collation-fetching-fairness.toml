@@ -33,7 +33,11 @@ trashDataCount = 5120
 name = "collator-2000"
 image = "{{CUMULUS_IMAGE}}"
 command = "pezkuwi-teyrchain"
-args = ["-lteyrchain=debug,teyrchain::collator-protocol=trace", "--authoring", "slot-based"]
+args = [
+  "-lteyrchain=debug,teyrchain::collator-protocol=trace",
+  "--authoring",
+  "slot-based",
+]
 
 [[teyrchains]]
 id = 2001

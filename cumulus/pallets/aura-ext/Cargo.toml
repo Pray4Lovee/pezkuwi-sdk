@@ -47,22 +47,22 @@ sp-version = { workspace = true, default-features = true }
 [features]
 default = ["std"]
 std = [
-	"codec/std",
-	"cumulus-pallet-teyrchain-system/std",
-	"frame-support/std",
-	"frame-system/std",
-	"pallet-aura/std",
-	"pallet-timestamp/std",
-	"scale-info/std",
-	"sp-application-crypto/std",
-	"sp-consensus-aura/std",
-	"sp-runtime/std",
+  "codec/std",
+  "cumulus-pallet-teyrchain-system/std",
+  "frame-support/std",
+  "frame-system/std",
+  "pallet-aura/std",
+  "pallet-timestamp/std",
+  "scale-info/std",
+  "sp-application-crypto/std",
+  "sp-consensus-aura/std",
+  "sp-runtime/std",
 ]
 try-runtime = [
-	"cumulus-pallet-teyrchain-system/try-runtime",
-	"frame-support/try-runtime",
-	"frame-system/try-runtime",
-	"pallet-aura/try-runtime",
-	"pallet-timestamp/try-runtime",
-	"sp-runtime/try-runtime",
+  "cumulus-pallet-teyrchain-system/try-runtime",
+  "frame-support/try-runtime",
+  "frame-system/try-runtime",
+  "pallet-aura/try-runtime",
+  "pallet-timestamp/try-runtime",
+  "sp-runtime/try-runtime",
 ]

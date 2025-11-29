@@ -37,8 +37,8 @@ penpal-runtime = { workspace = true }
 people-pezkuwichain-runtime = { workspace = true }
 people-zagros-runtime = { workspace = true }
 pezkuwi-omni-node-lib = { features = [
-	"pezkuwichain-native",
-	"zagros-native",
+  "pezkuwichain-native",
+  "zagros-native",
 ], workspace = true }
 pezkuwichain-teyrchain-runtime = { workspace = true }
 
@@ -67,45 +67,45 @@ substrate-build-script-utils = { workspace = true, default-features = true }
 [features]
 default = []
 runtime-benchmarks = [
-	"cumulus-primitives-core/runtime-benchmarks",
-	"teyrchains-common/runtime-benchmarks",
-	"pezkuwi-omni-node-lib/runtime-benchmarks",
-	"sc-service/runtime-benchmarks",
+  "cumulus-primitives-core/runtime-benchmarks",
+  "teyrchains-common/runtime-benchmarks",
+  "pezkuwi-omni-node-lib/runtime-benchmarks",
+  "sc-service/runtime-benchmarks",
 
-	"asset-hub-pezkuwichain-runtime/runtime-benchmarks",
-	"asset-hub-zagros-runtime/runtime-benchmarks",
-	"bridge-hub-pezkuwichain-runtime/runtime-benchmarks",
-	"bridge-hub-zagros-runtime/runtime-benchmarks",
-	"collectives-zagros-runtime/runtime-benchmarks",
-	"coretime-pezkuwichain-runtime/runtime-benchmarks",
-	"coretime-zagros-runtime/runtime-benchmarks",
-	"glutton-zagros-runtime/runtime-benchmarks",
-	"penpal-runtime/runtime-benchmarks",
-	"people-pezkuwichain-runtime/runtime-benchmarks",
-	"people-zagros-runtime/runtime-benchmarks",
-	"pezkuwichain-teyrchain-runtime/runtime-benchmarks",
-	"xcm/runtime-benchmarks",
-	"yet-another-teyrchain-runtime/runtime-benchmarks",
+  "asset-hub-pezkuwichain-runtime/runtime-benchmarks",
+  "asset-hub-zagros-runtime/runtime-benchmarks",
+  "bridge-hub-pezkuwichain-runtime/runtime-benchmarks",
+  "bridge-hub-zagros-runtime/runtime-benchmarks",
+  "collectives-zagros-runtime/runtime-benchmarks",
+  "coretime-pezkuwichain-runtime/runtime-benchmarks",
+  "coretime-zagros-runtime/runtime-benchmarks",
+  "glutton-zagros-runtime/runtime-benchmarks",
+  "penpal-runtime/runtime-benchmarks",
+  "people-pezkuwichain-runtime/runtime-benchmarks",
+  "people-zagros-runtime/runtime-benchmarks",
+  "pezkuwichain-teyrchain-runtime/runtime-benchmarks",
+  "xcm/runtime-benchmarks",
+  "yet-another-teyrchain-runtime/runtime-benchmarks",
 ]
 try-runtime = [
-	"pezkuwi-omni-node-lib/try-runtime",
+  "pezkuwi-omni-node-lib/try-runtime",
 
-	"asset-hub-pezkuwichain-runtime/try-runtime",
-	"asset-hub-zagros-runtime/try-runtime",
-	"bridge-hub-pezkuwichain-runtime/try-runtime",
-	"bridge-hub-zagros-runtime/try-runtime",
-	"collectives-zagros-runtime/try-runtime",
-	"coretime-pezkuwichain-runtime/try-runtime",
-	"coretime-zagros-runtime/try-runtime",
-	"glutton-zagros-runtime/try-runtime",
-	"teyrchains-common/try-runtime",
-	"penpal-runtime/try-runtime",
-	"people-pezkuwichain-runtime/try-runtime",
-	"people-zagros-runtime/try-runtime",
+  "asset-hub-pezkuwichain-runtime/try-runtime",
+  "asset-hub-zagros-runtime/try-runtime",
+  "bridge-hub-pezkuwichain-runtime/try-runtime",
+  "bridge-hub-zagros-runtime/try-runtime",
+  "collectives-zagros-runtime/try-runtime",
+  "coretime-pezkuwichain-runtime/try-runtime",
+  "coretime-zagros-runtime/try-runtime",
+  "glutton-zagros-runtime/try-runtime",
+  "teyrchains-common/try-runtime",
+  "penpal-runtime/try-runtime",
+  "people-pezkuwichain-runtime/try-runtime",
+  "people-zagros-runtime/try-runtime",
 ]
 fast-runtime = [
-	"bridge-hub-pezkuwichain-runtime/fast-runtime",
-	"bridge-hub-zagros-runtime/fast-runtime",
-	"coretime-pezkuwichain-runtime/fast-runtime",
-	"coretime-zagros-runtime/fast-runtime",
+  "bridge-hub-pezkuwichain-runtime/fast-runtime",
+  "bridge-hub-zagros-runtime/fast-runtime",
+  "coretime-pezkuwichain-runtime/fast-runtime",
+  "coretime-zagros-runtime/fast-runtime",
 ]

@@ -22,7 +22,9 @@ cumulus-primitives-core = { workspace = true }
 emulated-integration-tests-common = { workspace = true }
 teyrchains-common = { workspace = true, default-features = true }
 pezkuwichain-emulated-chain = { workspace = true }
-testnet-teyrchains-constants = { features = ["pezkuwichain"], workspace = true, default-features = true }
+testnet-teyrchains-constants = { features = [
+  "pezkuwichain",
+], workspace = true, default-features = true }
 
 # Pezkuwi
 xcm = { workspace = true }

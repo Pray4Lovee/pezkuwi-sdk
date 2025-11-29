@@ -33,10 +33,10 @@ xcm-executor = { workspace = true, default-features = true }
 [features]
 default = ["std"]
 std = [
-	"frame-support/std",
-	"frame-system/std",
-	"pallet-sudo/std",
-	"pezkuwi-runtime-teyrchains/std",
-	"sp-runtime/std",
-	"xcm/std",
+  "frame-support/std",
+  "frame-system/std",
+  "pallet-sudo/std",
+  "pezkuwi-runtime-teyrchains/std",
+  "sp-runtime/std",
+  "xcm/std",
 ]

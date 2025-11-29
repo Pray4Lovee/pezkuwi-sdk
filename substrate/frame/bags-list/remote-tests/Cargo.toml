@@ -20,7 +20,9 @@ targets = ["x86_64-unknown-linux-gnu"]
 frame-election-provider-support = { workspace = true, default-features = true }
 frame-support = { workspace = true, default-features = true }
 frame-system = { workspace = true, default-features = true }
-pallet-bags-list = { features = ["fuzz"], workspace = true, default-features = true }
+pallet-bags-list = { features = [
+  "fuzz",
+], workspace = true, default-features = true }
 pallet-staking = { workspace = true, default-features = true }
 
 # core
