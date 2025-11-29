@@ -27,10 +27,10 @@ sp-std = { workspace = true }
 [features]
 default = ["std"]
 std = [
-  "bp-header-chain/std",
-  "bp-pezkuwi-core/std",
-  "bp-runtime/std",
-  "frame-support/std",
-  "sp-api/std",
-  "sp-std/std",
+	"bp-header-chain/std",
+	"bp-pezkuwi-core/std",
+	"bp-runtime/std",
+	"frame-support/std",
+	"sp-api/std",
+	"sp-std/std",
 ]

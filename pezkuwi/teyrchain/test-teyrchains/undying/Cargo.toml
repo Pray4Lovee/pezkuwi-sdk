@@ -15,8 +15,8 @@ workspace = true
 codec = { features = ["derive"], workspace = true }
 dlmalloc = { features = ["global"], workspace = true }
 log = { workspace = true }
-pezkuwi-teyrchain-primitives = { features = ["wasm-api"], workspace = true }
 pezkuwi-primitives = { workspace = true, default-features = false }
+pezkuwi-teyrchain-primitives = { features = ["wasm-api"], workspace = true }
 tiny-keccak = { features = ["keccak"], workspace = true }
 
 # We need to make sure the global allocator is disabled until we have support of full substrate externalities
@@ -28,9 +28,9 @@ substrate-wasm-builder = { workspace = true, default-features = true }
 [features]
 default = ["std"]
 std = [
-  "codec/std",
-  "log/std",
-  "pezkuwi-teyrchain-primitives/std",
-  "pezkuwi-primitives/std",
-  "sp-io/std",
+	"codec/std",
+	"log/std",
+	"pezkuwi-primitives/std",
+	"pezkuwi-teyrchain-primitives/std",
+	"sp-io/std",
 ]

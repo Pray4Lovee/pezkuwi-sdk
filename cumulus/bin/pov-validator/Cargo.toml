@@ -16,8 +16,8 @@ anyhow = { workspace = true }
 clap = { workspace = true, features = ["derive"] }
 codec = { workspace = true }
 pezkuwi-node-primitives = { workspace = true }
-pezkuwi-teyrchain-primitives = { workspace = true }
 pezkuwi-primitives = { workspace = true }
+pezkuwi-teyrchain-primitives = { workspace = true }
 sc-executor = { workspace = true }
 sp-core = { workspace = true }
 sp-io = { workspace = true }

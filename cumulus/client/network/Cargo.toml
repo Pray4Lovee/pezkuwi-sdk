@@ -33,9 +33,9 @@ sp-version = { workspace = true, default-features = true }
 # Pezkuwi
 pezkuwi-node-primitives = { workspace = true, default-features = true }
 pezkuwi-node-subsystem = { workspace = true, default-features = true }
-pezkuwi-teyrchain-primitives = { workspace = true, default-features = true }
 pezkuwi-primitives = { workspace = true, default-features = true }
 pezkuwi-primitives-test-helpers = { workspace = true, default-features = true }
+pezkuwi-teyrchain-primitives = { workspace = true, default-features = true }
 
 # Cumulus
 cumulus-relay-chain-interface = { workspace = true, default-features = true }

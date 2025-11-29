@@ -39,16 +39,16 @@ sp-trie = { workspace = true }
 sp-version = { workspace = true }
 
 # Pezkuwi
-pezkuwi-teyrchain-primitives = { features = ["wasm-api"], workspace = true }
 pezkuwi-runtime-teyrchains = { workspace = true }
+pezkuwi-teyrchain-primitives = { features = ["wasm-api"], workspace = true }
 xcm = { workspace = true }
 xcm-builder = { workspace = true }
 
 # Cumulus
 cumulus-pallet-teyrchain-system-proc-macro = { workspace = true }
 cumulus-primitives-core = { workspace = true }
-cumulus-primitives-teyrchain-inherent = { workspace = true }
 cumulus-primitives-proof-size-hostfunction = { workspace = true }
+cumulus-primitives-teyrchain-inherent = { workspace = true }
 
 [dev-dependencies]
 assert_matches = { workspace = true }
@@ -74,54 +74,54 @@ cumulus-test-relay-sproof-builder = { workspace = true, default-features = true 
 [features]
 default = ["std"]
 std = [
-  "bytes/std",
-  "codec/std",
-  "cumulus-pallet-teyrchain-system-proc-macro/std",
-  "cumulus-primitives-core/std",
-  "cumulus-primitives-teyrchain-inherent/std",
-  "cumulus-primitives-proof-size-hostfunction/std",
-  "environmental/std",
-  "frame-benchmarking/std",
-  "frame-support/std",
-  "frame-system/std",
-  "log/std",
-  "pallet-message-queue/std",
-  "pezkuwi-teyrchain-primitives/std",
-  "pezkuwi-runtime-teyrchains/std",
-  "scale-info/std",
-  "sp-consensus-babe/std",
-  "sp-core/std",
-  "sp-externalities/std",
-  "sp-inherents/std",
-  "sp-io/std",
-  "sp-runtime/std",
-  "sp-state-machine/std",
-  "sp-std/std",
-  "sp-tracing/std",
-  "sp-trie/std",
-  "trie-db/std",
-  "xcm-builder/std",
-  "xcm/std",
+	"bytes/std",
+	"codec/std",
+	"cumulus-pallet-teyrchain-system-proc-macro/std",
+	"cumulus-primitives-core/std",
+	"cumulus-primitives-proof-size-hostfunction/std",
+	"cumulus-primitives-teyrchain-inherent/std",
+	"environmental/std",
+	"frame-benchmarking/std",
+	"frame-support/std",
+	"frame-system/std",
+	"log/std",
+	"pallet-message-queue/std",
+	"pezkuwi-runtime-teyrchains/std",
+	"pezkuwi-teyrchain-primitives/std",
+	"scale-info/std",
+	"sp-consensus-babe/std",
+	"sp-core/std",
+	"sp-externalities/std",
+	"sp-inherents/std",
+	"sp-io/std",
+	"sp-runtime/std",
+	"sp-state-machine/std",
+	"sp-std/std",
+	"sp-tracing/std",
+	"sp-trie/std",
+	"trie-db/std",
+	"xcm-builder/std",
+	"xcm/std",
 ]
 
 runtime-benchmarks = [
-  "cumulus-primitives-core/runtime-benchmarks",
-  "cumulus-test-client/runtime-benchmarks",
-  "frame-benchmarking/runtime-benchmarks",
-  "frame-support/runtime-benchmarks",
-  "frame-system/runtime-benchmarks",
-  "pallet-message-queue/runtime-benchmarks",
-  "pezkuwi-teyrchain-primitives/runtime-benchmarks",
-  "pezkuwi-runtime-teyrchains/runtime-benchmarks",
-  "sp-runtime/runtime-benchmarks",
-  "xcm-builder/runtime-benchmarks",
-  "xcm/runtime-benchmarks",
+	"cumulus-primitives-core/runtime-benchmarks",
+	"cumulus-test-client/runtime-benchmarks",
+	"frame-benchmarking/runtime-benchmarks",
+	"frame-support/runtime-benchmarks",
+	"frame-system/runtime-benchmarks",
+	"pallet-message-queue/runtime-benchmarks",
+	"pezkuwi-runtime-teyrchains/runtime-benchmarks",
+	"pezkuwi-teyrchain-primitives/runtime-benchmarks",
+	"sp-runtime/runtime-benchmarks",
+	"xcm-builder/runtime-benchmarks",
+	"xcm/runtime-benchmarks",
 ]
 
 try-runtime = [
-  "frame-support/try-runtime",
-  "frame-system/try-runtime",
-  "pallet-message-queue/try-runtime",
-  "pezkuwi-runtime-teyrchains/try-runtime",
-  "sp-runtime/try-runtime",
+	"frame-support/try-runtime",
+	"frame-system/try-runtime",
+	"pallet-message-queue/try-runtime",
+	"pezkuwi-runtime-teyrchains/try-runtime",
+	"sp-runtime/try-runtime",
 ]

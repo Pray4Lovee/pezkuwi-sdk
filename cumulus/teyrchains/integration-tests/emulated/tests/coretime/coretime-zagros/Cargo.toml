@@ -19,9 +19,9 @@ sp-runtime = { workspace = true }
 
 # Pezkuwi
 pezkuwi-runtime-teyrchains = { workspace = true, default-features = true }
-zagros-runtime-constants = { workspace = true, default-features = true }
 xcm = { workspace = true }
 xcm-executor = { workspace = true }
+zagros-runtime-constants = { workspace = true, default-features = true }
 
 # Cumulus
 cumulus-pallet-teyrchain-system = { workspace = true, default-features = true }

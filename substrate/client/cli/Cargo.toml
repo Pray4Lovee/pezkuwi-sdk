@@ -51,9 +51,9 @@ sp-runtime = { workspace = true, default-features = true }
 sp-version = { workspace = true, default-features = true }
 thiserror = { workspace = true }
 tokio = { features = [
-  "parking_lot",
-  "rt-multi-thread",
-  "signal",
+	"parking_lot",
+	"rt-multi-thread",
+	"signal",
 ], workspace = true, default-features = true }
 
 [dev-dependencies]

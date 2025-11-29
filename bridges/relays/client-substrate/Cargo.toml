@@ -20,12 +20,12 @@ num-traits = { workspace = true, default-features = true }
 quick_cache = { workspace = true }
 rand = { workspace = true, default-features = true }
 scale-info = { features = [
-  "derive",
+	"derive",
 ], workspace = true, default-features = true }
 serde_json = { workspace = true }
 thiserror = { workspace = true }
 tokio = { features = [
-  "rt-multi-thread",
+	"rt-multi-thread",
 ], workspace = true, default-features = true }
 tracing = { workspace = true }
 

@@ -39,7 +39,7 @@ tokio = { workspace = true, default-features = true }
 default = []
 runtime-metrics = []
 runtime-benchmarks = [
-  "pezkuwi-primitives/runtime-benchmarks",
-  "pezkuwi-test-service/runtime-benchmarks",
-  "sc-service/runtime-benchmarks",
+	"pezkuwi-primitives/runtime-benchmarks",
+	"pezkuwi-test-service/runtime-benchmarks",
+	"sc-service/runtime-benchmarks",
 ]

@@ -22,7 +22,7 @@ codec = { workspace = true, default-features = true }
 futures = { workspace = true }
 sc-client-api = { workspace = true, default-features = true }
 sc-client-db = { features = [
-  "test-helpers",
+	"test-helpers",
 ], workspace = true, default-features = false }
 sc-consensus = { workspace = true, default-features = true }
 sc-executor = { workspace = true, default-features = true }

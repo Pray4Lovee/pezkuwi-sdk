@@ -32,12 +32,12 @@ pallet-skip-feeless-payment = { workspace = true, default-features = true }
 sc-block-builder = { workspace = true, default-features = true }
 sc-client-api = { workspace = true, default-features = true }
 sc-client-db = { features = [
-  "rocksdb",
+	"rocksdb",
 ], workspace = true, default-features = true }
 sc-consensus = { workspace = true, default-features = true }
 sc-executor = { workspace = true, default-features = true }
 sc-service = { features = [
-  "rocksdb",
+	"rocksdb",
 ], workspace = true, default-features = true }
 sp-api = { workspace = true, default-features = true }
 sp-block-builder = { workspace = true, default-features = true }

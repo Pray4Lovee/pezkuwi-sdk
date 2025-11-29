@@ -22,9 +22,9 @@ pallet-xcm = { workspace = true }
 sp-runtime = { workspace = true }
 
 # Pezkuwi
-zagros-runtime = { workspace = true }
 xcm = { workspace = true }
 xcm-executor = { workspace = true }
+zagros-runtime = { workspace = true }
 
 # Cumulus
 emulated-integration-tests-common = { workspace = true }

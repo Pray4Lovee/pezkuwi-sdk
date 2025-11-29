@@ -25,9 +25,9 @@ sp-trie = { workspace = true, default-features = true }
 trie-db = { workspace = true, default-features = true }
 
 jsonrpsee = { features = [
-  "client-core",
-  "macros",
-  "server-core",
+	"client-core",
+	"macros",
+	"server-core",
 ], workspace = true }
 
 # Substrate Dependencies

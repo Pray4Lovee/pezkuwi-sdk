@@ -17,9 +17,9 @@ targets = ["x86_64-unknown-linux-gnu"]
 
 [dependencies]
 jsonrpsee = { workspace = true, features = [
-  "client-core",
-  "macros",
-  "server-core",
+	"client-core",
+	"macros",
+	"server-core",
 ] }
 # Internal chain structures for "chain_spec".
 sc-chain-spec = { workspace = true, default-features = true }
@@ -56,7 +56,7 @@ jsonrpsee = { workspace = true, features = ["server", "ws-client"] }
 pretty_assertions = { workspace = true }
 sc-block-builder = { workspace = true, default-features = true }
 sc-rpc = { workspace = true, default-features = true, features = [
-  "test-helpers",
+	"test-helpers",
 ] }
 sc-service = { workspace = true, default-features = true }
 sc-transaction-pool = { workspace = true, default-features = true }

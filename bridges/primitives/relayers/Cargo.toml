@@ -17,8 +17,8 @@ scale-info = { features = ["bit-vec", "derive"], workspace = true }
 # Bridge Dependencies
 bp-header-chain = { workspace = true }
 bp-messages = { workspace = true }
-bp-teyrchains = { workspace = true }
 bp-runtime = { workspace = true }
+bp-teyrchains = { workspace = true }
 
 # Substrate Dependencies
 frame-support = { workspace = true }
@@ -33,15 +33,15 @@ hex-literal = { workspace = true, default-features = true }
 [features]
 default = ["std"]
 std = [
-  "bp-header-chain/std",
-  "bp-messages/std",
-  "bp-teyrchains/std",
-  "bp-runtime/std",
-  "codec/std",
-  "frame-support/std",
-  "frame-system/std",
-  "pallet-utility/std",
-  "scale-info/std",
-  "sp-runtime/std",
-  "sp-std/std",
+	"bp-header-chain/std",
+	"bp-messages/std",
+	"bp-runtime/std",
+	"bp-teyrchains/std",
+	"codec/std",
+	"frame-support/std",
+	"frame-system/std",
+	"pallet-utility/std",
+	"scale-info/std",
+	"sp-runtime/std",
+	"sp-std/std",
 ]

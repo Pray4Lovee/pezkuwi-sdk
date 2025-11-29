@@ -36,9 +36,9 @@ color-eyre = { workspace = true }
 futures = { workspace = true }
 gum = { workspace = true, default-features = true }
 pezkuwi-cli = { features = [
-  "malus",
-  "pezkuwichain-native",
-  "zagros-native",
+	"malus",
+	"pezkuwichain-native",
+	"zagros-native",
 ], workspace = true, default-features = true }
 pezkuwi-erasure-coding = { workspace = true, default-features = true }
 pezkuwi-node-network-protocol = { workspace = true, default-features = true }

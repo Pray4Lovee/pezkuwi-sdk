@@ -14,7 +14,7 @@ workspace = true
 codec = { features = ["derive"], workspace = true }
 scale-info = { features = ["derive"], workspace = true }
 serde = { optional = true, features = [
-  "derive",
+	"derive",
 ], workspace = true, default-features = true }
 
 # Bridge Dependencies
@@ -34,14 +34,14 @@ hex = { workspace = true, default-features = true }
 [features]
 default = ["std"]
 std = [
-  "bp-messages/std",
-  "bp-runtime/std",
-  "codec/std",
-  "frame-support/std",
-  "frame-system/std",
-  "scale-info/std",
-  "serde",
-  "sp-core/std",
-  "sp-runtime/std",
-  "sp-std/std",
+	"bp-messages/std",
+	"bp-runtime/std",
+	"codec/std",
+	"frame-support/std",
+	"frame-system/std",
+	"scale-info/std",
+	"serde",
+	"sp-core/std",
+	"sp-runtime/std",
+	"sp-std/std",
 ]

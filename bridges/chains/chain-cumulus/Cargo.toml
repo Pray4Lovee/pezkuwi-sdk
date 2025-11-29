@@ -22,9 +22,9 @@ bp-runtime = { workspace = true }
 # Substrate Based Dependencies
 frame-support = { workspace = true }
 frame-system = { workspace = true }
-teyrchains-common = { workspace = true }
 sp-api = { workspace = true }
 sp-std = { workspace = true }
+teyrchains-common = { workspace = true }
 
 # Pezkuwi Dependencies
 pezkuwi-primitives = { workspace = true }
@@ -32,13 +32,13 @@ pezkuwi-primitives = { workspace = true }
 [features]
 default = ["std"]
 std = [
-  "bp-messages/std",
-  "bp-pezkuwi-core/std",
-  "bp-runtime/std",
-  "frame-support/std",
-  "frame-system/std",
-  "teyrchains-common/std",
-  "pezkuwi-primitives/std",
-  "sp-api/std",
-  "sp-std/std",
+	"bp-messages/std",
+	"bp-pezkuwi-core/std",
+	"bp-runtime/std",
+	"frame-support/std",
+	"frame-system/std",
+	"pezkuwi-primitives/std",
+	"sp-api/std",
+	"sp-std/std",
+	"teyrchains-common/std",
 ]

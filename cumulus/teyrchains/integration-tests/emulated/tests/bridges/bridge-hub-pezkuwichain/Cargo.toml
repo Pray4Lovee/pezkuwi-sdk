@@ -38,13 +38,13 @@ pallet-bridge-messages = { workspace = true }
 asset-hub-pezkuwichain-runtime = { workspace = true }
 cumulus-pallet-xcmp-queue = { workspace = true }
 emulated-integration-tests-common = { workspace = true }
-teyrchains-common = { workspace = true, default-features = true }
 pezkuwichain-system-emulated-network = { workspace = true }
 pezkuwichain-zagros-system-emulated-network = { workspace = true }
 testnet-teyrchains-constants = { features = [
-  "pezkuwichain",
-  "zagros",
+	"pezkuwichain",
+	"zagros",
 ], workspace = true, default-features = true }
+teyrchains-common = { workspace = true, default-features = true }
 
 # Snowbridge
 snowbridge-inbound-queue-primitives = { workspace = true }

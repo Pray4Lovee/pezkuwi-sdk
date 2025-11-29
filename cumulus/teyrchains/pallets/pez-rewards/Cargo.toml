@@ -15,10 +15,10 @@ targets = ["x86_64-unknown-linux-gnu"]
 [dependencies]
 codec = { workspace = true, default-features = false, features = ["derive"] }
 scale-info = { default-features = false, features = [
-  "derive",
+	"derive",
 ], workspace = true }
 serde = { version = "1.0", default-features = false, features = [
-  "derive",
+	"derive",
 ], optional = true }
 
 frame-support = { default-features = false, workspace = true }
@@ -32,12 +32,12 @@ pezkuwi-primitives = { workspace = true, default-features = false }
 
 # Standart Substrate paletleri
 pallet-balances = { default-features = false, workspace = true }
-pallet-scheduler = { default-features = false, workspace = true }
 pallet-nfts = { default-features = false, workspace = true }
+pallet-scheduler = { default-features = false, workspace = true }
 
 # PezkuwiChain özel paletleri
-pallet-trust = { workspace = true, default-features = false }
 pallet-pez-treasury = { workspace = true, default-features = false }
+pallet-trust = { workspace = true, default-features = false }
 
 # Test ve Benchmark için Gerekli İsteğe Bağlı Bağımlılıklar
 frame-benchmarking = { default-features = false, optional = true, workspace = true }
@@ -46,23 +46,23 @@ sp-io = { workspace = true, default-features = false, optional = true }
 
 [dev-dependencies]
 # Test için gerekli olan bağımlılıklar
-sp-core = { workspace = true, default-features = false, features = ["std"] }
-sp-io = { workspace = true, default-features = false, features = ["std"] }
 frame-system = { workspace = true, default-features = false, features = [
-  "std",
-] }
-pallet-balances = { workspace = true, default-features = false, features = [
-  "std",
+	"std",
 ] }
 pallet-assets = { workspace = true, default-features = false, features = [
-  "std",
+	"std",
+] }
+pallet-balances = { workspace = true, default-features = false, features = [
+	"std",
 ] }
 pallet-identity-kyc = { workspace = true, default-features = false, features = [
-  "std",
+	"std",
 ] }
 pallet-trust = { workspace = true, default-features = false, features = [
-  "std",
+	"std",
 ] }
+sp-core = { workspace = true, default-features = false, features = ["std"] }
+sp-io = { workspace = true, default-features = false, features = ["std"] }
 
 [features]
 default = ["std"]
@@ -72,47 +72,47 @@ std = [
 	"frame-support/std",
 	"frame-system/std",
 	"log/std",
+	"pallet-assets/std",
 	"pallet-balances/std",
-	"pallet-scheduler/std",
+	"pallet-identity-kyc/std",
 	"pallet-nfts/std",
-	"pallet-trust/std",
 	"pallet-pez-treasury/std",
+	"pallet-scheduler/std",
+	"pallet-trust/std",
+	"pezkuwi-primitives/std",
 	"scale-info/std",
 	"serde",
+	"serde?/std",
 	"sp-core?/std",
 	"sp-io?/std",
 	"sp-runtime/std",
 	"sp-std/std",
-	"pezkuwi-primitives/std",
-	"pallet-assets/std",
-	"pallet-identity-kyc/std",
-	"serde?/std"
 ]
 runtime-benchmarks = [
 	"frame-benchmarking/runtime-benchmarks",
 	"frame-support/runtime-benchmarks",
 	"frame-system/runtime-benchmarks",
+	"pallet-assets/runtime-benchmarks",
 	"pallet-balances/runtime-benchmarks",
-	"pallet-scheduler/runtime-benchmarks",
+	"pallet-identity-kyc/runtime-benchmarks",
 	"pallet-nfts/runtime-benchmarks",
-	"pallet-trust/runtime-benchmarks",
 	"pallet-pez-treasury/runtime-benchmarks",
-	"sp-runtime/runtime-benchmarks",
+	"pallet-scheduler/runtime-benchmarks",
+	"pallet-trust/runtime-benchmarks",
+	"pezkuwi-primitives/runtime-benchmarks",
 	"sp-core",
 	"sp-io",
-	"pezkuwi-primitives/runtime-benchmarks",
-	"pallet-assets/runtime-benchmarks",
-	"pallet-identity-kyc/runtime-benchmarks"
+	"sp-runtime/runtime-benchmarks",
 ]
 try-runtime = [
 	"frame-support/try-runtime",
 	"frame-system/try-runtime",
+	"pallet-assets/try-runtime",
 	"pallet-balances/try-runtime",
+	"pallet-identity-kyc/try-runtime",
+	"pallet-nfts/try-runtime",
+	"pallet-pez-treasury/try-runtime",
 	"pallet-scheduler/try-runtime",
 	"pallet-trust/try-runtime",
-	"pallet-pez-treasury/try-runtime",
-	"pallet-nfts/try-runtime",
-	"pallet-assets/try-runtime",
-	"pallet-identity-kyc/try-runtime",
-	"sp-runtime/try-runtime"
+	"sp-runtime/try-runtime",
 ]

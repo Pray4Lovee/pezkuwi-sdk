@@ -15,10 +15,10 @@ targets = ["x86_64-unknown-linux-gnu"]
 [dependencies]
 codec = { workspace = true, default-features = false, features = ["derive"] }
 scale-info = { default-features = false, features = [
-  "derive",
+	"derive",
 ], workspace = true }
 serde = { version = "1.0", default-features = false, features = [
-  "derive",
+	"derive",
 ], optional = true }
 
 frame-benchmarking = { default-features = false, optional = true, workspace = true }
@@ -48,34 +48,34 @@ std = [
 	"frame-support/std",
 	"frame-system/std",
 	"log/std",
-	"scale-info/std",
-	"serde",
-	"sp-runtime/std",
-	"sp-std/std",
 	"pallet-balances/std",
 	"pallet-collective/std",
+	"pezkuwi-primitives/std",
+	"scale-info/std",
+	"serde",
+	"serde?/std",
 	"sp-core/std",
 	"sp-io/std",
-	"pezkuwi-primitives/std",
-	"serde?/std"
+	"sp-runtime/std",
+	"sp-std/std",
 ]
 runtime-benchmarks = [
 	"frame-benchmarking/runtime-benchmarks",
 	"frame-support/runtime-benchmarks",
 	"frame-system/runtime-benchmarks",
-	"sp-runtime/runtime-benchmarks",
 	"pallet-balances",
+	"pallet-balances?/runtime-benchmarks",
 	"pallet-collective",
+	"pallet-collective?/runtime-benchmarks",
+	"pezkuwi-primitives/runtime-benchmarks",
 	"sp-core",
 	"sp-io",
-	"pezkuwi-primitives/runtime-benchmarks",
-	"pallet-balances?/runtime-benchmarks",
-	"pallet-collective?/runtime-benchmarks"
+	"sp-runtime/runtime-benchmarks",
 ]
 try-runtime = [
 	"frame-support/try-runtime",
 	"frame-system/try-runtime",
 	"pallet-balances?/try-runtime",
 	"pallet-collective?/try-runtime",
-	"sp-runtime/try-runtime"
+	"sp-runtime/try-runtime",
 ]

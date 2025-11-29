@@ -20,10 +20,10 @@ sp-keyring = { workspace = true }
 asset-hub-zagros-runtime = { workspace = true, default-features = true }
 cumulus-primitives-core = { workspace = true }
 emulated-integration-tests-common = { workspace = true }
-teyrchains-common = { workspace = true, default-features = true }
 testnet-teyrchains-constants = { features = [
-  "zagros",
+	"zagros",
 ], workspace = true, default-features = true }
+teyrchains-common = { workspace = true, default-features = true }
 zagros-emulated-chain = { workspace = true, default-features = true }
 
 # Pezkuwi

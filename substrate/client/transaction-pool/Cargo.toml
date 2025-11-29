@@ -42,8 +42,8 @@ sp-tracing = { workspace = true, default-features = true }
 sp-transaction-pool = { workspace = true, default-features = true }
 thiserror = { workspace = true }
 tokio = { workspace = true, default-features = true, features = [
-  "macros",
-  "time",
+	"macros",
+	"time",
 ] }
 tokio-stream = { workspace = true }
 tracing = { workspace = true, default-features = true }

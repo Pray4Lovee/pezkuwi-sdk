@@ -18,8 +18,8 @@ sp-core = { workspace = true }
 # Cumulus
 cumulus-primitives-core = { workspace = true }
 emulated-integration-tests-common = { workspace = true }
-teyrchains-common = { workspace = true, default-features = true }
 people-zagros-runtime = { workspace = true }
 testnet-teyrchains-constants = { features = [
-  "zagros",
+	"zagros",
 ], workspace = true, default-features = true }
+teyrchains-common = { workspace = true, default-features = true }

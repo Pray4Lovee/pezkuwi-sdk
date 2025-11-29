@@ -28,9 +28,9 @@ serde_json = { workspace = true, default-features = true }
 
 # Local
 jsonrpsee = { features = ["server"], workspace = true }
-teyrchains-common = { workspace = true, default-features = true }
 scale-info = { workspace = true }
 subxt-metadata = { workspace = true, default-features = true }
+teyrchains-common = { workspace = true, default-features = true }
 
 # Substrate
 frame-benchmarking = { optional = true, workspace = true, default-features = true }
@@ -87,7 +87,7 @@ substrate-state-trie-migration-rpc = { workspace = true, default-features = true
 
 # Pezkuwi
 pezkuwi-cli = { workspace = true, default-features = true, features = [
-  "service",
+	"service",
 ] }
 pezkuwi-primitives = { workspace = true, default-features = true }
 
@@ -99,8 +99,8 @@ cumulus-client-consensus-aura = { workspace = true, default-features = true }
 cumulus-client-consensus-common = { workspace = true, default-features = true }
 cumulus-client-consensus-proposer = { workspace = true, default-features = true }
 cumulus-client-consensus-relay-chain = { workspace = true, default-features = true }
-cumulus-client-teyrchain-inherent = { workspace = true, default-features = true }
 cumulus-client-service = { workspace = true, default-features = true }
+cumulus-client-teyrchain-inherent = { workspace = true, default-features = true }
 cumulus-primitives-aura = { workspace = true, default-features = true }
 cumulus-primitives-core = { workspace = true, default-features = true }
 cumulus-relay-chain-interface = { workspace = true, default-features = true }
@@ -119,23 +119,23 @@ default = []
 pezkuwichain-native = ["pezkuwi-cli/pezkuwichain-native"]
 zagros-native = ["pezkuwi-cli/zagros-native"]
 runtime-benchmarks = [
-  "cumulus-primitives-core/runtime-benchmarks",
-  "frame-benchmarking-cli/runtime-benchmarks",
-  "frame-benchmarking/runtime-benchmarks",
-  "frame-support/runtime-benchmarks",
-  "pallet-transaction-payment/runtime-benchmarks",
-  "teyrchains-common/runtime-benchmarks",
-  "pezkuwi-cli/runtime-benchmarks",
-  "pezkuwi-primitives/runtime-benchmarks",
-  "sc-client-db/runtime-benchmarks",
-  "sc-service/runtime-benchmarks",
-  "sp-runtime/runtime-benchmarks",
+	"cumulus-primitives-core/runtime-benchmarks",
+	"frame-benchmarking-cli/runtime-benchmarks",
+	"frame-benchmarking/runtime-benchmarks",
+	"frame-support/runtime-benchmarks",
+	"pallet-transaction-payment/runtime-benchmarks",
+	"pezkuwi-cli/runtime-benchmarks",
+	"pezkuwi-primitives/runtime-benchmarks",
+	"sc-client-db/runtime-benchmarks",
+	"sc-service/runtime-benchmarks",
+	"sp-runtime/runtime-benchmarks",
+	"teyrchains-common/runtime-benchmarks",
 ]
 try-runtime = [
-  "frame-support/try-runtime",
-  "frame-try-runtime/try-runtime",
-  "pallet-transaction-payment/try-runtime",
-  "teyrchains-common/try-runtime",
-  "pezkuwi-cli/try-runtime",
-  "sp-runtime/try-runtime",
+	"frame-support/try-runtime",
+	"frame-try-runtime/try-runtime",
+	"pallet-transaction-payment/try-runtime",
+	"pezkuwi-cli/try-runtime",
+	"sp-runtime/try-runtime",
+	"teyrchains-common/try-runtime",
 ]

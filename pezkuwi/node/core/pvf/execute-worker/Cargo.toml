@@ -22,8 +22,8 @@ codec = { features = ["derive"], workspace = true }
 
 pezkuwi-node-core-pvf-common = { workspace = true, default-features = true }
 pezkuwi-node-primitives = { workspace = true, default-features = true }
-pezkuwi-teyrchain-primitives = { workspace = true, default-features = true }
 pezkuwi-primitives = { workspace = true, default-features = true }
+pezkuwi-teyrchain-primitives = { workspace = true, default-features = true }
 
 sp-maybe-compressed-blob = { workspace = true, default-features = true }
 

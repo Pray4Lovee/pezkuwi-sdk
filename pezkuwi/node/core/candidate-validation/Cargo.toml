@@ -26,8 +26,8 @@ pezkuwi-node-primitives = { workspace = true, default-features = true }
 pezkuwi-node-subsystem = { workspace = true, default-features = true }
 pezkuwi-node-subsystem-util = { workspace = true, default-features = true }
 pezkuwi-overseer = { workspace = true, default-features = true }
-pezkuwi-teyrchain-primitives = { workspace = true, default-features = true }
 pezkuwi-primitives = { workspace = true, default-features = true }
+pezkuwi-teyrchain-primitives = { workspace = true, default-features = true }
 
 [target.'cfg(not(any(target_os = "android", target_os = "unknown")))'.dependencies]
 pezkuwi-node-core-pvf = { workspace = true, default-features = true }

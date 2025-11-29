@@ -24,8 +24,8 @@ sp-runtime = { workspace = true }
 # Pezkuwi
 pezkuwi-core-primitives = { workspace = true }
 pezkuwichain-runtime-constants = { optional = true, workspace = true }
-zagros-runtime-constants = { optional = true, workspace = true }
 xcm = { workspace = true }
+zagros-runtime-constants = { optional = true, workspace = true }
 
 # Cumulus
 cumulus-primitives-core = { workspace = true }
@@ -33,13 +33,13 @@ cumulus-primitives-core = { workspace = true }
 [features]
 default = ["std"]
 std = [
-  "cumulus-primitives-core/std",
-  "frame-support/std",
-  "pezkuwi-core-primitives/std",
-  "pezkuwichain-runtime-constants?/std",
-  "sp-runtime/std",
-  "zagros-runtime-constants?/std",
-  "xcm/std",
+	"cumulus-primitives-core/std",
+	"frame-support/std",
+	"pezkuwi-core-primitives/std",
+	"pezkuwichain-runtime-constants?/std",
+	"sp-runtime/std",
+	"xcm/std",
+	"zagros-runtime-constants?/std",
 ]
 
 # Test runtimes specific features.

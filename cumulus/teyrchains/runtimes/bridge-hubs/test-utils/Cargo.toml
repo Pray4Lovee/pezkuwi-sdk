@@ -45,50 +45,50 @@ xcm-executor = { workspace = true }
 # Bridges
 bp-header-chain = { workspace = true }
 bp-messages = { workspace = true }
-bp-teyrchains = { workspace = true }
 bp-pezkuwi-core = { workspace = true }
 bp-relayers = { workspace = true }
 bp-runtime = { workspace = true }
 bp-test-utils = { workspace = true }
+bp-teyrchains = { workspace = true }
 pallet-bridge-grandpa = { workspace = true }
 pallet-bridge-messages = { features = ["test-helpers"], workspace = true }
-pallet-bridge-teyrchains = { workspace = true }
 pallet-bridge-relayers = { workspace = true }
+pallet-bridge-teyrchains = { workspace = true }
 pallet-xcm-bridge-hub = { workspace = true }
 
 [features]
 default = ["std"]
 std = [
-  "asset-test-utils/std",
-  "bp-header-chain/std",
-  "bp-messages/std",
-  "bp-teyrchains/std",
-  "bp-pezkuwi-core/std",
-  "bp-relayers/std",
-  "bp-runtime/std",
-  "bp-test-utils/std",
-  "codec/std",
-  "cumulus-pallet-teyrchain-system/std",
-  "cumulus-pallet-xcmp-queue/std",
-  "frame-support/std",
-  "frame-system/std",
-  "pallet-balances/std",
-  "pallet-bridge-grandpa/std",
-  "pallet-bridge-messages/std",
-  "pallet-bridge-teyrchains/std",
-  "pallet-bridge-relayers/std",
-  "pallet-timestamp/std",
-  "pallet-utility/std",
-  "pallet-xcm-bridge-hub/std",
-  "pallet-xcm/std",
-  "teyrchains-common/std",
-  "teyrchains-runtimes-test-utils/std",
-  "sp-core/std",
-  "sp-io/std",
-  "sp-runtime/std",
-  "sp-std/std",
-  "tracing/std",
-  "xcm-builder/std",
-  "xcm-executor/std",
-  "xcm/std",
+	"asset-test-utils/std",
+	"bp-header-chain/std",
+	"bp-messages/std",
+	"bp-pezkuwi-core/std",
+	"bp-relayers/std",
+	"bp-runtime/std",
+	"bp-test-utils/std",
+	"bp-teyrchains/std",
+	"codec/std",
+	"cumulus-pallet-teyrchain-system/std",
+	"cumulus-pallet-xcmp-queue/std",
+	"frame-support/std",
+	"frame-system/std",
+	"pallet-balances/std",
+	"pallet-bridge-grandpa/std",
+	"pallet-bridge-messages/std",
+	"pallet-bridge-relayers/std",
+	"pallet-bridge-teyrchains/std",
+	"pallet-timestamp/std",
+	"pallet-utility/std",
+	"pallet-xcm-bridge-hub/std",
+	"pallet-xcm/std",
+	"sp-core/std",
+	"sp-io/std",
+	"sp-runtime/std",
+	"sp-std/std",
+	"teyrchains-common/std",
+	"teyrchains-runtimes-test-utils/std",
+	"tracing/std",
+	"xcm-builder/std",
+	"xcm-executor/std",
+	"xcm/std",
 ]

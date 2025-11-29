@@ -27,9 +27,9 @@ sp-runtime = { workspace = true }
 collectives-zagros-runtime = { workspace = true }
 pallet-xcm = { workspace = true }
 pezkuwi-runtime-common = { workspace = true, default-features = true }
-zagros-runtime-constants = { workspace = true, default-features = true }
 xcm = { workspace = true }
 xcm-executor = { workspace = true }
+zagros-runtime-constants = { workspace = true, default-features = true }
 
 # Cumulus
 cumulus-pallet-teyrchain-system = { workspace = true }

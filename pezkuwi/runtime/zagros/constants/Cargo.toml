@@ -30,22 +30,22 @@ xcm-builder = { workspace = true }
 [features]
 default = ["std"]
 std = [
-  "frame-support/std",
-  "pezkuwi-primitives/std",
-  "pezkuwi-runtime-common/std",
-  "sp-core/std",
-  "sp-runtime/std",
-  "sp-weights/std",
-  "xcm-builder/std",
-  "xcm/std",
+	"frame-support/std",
+	"pezkuwi-primitives/std",
+	"pezkuwi-runtime-common/std",
+	"sp-core/std",
+	"sp-runtime/std",
+	"sp-weights/std",
+	"xcm-builder/std",
+	"xcm/std",
 ]
 runtime-benchmarks = [
-  "frame-support/runtime-benchmarks",
-  "pezkuwi-primitives/runtime-benchmarks",
-  "pezkuwi-runtime-common/runtime-benchmarks",
-  "sp-runtime/runtime-benchmarks",
-  "xcm-builder/runtime-benchmarks",
-  "xcm/runtime-benchmarks",
+	"frame-support/runtime-benchmarks",
+	"pezkuwi-primitives/runtime-benchmarks",
+	"pezkuwi-runtime-common/runtime-benchmarks",
+	"sp-runtime/runtime-benchmarks",
+	"xcm-builder/runtime-benchmarks",
+	"xcm/runtime-benchmarks",
 ]
 # Set timing constants (e.g. session period) to faster versions to speed up testing.
 fast-runtime = []
