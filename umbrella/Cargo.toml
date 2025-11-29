@@ -1029,7 +1029,7 @@ workspace = true
 [dependencies.binary-merkle-tree]
 default-features = false
 optional = true
-path = "../substrate/utils/binary-merkle-tree"
+workspace = true
 
 [dependencies.bp-header-chain]
 default-features = false

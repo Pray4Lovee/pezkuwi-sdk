@@ -53,6 +53,7 @@ PezkuwiChain is more than a blockchain. It is the foundational layer for **decen
 ## Token Economics
 
 ### HEZ — Native Gas Token (Inflationary)
+
 | Property | Value |
 |----------|-------|
 | **Purpose** | Transaction fees, staking, network security |
@@ -62,6 +63,7 @@ PezkuwiChain is more than a blockchain. It is the foundational layer for **decen
 | **Access** | Permissionless — open to everyone globally |
 
 ### PEZ — Governance Token (Fixed Supply)
+
 | Property | Value |
 |----------|-------|
 | **Total Supply** | 5,000,000,000 PEZ |
@@ -257,22 +259,22 @@ In order to build this project you need to install some dependencies, follow the
 
 ## 📚 Documentation
 
-* [Pezkuwi Documentation Portal](https://docs.pezkuwichain.io)
-* [🦀 rust-docs](https://pezkuwichain.github.io/pezkuwi-sdk/master/pezkuwi_sdk_docs/index.html): Where we keep track of
+- [Pezkuwi Documentation Portal](https://docs.pezkuwichain.io)
+- [rust-docs](https://pezkuwichain.github.io/pezkuwi-sdk/master/pezkuwi_sdk_docs/index.html): Where we keep track of
 the API docs of our Rust crates. Includes:
-  * [Introduction](https://pezkuwichain.github.io/pezkuwi-sdk/master/pezkuwi_sdk_docs/pezkuwi_sdk/index.html)
-	to each component of the Pezkuwi SDK: Substrate, FRAME, Cumulus, and XCM
-  * [Guides](https://pezkuwichain.github.io/pezkuwi-sdk/master/pezkuwi_sdk_docs/guides/index.html),
-	namely how to build your first FRAME pallet
-  * [Templates](https://pezkuwichain.github.io/pezkuwi-sdk/master/pezkuwi_sdk_docs/pezkuwi_sdk/templates/index.html)
+  - [Introduction](https://pezkuwichain.github.io/pezkuwi-sdk/master/pezkuwi_sdk_docs/pezkuwi_sdk/index.html)
+    to each component of the Pezkuwi SDK: Substrate, FRAME, Cumulus, and XCM
+  - [Guides](https://pezkuwichain.github.io/pezkuwi-sdk/master/pezkuwi_sdk_docs/guides/index.html),
+    namely how to build your first FRAME pallet
+  - [Templates](https://pezkuwichain.github.io/pezkuwi-sdk/master/pezkuwi_sdk_docs/pezkuwi_sdk/templates/index.html)
     for starting a new project.
-  * [External Resources](https://pezkuwichain.github.io/pezkuwi-sdk/master/pezkuwi_sdk_docs/external_resources/index.html)
-* Have a question? You can ask in the Pezkuwi SDK Developers Chat.
+  - [External Resources](https://pezkuwichain.github.io/pezkuwi-sdk/master/pezkuwi_sdk_docs/external_resources/index.html)
+- Have a question? You can ask in the Pezkuwi SDK Developers Chat.
 Messages from either of these channels are bridged to the other, so you can use whichever one you like.
-  * [Telegram](https://t.me/pezkuwidevs)
-  * [Matrix](https://matrix.to/#/#pezkuwidevs:matrix.org)
-  * [Discord](https://discord.com/channels/722223075629727774/997505821955076196)
-  * [Pezkuwi and Substrate StackExchange](https://pezkuwichain.app/community)
+  - [Telegram](https://t.me/pezkuwidevs)
+  - [Matrix](https://matrix.to/#/#pezkuwidevs:matrix.org)
+  - [Discord](https://discord.com/channels/722223075629727774/997505821955076196)
+  - [Pezkuwi and Substrate StackExchange](https://pezkuwichain.app/community)
 
 ## 🚀 Releases
 

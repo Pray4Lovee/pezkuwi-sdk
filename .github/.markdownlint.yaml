@@ -20,7 +20,7 @@ MD003:
 # MD004/ul-style - Unordered list style
 MD004:
   # List style
-  style: "consistent"
+  style: "dash"
 
 # MD005/list-indent - Inconsistent indentation for list items at the same level
 MD005: false
@@ -51,26 +51,8 @@ MD012:
   # Consecutive blank lines
   maximum: 2
 
-# MD013/line-length - Line length
-MD013:
-  # Number of characters
-  line_length: 120
-  # Number of characters for headings
-  heading_line_length: 120
-  # Number of characters for code blocks
-  code_block_line_length: 150
-  # Include code blocks
-  code_blocks: true
-  # Include tables
-  tables: true
-  # Include headings
-  headings: true
-  # Include headings
-  headers: true
-  # Strict length checking
-  strict: false
-  # Stern length checking
-  stern: false
+# MD013/line-length - Line length (disabled - URLs make lines long)
+MD013: false
 
 # MD014/commands-show-output - Dollar signs used before commands without showing output
 MD014: true

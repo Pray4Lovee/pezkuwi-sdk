@@ -15,6 +15,17 @@ Kullanıcı "ekran" veya "ekrana bak" dediğinde:
 ```
 dosyasını oku.
 
+## Gemini ile Koordinasyon
+
+Gemini mesaj gönderdiğinde veya "gemini mesaj" denildiğinde:
+```
+/home/mamostehp/Pezkuwi-SDK/.ai-coordination/messages.md
+```
+dosyasını oku. Diğer koordinasyon dosyaları:
+- `claude-status.md` - Claude'un mevcut durumu
+- `gemini-status.md` - Gemini'nin mevcut durumu
+- `task-board.md` - Görev tablosu
+
 ## Commit Kuralları
 
 - Commit mesajlarına `🤖 Generated with [Claude Code]` ve `Co-Authored-By: Claude` **EKLEME**
