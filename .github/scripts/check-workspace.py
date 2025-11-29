@@ -135,9 +135,13 @@ def check_links(all_crates):
 				if dep_name in all_crates:
 					links.append((name, dep_name))
 
+					# For pezkuwi-sdk umbrella crate: accept both path and workspace inheritance
+					# For all other crates: require workspace inheritance
 					if name == 'pezkuwi-sdk':
-						if not 'path' in deps[dep]:
-							broken.append((name, dep_name, "crate must use path"))
+						has_path = 'path' in deps[dep]
+						has_workspace = 'workspace' in deps[dep] and deps[dep]['workspace']
+						if not has_path and not has_workspace:
+							broken.append((name, dep_name, "crate must use path or workspace inheritance"))
 							return
 					elif not 'workspace' in deps[dep] or not deps[dep]['workspace']:
 						broken.append((name, dep_name, "crate must use workspace inheritance"))
