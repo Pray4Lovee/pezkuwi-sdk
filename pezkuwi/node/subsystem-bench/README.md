@@ -199,8 +199,6 @@ availability-store                     0.304       0.101
 Test environment                       3.213       1.071
 ```
 
-<!-- markdownlint-enable line-length -->
-
 `Block time` in the current context has a different meaning. It measures the amount of time it
 took the subsystem to finish processing all of the messages sent in the context of the current test block.
 
