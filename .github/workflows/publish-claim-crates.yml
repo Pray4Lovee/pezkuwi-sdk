@@ -22,5 +22,5 @@ jobs:
 
       - name: parity-publish claim
         env:
-          PARITY_PUBLISH_CRATESIO_TOKEN: ${{ secrets.CRATESIO_PUBLISH_CLAIM_TOKEN }}
+          PEZKUWI_CRATESIO_TOKEN: ${{ secrets.PEZKUWI_CRATESIO_TOKEN }}
         run: parity-publish --color always claim
