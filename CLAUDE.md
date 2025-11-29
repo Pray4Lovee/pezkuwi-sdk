@@ -37,6 +37,7 @@ dosyasını oku. Diğer koordinasyon dosyaları:
 - **Teknoloji:** Polkadot SDK fork'u (ama Polkadot DEĞİL, bağımsız)
 - **Ana branch:** `main`
 - **GitHub:** `pezkuwichain/pezkuwi-sdk`
+- **Discord:** `https://discord.gg/Y3VyEC6h8W` (Server: 1444335345935057049)
 
 ## Önemli Notlar
 

@@ -18,15 +18,15 @@
 //! obsolete (duplicated) data or do not pass some additional pallet-specific
 //! checks.
 
-use bp_teyrchains::SubmitTeyrchainHeadsInfo;
 use bp_relayers::ExplicitOrAccountParams;
 use bp_runtime::Teyrchain;
+use bp_teyrchains::SubmitTeyrchainHeadsInfo;
 use pallet_bridge_grandpa::{
 	BridgedBlockNumber, CallSubType as GrandpaCallSubType, SubmitFinalityProofHelper,
 };
 use pallet_bridge_messages::CallSubType as MessagesCallSubType;
-use pallet_bridge_teyrchains::{CallSubType as TeyrchainsCallSubtype, SubmitTeyrchainHeadsHelper};
 use pallet_bridge_relayers::Pallet as RelayersPallet;
+use pallet_bridge_teyrchains::{CallSubType as TeyrchainsCallSubtype, SubmitTeyrchainHeadsHelper};
 use sp_runtime::{
 	traits::{Get, UniqueSaturatedInto},
 	transaction_validity::{TransactionPriority, TransactionValidity, ValidTransactionBuilder},
@@ -105,7 +105,7 @@ where
 			has_failed || !SubmitFinalityProofHelper::<T, I>::was_successful(bundled_block_number);
 
 		if !has_failed {
-			return
+			return;
 		}
 
 		// let's slash registered relayer
@@ -172,11 +172,11 @@ where
 		// we are only interested in associated pallet submissions
 		let Some(update) = maybe_update else { return };
 		// we are only interested in failed or unneeded transactions
-		let has_failed = has_failed ||
-			!SubmitTeyrchainHeadsHelper::<T, TeyrchainsInstance>::was_successful(&update);
+		let has_failed = has_failed
+			|| !SubmitTeyrchainHeadsHelper::<T, TeyrchainsInstance>::was_successful(&update);
 
 		if !has_failed {
-			return
+			return;
 		}
 
 		// let's slash registered relayer
@@ -376,11 +376,11 @@ mod tests {
 	use crate::mock::*;
 	use bp_header_chain::StoredHeaderDataBuilder;
 	use bp_messages::{InboundLaneData, MessageNonce, OutboundLaneData};
-	use bp_teyrchains::{BestParaHeadHash, ParaInfo};
 	use bp_pezkuwi_core::teyrchains::{ParaHeadsProof, ParaId};
 	use bp_relayers::{RewardsAccountOwner, RewardsAccountParams};
 	use bp_runtime::HeaderId;
 	use bp_test_utils::{make_default_justification, test_keyring, TEST_GRANDPA_SET_ID};
+	use bp_teyrchains::{BestParaHeadHash, ParaInfo};
 	use codec::{Decode, Encode, MaxEncodedLen};
 	use frame_support::{assert_err, assert_ok, traits::fungible::Mutate};
 	use pallet_bridge_grandpa::{Call as GrandpaCall, StoredAuthoritySet};
@@ -465,7 +465,7 @@ mod tests {
 		type ToPostDispatch = u64;
 		fn validate(_who: &u64, call: &MockCall) -> (u64, TransactionValidity) {
 			if call.data <= 1 {
-				return (1, InvalidTransaction::Custom(1).into())
+				return (1, InvalidTransaction::Custom(1).into());
 			}
 
 			(1, Ok(ValidTransaction { priority: 1, ..Default::default() }))
@@ -493,7 +493,7 @@ mod tests {
 		type ToPostDispatch = u64;
 		fn validate(_who: &u64, call: &MockCall) -> (u64, TransactionValidity) {
 			if call.data <= 2 {
-				return (2, InvalidTransaction::Custom(2).into())
+				return (2, InvalidTransaction::Custom(2).into());
 			}
 
 			(2, Ok(ValidTransaction { priority: 2, ..Default::default() }))

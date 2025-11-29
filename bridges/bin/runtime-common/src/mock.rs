@@ -23,9 +23,9 @@ use bp_messages::{
 	target_chain::{DispatchMessage, MessageDispatch},
 	ChainWithMessages, HashedLaneId, LaneIdType, MessageNonce,
 };
-use bp_teyrchains::SingleParaStoredHeaderDataBuilder;
 use bp_relayers::{PayRewardFromAccount, RewardsAccountParams};
 use bp_runtime::{messages::MessageDispatchResult, Chain, ChainId, Teyrchain};
+use bp_teyrchains::SingleParaStoredHeaderDataBuilder;
 use codec::Encode;
 use frame_support::{
 	derive_impl, parameter_types,
@@ -237,8 +237,8 @@ impl MessageDispatch for DummyMessageDispatch {
 	type LaneId = TestLaneIdType;
 
 	fn is_active(lane: Self::LaneId) -> bool {
-		frame_support::storage::unhashed::take::<bool>(&(b"inactive", lane).encode()[..]) !=
-			Some(false)
+		frame_support::storage::unhashed::take::<bool>(&(b"inactive", lane).encode()[..])
+			!= Some(false)
 	}
 
 	fn dispatch_weight(
