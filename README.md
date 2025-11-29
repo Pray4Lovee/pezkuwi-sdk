@@ -273,7 +273,7 @@ the API docs of our Rust crates. Includes:
 Messages from either of these channels are bridged to the other, so you can use whichever one you like.
   - [Telegram](https://t.me/pezkuwidevs)
   - [Matrix](https://matrix.to/#/#pezkuwidevs:matrix.org)
-  - [Discord](https://discord.com/channels/722223075629727774/997505821955076196)
+  - [Discord](https://discord.gg/Y3VyEC6h8W)
   - [Pezkuwi and Substrate StackExchange](https://pezkuwichain.app/community)
 
 ## 🚀 Releases

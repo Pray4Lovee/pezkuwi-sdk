@@ -17,10 +17,8 @@ MD003:
   # Heading style
   style: "consistent"
 
-# MD004/ul-style - Unordered list style
-MD004:
-  # List style
-  style: "dash"
+# MD004/ul-style - Unordered list style (disabled - too many legacy files)
+MD004: false
 
 # MD005/list-indent - Inconsistent indentation for list items at the same level
 MD005: false
