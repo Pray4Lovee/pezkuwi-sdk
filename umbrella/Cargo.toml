@@ -1034,47 +1034,47 @@ workspace = true
 [dependencies.bp-header-chain]
 default-features = false
 optional = true
-path = "../bridges/primitives/header-chain"
+workspace = true
 
 [dependencies.bp-messages]
 default-features = false
 optional = true
-path = "../bridges/primitives/messages"
+workspace = true
 
 [dependencies.bp-teyrchains]
 default-features = false
 optional = true
-path = "../bridges/primitives/teyrchains"
+workspace = true
 
 [dependencies.bp-pezkuwi-core]
 default-features = false
 optional = true
-path = "../bridges/primitives/pezkuwi-core"
+workspace = true
 
 [dependencies.bp-relayers]
 default-features = false
 optional = true
-path = "../bridges/primitives/relayers"
+workspace = true
 
 [dependencies.bp-runtime]
 default-features = false
 optional = true
-path = "../bridges/primitives/runtime"
+workspace = true
 
 [dependencies.bp-test-utils]
 default-features = false
 optional = true
-path = "../bridges/primitives/test-utils"
+workspace = true
 
 [dependencies.bp-xcm-bridge-hub]
 default-features = false
 optional = true
-path = "../bridges/primitives/xcm-bridge-hub"
+workspace = true
 
 [dependencies.bp-xcm-bridge-hub-router]
 default-features = false
 optional = true
-path = "../bridges/primitives/xcm-bridge-hub-router"
+workspace = true
 
 [dependencies.bridge-hub-common]
 default-features = false
@@ -1084,7 +1084,7 @@ path = "../cumulus/teyrchains/runtimes/bridge-hubs/common"
 [dependencies.bridge-runtime-common]
 default-features = false
 optional = true
-path = "../bridges/bin/runtime-common"
+workspace = true
 
 [dependencies.cumulus-pallet-aura-ext]
 default-features = false
@@ -1349,22 +1349,22 @@ path = "../substrate/frame/bounties"
 [dependencies.pallet-bridge-grandpa]
 default-features = false
 optional = true
-path = "../bridges/modules/grandpa"
+workspace = true
 
 [dependencies.pallet-bridge-messages]
 default-features = false
 optional = true
-path = "../bridges/modules/messages"
+workspace = true
 
 [dependencies.pallet-bridge-teyrchains]
 default-features = false
 optional = true
-path = "../bridges/modules/teyrchains"
+workspace = true
 
 [dependencies.pallet-bridge-relayers]
 default-features = false
 optional = true
-path = "../bridges/modules/relayers"
+workspace = true
 
 [dependencies.pallet-broker]
 default-features = false
@@ -1849,12 +1849,12 @@ path = "../pezkuwi/xcm/pallet-xcm-benchmarks"
 [dependencies.pallet-xcm-bridge-hub]
 default-features = false
 optional = true
-path = "../bridges/modules/xcm-bridge-hub"
+workspace = true
 
 [dependencies.pallet-xcm-bridge-hub-router]
 default-features = false
 optional = true
-path = "../bridges/modules/xcm-bridge-hub-router"
+workspace = true
 
 [dependencies.pallet-xcm-precompiles]
 default-features = false
