@@ -15,6 +15,7 @@ workspace = true
 [dependencies]
 codec = { features = ["derive"], workspace = true }
 enumflags2 = { workspace = true }
+hex-literal = { workspace = true }
 scale-info = { features = ["derive"], workspace = true }
 serde = { optional = true, features = [
 	"derive",
