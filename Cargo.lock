@@ -1265,7 +1265,6 @@ dependencies = [
  "pallet-multisig",
  "pallet-nft-fractionalization",
  "pallet-nfts",
- "pallet-pez-rewards",
  "pallet-pez-treasury",
  "pallet-presale",
  "pallet-proxy",
@@ -14523,6 +14522,36 @@ dependencies = [
 ]
 
 [[package]]
+name = "pallet-welati"
+version = "1.0.0"
+dependencies = [
+ "frame-benchmarking",
+ "frame-support",
+ "frame-system",
+ "log",
+ "pallet-balances",
+ "pallet-collective",
+ "pallet-democracy",
+ "pallet-elections-phragmen",
+ "pallet-identity",
+ "pallet-identity-kyc",
+ "pallet-nfts",
+ "pallet-referral",
+ "pallet-scheduler",
+ "pallet-staking-score",
+ "pallet-tiki",
+ "pallet-timestamp",
+ "pallet-trust",
+ "parity-scale-codec",
+ "scale-info",
+ "serde",
+ "sp-core 28.0.0",
+ "sp-io",
+ "sp-runtime",
+ "sp-std 14.0.0",
+]
+
+[[package]]
 name = "pallet-whitelist"
 version = "27.0.0"
 dependencies = [
@@ -14963,11 +14992,14 @@ dependencies = [
  "frame-system-benchmarking",
  "frame-system-rpc-runtime-api",
  "frame-try-runtime",
+ "pallet-assets",
  "pallet-aura",
  "pallet-authorship",
  "pallet-balances",
  "pallet-collator-selection",
  "pallet-collective",
+ "pallet-democracy",
+ "pallet-elections-phragmen",
  "pallet-identity",
  "pallet-identity-kyc",
  "pallet-message-queue",
@@ -14975,8 +15007,10 @@ dependencies = [
  "pallet-multisig",
  "pallet-nfts",
  "pallet-perwerde",
+ "pallet-pez-rewards",
  "pallet-proxy",
  "pallet-referral",
+ "pallet-scheduler",
  "pallet-session",
  "pallet-staking-score",
  "pallet-tiki",
@@ -14985,6 +15019,7 @@ dependencies = [
  "pallet-transaction-payment-rpc-runtime-api",
  "pallet-trust",
  "pallet-utility",
+ "pallet-welati",
  "pallet-xcm",
  "pallet-xcm-benchmarks",
  "parity-scale-codec",
@@ -15005,6 +15040,7 @@ dependencies = [
  "sp-offchain",
  "sp-runtime",
  "sp-session",
+ "sp-staking",
  "sp-storage 19.0.0",
  "sp-transaction-pool",
  "sp-version",

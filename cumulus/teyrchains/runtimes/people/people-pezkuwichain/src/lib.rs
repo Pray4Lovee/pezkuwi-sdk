@@ -620,12 +620,22 @@ construct_runtime!(
 		Nfts: pallet_nfts = 60,
 		Tiki: pallet_tiki = 61,
 
-		// Governance
+		// Governance - Core
 		Council: pallet_collective::<Instance1> = 70,
+		Scheduler: pallet_scheduler = 71,
+		Democracy: pallet_democracy = 72,
+		Elections: pallet_elections_phragmen = 73,
+
+		// PezkuwiChain Governance
+		Welati: pallet_welati = 75,
 
 		// Trust & Staking
 		StakingScore: pallet_staking_score = 80,
 		Trust: pallet_trust = 81,
+
+		// Assets & Rewards
+		Assets: pallet_assets = 90,
+		PezRewards: pallet_pez_rewards = 91,
 
 		// Migrations pallet
 		MultiBlockMigrations: pallet_migrations = 98,
@@ -652,6 +662,11 @@ mod benches {
 		[pallet_timestamp, Timestamp]
 		[pallet_migrations, MultiBlockMigrations]
 		[pallet_transaction_payment, TransactionPayment]
+		// Governance pallets
+		[pallet_scheduler, Scheduler]
+		[pallet_democracy, Democracy]
+		[pallet_elections_phragmen, Elections]
+		[pallet_assets, Assets]
 		// Pezkuwi - Custom People Pallets
 		[pallet_identity_kyc, IdentityKyc]
 		[pallet_perwerde, Perwerde]
@@ -659,6 +674,8 @@ mod benches {
 		[pallet_tiki, Tiki]
 		[pallet_staking_score, StakingScore]
 		[pallet_trust, Trust]
+		[pallet_welati, Welati]
+		[pallet_pez_rewards, PezRewards]
 		[pezkuwi_runtime_common::identity_migrator, IdentityMigrator]
 		// Cumulus
 		[cumulus_pallet_teyrchain_system, TeyrchainSystem]

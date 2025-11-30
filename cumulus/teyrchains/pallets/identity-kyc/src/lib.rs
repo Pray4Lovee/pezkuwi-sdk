@@ -529,6 +529,13 @@ impl<T: Config> Pallet<T> {
 		KycStatuses::<T>::get(who) == KycLevel::Approved
 	}
 
+	/// Count total number of citizens
+	pub fn citizen_count() -> u32 {
+		KycStatuses::<T>::iter()
+			.filter(|(_, status)| *status == KycLevel::Approved)
+			.count() as u32
+	}
+
 	/// Get the referrer of a citizen or applicant
 	/// Checks both pending applications and approved citizen records
 	pub fn get_referrer(who: &T::AccountId) -> Option<T::AccountId> {

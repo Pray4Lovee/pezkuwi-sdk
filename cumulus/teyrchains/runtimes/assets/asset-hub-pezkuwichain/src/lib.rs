@@ -1093,7 +1093,7 @@ parameter_types! {
 impl pallet_pez_treasury::Config for Runtime {
 	type RuntimeEvent = RuntimeEvent;
 	type Assets = Assets;
-	type WeightInfo = (); // Use noop weights until benchmarks are generated
+	type WeightInfo = pallet_pez_treasury::weights::SubstrateWeight<Runtime>;
 	type PezAssetId = PezAssetId;
 	type TreasuryPalletId = PezTreasuryPalletId;
 	type IncentivePotId = PezIncentivePotId;
@@ -1152,7 +1152,7 @@ impl pallet_staking_score::StakingInfoProvider<AccountId, Balance> for AssetHubS
 
 impl pallet_staking_score::Config for Runtime {
 	type RuntimeEvent = RuntimeEvent;
-	type WeightInfo = (); // Use noop weights until benchmarks are generated
+	type WeightInfo = pallet_staking_score::weights::SubstrateWeight<Runtime>;
 	type Balance = Balance;
 	type StakingInfo = AssetHubStakingInfoProvider;
 }
@@ -1168,7 +1168,7 @@ parameter_types! {
 
 impl pallet_token_wrapper::Config for Runtime {
 	type RuntimeEvent = RuntimeEvent;
-	type WeightInfo = (); // Use noop weights until benchmarks are generated
+	type WeightInfo = pallet_token_wrapper::weights::SubstrateWeight<Runtime>;
 	type Currency = Balances;
 	type AssetId = AssetIdForTrustBackedAssets;
 	type Assets = Assets;
@@ -1453,6 +1453,11 @@ mod benches {
 		[pallet_xcm_benchmarks::fungible, XcmBalances]
 		[pallet_xcm_benchmarks::generic, XcmGeneric]
 		[cumulus_pallet_weight_reclaim, WeightReclaim]
+		// PezkuwiChain Custom Pallets
+		[pallet_pez_treasury, PezTreasury]
+		[pallet_presale, Presale]
+		[pallet_staking_score, StakingScore]
+		[pallet_token_wrapper, TokenWrapper]
 	);
 }
 

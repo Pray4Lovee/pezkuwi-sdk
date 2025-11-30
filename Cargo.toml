@@ -1082,6 +1082,7 @@ pallet-perwerde = { path = "cumulus/teyrchains/pallets/perwerde", default-featur
 pallet-referral = { path = "cumulus/teyrchains/pallets/referral", default-features = false }
 pallet-tiki = { path = "cumulus/teyrchains/pallets/tiki", default-features = false }
 pallet-trust = { path = "cumulus/teyrchains/pallets/trust", default-features = false }
+pallet-welati = { path = "cumulus/teyrchains/pallets/welati", default-features = false }
 
 # Asset Hub Pallets (Phase 3)
 pallet-pez-rewards = { path = "cumulus/teyrchains/pallets/pez-rewards", default-features = false }

@@ -545,3 +545,262 @@ impl pallet_trust::Config for Runtime {
 	type TikiScoreSource = TikiScoreSource;
 	type CitizenshipSource = CitizenshipSource;
 }
+
+// =============================================================================
+// Assets Pallet Configuration (required by PEZ Rewards)
+// =============================================================================
+
+parameter_types! {
+	pub const AssetsAssetDeposit: Balance = 10 * UNITS;
+	pub const AssetsAssetAccountDeposit: Balance = deposit(1, 16);
+	pub const AssetsApprovalDeposit: Balance = deposit(1, 20);
+	pub const AssetsStringLimit: u32 = 50;
+	pub const AssetsMetadataDepositBase: Balance = deposit(1, 68);
+	pub const AssetsMetadataDepositPerByte: Balance = deposit(0, 1);
+}
+
+impl pallet_assets::Config for Runtime {
+	type RuntimeEvent = RuntimeEvent;
+	type Balance = Balance;
+	type AssetId = u32;
+	type AssetIdParameter = codec::Compact<u32>;
+	type Currency = Balances;
+	type CreateOrigin = frame_support::traits::AsEnsureOriginWithArg<frame_system::EnsureSigned<AccountId>>;
+	type ForceOrigin = EnsureRoot<AccountId>;
+	type AssetDeposit = AssetsAssetDeposit;
+	type AssetAccountDeposit = AssetsAssetAccountDeposit;
+	type MetadataDepositBase = AssetsMetadataDepositBase;
+	type MetadataDepositPerByte = AssetsMetadataDepositPerByte;
+	type ApprovalDeposit = AssetsApprovalDeposit;
+	type StringLimit = AssetsStringLimit;
+	type Freezer = ();
+	type Extra = ();
+	type WeightInfo = weights::pallet_assets::WeightInfo<Runtime>;
+	type CallbackHandle = ();
+	type RemoveItemsLimit = ConstU32<1000>;
+	type ReserveData = ();
+	type Holder = ();
+	#[cfg(feature = "runtime-benchmarks")]
+	type BenchmarkHelper = ();
+}
+
+// =============================================================================
+// Scheduler Pallet Configuration (required by Welati & Democracy)
+// =============================================================================
+
+parameter_types! {
+	pub MaximumSchedulerWeight: Weight = sp_runtime::Perbill::from_percent(80) * RuntimeBlockWeights::get().max_block;
+}
+
+impl pallet_scheduler::Config for Runtime {
+	type RuntimeEvent = RuntimeEvent;
+	type RuntimeOrigin = RuntimeOrigin;
+	type PalletsOrigin = OriginCaller;
+	type RuntimeCall = RuntimeCall;
+	type MaximumWeight = MaximumSchedulerWeight;
+	type ScheduleOrigin = EnsureRoot<AccountId>;
+	type MaxScheduledPerBlock = ConstU32<50>;
+	type WeightInfo = pallet_scheduler::weights::SubstrateWeight<Runtime>;
+	type OriginPrivilegeCmp = frame_support::traits::EqualPrivilegeOnly;
+	type Preimages = ();
+	type BlockNumberProvider = frame_system::Pallet<Runtime>;
+}
+
+// =============================================================================
+// Democracy Pallet Configuration (required by Welati)
+// =============================================================================
+
+parameter_types! {
+	pub const DemocracyLaunchPeriod: BlockNumber = 7 * DAYS;
+	pub const DemocracyVotingPeriod: BlockNumber = 7 * DAYS;
+	pub const DemocracyFastTrackVotingPeriod: BlockNumber = HOURS;
+	pub const DemocracyMinimumDeposit: Balance = 10 * UNITS;
+	pub const DemocracyEnactmentPeriod: BlockNumber = DAYS;
+	pub const DemocracyCooloffPeriod: BlockNumber = 7 * DAYS;
+	pub const DemocracyMaxVotes: u32 = 100;
+	pub const DemocracyMaxProposals: u32 = 100;
+}
+
+impl pallet_democracy::Config for Runtime {
+	type RuntimeEvent = RuntimeEvent;
+	type Currency = Balances;
+	type EnactmentPeriod = DemocracyEnactmentPeriod;
+	type LaunchPeriod = DemocracyLaunchPeriod;
+	type VotingPeriod = DemocracyVotingPeriod;
+	type VoteLockingPeriod = DemocracyEnactmentPeriod;
+	type MinimumDeposit = DemocracyMinimumDeposit;
+	type InstantAllowed = ConstBool<true>;
+	type FastTrackVotingPeriod = DemocracyFastTrackVotingPeriod;
+	type CooloffPeriod = DemocracyCooloffPeriod;
+	type MaxVotes = DemocracyMaxVotes;
+	type MaxProposals = DemocracyMaxProposals;
+	type MaxDeposits = ConstU32<100>;
+	type MaxBlacklisted = ConstU32<100>;
+	type ExternalOrigin = EnsureRoot<AccountId>;
+	type ExternalMajorityOrigin = EnsureRoot<AccountId>;
+	type ExternalDefaultOrigin = EnsureRoot<AccountId>;
+	type FastTrackOrigin = EnsureRoot<AccountId>;
+	type InstantOrigin = EnsureRoot<AccountId>;
+	type CancellationOrigin = EnsureRoot<AccountId>;
+	type BlacklistOrigin = EnsureRoot<AccountId>;
+	type CancelProposalOrigin = EnsureRoot<AccountId>;
+	type VetoOrigin = frame_system::EnsureSigned<AccountId>;
+	type Slash = ();
+	type Scheduler = Scheduler;
+	type PalletsOrigin = OriginCaller;
+	type Preimages = ();
+	type SubmitOrigin = frame_system::EnsureSigned<AccountId>;
+	type WeightInfo = pallet_democracy::weights::SubstrateWeight<Runtime>;
+}
+
+// =============================================================================
+// Elections Phragmen Pallet Configuration (required by Welati)
+// =============================================================================
+
+parameter_types! {
+	pub const ElectionsCandidacyBond: Balance = 10 * UNITS;
+	pub const ElectionsVotingBondBase: Balance = UNITS;
+	pub const ElectionsVotingBondFactor: Balance = UNITS / 10;
+	pub const ElectionsDesiredMembers: u32 = 13;
+	pub const ElectionsDesiredRunnersUp: u32 = 7;
+	pub const ElectionsTermDuration: BlockNumber = 7 * DAYS;
+	pub const ElectionsPalletId: frame_support::traits::LockIdentifier = *b"phrelect";
+}
+
+impl pallet_elections_phragmen::Config for Runtime {
+	type RuntimeEvent = RuntimeEvent;
+	type Currency = Balances;
+	type PalletId = ElectionsPalletId;
+	type ChangeMembers = ();
+	type InitializeMembers = ();
+	type CurrencyToVote = sp_staking::currency_to_vote::U128CurrencyToVote;
+	type CandidacyBond = ElectionsCandidacyBond;
+	type VotingBondBase = ElectionsVotingBondBase;
+	type VotingBondFactor = ElectionsVotingBondFactor;
+	type LoserCandidate = ();
+	type KickedMember = ();
+	type DesiredMembers = ElectionsDesiredMembers;
+	type DesiredRunnersUp = ElectionsDesiredRunnersUp;
+	type TermDuration = ElectionsTermDuration;
+	type MaxCandidates = ConstU32<64>;
+	type MaxVoters = ConstU32<512>;
+	type MaxVotesPerVoter = ConstU32<16>;
+	type WeightInfo = pallet_elections_phragmen::weights::SubstrateWeight<Runtime>;
+}
+
+// =============================================================================
+// Welati (Governance) Pallet Configuration
+// =============================================================================
+
+parameter_types! {
+	/// Parliament size (201 members like Kurdistan Parliament)
+	pub const WelatiParliamentSize: u32 = 201;
+	/// Diwan council size
+	pub const WelatiDiwanSize: u32 = 50;
+	/// Election period (~4 months = ~120 days)
+	pub const WelatiElectionPeriod: BlockNumber = 120 * DAYS;
+	/// Candidacy period (~3 days)
+	pub const WelatiCandidacyPeriod: BlockNumber = 3 * DAYS;
+	/// Campaign period (~10 days)
+	pub const WelatiCampaignPeriod: BlockNumber = 10 * DAYS;
+	/// Number of electoral districts
+	pub const WelatiElectoralDistricts: u32 = 10;
+	/// Candidacy deposit (100 PEZ)
+	pub const WelatiCandidacyDeposit: u128 = 100 * UNITS as u128;
+	/// Presidential endorsements required
+	pub const WelatiPresidentialEndorsements: u32 = 1000;
+	/// Parliamentary endorsements required
+	pub const WelatiParliamentaryEndorsements: u32 = 100;
+}
+
+/// Randomness source for elections (using timestamp for now)
+pub struct TimestampRandomness;
+impl frame_support::traits::Randomness<Hash, BlockNumber> for TimestampRandomness {
+	fn random(subject: &[u8]) -> (Hash, BlockNumber) {
+		let block_number = frame_system::Pallet::<Runtime>::block_number();
+		let timestamp = pallet_timestamp::Pallet::<Runtime>::get();
+		let mut data = subject.to_vec();
+		data.extend_from_slice(&timestamp.to_le_bytes());
+		data.extend_from_slice(&block_number.to_le_bytes());
+		let hash = sp_core::hashing::blake2_256(&data);
+		(Hash::from(hash), block_number)
+	}
+}
+
+/// Citizen count provider for Welati
+pub struct WelatiCitizenSource;
+impl pallet_welati::CitizenInfo for WelatiCitizenSource {
+	fn citizen_count() -> u32 {
+		IdentityKyc::citizen_count()
+	}
+}
+
+/// Trust score source for Welati
+pub struct WelatiTrustScoreSource;
+impl pallet_trust::TrustScoreProvider<AccountId> for WelatiTrustScoreSource {
+	fn trust_score_of(who: &AccountId) -> u128 {
+		Trust::trust_score_of(who)
+	}
+}
+
+/// Tiki score source for Welati
+pub struct WelatiTikiScoreSource;
+impl pallet_tiki::TikiScoreProvider<AccountId> for WelatiTikiScoreSource {
+	fn get_tiki_score(who: &AccountId) -> u32 {
+		<Tiki as pallet_tiki::TikiScoreProvider<AccountId>>::get_tiki_score(who)
+	}
+}
+
+impl pallet_welati::Config for Runtime {
+	type RuntimeEvent = RuntimeEvent;
+	type WeightInfo = ();
+	type Randomness = TimestampRandomness;
+	type RuntimeCall = RuntimeCall;
+	type TrustScoreSource = WelatiTrustScoreSource;
+	type TikiSource = WelatiTikiScoreSource;
+	type CitizenSource = WelatiCitizenSource;
+	type KycSource = IdentityKyc;
+	type ParliamentSize = WelatiParliamentSize;
+	type DiwanSize = WelatiDiwanSize;
+	type ElectionPeriod = WelatiElectionPeriod;
+	type CandidacyPeriod = WelatiCandidacyPeriod;
+	type CampaignPeriod = WelatiCampaignPeriod;
+	type ElectoralDistricts = WelatiElectoralDistricts;
+	type CandidacyDeposit = WelatiCandidacyDeposit;
+	type PresidentialEndorsements = WelatiPresidentialEndorsements;
+	type ParliamentaryEndorsements = WelatiParliamentaryEndorsements;
+}
+
+// =============================================================================
+// PEZ Rewards Pallet Configuration
+// =============================================================================
+
+parameter_types! {
+	/// PEZ Asset ID
+	pub const PezAssetId: u32 = 1;
+	/// Incentive Pot Pallet ID
+	pub const IncentivePotId: frame_support::PalletId = frame_support::PalletId(*b"pez/incv");
+	/// Clawback recipient (QaziMuhammed account - placeholder)
+	pub ClawbackRecipient: AccountId = sp_keyring::Sr25519Keyring::Bob.to_account_id();
+}
+
+/// Trust score source for PEZ Rewards
+pub struct PezRewardsTrustScoreSource;
+impl pallet_trust::TrustScoreProvider<AccountId> for PezRewardsTrustScoreSource {
+	fn trust_score_of(who: &AccountId) -> u128 {
+		Trust::trust_score_of(who)
+	}
+}
+
+impl pallet_pez_rewards::Config for Runtime {
+	type RuntimeEvent = RuntimeEvent;
+	type Assets = Assets;
+	type PezAssetId = PezAssetId;
+	type WeightInfo = pallet_pez_rewards::weights::SubstrateWeight<Runtime>;
+	type TrustScoreSource = PezRewardsTrustScoreSource;
+	type IncentivePotId = IncentivePotId;
+	type ClawbackRecipient = ClawbackRecipient;
+	type ForceOrigin = EnsureRoot<AccountId>;
+	type CollectionId = u32;
+	type ItemId = u32;
+}
