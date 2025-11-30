@@ -432,13 +432,32 @@ parameter_types! {
 /// Staking info provider - noop implementation for People parachain
 /// On People chain, we don't have direct access to staking info from relay chain.
 /// This is a placeholder that returns None, meaning users won't get staking-based scores here.
+#[cfg(not(feature = "runtime-benchmarks"))]
 pub struct StakingInfoProvider;
+#[cfg(not(feature = "runtime-benchmarks"))]
 impl pallet_staking_score::StakingInfoProvider<AccountId, Balance> for StakingInfoProvider {
 	fn get_staking_details(
 		_who: &AccountId,
 	) -> Option<pallet_staking_score::StakingDetails<Balance>> {
 		// People parachain doesn't have direct staking - return None
 		None
+	}
+}
+
+/// Mock staking info provider for benchmarking - always returns valid stake
+#[cfg(feature = "runtime-benchmarks")]
+pub struct StakingInfoProvider;
+#[cfg(feature = "runtime-benchmarks")]
+impl pallet_staking_score::StakingInfoProvider<AccountId, Balance> for StakingInfoProvider {
+	fn get_staking_details(
+		_who: &AccountId,
+	) -> Option<pallet_staking_score::StakingDetails<Balance>> {
+		// Return mock staking data for benchmarks
+		Some(pallet_staking_score::StakingDetails {
+			staked_amount: 1_000_000_000_000_000u128, // 1000 units
+			nominations_count: 5,
+			unlocking_chunks_count: 2,
+		})
 	}
 }
 
@@ -524,11 +543,24 @@ impl pallet_trust::TikiScoreProvider<AccountId> for TikiScoreSource {
 	}
 }
 
-/// Citizenship status source for Trust pallet
+/// Citizenship status source for Trust pallet - uses real IdentityKyc
+#[cfg(not(feature = "runtime-benchmarks"))]
 pub struct CitizenshipSource;
+#[cfg(not(feature = "runtime-benchmarks"))]
 impl pallet_trust::CitizenshipStatusProvider<AccountId> for CitizenshipSource {
 	fn is_citizen(who: &AccountId) -> bool {
 		IdentityKyc::is_citizen(who)
+	}
+}
+
+/// Mock citizenship source for benchmarks - always returns true
+#[cfg(feature = "runtime-benchmarks")]
+pub struct CitizenshipSource;
+#[cfg(feature = "runtime-benchmarks")]
+impl pallet_trust::CitizenshipStatusProvider<AccountId> for CitizenshipSource {
+	fn is_citizen(_who: &AccountId) -> bool {
+		// Always return true for benchmark purposes
+		true
 	}
 }
 

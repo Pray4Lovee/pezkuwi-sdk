@@ -205,13 +205,15 @@ mod benchmarks {
 	#[benchmark]
 	fn contribute() {
 		let caller: T::AccountId = whitelisted_caller();
-		let presale_treasury = Presale::<T>::presale_account_id(0);
+		// Get next presale ID before creating
+		let presale_id = NextPresaleId::<T>::get();
+		let presale_treasury = Presale::<T>::presale_account_id(presale_id);
 
 		// Setup assets
 		let (payment_asset, reward_asset) = setup_benchmark_assets::<T>(&caller, &presale_treasury);
 
-		// Create presale
-		let presale_id = create_test_presale::<T>(&caller, payment_asset, reward_asset, false, false);
+		// Create presale (will get the presale_id we calculated)
+		let _ = create_test_presale::<T>(&caller, payment_asset, reward_asset, false, false);
 
 		let amount: u128 = 10_000u128;
 
@@ -226,13 +228,15 @@ mod benchmarks {
 	#[benchmark]
 	fn refund() {
 		let caller: T::AccountId = whitelisted_caller();
-		let presale_treasury = Presale::<T>::presale_account_id(0);
+		// Get next presale ID before creating
+		let presale_id = NextPresaleId::<T>::get();
+		let presale_treasury = Presale::<T>::presale_account_id(presale_id);
 
 		// Setup assets
 		let (payment_asset, reward_asset) = setup_benchmark_assets::<T>(&caller, &presale_treasury);
 
-		// Create presale
-		let presale_id = create_test_presale::<T>(&caller, payment_asset, reward_asset, false, false);
+		// Create presale (will get the presale_id we calculated)
+		let _ = create_test_presale::<T>(&caller, payment_asset, reward_asset, false, false);
 
 		// Make a contribution first
 		let amount: u128 = 10_000u128;
@@ -256,14 +260,15 @@ mod benchmarks {
 	#[benchmark]
 	fn claim_vested() {
 		let caller: T::AccountId = whitelisted_caller();
-		let presale_treasury = Presale::<T>::presale_account_id(0);
+		// Get next presale ID before creating
+		let presale_id = NextPresaleId::<T>::get();
+		let presale_treasury = Presale::<T>::presale_account_id(presale_id);
 
 		// Setup assets
 		let (payment_asset, reward_asset) = setup_benchmark_assets::<T>(&caller, &presale_treasury);
 
-		// Create presale WITH vesting
-		let presale_id =
-			create_test_presale::<T>(&caller, payment_asset, reward_asset, false, true);
+		// Create presale WITH vesting (will get the presale_id we calculated)
+		let _ = create_test_presale::<T>(&caller, payment_asset, reward_asset, false, true);
 
 		// Make a contribution
 		let amount: u128 = 1_000_000u128; // Large enough to reach soft cap
@@ -293,13 +298,15 @@ mod benchmarks {
 	#[benchmark]
 	fn refund_cancelled_presale() {
 		let caller: T::AccountId = whitelisted_caller();
-		let presale_treasury = Presale::<T>::presale_account_id(0);
+		// Get next presale ID before creating
+		let presale_id = NextPresaleId::<T>::get();
+		let presale_treasury = Presale::<T>::presale_account_id(presale_id);
 
 		// Setup assets
 		let (payment_asset, reward_asset) = setup_benchmark_assets::<T>(&caller, &presale_treasury);
 
-		// Create presale
-		let presale_id = create_test_presale::<T>(&caller, payment_asset, reward_asset, false, false);
+		// Create presale (will get the presale_id we calculated)
+		let _ = create_test_presale::<T>(&caller, payment_asset, reward_asset, false, false);
 
 		// Make a contribution
 		let amount: u128 = 10_000u128;
@@ -325,14 +332,15 @@ mod benchmarks {
 	#[benchmark]
 	fn finalize_presale(n: Linear<1, 100>) {
 		let caller: T::AccountId = whitelisted_caller();
-		let presale_treasury = Presale::<T>::presale_account_id(0);
+		// Get next presale ID before creating
+		let presale_id = NextPresaleId::<T>::get();
+		let presale_treasury = Presale::<T>::presale_account_id(presale_id);
 
 		// Setup assets with enough for many contributors
 		let (payment_asset, reward_asset) = setup_benchmark_assets::<T>(&caller, &presale_treasury);
 
-		// Create presale
-		let presale_id =
-			create_test_presale::<T>(&caller, payment_asset.clone(), reward_asset.clone(), false, false);
+		// Create presale (will get the presale_id we calculated)
+		let _ = create_test_presale::<T>(&caller, payment_asset.clone(), reward_asset.clone(), false, false);
 
 		// Add n contributors
 		for i in 0..n {
@@ -369,13 +377,14 @@ mod benchmarks {
 	#[benchmark]
 	fn batch_refund_failed_presale(n: Linear<1, 100>) {
 		let caller: T::AccountId = whitelisted_caller();
-		let presale_treasury = Presale::<T>::presale_account_id(0);
+		// Get next presale ID before creating
+		let presale_id = NextPresaleId::<T>::get();
+		let presale_treasury = Presale::<T>::presale_account_id(presale_id);
 
 		// Setup assets
 		let (payment_asset, reward_asset) = setup_benchmark_assets::<T>(&caller, &presale_treasury);
 
 		// Create presale with HIGH soft cap (will fail)
-		let presale_id = NextPresaleId::<T>::get();
 		let _ = Presale::<T>::create_presale(
 			RawOrigin::Signed(caller.clone()).into(),
 			payment_asset.clone(),

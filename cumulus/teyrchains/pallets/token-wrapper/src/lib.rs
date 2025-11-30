@@ -14,6 +14,7 @@
 //! The pallet maintains a 1:1 backing between HEZ and wHEZ.
 
 pub use pallet::*;
+pub use weights::WeightInfo;
 pub mod weights;
 
 #[cfg(feature = "runtime-benchmarks")]
@@ -34,12 +35,6 @@ use frame_support::{
 };
 use frame_system::pallet_prelude::*;
 use sp_runtime::traits::{AccountIdConversion, Saturating, Zero};
-
-/// Weight functions trait for this pallet.
-pub trait WeightInfo {
-	fn wrap() -> frame_support::weights::Weight;
-	fn unwrap() -> frame_support::weights::Weight;
-}
 
 #[frame_support::pallet]
 pub mod pallet {

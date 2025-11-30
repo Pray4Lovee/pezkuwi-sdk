@@ -69,29 +69,10 @@
 //! ```
 
 pub use pallet::*;
-
-/// Weight functions trait for this pallet.
-pub trait WeightInfo {
-	fn initialize_treasury() -> Weight;
-	fn force_genesis_distribution() -> Weight;
-	fn release_monthly_funds() -> Weight;
-}
-
-// Unit type implementation for tests
-impl WeightInfo for () {
-	fn initialize_treasury() -> Weight {
-		Weight::from_parts(9_471_000, 1489)
-	}
-	fn force_genesis_distribution() -> Weight {
-		Weight::from_parts(70_607_000, 8817)
-	}
-	fn release_monthly_funds() -> Weight {
-		Weight::from_parts(96_837_000, 8817)
-	}
-}
+pub use weights::WeightInfo;
 
 pub mod migrations;
-pub mod weights; // Storage migrations
+pub mod weights;
 
 #[cfg(test)]
 mod mock;

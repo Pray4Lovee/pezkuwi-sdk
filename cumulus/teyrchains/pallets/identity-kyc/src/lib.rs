@@ -293,7 +293,7 @@ pub mod pallet {
 		/// 3. Status becomes PendingReferral
 		/// 4. Referrer must call approve_referral
 		#[pallet::call_index(0)]
-		#[pallet::weight(T::WeightInfo::apply_for_kyc())]
+		#[pallet::weight(T::WeightInfo::apply_for_citizenship())]
 		pub fn apply_for_citizenship(
 			origin: OriginFor<T>,
 			identity_hash: H256,
@@ -343,7 +343,7 @@ pub mod pallet {
 		/// - Caller must be the referrer specified in the application
 		/// - Application must be in PendingReferral state
 		#[pallet::call_index(1)]
-		#[pallet::weight(T::WeightInfo::approve_kyc())]
+		#[pallet::weight(T::WeightInfo::approve_referral())]
 		pub fn approve_referral(origin: OriginFor<T>, applicant: T::AccountId) -> DispatchResult {
 			let caller = ensure_signed(origin)?;
 
@@ -379,7 +379,7 @@ pub mod pallet {
 		/// 4. Citizen NFT (Welati) is minted
 		/// 5. Referral hooks are triggered
 		#[pallet::call_index(2)]
-		#[pallet::weight(T::WeightInfo::approve_kyc())]
+		#[pallet::weight(T::WeightInfo::confirm_citizenship())]
 		pub fn confirm_citizenship(origin: OriginFor<T>) -> DispatchResult {
 			let applicant = ensure_signed(origin)?;
 
@@ -426,7 +426,7 @@ pub mod pallet {
 		/// Used for malicious actors identified by governance
 		/// DIRECT RESPONSIBILITY: Triggers penalty for the referrer via referral pallet
 		#[pallet::call_index(3)]
-		#[pallet::weight(T::WeightInfo::revoke_kyc())]
+		#[pallet::weight(T::WeightInfo::revoke_citizenship())]
 		pub fn revoke_citizenship(origin: OriginFor<T>, who: T::AccountId) -> DispatchResult {
 			T::GovernanceOrigin::ensure_origin(origin)?;
 
@@ -455,7 +455,7 @@ pub mod pallet {
 		///
 		/// Users can freely leave the system
 		#[pallet::call_index(4)]
-		#[pallet::weight(T::WeightInfo::revoke_kyc())]
+		#[pallet::weight(T::WeightInfo::renounce_citizenship())]
 		pub fn renounce_citizenship(origin: OriginFor<T>) -> DispatchResult {
 			let who = ensure_signed(origin)?;
 
@@ -479,7 +479,7 @@ pub mod pallet {
 		/// Useful if referrer is unresponsive or user made a mistake.
 		/// SAFETY: Only works in PendingReferral state (not yet approved)
 		#[pallet::call_index(5)]
-		#[pallet::weight(T::WeightInfo::apply_for_kyc())]
+		#[pallet::weight(T::WeightInfo::cancel_application())]
 		pub fn cancel_application(origin: OriginFor<T>) -> DispatchResult {
 			let applicant = ensure_signed(origin)?;
 

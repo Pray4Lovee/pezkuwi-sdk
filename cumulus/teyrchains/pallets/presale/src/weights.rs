@@ -53,6 +53,9 @@ pub trait WeightInfo {
 	fn contribute() -> Weight;
 	fn refund() -> Weight;
 	fn finalize_presale(n: u32, ) -> Weight;
+	fn claim_vested() -> Weight;
+	fn refund_cancelled_presale() -> Weight;
+	fn batch_refund_failed_presale(n: u32, ) -> Weight;
 }
 
 /// Weights for `pallet_presale` using the Substrate node and recommended hardware.
@@ -182,6 +185,31 @@ impl<T: frame_system::Config> WeightInfo for SubstrateWeight<T> {
 			.saturating_add(T::DbWeight::get().writes(1_u64))
 			.saturating_add(Weight::from_parts(0, 3235).saturating_mul(n.into()))
 	}
+	/// Placeholder weight for claim_vested - uses similar pattern to refund
+	fn claim_vested() -> Weight {
+		// Estimated based on refund operation
+		Weight::from_parts(220_000_000, 11426)
+			.saturating_add(T::DbWeight::get().reads(12_u64))
+			.saturating_add(T::DbWeight::get().writes(8_u64))
+	}
+	/// Placeholder weight for refund_cancelled_presale - uses similar pattern to refund
+	fn refund_cancelled_presale() -> Weight {
+		// Estimated based on refund operation
+		Weight::from_parts(210_000_000, 11426)
+			.saturating_add(T::DbWeight::get().reads(11_u64))
+			.saturating_add(T::DbWeight::get().writes(10_u64))
+	}
+	/// Placeholder weight for batch_refund_failed_presale - O(n) complexity
+	fn batch_refund_failed_presale(n: u32, ) -> Weight {
+		// Estimated based on finalize_presale pattern
+		Weight::from_parts(25_000_000, 3717)
+			.saturating_add(Weight::from_parts(5_000_000, 0).saturating_mul(n.into()))
+			.saturating_add(T::DbWeight::get().reads(3_u64))
+			.saturating_add(T::DbWeight::get().reads((2_u64).saturating_mul(n.into())))
+			.saturating_add(T::DbWeight::get().writes(1_u64))
+			.saturating_add(T::DbWeight::get().writes((2_u64).saturating_mul(n.into())))
+			.saturating_add(Weight::from_parts(0, 3235).saturating_mul(n.into()))
+	}
 }
 
 // For backwards compatibility and tests.
@@ -308,6 +336,31 @@ impl WeightInfo for () {
 			.saturating_add(Weight::from_parts(3_094_902, 0).saturating_mul(n.into()))
 			.saturating_add(RocksDbWeight::get().reads(2_u64))
 			.saturating_add(RocksDbWeight::get().writes(1_u64))
+			.saturating_add(Weight::from_parts(0, 3235).saturating_mul(n.into()))
+	}
+	/// Placeholder weight for claim_vested - uses similar pattern to refund
+	fn claim_vested() -> Weight {
+		// Estimated based on refund operation
+		Weight::from_parts(220_000_000, 11426)
+			.saturating_add(RocksDbWeight::get().reads(12_u64))
+			.saturating_add(RocksDbWeight::get().writes(8_u64))
+	}
+	/// Placeholder weight for refund_cancelled_presale - uses similar pattern to refund
+	fn refund_cancelled_presale() -> Weight {
+		// Estimated based on refund operation
+		Weight::from_parts(210_000_000, 11426)
+			.saturating_add(RocksDbWeight::get().reads(11_u64))
+			.saturating_add(RocksDbWeight::get().writes(10_u64))
+	}
+	/// Placeholder weight for batch_refund_failed_presale - O(n) complexity
+	fn batch_refund_failed_presale(n: u32, ) -> Weight {
+		// Estimated based on finalize_presale pattern
+		Weight::from_parts(25_000_000, 3717)
+			.saturating_add(Weight::from_parts(5_000_000, 0).saturating_mul(n.into()))
+			.saturating_add(RocksDbWeight::get().reads(3_u64))
+			.saturating_add(RocksDbWeight::get().reads((2_u64).saturating_mul(n.into())))
+			.saturating_add(RocksDbWeight::get().writes(1_u64))
+			.saturating_add(RocksDbWeight::get().writes((2_u64).saturating_mul(n.into())))
 			.saturating_add(Weight::from_parts(0, 3235).saturating_mul(n.into()))
 	}
 }

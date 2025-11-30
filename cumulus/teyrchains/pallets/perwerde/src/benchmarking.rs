@@ -64,7 +64,7 @@ mod benchmarks {
 		let points = 10;
 
 		// Setup: Create course and enroll student
-		// Root creates the course and becomes the owner
+		// Root creates the course via AdminOrigin
 		Perwerde::<T>::create_course(
 			RawOrigin::Root.into(),
 			create_bounded_vec(b"Benchmark Course"),
@@ -74,10 +74,13 @@ mod benchmarks {
 		.unwrap();
 		Perwerde::<T>::enroll(RawOrigin::Signed(student.clone()).into(), course_id).unwrap();
 
-		// complete_course now takes: origin (owner), student, course_id, points
-		// Root is the course owner since Root created it
+		// Get the actual owner from the created course
+		let course = Courses::<T>::get(course_id).unwrap();
+		let owner = course.owner;
+
+		// complete_course requires the owner to sign, not root
 		#[extrinsic_call]
-		complete_course(RawOrigin::Root, student.clone(), course_id, points);
+		complete_course(RawOrigin::Signed(owner), student.clone(), course_id, points);
 
 		let enrollment = Enrollments::<T>::get((student, course_id)).unwrap();
 		assert!(enrollment.completed_at.is_some());
@@ -97,7 +100,9 @@ mod benchmarks {
 		)
 		.unwrap();
 
-		// Course owner is the creator, so we use Root to archive
+		// archive_course requires AdminOrigin (which is Root in our config)
+		// The AdminOrigin::try_origin for Root returns the admin account (Alice)
+		// which matches the course owner from create_course
 		#[extrinsic_call]
 		archive_course(RawOrigin::Root, course_id);
 

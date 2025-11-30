@@ -5,19 +5,35 @@
 use super::{BalanceOf, Call, Config};
 use crate::{Pallet as PezRewards, Pallet};
 use frame_benchmarking::v2::*;
-use frame_support::traits::{fungibles::Mutate, Currency, Get};
+use frame_support::traits::{fungibles::{Create, Mutate}, Currency, Get};
 use frame_system::{Pallet as System, RawOrigin};
 use sp_runtime::traits::{Bounded, Saturating, StaticLookup, Zero}; // AccountIdConversion removed
 
 const SEED: u32 = 0;
 
+// Helper function: Ensures the PEZ asset exists for benchmarks
+fn ensure_asset_exists<T: Config>(admin: &T::AccountId)
+where
+	T::Assets: Create<T::AccountId>,
+{
+	let min_balance: BalanceOf<T> = 1u32.into();
+	// Ignore error if asset already exists
+	let _ = T::Assets::create(T::PezAssetId::get(), admin.clone(), true, min_balance);
+}
+
 // Helper function: Sets up reward pool and epoch state for tests
-fn setup_reward_pool<T: Config>(epoch_index: u32) {
+fn setup_reward_pool<T: Config>(epoch_index: u32, admin: &T::AccountId)
+where
+	T::Assets: Create<T::AccountId>,
+{
+	// Ensure asset exists first
+	ensure_asset_exists::<T>(admin);
+
 	let incentive_pot = PezRewards::<T>::incentive_pot_account_id();
 	let amount: BalanceOf<T> = 1_000_000u32.into();
 
 	// Fund the incentive pot with PEZ tokens.
-	T::Assets::mint_into(T::PezAssetId::get(), &incentive_pot, amount).unwrap();
+	let _ = T::Assets::mint_into(T::PezAssetId::get(), &incentive_pot, amount);
 
 	let reward_pool = crate::EpochRewardPool {
 		epoch_index,
@@ -31,7 +47,7 @@ fn setup_reward_pool<T: Config>(epoch_index: u32) {
 	crate::EpochStatus::<T>::insert(epoch_index, crate::EpochState::ClaimPeriod);
 }
 
-#[benchmarks(where T: pallet_balances::Config)]
+#[benchmarks(where T: pallet_balances::Config, T::Assets: Create<T::AccountId>)]
 mod benchmarks {
 	use super::*;
 	use pallet_balances::Pallet as Balances;
@@ -80,13 +96,16 @@ mod benchmarks {
 
 	#[benchmark]
 	fn finalize_epoch() {
+		let admin: T::AccountId = whitelisted_caller();
+		ensure_asset_exists::<T>(&admin);
+
 		PezRewards::<T>::do_initialize_rewards_system().unwrap();
 
 		let incentive_pot = PezRewards::<T>::incentive_pot_account_id();
 		let large_amount: BalanceOf<T> = 1_000_000_000_000u128
 			.try_into()
 			.unwrap_or_else(|_| BalanceOf::<T>::max_value() / 2u32.into());
-		T::Assets::mint_into(T::PezAssetId::get(), &incentive_pot, large_amount).unwrap();
+		let _ = T::Assets::mint_into(T::PezAssetId::get(), &incentive_pot, large_amount);
 
 		let target_block = System::<T>::block_number() + crate::pallet::BLOCKS_PER_EPOCH.into();
 		System::<T>::set_block_number(target_block);
@@ -102,10 +121,14 @@ mod benchmarks {
 	fn claim_reward() {
 		let caller: T::AccountId = whitelisted_caller();
 		let epoch_index = 0u32;
-		setup_reward_pool::<T>(epoch_index);
+		setup_reward_pool::<T>(epoch_index, &caller);
 		crate::UserEpochScores::<T>::insert(epoch_index, caller.clone(), 100u128);
 
-		Balances::<T>::make_free_balance_be(&caller, Balances::<T>::minimum_balance());
+		// Give caller some native balance for existential deposit
+		Balances::<T>::make_free_balance_be(&caller, Balances::<T>::minimum_balance() * 10u32.into());
+
+		// Also give caller some PEZ tokens (asset account needs existential deposit)
+		let _ = T::Assets::mint_into(T::PezAssetId::get(), &caller, 1_000u32.into());
 
 		#[extrinsic_call]
 		claim_reward(RawOrigin::Signed(caller.clone()), epoch_index);
@@ -115,8 +138,9 @@ mod benchmarks {
 
 	#[benchmark]
 	fn close_epoch() {
+		let admin: T::AccountId = whitelisted_caller();
 		let epoch_index = 0u32;
-		setup_reward_pool::<T>(epoch_index);
+		setup_reward_pool::<T>(epoch_index, &admin);
 
 		// Set deadline to the past
 		let mut reward_pool = crate::EpochRewardPools::<T>::get(epoch_index).unwrap();
