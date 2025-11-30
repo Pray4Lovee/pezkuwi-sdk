@@ -110,6 +110,9 @@ parameter_types! {
 
 impl pallet_presale::Config for Test {
 	type RuntimeEvent = RuntimeEvent;
+	type AssetId = u32;
+	type Balance = u128;
+	type Assets = Assets;
 	type PalletId = PresalePalletId;
 	type PlatformTreasury = PlatformTreasuryAccount;
 	type StakingRewardPool = StakingRewardPoolAccount;

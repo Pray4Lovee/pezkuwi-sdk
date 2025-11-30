@@ -765,7 +765,7 @@ pub mod pallet {
 
 		/// Claim vested tokens
 		#[pallet::call_index(4)]
-		#[pallet::weight(T::PresaleWeightInfo::contribute())]
+		#[pallet::weight(T::PresaleWeightInfo::claim_vested())]
 		pub fn claim_vested(origin: OriginFor<T>, presale_id: PresaleId) -> DispatchResult {
 			let who = ensure_signed(origin)?;
 
@@ -889,7 +889,7 @@ pub mod pallet {
 		/// Refund all contributors when presale is cancelled
 		/// Auto-refunds everyone with no fees
 		#[pallet::call_index(7)]
-		#[pallet::weight(T::PresaleWeightInfo::finalize_presale(100))]
+		#[pallet::weight(T::PresaleWeightInfo::refund_cancelled_presale())]
 		pub fn refund_cancelled_presale(
 			origin: OriginFor<T>,
 			presale_id: PresaleId,
@@ -952,7 +952,7 @@ pub mod pallet {
 		/// Anyone can call this to help refund contributors
 		/// Processes refunds in batches to avoid gas limits
 		#[pallet::call_index(8)]
-		#[pallet::weight(T::PresaleWeightInfo::finalize_presale(*batch_size))]
+		#[pallet::weight(T::PresaleWeightInfo::batch_refund_failed_presale(*batch_size))]
 		pub fn batch_refund_failed_presale(
 			origin: OriginFor<T>,
 			presale_id: PresaleId,
