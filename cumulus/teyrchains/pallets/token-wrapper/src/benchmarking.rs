@@ -1,5 +1,7 @@
 //! Benchmarking setup for pallet-token-wrapper
 
+#![cfg(feature = "runtime-benchmarks")]
+
 use super::*;
 #[allow(unused)]
 use crate::Pallet as TokenWrapper;

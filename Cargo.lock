@@ -1269,7 +1269,6 @@ dependencies = [
  "pallet-presale",
  "pallet-proxy",
  "pallet-session",
- "pallet-staking-score",
  "pallet-timestamp",
  "pallet-token-wrapper",
  "pallet-transaction-payment",

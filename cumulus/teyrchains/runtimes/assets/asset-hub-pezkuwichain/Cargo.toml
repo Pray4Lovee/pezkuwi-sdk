@@ -45,7 +45,6 @@ pallet-pez-treasury = { workspace = true }
 pallet-presale = { workspace = true }
 pallet-proxy = { workspace = true }
 pallet-session = { workspace = true }
-pallet-staking-score = { workspace = true }
 pallet-timestamp = { workspace = true }
 pallet-token-wrapper = { workspace = true }
 pallet-transaction-payment = { workspace = true }
@@ -145,7 +144,6 @@ runtime-benchmarks = [
 	"pallet-presale/runtime-benchmarks",
 	"pallet-proxy/runtime-benchmarks",
 	"pallet-session/runtime-benchmarks",
-	"pallet-staking-score/runtime-benchmarks",
 	"pallet-timestamp/runtime-benchmarks",
 	"pallet-token-wrapper/runtime-benchmarks",
 	"pallet-transaction-payment/runtime-benchmarks",
@@ -193,7 +191,6 @@ try-runtime = [
 	"pallet-presale/try-runtime",
 	"pallet-proxy/try-runtime",
 	"pallet-session/try-runtime",
-	"pallet-staking-score/try-runtime",
 	"pallet-timestamp/try-runtime",
 	"pallet-token-wrapper/try-runtime",
 	"pallet-transaction-payment/try-runtime",
@@ -248,7 +245,6 @@ std = [
 	"pallet-presale/std",
 	"pallet-proxy/std",
 	"pallet-session/std",
-	"pallet-staking-score/std",
 	"pallet-timestamp/std",
 	"pallet-token-wrapper/std",
 	"pallet-transaction-payment-rpc-runtime-api/std",

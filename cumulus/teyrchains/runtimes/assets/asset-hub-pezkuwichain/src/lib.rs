@@ -1135,29 +1135,6 @@ impl pallet_presale::Config for Runtime {
 }
 
 // -----------------------------------------------------------------------------
-// Staking Score Pallet
-// -----------------------------------------------------------------------------
-
-/// Staking info provider - noop implementation for Asset Hub parachain
-/// Asset Hub doesn't have direct staking, returns None
-pub struct AssetHubStakingInfoProvider;
-impl pallet_staking_score::StakingInfoProvider<AccountId, Balance> for AssetHubStakingInfoProvider {
-	fn get_staking_details(
-		_who: &AccountId,
-	) -> Option<pallet_staking_score::StakingDetails<Balance>> {
-		// Asset Hub parachain doesn't have direct staking - return None
-		None
-	}
-}
-
-impl pallet_staking_score::Config for Runtime {
-	type RuntimeEvent = RuntimeEvent;
-	type WeightInfo = pallet_staking_score::weights::SubstrateWeight<Runtime>;
-	type Balance = Balance;
-	type StakingInfo = AssetHubStakingInfoProvider;
-}
-
-// -----------------------------------------------------------------------------
 // Token Wrapper Pallet
 // -----------------------------------------------------------------------------
 
@@ -1231,7 +1208,6 @@ construct_runtime!(
 		// PezkuwiChain Custom Pallets
 		PezTreasury: pallet_pez_treasury = 70,
 		Presale: pallet_presale = 71,
-		StakingScore: pallet_staking_score = 72,
 		TokenWrapper: pallet_token_wrapper = 73,
 
 		// TODO: the pallet instance should be removed once all pools have migrated
@@ -1453,11 +1429,10 @@ mod benches {
 		[pallet_xcm_benchmarks::fungible, XcmBalances]
 		[pallet_xcm_benchmarks::generic, XcmGeneric]
 		[cumulus_pallet_weight_reclaim, WeightReclaim]
-		// PezkuwiChain Custom Pallets
-		[pallet_pez_treasury, PezTreasury]
-		[pallet_presale, Presale]
-		[pallet_staking_score, StakingScore]
-		[pallet_token_wrapper, TokenWrapper]
+		// PezkuwiChain Custom Pallets - temporarily disabled for debugging
+		// [pallet_pez_treasury, PezTreasury]
+		// [pallet_presale, Presale]
+		// [pallet_token_wrapper, TokenWrapper]
 	);
 }
 
