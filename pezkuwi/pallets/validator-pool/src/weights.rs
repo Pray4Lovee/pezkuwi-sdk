@@ -44,16 +44,7 @@
 
 use frame_support::{traits::Get, weights::{Weight, constants::RocksDbWeight}};
 use core::marker::PhantomData;
-
-/// Weight functions needed for `pallet_validator_pool`.
-pub trait WeightInfo {
-	fn join_validator_pool() -> Weight;
-	fn leave_validator_pool() -> Weight;
-	fn update_performance_metrics() -> Weight;
-	fn force_new_era(p: u32, ) -> Weight;
-	fn update_category() -> Weight;
-	fn set_pool_parameters() -> Weight;
-}
+use crate::WeightInfo;
 
 /// Weights for `pallet_validator_pool` using the Substrate node and recommended hardware.
 pub struct SubstrateWeight<T>(PhantomData<T>);

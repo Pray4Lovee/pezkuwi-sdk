@@ -129,8 +129,8 @@ impl_opaque_keys! {
 
 #[sp_version::runtime_version]
 pub const VERSION: RuntimeVersion = RuntimeVersion {
-	spec_name: alloc::borrow::Cow::Borrowed("statemine"),
-	impl_name: alloc::borrow::Cow::Borrowed("statemine"),
+	spec_name: alloc::borrow::Cow::Borrowed("asset-hub-pezkuwichain"),
+	impl_name: alloc::borrow::Cow::Borrowed("asset-hub-pezkuwichain"),
 	authoring_version: 1,
 	spec_version: 1_020_001,
 	impl_version: 0,

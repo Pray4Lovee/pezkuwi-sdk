@@ -111,7 +111,7 @@ pub trait WeightInfo {
 	fn join_validator_pool() -> Weight;
 	fn leave_validator_pool() -> Weight;
 	fn update_performance_metrics() -> Weight;
-	fn force_new_era() -> Weight;
+	fn force_new_era(p: u32) -> Weight;
 	fn update_category() -> Weight;
 	fn set_pool_parameters() -> Weight;
 }
@@ -368,7 +368,7 @@ pub mod pallet {
 				if let Err(_) = Self::do_new_era() {
 					// Log error but don't panic
 				}
-				weight = weight.saturating_add(T::WeightInfo::force_new_era());
+				weight = weight.saturating_add(T::WeightInfo::force_new_era(Self::pool_size()));
 			}
 
 			weight
@@ -438,7 +438,7 @@ pub mod pallet {
 
 		/// Force new era (sudo only)
 		#[pallet::call_index(2)]
-		#[pallet::weight(T::WeightInfo::force_new_era())]
+		#[pallet::weight(T::WeightInfo::force_new_era(T::MaxPoolSize::get()))]
 		pub fn force_new_era(origin: OriginFor<T>) -> DispatchResult {
 			T::PoolManagerOrigin::ensure_origin(origin)?;
 			Self::do_new_era()?;
