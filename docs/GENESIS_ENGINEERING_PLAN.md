@@ -685,7 +685,31 @@ name = "asset-hub-collator-1"
 
 ---
 
-## 10. Uygulama Takvimi
+## 10. Geliştirme Stratejisi
+
+### 10.0. Temel İlkeler
+
+> **ÖNEMLİ:** Bir kez dev testnet başlatıldıktan sonra mümkün olduğunca **SİFIRLAMAMAK**,
+> upgrade ile ilerlemek. Yalnızca büyük bir bug durumunda sıfırlanır.
+
+#### Workflow:
+```
+1. Benchmark build → Weight generation
+2. Dev testnet başlat (Alice validator)
+3. OK ise → Runtime upgrade ile Local testnet'e geç
+4. OK ise → Runtime upgrade ile Alpha testnet'e geç
+5. ... devam
+```
+
+#### Sıfırlama Koşulları:
+- ❌ Storage migration başarısız olursa
+- ❌ Kritik consensus bug'ı varsa
+- ❌ Genesis state tutarsızlığı varsa
+- ✅ Aksi durumda: **UPGRADE İLE İLERLE**
+
+---
+
+## 11. Uygulama Takvimi
 
 ### 10.1. Faz 1: Temel Altyapı (1-2 Gün)
 | Görev | Sorumlu | Durum |
