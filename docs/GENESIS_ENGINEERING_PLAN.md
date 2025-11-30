@@ -3,8 +3,8 @@
 Bu doküman, Pezkuwi Ağı'nın (Relay Chain, Asset Hub, People Chain) geliştirme aşamasından Mainnet'e kadar olan başlatma süreçlerini, konfigürasyon detaylarını ve test stratejilerini içerir.
 
 **Son Güncelleme:** 2025-11-30
-**Versiyon:** 2.0.0
-**Durum:** AKTİF PLANLAMA
+**Versiyon:** 2.1.0
+**Durum:** FAZ 1 TAMAMLANDI ✅ | FAZ 2 BEKLEMEDE
 
 ---
 
@@ -177,11 +177,12 @@ fn calculate_epoch_reward(current_month: u32) -> u128 {
 
 ### 3.2. Parachain ID'leri
 
-| Parachain | ID | Durum |
-|-----------|----|-------|
-| Asset Hub Pezkuwichain | 1000 | ✅ Tanımlı |
-| Bridge Hub Pezkuwichain | 1002 | ✅ Tanımlı |
-| People Pezkuwichain | 1004 | ✅ Tanımlı |
+| Parachain | ID | Durum | Güncelleme |
+|-----------|----|-------|------------|
+| Asset Hub Pezkuwichain | 1000 | ✅ Tanımlı | - |
+| Bridge Hub Pezkuwichain | 1002 | ✅ Düzeltildi | **2025-11-30** (1013→1002) |
+| People Pezkuwichain | 1004 | ✅ Tanımlı | - |
+| Coretime/Broker | 1005 | ✅ Tanımlı | - |
 
 ---
 
@@ -194,18 +195,22 @@ fn calculate_epoch_reward(current_month: u32) -> u128 {
 
 #### 4.1.1. Relay Chain Gereksinimleri
 - [x] Temel preset mevcut
+- [x] HEZ genesis dağılımı (200M) implementasyonu ✅ **2025-11-30**
+- [x] Genesis preset eklendi (Founder, Presale, Treasury, Airdrop hesapları)
 - [ ] PezTreasury genesis başlatma
 - [ ] PezRewards genesis başlatma
 
 #### 4.1.2. Asset Hub Gereksinimleri
-- [ ] `AssetsConfig` (Instance1) eklenmeli
-- [ ] PEZ (ID:1) tanımı - Owner: Alice, Sufficient: true
-- [ ] wHEZ (ID:2) tanımı - Owner: Alice, Sufficient: true
+- [x] `AssetsConfig` (Instance1) eklendi ✅ **2025-11-30**
+- [x] PEZ (ID:1) tanımı - Owner: Treasury, Sufficient: true ✅
+- [x] wHEZ (ID:2) tanımı - Owner: Treasury, Sufficient: true ✅
+- [x] Genesis preset eklendi (treasury/founder/presale parametreleri) ✅
 - [ ] Presale pallet genesis (isteğe bağlı)
 
 #### 4.1.3. People Chain Gereksinimleri
-- [ ] `IdentityKycConfig` genesis eklenmeli
-- [ ] Founder vatandaş: Alice (dev için)
+- [x] `IdentityKycConfig` genesis eklendi ✅ **2025-11-30**
+- [x] Founding citizen mekanizması: Alice (dev için) ✅
+- [x] Genesis preset eklendi ✅
 - [ ] Trust pallet başlangıç durumu
 
 #### 4.1.4. Test Komutu
@@ -221,6 +226,7 @@ fn calculate_epoch_reward(current_month: u32) -> u128 {
 ```
 
 #### 4.1.5. Başarı Kriterleri
+- [x] Tüm runtime'lar compile oluyor ✅ **2025-11-30**
 - [ ] Zincir başlar ve blok üretir
 - [ ] Asset Hub'da `state.getStorage(Assets, Asset, 1)` → PEZ metadata döner
 - [ ] Asset Hub'da `state.getStorage(Assets, Asset, 2)` → wHEZ metadata döner
@@ -684,9 +690,11 @@ name = "asset-hub-collator-1"
 ### 10.1. Faz 1: Temel Altyapı (1-2 Gün)
 | Görev | Sorumlu | Durum |
 |-------|---------|-------|
-| Asset Hub AssetsConfig implementasyonu | Claude | ⬜ |
-| People Chain IdentityKycConfig implementasyonu | Claude | ⬜ |
-| Dev preset testleri | Claude | ⬜ |
+| Asset Hub AssetsConfig implementasyonu | Claude | ✅ **Tamamlandı** |
+| People Chain IdentityKycConfig implementasyonu | Claude | ✅ **Tamamlandı** |
+| Relay Chain HEZ genesis dağılımı | Claude | ✅ **Tamamlandı** |
+| Bridge Hub Parachain ID düzeltmesi (1013→1002) | Claude | ✅ **Tamamlandı** |
+| Dev preset compile testleri | Claude | ✅ **Tamamlandı** |
 
 ### 10.2. Faz 2: Testnet Presetleri (2-3 Gün)
 | Görev | Sorumlu | Durum |
