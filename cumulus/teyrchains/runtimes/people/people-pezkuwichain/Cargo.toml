@@ -7,6 +7,7 @@ description = "Pezkuwichain's People teyrchain runtime"
 license = "Apache-2.0"
 homepage.workspace = true
 repository.workspace = true
+publish = false
 
 [lints]
 workspace = true
@@ -32,16 +33,25 @@ frame-try-runtime = { optional = true, workspace = true }
 pallet-aura = { workspace = true }
 pallet-authorship = { workspace = true }
 pallet-balances = { workspace = true }
+pallet-collective = { workspace = true }
 pallet-identity = { workspace = true }
+pallet-identity-kyc = { workspace = true }
 pallet-message-queue = { workspace = true }
 pallet-migrations = { workspace = true }
 pallet-multisig = { workspace = true }
+pallet-nfts = { workspace = true }
+pallet-perwerde = { workspace = true }
 pallet-proxy = { workspace = true }
+pallet-referral = { workspace = true }
 pallet-session = { workspace = true }
+pallet-staking-score = { workspace = true }
+pallet-tiki = { workspace = true }
 pallet-timestamp = { workspace = true }
 pallet-transaction-payment = { workspace = true }
 pallet-transaction-payment-rpc-runtime-api = { workspace = true }
+pallet-trust = { workspace = true }
 pallet-utility = { workspace = true }
+pezkuwi-primitives = { workspace = true }
 sp-api = { workspace = true }
 sp-block-builder = { workspace = true }
 sp-consensus-aura = { workspace = true }
@@ -113,18 +123,27 @@ std = [
 	"pallet-authorship/std",
 	"pallet-balances/std",
 	"pallet-collator-selection/std",
+	"pallet-collective/std",
+	"pallet-identity-kyc/std",
 	"pallet-identity/std",
 	"pallet-message-queue/std",
 	"pallet-migrations/std",
 	"pallet-multisig/std",
+	"pallet-nfts/std",
+	"pallet-perwerde/std",
 	"pallet-proxy/std",
+	"pallet-referral/std",
 	"pallet-session/std",
+	"pallet-staking-score/std",
+	"pallet-tiki/std",
 	"pallet-timestamp/std",
 	"pallet-transaction-payment-rpc-runtime-api/std",
 	"pallet-transaction-payment/std",
+	"pallet-trust/std",
 	"pallet-utility/std",
 	"pallet-xcm-benchmarks?/std",
 	"pallet-xcm/std",
+	"pezkuwi-primitives/std",
 	"pezkuwi-runtime-common/std",
 	"pezkuwi-teyrchain-primitives/std",
 	"pezkuwichain-runtime-constants/std",
@@ -167,17 +186,26 @@ runtime-benchmarks = [
 	"frame-system/runtime-benchmarks",
 	"pallet-balances/runtime-benchmarks",
 	"pallet-collator-selection/runtime-benchmarks",
+	"pallet-collective/runtime-benchmarks",
+	"pallet-identity-kyc/runtime-benchmarks",
 	"pallet-identity/runtime-benchmarks",
 	"pallet-message-queue/runtime-benchmarks",
 	"pallet-migrations/runtime-benchmarks",
 	"pallet-multisig/runtime-benchmarks",
+	"pallet-nfts/runtime-benchmarks",
+	"pallet-perwerde/runtime-benchmarks",
 	"pallet-proxy/runtime-benchmarks",
+	"pallet-referral/runtime-benchmarks",
 	"pallet-session/runtime-benchmarks",
+	"pallet-staking-score/runtime-benchmarks",
+	"pallet-tiki/runtime-benchmarks",
 	"pallet-timestamp/runtime-benchmarks",
 	"pallet-transaction-payment/runtime-benchmarks",
+	"pallet-trust/runtime-benchmarks",
 	"pallet-utility/runtime-benchmarks",
 	"pallet-xcm-benchmarks/runtime-benchmarks",
 	"pallet-xcm/runtime-benchmarks",
+	"pezkuwi-primitives/runtime-benchmarks",
 	"pezkuwi-runtime-common/runtime-benchmarks",
 	"pezkuwi-teyrchain-primitives/runtime-benchmarks",
 	"sp-runtime/runtime-benchmarks",
@@ -201,14 +229,22 @@ try-runtime = [
 	"pallet-authorship/try-runtime",
 	"pallet-balances/try-runtime",
 	"pallet-collator-selection/try-runtime",
+	"pallet-collective/try-runtime",
+	"pallet-identity-kyc/try-runtime",
 	"pallet-identity/try-runtime",
 	"pallet-message-queue/try-runtime",
 	"pallet-migrations/try-runtime",
 	"pallet-multisig/try-runtime",
+	"pallet-nfts/try-runtime",
+	"pallet-perwerde/try-runtime",
 	"pallet-proxy/try-runtime",
+	"pallet-referral/try-runtime",
 	"pallet-session/try-runtime",
+	"pallet-staking-score/try-runtime",
+	"pallet-tiki/try-runtime",
 	"pallet-timestamp/try-runtime",
 	"pallet-transaction-payment/try-runtime",
+	"pallet-trust/try-runtime",
 	"pallet-utility/try-runtime",
 	"pallet-xcm/try-runtime",
 	"pezkuwi-runtime-common/try-runtime",

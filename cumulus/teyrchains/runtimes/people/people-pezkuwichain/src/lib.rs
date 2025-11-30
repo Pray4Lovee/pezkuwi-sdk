@@ -610,8 +610,22 @@ construct_runtime!(
 		Multisig: pallet_multisig = 41,
 		Proxy: pallet_proxy = 42,
 
-		// The main stage.
+		// The main stage - Identity & People
 		Identity: pallet_identity = 50,
+		IdentityKyc: pallet_identity_kyc = 51,
+		Referral: pallet_referral = 52,
+		Perwerde: pallet_perwerde = 53,
+
+		// NFTs and Roles
+		Nfts: pallet_nfts = 60,
+		Tiki: pallet_tiki = 61,
+
+		// Governance
+		Council: pallet_collective::<Instance1> = 70,
+
+		// Trust & Staking
+		StakingScore: pallet_staking_score = 80,
+		Trust: pallet_trust = 81,
 
 		// Migrations pallet
 		MultiBlockMigrations: pallet_migrations = 98,
@@ -627,16 +641,24 @@ mod benches {
 		// Substrate
 		[frame_system, SystemBench::<Runtime>]
 		[pallet_balances, Balances]
+		[pallet_collective, Council]
 		[pallet_identity, Identity]
 		[pallet_message_queue, MessageQueue]
 		[pallet_multisig, Multisig]
+		[pallet_nfts, Nfts]
 		[pallet_proxy, Proxy]
 		[pallet_session, SessionBench::<Runtime>]
 		[pallet_utility, Utility]
 		[pallet_timestamp, Timestamp]
 		[pallet_migrations, MultiBlockMigrations]
 		[pallet_transaction_payment, TransactionPayment]
-		// Pezkuwi
+		// Pezkuwi - Custom People Pallets
+		[pallet_identity_kyc, IdentityKyc]
+		[pallet_perwerde, Perwerde]
+		[pallet_referral, Referral]
+		[pallet_tiki, Tiki]
+		[pallet_staking_score, StakingScore]
+		[pallet_trust, Trust]
 		[pezkuwi_runtime_common::identity_migrator, IdentityMigrator]
 		// Cumulus
 		[cumulus_pallet_teyrchain_system, TeyrchainSystem]
