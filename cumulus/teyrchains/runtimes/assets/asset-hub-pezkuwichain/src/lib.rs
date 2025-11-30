@@ -1429,10 +1429,10 @@ mod benches {
 		[pallet_xcm_benchmarks::fungible, XcmBalances]
 		[pallet_xcm_benchmarks::generic, XcmGeneric]
 		[cumulus_pallet_weight_reclaim, WeightReclaim]
-		// PezkuwiChain Custom Pallets - temporarily disabled for debugging
-		// [pallet_pez_treasury, PezTreasury]
-		// [pallet_presale, Presale]
-		// [pallet_token_wrapper, TokenWrapper]
+		// PezkuwiChain Custom Pallets
+		[pallet_pez_treasury, PezTreasury]
+		[pallet_presale, Presale]
+		[pallet_token_wrapper, TokenWrapper]
 	);
 }
 
