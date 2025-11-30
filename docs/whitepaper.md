@@ -6,7 +6,7 @@
 ---
 
 ## Özet
-PezkuwiChain, sosyal itibarı blockchain güvenliğine entegre eden yeni bir konsensüs mekanizması olan Trust-enhanced Nominated Proof-of-Stake (TNPoS) sistemini sunar. Polkadot SDK üzerine inşa edilen ve gelişmiş çift tokenlı bir ekonomi (HEZ/PEZ) içeren PezkuwiChain, Kürt ulusu için kimlik, yönetişim, eğitim ve hazine yönetimi için özel palletler içeren egemen bir dijital altyapı sağlar. Bu whitepaper, dünyanın ilk güven artırılmış Katman-1 blockchain'i için teknik mimariyi, ekonomik modeli, güvenlik çerçevesini ve stratejik yol haritasını sunmaktadır.
+PezkuwiChain, sosyal itibarı blockchain güvenliğine entegre eden yeni bir konsensüs mekanizması olan Trust-enhanced Nominated Proof-of-Stake (T-NPoS) sistemini sunar. Polkadot SDK üzerine inşa edilen ve gelişmiş çift tokenlı bir ekonomi (HEZ/PEZ) içeren PezkuwiChain, Kürt ulusu için kimlik, yönetişim, eğitim ve hazine yönetimi için özel palletler içeren egemen bir dijital altyapı sağlar. Bu whitepaper, dünyanın ilk güven artırılmış Katman-1 blockchain'i için teknik mimariyi, ekonomik modeli, güvenlik çerçevesini ve stratejik yol haritasını sunmaktadır.
 
 ---
 
@@ -78,16 +78,16 @@ Geleneksel finansal ve idari sistemler genellikle önemli giriş engelleri sunar
 
 PezkuwiChain'in benzersiz değer önerisini anlamak için, önde gelen Katman-1 blockchain platformlarıyla karşılaştırmasını sunuyoruz:
 
-| Özellik                | Ethereum          | Polkadot           | Cardano              | PezkuwiChain (Güncel) | 
-| :--------------------- | :--------------   | :--------------    | :----------------    | :-------------------- | 
-| Konsensüs              | PoS               | NPoS               | Ouroboros PoS        | TNPoS                 | 
-| Yönetişim              | DAO (Zincir dışı) | OpenGov            | Voltaire             | Welati (Zincir içi)   | 
-| Dijital Kimlik         | ❌ Üçüncü taraf   | ❌ Üçüncü taraf   | ⚠ Atala PRISM       | ✅ identity-kyc       | 
-| Eğitim Platformu       | ❌ Yok            | ❌ Yok            | ❌ Yok              | ✅ perwerde           | 
-| Güven Katmanı          | ❌ Yok            | ❌ Yok            | ❌ Yok              | ✅ pallet-trust       | 
-| Hazine Modeli          | DAO tabanlı       | %15 enflasyon      | Protokol ücretleri   | %20.25 PEZ            | 
+| Özellik                | Ethereum          | Polkadot           | Cardano              | PezkuwiChain (Güncel)  | 
+| :--------------------- | :--------------   | :--------------    | :----------------    | :--------------------  | 
+| Konsensüs              | PoS               | NPoS               | Ouroboros PoS        | TNPoS                  | 
+| Yönetişim              | DAO (Zincir dışı) | OpenGov            | Voltaire             | Welati (Zincir içi)    | 
+| Dijital Kimlik         | ❌ Üçüncü taraf   | ❌ Üçüncü taraf   | ⚠ Atala PRISM        | ✅ identity-kyc       | 
+| Eğitim Platformu       | ❌ Yok            | ❌ Yok            | ❌ Yok               | ✅ perwerde           | 
+| Güven Katmanı          | ❌ Yok            | ❌ Yok            | ❌ Yok               | ✅ pallet-trust       | 
+| Hazine Modeli          | DAO tabanlı       | %15 enflasyon      | Protokol ücretleri   | %20.25 PEZ             | 
 | Kültürel Odak          | Genel             | Genel              | Genel                | Kürt Ulusu + ( kulturel uluslar + stateless nations + genel )         | 
-| Parachain Hazırlığı    | ❌ Yok            | ✅ Evet           | ❌ Yok              | ✅ Evet (Cumulus)     | 
+| Parachain Hazırlığı    | ❌ Yok            | ✅ Evet           | ❌ Yok               | ✅ Evet (Cumulus)     | 
 
 **Temel Ayırt Ediciler:**
 1.  **Güven Entegrasyonu:** PezkuwiChain, sosyal itibarı doğrudan konsensüse entegre eden tek blockchaindir.

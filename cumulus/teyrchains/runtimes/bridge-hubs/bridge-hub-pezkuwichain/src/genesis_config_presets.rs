@@ -88,7 +88,7 @@ pub fn get_preset(id: &sp_genesis_builder::PresetId) -> Option<sp_std::vec::Vec<
 				(Sr25519Keyring::Bob.to_account_id(), Sr25519Keyring::Bob.public().into()),
 			],
 			Sr25519Keyring::well_known().map(|k| k.to_account_id()).collect(),
-			1013.into(),
+			1002.into(), // BRIDGE_HUB_ID
 			Some(Sr25519Keyring::Bob.to_account_id()),
 			pezkuwichain_runtime_constants::system_teyrchain::ASSET_HUB_ID.into(),
 			vec![(
@@ -104,7 +104,7 @@ pub fn get_preset(id: &sp_genesis_builder::PresetId) -> Option<sp_std::vec::Vec<
 				(Sr25519Keyring::Bob.to_account_id(), Sr25519Keyring::Bob.public().into()),
 			],
 			Sr25519Keyring::well_known().map(|k| k.to_account_id()).collect(),
-			1013.into(),
+			1002.into(), // BRIDGE_HUB_ID
 			Some(Sr25519Keyring::Bob.to_account_id()),
 			pezkuwichain_runtime_constants::system_teyrchain::ASSET_HUB_ID.into(),
 			vec![],

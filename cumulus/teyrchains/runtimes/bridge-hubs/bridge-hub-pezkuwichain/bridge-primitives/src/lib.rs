@@ -83,7 +83,7 @@ pub type AccountSigner = MultiSigner;
 pub type Address = MultiAddress<AccountId, ()>;
 
 /// Identifier of BridgeHubPezkuwichain in the Pezkuwichain relay chain.
-pub const BRIDGE_HUB_PEZKUWICHAIN_TEYRCHAIN_ID: u32 = 1013;
+pub const BRIDGE_HUB_PEZKUWICHAIN_TEYRCHAIN_ID: u32 = 1002;
 
 /// Name of the With-BridgeHubPezkuwichain messages pallet instance that is deployed at bridged
 /// chains.

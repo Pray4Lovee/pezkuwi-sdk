@@ -122,7 +122,7 @@ pub mod system_teyrchain {
 	/// People teyrchain ID.
 	pub const PEOPLE_ID: u32 = 1004;
 	/// BridgeHub teyrchain ID.
-	pub const BRIDGE_HUB_ID: u32 = 1013;
+	pub const BRIDGE_HUB_ID: u32 = 1002;
 	/// Brokerage teyrchain ID.
 	pub const BROKER_ID: u32 = 1005;
 

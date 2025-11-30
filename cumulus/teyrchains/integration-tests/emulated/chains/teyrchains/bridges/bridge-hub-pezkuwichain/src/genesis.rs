@@ -25,7 +25,7 @@ use teyrchains_common::Balance;
 use xcm::latest::{prelude::*, ZAGROS_GENESIS_HASH};
 
 pub const ASSETHUB_PARA_ID: u32 = 1000;
-pub const PARA_ID: u32 = 1013;
+pub const PARA_ID: u32 = 1002;
 pub const ED: Balance = testnet_teyrchains_constants::pezkuwichain::currency::EXISTENTIAL_DEPOSIT;
 
 pub fn genesis() -> Storage {

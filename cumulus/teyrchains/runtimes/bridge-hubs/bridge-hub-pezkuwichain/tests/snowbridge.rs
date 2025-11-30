@@ -52,7 +52,7 @@ pub fn transfer_token_to_ethereum_works() {
 	snowbridge_runtime_test_common::send_transfer_token_message_success::<Runtime, XcmConfig>(
 		11155111,
 		collator_session_keys(),
-		1013,
+		1002,
 		1000,
 		H160::random(),
 		H160::random(),
@@ -71,7 +71,7 @@ pub fn unpaid_transfer_token_to_ethereum_should_work() {
 	snowbridge_runtime_test_common::send_unpaid_transfer_token_message::<Runtime, XcmConfig>(
 		11155111,
 		collator_session_keys(),
-		1013,
+		1002,
 		1000,
 		H160::random(),
 		H160::random(),
@@ -83,7 +83,7 @@ pub fn transfer_token_to_ethereum_insufficient_fund() {
 	snowbridge_runtime_test_common::send_transfer_token_message_failure::<Runtime, XcmConfig>(
 		11155111,
 		collator_session_keys(),
-		1013,
+		1002,
 		1000,
 		1_000_000_000,
 		H160::random(),
@@ -108,7 +108,7 @@ fn max_message_queue_service_weight_is_more_than_beacon_extrinsic_weights() {
 fn ethereum_client_consensus_extrinsics_work() {
 	snowbridge_runtime_test_common::ethereum_extrinsic(
 		collator_session_keys(),
-		1013,
+		1002,
 		construct_and_apply_extrinsic,
 	);
 }
@@ -117,7 +117,7 @@ fn ethereum_client_consensus_extrinsics_work() {
 fn ethereum_to_pezkuwi_message_extrinsics_work() {
 	snowbridge_runtime_test_common::ethereum_to_pezkuwi_message_extrinsics_work(
 		collator_session_keys(),
-		1013,
+		1002,
 		construct_and_apply_extrinsic,
 	);
 }
@@ -135,7 +135,7 @@ pub fn ethereum_outbound_queue_processes_messages_before_message_queue_works() {
 	>(
 		11155111,
 		collator_session_keys(),
-		1013,
+		1002,
 		1000,
 		H160::random(),
 		H160::random(),
