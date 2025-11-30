@@ -15,6 +15,17 @@
 // along with Pezkuwi.  If not, see <http://www.gnu.org/licenses/>.
 
 //! Genesis configs presets for the Pezkuwichain runtime
+//!
+//! This module contains genesis configuration for:
+//! - HEZ token initial distribution (200M genesis supply)
+//! - Validator session keys
+//! - Initial balance distributions
+//!
+//! ## HEZ Genesis Distribution (200M Total)
+//! - 10% Founder: 20,000,000 HEZ
+//! - 50% Presale: 100,000,000 HEZ
+//! - 20% Kurdistan Treasury: 40,000,000 HEZ
+//! - 20% Airdrop: 40,000,000 HEZ
 
 use crate::{
 	BabeConfig, BalancesConfig, ConfigurationConfig, RegistrarConfig, RuntimeGenesisConfig,
@@ -33,6 +44,25 @@ use sp_consensus_grandpa::AuthorityId as GrandpaId;
 use sp_core::{crypto::get_public_from_string_or_panic, sr25519};
 use sp_genesis_builder::PresetId;
 use sp_keyring::Sr25519Keyring;
+
+// ============================================================================
+// HEZ TOKEN GENESIS CONSTANTS
+// ============================================================================
+
+/// Total HEZ genesis supply: 200 Million
+pub const HEZ_GENESIS_SUPPLY: u128 = 200_000_000 * TYR;
+
+/// Founder allocation: 10% = 20,000,000 HEZ
+pub const HEZ_FOUNDER_ALLOCATION: u128 = 20_000_000 * TYR;
+
+/// Presale allocation: 50% = 100,000,000 HEZ
+pub const HEZ_PRESALE_ALLOCATION: u128 = 100_000_000 * TYR;
+
+/// Kurdistan Treasury allocation: 20% = 40,000,000 HEZ
+pub const HEZ_TREASURY_ALLOCATION: u128 = 40_000_000 * TYR;
+
+/// Airdrop allocation: 20% = 40,000,000 HEZ
+pub const HEZ_AIRDROP_ALLOCATION: u128 = 40_000_000 * TYR;
 
 /// Helper function to generate stash, controller and session key from seed
 fn get_authority_keys_from_seed(
@@ -480,13 +510,156 @@ fn versi_local_testnet_genesis() -> serde_json::Value {
 	)
 }
 
+/// Encapsulates names of predefined presets.
+mod preset_names {
+	pub const PRESET_GENESIS: &str = "genesis";
+}
+
+/// Genesis configuration for mainnet with HEZ distribution
+/// Accounts from Founder_treasury_presale_wallets.json
+fn pezkuwichain_genesis_config() -> serde_json::Value {
+	use hex_literal::hex;
+	use sp_core::crypto::UncheckedInto;
+
+	// ==========================================================================
+	// MAINNET ACCOUNTS - Replace with real addresses from JSON before launch
+	// ==========================================================================
+
+	// Founder account - receives 10% (20M HEZ)
+	let founder_account: AccountId = hex!("44cb62d1d6cdd2fff2a5ef3bb7ef827be5b3e117a394ecaa634d8dd9809d5608").into();
+
+	// Presale account - receives 50% (100M HEZ)
+	let presale_account: AccountId = hex!("44cb62d1d6cdd2fff2a5ef3bb7ef827be5b3e117a394ecaa634d8dd9809d5608").into();
+
+	// Kurdistan Treasury account - receives 20% (40M HEZ)
+	let treasury_account: AccountId = hex!("44cb62d1d6cdd2fff2a5ef3bb7ef827be5b3e117a394ecaa634d8dd9809d5608").into();
+
+	// Airdrop account - receives 20% (40M HEZ)
+	let airdrop_account: AccountId = hex!("44cb62d1d6cdd2fff2a5ef3bb7ef827be5b3e117a394ecaa634d8dd9809d5608").into();
+
+	// ==========================================================================
+	// INITIAL VALIDATORS - First 4 validators from mainnet_validators JSON
+	// Full 100 validators will be added via validator registration after launch
+	// ==========================================================================
+	let initial_authorities: Vec<(
+		AccountId,
+		AccountId,
+		BabeId,
+		GrandpaId,
+		ValidatorId,
+		AssignmentId,
+		AuthorityDiscoveryId,
+		BeefyId,
+	)> = Vec::from([
+		(
+			// Validator 1: E8XC6rTJRsioKCp6KMy6zd24ykj4gWsusZ3AkSeyavpVBAG (stash)
+			hex!("44cb62d1d6cdd2fff2a5ef3bb7ef827be5b3e117a394ecaa634d8dd9809d5608").into(),
+			hex!("44cb62d1d6cdd2fff2a5ef3bb7ef827be5b3e117a394ecaa634d8dd9809d5608").into(),
+			hex!("44cb62d1d6cdd2fff2a5ef3bb7ef827be5b3e117a394ecaa634d8dd9809d5608").unchecked_into(),
+			hex!("44cb62d1d6cdd2fff2a5ef3bb7ef827be5b3e117a394ecaa634d8dd9809d5608").unchecked_into(),
+			hex!("44cb62d1d6cdd2fff2a5ef3bb7ef827be5b3e117a394ecaa634d8dd9809d5608").unchecked_into(),
+			hex!("44cb62d1d6cdd2fff2a5ef3bb7ef827be5b3e117a394ecaa634d8dd9809d5608").unchecked_into(),
+			hex!("44cb62d1d6cdd2fff2a5ef3bb7ef827be5b3e117a394ecaa634d8dd9809d5608").unchecked_into(),
+			hex!("0244cb62d1d6cdd2fff2a5ef3bb7ef827be5b3e117a394ecaa634d8dd9809d5608").unchecked_into(),
+		),
+		(
+			// Validator 2: G28iWEybndgGRbhfx83t7Q42YhMPByHpyqWDUgeyoGF94ri (stash)
+			hex!("9864b85e23aa4506643db9879c3dbbeabaa94d269693a4447f537dd6b5893944").into(),
+			hex!("9864b85e23aa4506643db9879c3dbbeabaa94d269693a4447f537dd6b5893944").into(),
+			hex!("9864b85e23aa4506643db9879c3dbbeabaa94d269693a4447f537dd6b5893944").unchecked_into(),
+			hex!("9864b85e23aa4506643db9879c3dbbeabaa94d269693a4447f537dd6b5893944").unchecked_into(),
+			hex!("9864b85e23aa4506643db9879c3dbbeabaa94d269693a4447f537dd6b5893944").unchecked_into(),
+			hex!("9864b85e23aa4506643db9879c3dbbeabaa94d269693a4447f537dd6b5893944").unchecked_into(),
+			hex!("9864b85e23aa4506643db9879c3dbbeabaa94d269693a4447f537dd6b5893944").unchecked_into(),
+			hex!("029864b85e23aa4506643db9879c3dbbeabaa94d269693a4447f537dd6b5893944").unchecked_into(),
+		),
+		(
+			// Validator 3: G839e2eMiq7UXbConsY6DS1XDAYG2XnQxAmLuRLGGQ3Px9c (stash)
+			hex!("9ce5741ee2f1ac3bdedbde9f3339048f4da2cb88ddf33a0977fa0b4cf86e2948").into(),
+			hex!("9ce5741ee2f1ac3bdedbde9f3339048f4da2cb88ddf33a0977fa0b4cf86e2948").into(),
+			hex!("9ce5741ee2f1ac3bdedbde9f3339048f4da2cb88ddf33a0977fa0b4cf86e2948").unchecked_into(),
+			hex!("9ce5741ee2f1ac3bdedbde9f3339048f4da2cb88ddf33a0977fa0b4cf86e2948").unchecked_into(),
+			hex!("9ce5741ee2f1ac3bdedbde9f3339048f4da2cb88ddf33a0977fa0b4cf86e2948").unchecked_into(),
+			hex!("9ce5741ee2f1ac3bdedbde9f3339048f4da2cb88ddf33a0977fa0b4cf86e2948").unchecked_into(),
+			hex!("9ce5741ee2f1ac3bdedbde9f3339048f4da2cb88ddf33a0977fa0b4cf86e2948").unchecked_into(),
+			hex!("029ce5741ee2f1ac3bdedbde9f3339048f4da2cb88ddf33a0977fa0b4cf86e2948").unchecked_into(),
+		),
+		(
+			// Validator 4: GLao4ukFUW6qhexuZowdFrKa2NLCfnEjZMftSXXfvGv1vvt (stash)
+			hex!("a676ed15f5a325eab49ed8d5f8c00f3f814b19bb58cda14ad10894c078dd337f").into(),
+			hex!("a676ed15f5a325eab49ed8d5f8c00f3f814b19bb58cda14ad10894c078dd337f").into(),
+			hex!("a676ed15f5a325eab49ed8d5f8c00f3f814b19bb58cda14ad10894c078dd337f").unchecked_into(),
+			hex!("a676ed15f5a325eab49ed8d5f8c00f3f814b19bb58cda14ad10894c078dd337f").unchecked_into(),
+			hex!("a676ed15f5a325eab49ed8d5f8c00f3f814b19bb58cda14ad10894c078dd337f").unchecked_into(),
+			hex!("a676ed15f5a325eab49ed8d5f8c00f3f814b19bb58cda14ad10894c078dd337f").unchecked_into(),
+			hex!("a676ed15f5a325eab49ed8d5f8c00f3f814b19bb58cda14ad10894c078dd337f").unchecked_into(),
+			hex!("02a676ed15f5a325eab49ed8d5f8c00f3f814b19bb58cda14ad10894c078dd337f").unchecked_into(),
+		),
+	]);
+
+	// Validator stash amount
+	const STASH: u128 = 100 * TYR;
+
+	build_struct_json_patch!(RuntimeGenesisConfig {
+		balances: BalancesConfig {
+			balances: vec![
+				// HEZ Genesis Distribution (200M Total)
+				(founder_account.clone(), HEZ_FOUNDER_ALLOCATION),      // 10% = 20M HEZ
+				(presale_account.clone(), HEZ_PRESALE_ALLOCATION),      // 50% = 100M HEZ
+				(treasury_account.clone(), HEZ_TREASURY_ALLOCATION),    // 20% = 40M HEZ
+				(airdrop_account.clone(), HEZ_AIRDROP_ALLOCATION),      // 20% = 40M HEZ
+			]
+			.into_iter()
+			// Add validator stash balances
+			.chain(initial_authorities.iter().map(|x| (x.0.clone(), STASH)))
+			.collect::<Vec<_>>(),
+		},
+		session: SessionConfig {
+			keys: initial_authorities
+				.into_iter()
+				.map(|x| (
+					x.0.clone(),
+					x.0,
+					pezkuwichain_session_keys(x.2, x.3, x.4, x.5, x.6, x.7)
+				))
+				.collect::<Vec<_>>(),
+		},
+		babe: BabeConfig { epoch_config: BABE_GENESIS_EPOCH_CONFIG },
+		sudo: SudoConfig { key: Some(founder_account) },
+		configuration: ConfigurationConfig { config: default_teyrchains_host_configuration() },
+		registrar: RegistrarConfig { next_free_para_id: pezkuwi_primitives::LOWEST_PUBLIC_ID },
+	})
+}
+
 /// Provides the JSON representation of predefined genesis config for given `id`.
 pub fn get_preset(id: &PresetId) -> Option<Vec<u8>> {
+	use preset_names::*;
 	let patch = match id.as_ref() {
+		// ====================================================================
+		// GENESIS PRESET - For mainnet with HEZ distribution
+		// ====================================================================
+		PRESET_GENESIS => pezkuwichain_genesis_config(),
+
+		// ====================================================================
+		// LOCAL TESTNET PRESET - For local multi-node testing
+		// ====================================================================
 		sp_genesis_builder::LOCAL_TESTNET_RUNTIME_PRESET => pezkuwichain_local_testnet_genesis(),
+
+		// ====================================================================
+		// DEV PRESET - For single-node development
+		// ====================================================================
 		sp_genesis_builder::DEV_RUNTIME_PRESET => pezkuwichain_development_config_genesis(),
+
+		// ====================================================================
+		// STAGING TESTNET - For pre-production testing
+		// ====================================================================
 		"staging_testnet" => pezkuwichain_staging_testnet_config_genesis(),
+
+		// ====================================================================
+		// VERSI LOCAL TESTNET - Extended local testing
+		// ====================================================================
 		"versi_local_testnet" => versi_local_testnet_genesis(),
+
 		_ => return None,
 	};
 	Some(
@@ -498,7 +671,9 @@ pub fn get_preset(id: &PresetId) -> Option<Vec<u8>> {
 
 /// List of supported presets.
 pub fn preset_names() -> Vec<PresetId> {
+	use preset_names::*;
 	vec![
+		PresetId::from(PRESET_GENESIS),
 		PresetId::from(sp_genesis_builder::LOCAL_TESTNET_RUNTIME_PRESET),
 		PresetId::from(sp_genesis_builder::DEV_RUNTIME_PRESET),
 		PresetId::from("staging_testnet"),
