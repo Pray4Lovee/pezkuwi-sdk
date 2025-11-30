@@ -54,8 +54,7 @@ impl<AssetId: From<u32>, AccountId> BenchmarkHelper<AssetId, AccountId> for () {
 )]
 mod benchmarks {
 	use super::*;
-	use frame_support::traits::fungibles::Create;
-	use sp_runtime::traits::Zero;
+	use frame_support::traits::{fungibles::Create, Get};
 
 	fn get_asset_id<T: Config>(seed: u32) -> T::AssetId
 	where
