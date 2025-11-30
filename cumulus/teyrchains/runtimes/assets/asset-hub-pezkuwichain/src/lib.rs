@@ -1073,6 +1073,109 @@ impl pallet_asset_rewards::Config for Runtime {
 	type BenchmarkHelper = PalletAssetRewardsBenchmarkHelper;
 }
 
+// =============================================================================
+// PezkuwiChain Custom Asset Hub Pallets Configuration
+// =============================================================================
+
+// -----------------------------------------------------------------------------
+// PEZ Treasury Pallet
+// -----------------------------------------------------------------------------
+
+parameter_types! {
+	pub const PezTreasuryPalletId: PalletId = PalletId(*b"pez/trea");
+	pub const PezIncentivePotId: PalletId = PalletId(*b"pez/incv");
+	pub const PezGovernmentPotId: PalletId = PalletId(*b"pez/govr");
+	pub const PezAssetId: u32 = 1; // PEZ token asset ID
+	pub PezPresaleAccount: AccountId = PalletId(*b"pez/pres").into_account_truncating();
+	pub PezFounderAccount: AccountId = PalletId(*b"pez/foun").into_account_truncating();
+}
+
+impl pallet_pez_treasury::Config for Runtime {
+	type RuntimeEvent = RuntimeEvent;
+	type Assets = Assets;
+	type WeightInfo = (); // Use noop weights until benchmarks are generated
+	type PezAssetId = PezAssetId;
+	type TreasuryPalletId = PezTreasuryPalletId;
+	type IncentivePotId = PezIncentivePotId;
+	type GovernmentPotId = PezGovernmentPotId;
+	type PresaleAccount = PezPresaleAccount;
+	type FounderAccount = PezFounderAccount;
+	type ForceOrigin = EnsureRoot<AccountId>;
+}
+
+// -----------------------------------------------------------------------------
+// Presale Pallet
+// -----------------------------------------------------------------------------
+
+parameter_types! {
+	pub const PresalePalletId: PalletId = PalletId(*b"pez/sale");
+	pub PresalePlatformTreasury: AccountId = PalletId(*b"pez/plat").into_account_truncating();
+	pub PresaleStakingRewardPool: AccountId = PalletId(*b"pez/stak").into_account_truncating();
+	pub const PresalePlatformFeePercent: u8 = 2; // 2% platform fee
+	pub const PresaleMaxContributors: u32 = 10_000;
+	pub const PresaleMaxBonusTiers: u32 = 5;
+	pub const PresaleMaxWhitelistedAccounts: u32 = 1_000;
+}
+
+impl pallet_presale::Config for Runtime {
+	type RuntimeEvent = RuntimeEvent;
+	type AssetId = AssetIdForTrustBackedAssets;
+	type Balance = Balance;
+	type Assets = Assets;
+	type PalletId = PresalePalletId;
+	type PlatformTreasury = PresalePlatformTreasury;
+	type StakingRewardPool = PresaleStakingRewardPool;
+	type PlatformFeePercent = PresalePlatformFeePercent;
+	type MaxContributors = PresaleMaxContributors;
+	type MaxBonusTiers = PresaleMaxBonusTiers;
+	type MaxWhitelistedAccounts = PresaleMaxWhitelistedAccounts;
+	type CreatePresaleOrigin = EnsureRoot<AccountId>;
+	type EmergencyOrigin = EnsureRoot<AccountId>;
+	type PresaleWeightInfo = pallet_presale::SubstrateWeight<Runtime>;
+}
+
+// -----------------------------------------------------------------------------
+// Staking Score Pallet
+// -----------------------------------------------------------------------------
+
+/// Staking info provider - noop implementation for Asset Hub parachain
+/// Asset Hub doesn't have direct staking, returns None
+pub struct AssetHubStakingInfoProvider;
+impl pallet_staking_score::StakingInfoProvider<AccountId, Balance> for AssetHubStakingInfoProvider {
+	fn get_staking_details(
+		_who: &AccountId,
+	) -> Option<pallet_staking_score::StakingDetails<Balance>> {
+		// Asset Hub parachain doesn't have direct staking - return None
+		None
+	}
+}
+
+impl pallet_staking_score::Config for Runtime {
+	type RuntimeEvent = RuntimeEvent;
+	type WeightInfo = (); // Use noop weights until benchmarks are generated
+	type Balance = Balance;
+	type StakingInfo = AssetHubStakingInfoProvider;
+}
+
+// -----------------------------------------------------------------------------
+// Token Wrapper Pallet
+// -----------------------------------------------------------------------------
+
+parameter_types! {
+	pub const TokenWrapperPalletId: PalletId = PalletId(*b"pez/wrap");
+	pub const WrappedAssetId: AssetIdForTrustBackedAssets = 2; // wHEZ asset ID
+}
+
+impl pallet_token_wrapper::Config for Runtime {
+	type RuntimeEvent = RuntimeEvent;
+	type WeightInfo = (); // Use noop weights until benchmarks are generated
+	type Currency = Balances;
+	type AssetId = AssetIdForTrustBackedAssets;
+	type Assets = Assets;
+	type PalletId = TokenWrapperPalletId;
+	type WrapperAssetId = WrappedAssetId;
+}
+
 // Create the runtime by composing the FRAME pallets that were previously configured.
 construct_runtime!(
 	pub enum Runtime
@@ -1124,6 +1227,12 @@ construct_runtime!(
 		PoolAssetsFreezer: pallet_assets_freezer::<Instance3> = 59,
 
 		AssetRewards: pallet_asset_rewards = 60,
+
+		// PezkuwiChain Custom Pallets
+		PezTreasury: pallet_pez_treasury = 70,
+		Presale: pallet_presale = 71,
+		StakingScore: pallet_staking_score = 72,
+		TokenWrapper: pallet_token_wrapper = 73,
 
 		// TODO: the pallet instance should be removed once all pools have migrated
 		// to the new account IDs.
