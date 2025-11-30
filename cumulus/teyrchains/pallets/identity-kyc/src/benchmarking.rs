@@ -3,163 +3,141 @@
 #![cfg(feature = "runtime-benchmarks")]
 
 use super::*;
-use crate::{types::*, Pallet as IdentityKyc};
+use crate::Pallet as IdentityKyc;
 use frame_benchmarking::v2::*;
+use frame_support::traits::Currency;
 use frame_system::RawOrigin;
-use sp_std::prelude::*;
+use sp_core::H256;
+
+/// Helper function to create a funded account
+fn funded_account<T: Config>(name: &'static str, index: u32) -> T::AccountId {
+	let caller: T::AccountId = account(name, index, 0);
+	let amount = T::KycApplicationDeposit::get() * 10u32.into();
+	T::Currency::make_free_balance_be(&caller, amount);
+	caller
+}
+
+/// Helper function to setup a citizen (for referrer)
+fn setup_citizen<T: Config>(who: &T::AccountId) {
+	KycStatuses::<T>::insert(who, KycLevel::Approved);
+}
+
+/// Helper function to setup an applicant in PendingReferral state
+fn setup_pending_referral<T: Config>(
+	applicant: &T::AccountId,
+	referrer: &T::AccountId,
+) {
+	let identity_hash = H256::repeat_byte(0x01);
+	let application = CitizenshipApplication {
+		identity_hash,
+		referrer: referrer.clone(),
+	};
+	Applications::<T>::insert(applicant, application);
+	KycStatuses::<T>::insert(applicant, KycLevel::PendingReferral);
+
+	// Reserve deposit
+	let deposit = T::KycApplicationDeposit::get();
+	let _ = T::Currency::reserve(applicant, deposit);
+}
+
+/// Helper function to setup an applicant in ReferrerApproved state
+fn setup_referrer_approved<T: Config>(
+	applicant: &T::AccountId,
+	referrer: &T::AccountId,
+) {
+	let identity_hash = H256::repeat_byte(0x01);
+	let application = CitizenshipApplication {
+		identity_hash,
+		referrer: referrer.clone(),
+	};
+	Applications::<T>::insert(applicant, application);
+	KycStatuses::<T>::insert(applicant, KycLevel::ReferrerApproved);
+
+	// Reserve deposit
+	let deposit = T::KycApplicationDeposit::get();
+	let _ = T::Currency::reserve(applicant, deposit);
+}
 
 #[benchmarks]
 mod benchmarks {
 	use super::*;
 
 	#[benchmark]
-	fn set_identity() {
-		let caller: T::AccountId = whitelisted_caller();
-		let name: BoundedVec<u8, T::MaxStringLength> =
-			vec![0u8; T::MaxStringLength::get() as usize].try_into().unwrap();
-		let email: BoundedVec<u8, T::MaxStringLength> =
-			vec![0u8; T::MaxStringLength::get() as usize].try_into().unwrap();
+	fn apply_for_citizenship() {
+		let referrer: T::AccountId = funded_account::<T>("referrer", 0);
+		setup_citizen::<T>(&referrer);
+
+		let applicant: T::AccountId = funded_account::<T>("applicant", 1);
+		let identity_hash = H256::repeat_byte(0x42);
 
 		#[extrinsic_call]
-		set_identity(RawOrigin::Signed(caller.clone()), name, email);
+		apply_for_citizenship(RawOrigin::Signed(applicant.clone()), identity_hash, referrer.clone());
 
-		assert!(Identities::<T>::contains_key(&caller));
+		assert_eq!(KycStatuses::<T>::get(&applicant), KycLevel::PendingReferral);
 	}
 
 	#[benchmark]
-	fn apply_for_kyc() {
-		let caller: T::AccountId = whitelisted_caller();
-		// Before calling `apply_for_kyc`, user must have an identity
-		let name: BoundedVec<u8, T::MaxStringLength> =
-			vec![0u8; T::MaxStringLength::get() as usize].try_into().unwrap();
-		let email: BoundedVec<u8, T::MaxStringLength> =
-			vec![0u8; T::MaxStringLength::get() as usize].try_into().unwrap();
-		IdentityKyc::<T>::set_identity(RawOrigin::Signed(caller.clone()).into(), name, email)
-			.unwrap();
+	fn approve_referral() {
+		let referrer: T::AccountId = funded_account::<T>("referrer", 0);
+		setup_citizen::<T>(&referrer);
 
-		let cids: BoundedVec<BoundedVec<u8, T::MaxCidLength>, T::MaxCidLength> =
-			vec![vec![0u8; T::MaxCidLength::get() as usize].try_into().unwrap()]
-				.try_into()
-				.unwrap();
-		let notes: BoundedVec<u8, T::MaxStringLength> =
-			vec![0u8; T::MaxStringLength::get() as usize].try_into().unwrap();
+		let applicant: T::AccountId = funded_account::<T>("applicant", 1);
+		setup_pending_referral::<T>(&applicant, &referrer);
 
 		#[extrinsic_call]
-		apply_for_kyc(RawOrigin::Signed(caller.clone()), cids, notes);
+		approve_referral(RawOrigin::Signed(referrer.clone()), applicant.clone());
 
-		assert_eq!(KycStatuses::<T>::get(&caller), KycLevel::Pending);
-	}
-
-	#[benchmark]
-	fn approve_kyc() {
-		let user: T::AccountId = whitelisted_caller();
-		// Before calling `approve_kyc`, user must have a pending application
-		// 1. Create identity
-		let name: BoundedVec<u8, T::MaxStringLength> =
-			vec![0u8; T::MaxStringLength::get() as usize].try_into().unwrap();
-		let email: BoundedVec<u8, T::MaxStringLength> =
-			vec![0u8; T::MaxStringLength::get() as usize].try_into().unwrap();
-		IdentityKyc::<T>::set_identity(RawOrigin::Signed(user.clone()).into(), name, email)
-			.unwrap();
-		// 2. Apply for KYC
-		let cids: BoundedVec<BoundedVec<u8, T::MaxCidLength>, T::MaxCidLength> =
-			vec![vec![0u8; T::MaxCidLength::get() as usize].try_into().unwrap()]
-				.try_into()
-				.unwrap();
-		let notes: BoundedVec<u8, T::MaxStringLength> =
-			vec![0u8; T::MaxStringLength::get() as usize].try_into().unwrap();
-		IdentityKyc::<T>::apply_for_kyc(RawOrigin::Signed(user.clone()).into(), cids, notes)
-			.unwrap();
-
-		#[extrinsic_call]
-		approve_kyc(RawOrigin::Root, user.clone());
-
-		assert_eq!(KycStatuses::<T>::get(&user), KycLevel::Approved);
-	}
-
-	#[benchmark]
-	fn revoke_kyc() {
-		let user: T::AccountId = whitelisted_caller();
-		// Before calling `revoke_kyc`, user's KYC must be approved
-		// 1. Create identity
-		let name: BoundedVec<u8, T::MaxStringLength> =
-			vec![0u8; T::MaxStringLength::get() as usize].try_into().unwrap();
-		let email: BoundedVec<u8, T::MaxStringLength> =
-			vec![0u8; T::MaxStringLength::get() as usize].try_into().unwrap();
-		IdentityKyc::<T>::set_identity(RawOrigin::Signed(user.clone()).into(), name, email)
-			.unwrap();
-		// 2. Apply for KYC
-		let cids: BoundedVec<BoundedVec<u8, T::MaxCidLength>, T::MaxCidLength> =
-			vec![vec![0u8; T::MaxCidLength::get() as usize].try_into().unwrap()]
-				.try_into()
-				.unwrap();
-		let notes: BoundedVec<u8, T::MaxStringLength> =
-			vec![0u8; T::MaxStringLength::get() as usize].try_into().unwrap();
-		IdentityKyc::<T>::apply_for_kyc(RawOrigin::Signed(user.clone()).into(), cids, notes)
-			.unwrap();
-		// 3. Approve
-		IdentityKyc::<T>::approve_kyc(RawOrigin::Root.into(), user.clone()).unwrap();
-
-		#[extrinsic_call]
-		revoke_kyc(RawOrigin::Root, user.clone());
-
-		assert_eq!(KycStatuses::<T>::get(&user), KycLevel::Revoked);
+		assert_eq!(KycStatuses::<T>::get(&applicant), KycLevel::ReferrerApproved);
 	}
 
 	#[benchmark]
 	fn confirm_citizenship() {
-		let caller: T::AccountId = whitelisted_caller();
-		// Before calling `confirm_citizenship`, user must have a pending application
-		// 1. Create identity
-		let name: BoundedVec<u8, T::MaxStringLength> =
-			vec![0u8; T::MaxStringLength::get() as usize].try_into().unwrap();
-		let email: BoundedVec<u8, T::MaxStringLength> =
-			vec![0u8; T::MaxStringLength::get() as usize].try_into().unwrap();
-		IdentityKyc::<T>::set_identity(RawOrigin::Signed(caller.clone()).into(), name, email)
-			.unwrap();
-		// 2. Apply for KYC
-		let cids: BoundedVec<BoundedVec<u8, T::MaxCidLength>, T::MaxCidLength> =
-			vec![vec![0u8; T::MaxCidLength::get() as usize].try_into().unwrap()]
-				.try_into()
-				.unwrap();
-		let notes: BoundedVec<u8, T::MaxStringLength> =
-			vec![0u8; T::MaxStringLength::get() as usize].try_into().unwrap();
-		IdentityKyc::<T>::apply_for_kyc(RawOrigin::Signed(caller.clone()).into(), cids, notes)
-			.unwrap();
+		let referrer: T::AccountId = funded_account::<T>("referrer", 0);
+		setup_citizen::<T>(&referrer);
+
+		let applicant: T::AccountId = funded_account::<T>("applicant", 1);
+		setup_referrer_approved::<T>(&applicant, &referrer);
 
 		#[extrinsic_call]
-		confirm_citizenship(RawOrigin::Signed(caller.clone()));
+		confirm_citizenship(RawOrigin::Signed(applicant.clone()));
 
-		assert_eq!(KycStatuses::<T>::get(&caller), KycLevel::Approved);
+		assert_eq!(KycStatuses::<T>::get(&applicant), KycLevel::Approved);
+	}
+
+	#[benchmark]
+	fn revoke_citizenship() {
+		let citizen: T::AccountId = funded_account::<T>("citizen", 0);
+		setup_citizen::<T>(&citizen);
+
+		#[extrinsic_call]
+		revoke_citizenship(RawOrigin::Root, citizen.clone());
+
+		assert_eq!(KycStatuses::<T>::get(&citizen), KycLevel::Revoked);
 	}
 
 	#[benchmark]
 	fn renounce_citizenship() {
-		let caller: T::AccountId = whitelisted_caller();
-		// Before calling `renounce_citizenship`, user must be a citizen (Approved)
-		// 1. Create identity
-		let name: BoundedVec<u8, T::MaxStringLength> =
-			vec![0u8; T::MaxStringLength::get() as usize].try_into().unwrap();
-		let email: BoundedVec<u8, T::MaxStringLength> =
-			vec![0u8; T::MaxStringLength::get() as usize].try_into().unwrap();
-		IdentityKyc::<T>::set_identity(RawOrigin::Signed(caller.clone()).into(), name, email)
-			.unwrap();
-		// 2. Apply for KYC
-		let cids: BoundedVec<BoundedVec<u8, T::MaxCidLength>, T::MaxCidLength> =
-			vec![vec![0u8; T::MaxCidLength::get() as usize].try_into().unwrap()]
-				.try_into()
-				.unwrap();
-		let notes: BoundedVec<u8, T::MaxStringLength> =
-			vec![0u8; T::MaxStringLength::get() as usize].try_into().unwrap();
-		IdentityKyc::<T>::apply_for_kyc(RawOrigin::Signed(caller.clone()).into(), cids, notes)
-			.unwrap();
-		// 3. Confirm citizenship (self-confirmation)
-		IdentityKyc::<T>::confirm_citizenship(RawOrigin::Signed(caller.clone()).into()).unwrap();
+		let citizen: T::AccountId = funded_account::<T>("citizen", 0);
+		setup_citizen::<T>(&citizen);
 
 		#[extrinsic_call]
-		renounce_citizenship(RawOrigin::Signed(caller.clone()));
+		renounce_citizenship(RawOrigin::Signed(citizen.clone()));
 
-		assert_eq!(KycStatuses::<T>::get(&caller), KycLevel::NotStarted);
+		assert_eq!(KycStatuses::<T>::get(&citizen), KycLevel::NotStarted);
+	}
+
+	#[benchmark]
+	fn cancel_application() {
+		let referrer: T::AccountId = funded_account::<T>("referrer", 0);
+		setup_citizen::<T>(&referrer);
+
+		let applicant: T::AccountId = funded_account::<T>("applicant", 1);
+		setup_pending_referral::<T>(&applicant, &referrer);
+
+		#[extrinsic_call]
+		cancel_application(RawOrigin::Signed(applicant.clone()));
+
+		assert_eq!(KycStatuses::<T>::get(&applicant), KycLevel::NotStarted);
 	}
 
 	impl_benchmark_test_suite!(IdentityKyc, crate::mock::new_test_ext(), crate::mock::Test);

@@ -5,7 +5,6 @@
 | Dizin | Kullanım |
 |-------|----------|
 | `/home/mamostehp/Pezkuwi-SDK` | **Tüm işlemler burada yapılır** (edit, commit, push) |
-| `/home/mamostehp/Pezkuwi-SDK-2` | **Sadece okuma/referans için** (kesinlikle değişiklik yapma) |
 
 ## Ekran Görüntüleri
 

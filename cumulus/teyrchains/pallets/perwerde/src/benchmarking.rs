@@ -5,7 +5,8 @@ use super::{Pallet as Perwerde, *};
 use frame_benchmarking::v2::*;
 use frame_support::{pallet_prelude::Get, BoundedVec};
 use frame_system::RawOrigin;
-use sp_std::vec;
+extern crate alloc;
+use alloc::vec;
 
 const SEED: u32 = 0;
 
@@ -63,6 +64,7 @@ mod benchmarks {
 		let points = 10;
 
 		// Setup: Create course and enroll student
+		// Root creates the course and becomes the owner
 		Perwerde::<T>::create_course(
 			RawOrigin::Root.into(),
 			create_bounded_vec(b"Benchmark Course"),
@@ -72,8 +74,10 @@ mod benchmarks {
 		.unwrap();
 		Perwerde::<T>::enroll(RawOrigin::Signed(student.clone()).into(), course_id).unwrap();
 
+		// complete_course now takes: origin (owner), student, course_id, points
+		// Root is the course owner since Root created it
 		#[extrinsic_call]
-		complete_course(RawOrigin::Signed(student.clone()), course_id, points);
+		complete_course(RawOrigin::Root, student.clone(), course_id, points);
 
 		let enrollment = Enrollments::<T>::get((student, course_id)).unwrap();
 		assert!(enrollment.completed_at.is_some());

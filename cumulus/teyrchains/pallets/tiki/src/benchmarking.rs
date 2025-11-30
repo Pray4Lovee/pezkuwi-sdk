@@ -9,7 +9,8 @@ use frame_system::RawOrigin;
 use frame_support::traits::{Currency, Get};
 use pallet_balances::Pallet as Balances;
 use sp_runtime::traits::StaticLookup;
-use sp_std::vec;
+extern crate alloc;
+use alloc::vec;
 
 // Gerekli trait kısıtlamalarını ana benchmarks bloğuna ekliyoruz.
 #[benchmarks(

@@ -666,7 +666,7 @@ mod benches {
 		[pallet_scheduler, Scheduler]
 		[pallet_democracy, Democracy]
 		[pallet_elections_phragmen, Elections]
-		[pallet_assets, Assets]
+		[pallet_assets, PeopleAssets]
 		// Pezkuwi - Custom People Pallets
 		[pallet_identity_kyc, IdentityKyc]
 		[pallet_perwerde, Perwerde]
@@ -927,6 +927,7 @@ impl_runtime_apis! {
 			// are referenced in that call.
 			type XcmBalances = pallet_xcm_benchmarks::fungible::Pallet::<Runtime>;
 			type XcmGeneric = pallet_xcm_benchmarks::generic::Pallet::<Runtime>;
+			type PeopleAssets = pallet_assets::Pallet::<Runtime>;
 
 			let mut list = Vec::<BenchmarkList>::new();
 			list_benchmarks!(list, extra);
@@ -1118,6 +1119,7 @@ impl_runtime_apis! {
 
 			type XcmBalances = pallet_xcm_benchmarks::fungible::Pallet::<Runtime>;
 			type XcmGeneric = pallet_xcm_benchmarks::generic::Pallet::<Runtime>;
+			type PeopleAssets = pallet_assets::Pallet::<Runtime>;
 
 			use frame_support::traits::WhitelistedStorageKeys;
 			let whitelist: Vec<TrackedStorageKey> = AllPalletsWithSystem::whitelisted_storage_keys();
