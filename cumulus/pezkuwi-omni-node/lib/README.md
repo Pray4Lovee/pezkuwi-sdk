@@ -23,4 +23,4 @@ user-facing binary author, support url, etc.
 
 ## Examples
 
-For an example, see the [`pezkuwi-teyrchain-bin`](https://crates.io/crates/polkadot-parachain-bin) crate.
+For an example, see the `pezkuwi-teyrchain-bin` crate.

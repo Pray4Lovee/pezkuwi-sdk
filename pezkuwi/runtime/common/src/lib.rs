@@ -260,7 +260,7 @@ impl sp_runtime::traits::Convert<sp_core::U256, Balance> for U256ToBalance {
 /// ```Rust
 /// parameter_types! {
 /// 	// Note that the env variable version parameter cannot be const.
-/// 	pub LaunchPeriod: BlockNumber = prod_or_fast!(7 * DAYS, 1, "KSM_LAUNCH_PERIOD");
+/// 	pub LaunchPeriod: BlockNumber = prod_or_fast!(7 * DAYS, 1, "HEZ_LAUNCH_PERIOD");
 /// 	pub const VotingPeriod: BlockNumber = prod_or_fast!(7 * DAYS, 1 * MINUTES);
 /// 	pub const EpochDuration: BlockNumber =
 /// 		prod_or_fast!(1 * HOURS, "fast-runtime", 1 * MINUTES, "fast-runtime-10m", 10 * MINUTES);

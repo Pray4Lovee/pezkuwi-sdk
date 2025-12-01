@@ -24,8 +24,8 @@ targets = ["x86_64-unknown-linux-gnu"]
 
 [badges]
 maintenance = { status = "actively-developed" }
-is-it-maintained-issue-resolution = { repository = "paritytech/pezkuwi-sdk" }
-is-it-maintained-open-issues = { repository = "paritytech/pezkuwi-sdk" }
+is-it-maintained-issue-resolution = { repository = "pezkuwichain/pezkuwi-sdk" }
+is-it-maintained-open-issues = { repository = "pezkuwichain/pezkuwi-sdk" }
 
 [lib]
 crate-type = ["cdylib", "rlib"]

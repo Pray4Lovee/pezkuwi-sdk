@@ -210,3 +210,90 @@ fn translate_sovereign_acc_good() {
 		});
 	});
 }
+
+#[test]
+fn contributions_withdrawn_works() {
+	sp_io::TestExternalities::new(Default::default()).execute_with(|| {
+		let block_number: u64 = 100;
+		let para_id: u16 = 2000;
+		let contributor1 =
+			AccountId32::from_str("13YMK2eeopZtUNpeHnJ1Ws2HqMQG6Ts9PGCZYGyFbSYoZfcm").unwrap();
+		let contributor2 =
+			AccountId32::from_str("14vtfeKAVKh1Jzb3s7e43SqZ3zB5MLsdCxZPoKDxeoCFKLu5").unwrap();
+		let fund_pot =
+			AccountId32::from_str("5Ec4AhPV91i9yNuiWuNunPf6AQCYDhFTTA4G5QCbtqYApH9E").unwrap();
+
+		// Initially no contributions exist, so should return true
+		assert!(
+			crate::Pallet::<AssetHub>::contributions_withdrawn(block_number, para_id),
+			"Should return true when no contributions exist"
+		);
+
+		// Insert a contribution
+		crate::RcCrowdloanContribution::<AssetHub>::insert(
+			(block_number, para_id, &contributor1),
+			(fund_pot.clone(), 1000u128),
+		);
+
+		// Now should return false since there's a contribution
+		assert!(
+			!crate::Pallet::<AssetHub>::contributions_withdrawn(block_number, para_id),
+			"Should return false when contributions exist"
+		);
+
+		// Insert another contribution
+		crate::RcCrowdloanContribution::<AssetHub>::insert(
+			(block_number, para_id, &contributor2),
+			(fund_pot.clone(), 2000u128),
+		);
+
+		// Still should return false
+		assert!(
+			!crate::Pallet::<AssetHub>::contributions_withdrawn(block_number, para_id),
+			"Should return false when multiple contributions exist"
+		);
+
+		// Remove the first contribution
+		crate::RcCrowdloanContribution::<AssetHub>::remove((block_number, para_id, &contributor1));
+
+		// Still should return false (one contribution remains)
+		assert!(
+			!crate::Pallet::<AssetHub>::contributions_withdrawn(block_number, para_id),
+			"Should return false when one contribution still exists"
+		);
+
+		// Remove the second contribution
+		crate::RcCrowdloanContribution::<AssetHub>::remove((block_number, para_id, &contributor2));
+
+		// Now should return true again
+		assert!(
+			crate::Pallet::<AssetHub>::contributions_withdrawn(block_number, para_id),
+			"Should return true after all contributions are removed"
+		);
+
+		// Test with different para_id - should still be true (no contributions)
+		let other_para_id: u16 = 2001;
+		assert!(
+			crate::Pallet::<AssetHub>::contributions_withdrawn(block_number, other_para_id),
+			"Should return true for different para_id with no contributions"
+		);
+
+		// Add contribution to original para_id but check different para_id
+		crate::RcCrowdloanContribution::<AssetHub>::insert(
+			(block_number, para_id, &contributor1),
+			(fund_pot, 500u128),
+		);
+
+		// Original para_id should now be false
+		assert!(
+			!crate::Pallet::<AssetHub>::contributions_withdrawn(block_number, para_id),
+			"Should return false for para_id with contribution"
+		);
+
+		// Different para_id should still be true
+		assert!(
+			crate::Pallet::<AssetHub>::contributions_withdrawn(block_number, other_para_id),
+			"Should return true for different para_id"
+		);
+	});
+}

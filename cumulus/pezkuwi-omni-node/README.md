@@ -1,6 +1,6 @@
 # PezkuwiChain Omni Node
 
-This is a white labeled implementation based on [`pezkuwi-omni-node-lib`](https://crates.io/crates/polkadot-omni-node-lib).
+This is a white labeled implementation based on `pezkuwi-omni-node-lib`.
 It can be used to start a teyrchain node from a provided chain spec file. It is only compatible with runtimes that use block
 number `u32` and `Aura` consensus.
 
@@ -19,7 +19,7 @@ export PATH="$PATH:`pwd`"
 >
 > For example:
 > ```bash
-> wget https://github.com/pezkuwichain/pezkuwi-sdk/releases/download/polkadot-stable2506-1/polkadot-omni-node
+> wget https://github.com/pezkuwichain/pezkuwi-sdk/releases/download/pezkuwi-stable2506-1/pezkuwi-omni-node
 > ```
 
 Compile & install via `cargo`:
@@ -75,9 +75,9 @@ pezkuwi-omni-node --dev --chain <chain_spec.json>
 
 ## Useful links
 
-* [`Omni Node Pezkuwi SDK Docs`](https://docs.pezkuwichain.io/sdk/master/polkadot_sdk_docs/reference_docs/omni_node/index.html)
-* [`Chain Spec Genesis Reference Docs`](https://docs.pezkuwichain.io/sdk/master/polkadot_sdk_docs/reference_docs/chain_spec_genesis/index.html)
-* [`pezkuwi-teyrchain-bin`](https://crates.io/crates/polkadot-parachain-bin)
+* [`Omni Node Pezkuwi SDK Docs`](https://docs.pezkuwichain.io/sdk/master/pezkuwi_sdk_docs/reference_docs/omni_node/index.html)
+* [`Chain Spec Genesis Reference Docs`](https://docs.pezkuwichain.io/sdk/master/pezkuwi_sdk_docs/reference_docs/chain_spec_genesis/index.html)
+* `pezkuwi-teyrchain-bin`
 * [`pezkuwi-sdk-teyrchain-template`](https://github.com/pezkuwichain/pezkuwi-sdk-parachain-template)
 * [`frame-omni-bencher`](https://crates.io/crates/frame-omni-bencher)
 * [`staging-chain-spec-builder`](https://crates.io/crates/staging-chain-spec-builder)
