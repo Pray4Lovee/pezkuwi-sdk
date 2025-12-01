@@ -132,13 +132,8 @@ MD042: true
 MD043: false
 
 # MD044/proper-names - Proper names should have the correct capitalization
-MD044:
-  # List of proper names
-  names: ["Polkadot", "Substrate", "Cumulus", "Parity"]
-  # Include code blocks
-  code_blocks: false
-  # Include HTML elements
-  html_elements: false
+# Disabled - Pezkuwi SDK has its own terminology (not Polkadot)
+MD044: false
 
 # MD045/no-alt-text - Images should have alternate text (alt text)
 MD045: false
