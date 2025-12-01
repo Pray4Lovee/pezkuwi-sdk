@@ -38,7 +38,7 @@ jobs:
 
   build_docker:
     name: Build docker images
-    runs-on: parity-large
+    runs-on: ubuntu-latest
     needs: [set-variables]
     env:
       VERSION: ${{ needs.set-variables.outputs.VERSION }}
@@ -57,7 +57,7 @@ jobs:
 
   build_push_docker:
     name: Build and push docker images
-    runs-on: parity-large
+    runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/master'
     needs: [set-variables]
     env:

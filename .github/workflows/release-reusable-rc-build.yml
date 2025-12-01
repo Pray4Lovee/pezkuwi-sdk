@@ -141,7 +141,7 @@ jobs:
 
   build-macos-rc:
      if: ${{ inputs.target == 'aarch64-apple-darwin' }}
-     runs-on: parity-macos
+     runs-on: macos-latest
      environment: release
      strategy:
        matrix:

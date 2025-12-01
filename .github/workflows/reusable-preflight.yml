@@ -157,23 +157,16 @@ jobs:
         id: set_runner
         shell: bash
         run: |
-          echo "RUNNER_DEFAULT=parity-default" >> $GITHUB_OUTPUT
-          echo "RUNNER_WEIGHTS=parity-weights" >> $GITHUB_OUTPUT
-          echo "RUNNER_BENCHMARK=parity-benchmark" >> $GITHUB_OUTPUT
-          echo "RUNNER_MACOS=parity-macos" >> $GITHUB_OUTPUT
-          #
-          # Run merge queues on persistent runners
-          if [[ $GITHUB_REF_NAME == *"gh-readonly-queue"* ]]; then
-            echo "RUNNER=parity-large-persistent" >> $GITHUB_OUTPUT
-            echo "RUNNER_OLDLINUX=parity-oldlinux-persistent" >> $GITHUB_OUTPUT
-            echo "RUNNER_NEW=parity-large-persistent-test" >> $GITHUB_OUTPUT
-            echo "RUNNER_OLDLINUX_NEW=parity-oldlinux-persistent-new" >> $GITHUB_OUTPUT
-          else
-            echo "RUNNER=parity-large" >> $GITHUB_OUTPUT
-            echo "RUNNER_OLDLINUX=parity-oldlinux" >> $GITHUB_OUTPUT
-            echo "RUNNER_NEW=parity-large-new" >> $GITHUB_OUTPUT
-            echo "RUNNER_OLDLINUX_NEW=parity-oldlinux-new" >> $GITHUB_OUTPUT
-          fi
+          # Use GitHub-hosted runners (ubuntu-latest) instead of Parity self-hosted runners
+          echo "RUNNER_DEFAULT=ubuntu-latest" >> $GITHUB_OUTPUT
+          echo "RUNNER_WEIGHTS=ubuntu-latest" >> $GITHUB_OUTPUT
+          echo "RUNNER_BENCHMARK=ubuntu-latest" >> $GITHUB_OUTPUT
+          echo "RUNNER_MACOS=macos-latest" >> $GITHUB_OUTPUT
+          # All runners use ubuntu-latest for Pezkuwi SDK
+          echo "RUNNER=ubuntu-latest" >> $GITHUB_OUTPUT
+          echo "RUNNER_OLDLINUX=ubuntu-latest" >> $GITHUB_OUTPUT
+          echo "RUNNER_NEW=ubuntu-latest" >> $GITHUB_OUTPUT
+          echo "RUNNER_OLDLINUX_NEW=ubuntu-latest" >> $GITHUB_OUTPUT
 
       #
       # Set vars

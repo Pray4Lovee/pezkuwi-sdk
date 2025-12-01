@@ -249,13 +249,8 @@ jobs:
               echo "IMAGE=$IMAGE" >> $GITHUB_OUTPUT
           fi
 
-          if [[ $BODY == "bench"* ]]; then
-              echo "RUNNER=parity-weights" >> $GITHUB_OUTPUT
-          elif [[ $BODY == "update-ui"* ]]; then
-              echo "RUNNER=parity-large" >> $GITHUB_OUTPUT
-          else
-              echo "RUNNER=ubuntu-latest" >> $GITHUB_OUTPUT
-          fi
+          # Use GitHub-hosted runners for Pezkuwi SDK
+          echo "RUNNER=ubuntu-latest" >> $GITHUB_OUTPUT
       - name: Print outputs
         run: |
           echo "RUNNER=${{ steps.set-image.outputs.RUNNER }}"

@@ -45,11 +45,8 @@ jobs:
         id: set_runner
         shell: bash
         run: |
-          if [[ "${{ inputs.binary }}" == "polkadot-teyrchain" ]]; then
-            echo "RUNNER=parity-large" >> $GITHUB_OUTPUT
-          else
-            echo "RUNNER=ubuntu-latest" >> $GITHUB_OUTPUT
-          fi
+          # Use GitHub-hosted runners for Pezkuwi SDK
+          echo "RUNNER=ubuntu-latest" >> $GITHUB_OUTPUT
 
   build:
     needs: [setup]
