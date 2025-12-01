@@ -166,6 +166,9 @@ fn default_teyrchains_host_configuration(
 			lookahead: 3,
 			group_rotation_frequency: 20,
 			paras_availability_period: 4,
+			// num_cores: 0 olmalı çünkü assign_coretime() genesis'te
+			// her teyrchain için otomatik olarak artırır
+			num_cores: 0,
 			..Default::default()
 		},
 		..Default::default()

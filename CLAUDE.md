@@ -1,5 +1,82 @@
 # Claude Code Kuralları - Pezkuwi SDK
 
+## ⚠️ PEZKUWI SDK TERMİNOLOJİSİ - KRİTİK
+
+**ASLA POLKADOT SDK TERİMLERİ KULLANMA! Bu bağımsız bir blockchain projesi.**
+
+### Doğru Terminoloji Tablosu:
+
+| YANLIŞ (Polkadot SDK) | DOĞRU (Pezkuwi SDK) |
+|-----------------------|---------------------|
+| parachain | **teyrchain** |
+| rococo | **pezkuwichain** |
+| westend | **zagros** |
+| kusama | **zagros** |
+| polkadot | **pezkuwichain** |
+| `[[parachains]]` | **`[[teyrchains]]`** |
+| `[[parachains.collators]]` | **`[[teyrchains.collators]]`** |
+| `-lparachain=debug` | **`-lteyrchain=debug`** |
+| `parachain=debug` | **`teyrchain=debug`** |
+
+### Token'lar:
+- **HEZ**: Relay chain native token (200M genesis, inflationary)
+- **PEZ**: Asset Hub governance token (5B sabit supply)
+- **TYR**: Base unit (1 HEZ = 10^18 TYR)
+
+### System Teyrchains:
+- **Asset Hub Teyrchain**: ID 1000
+- **People Chain Teyrchain**: ID 1004
+
+### Zombienet Config Örneği (DOĞRU):
+```toml
+[relaychain]
+default_args = ["-lteyrchain=debug"]
+chain = "pezkuwichain-dev"
+
+[[teyrchains]]
+id = 1000
+chain = "asset-hub-pezkuwichain-dev"
+
+[[teyrchains.collators]]
+args = ["-lteyrchain=debug"]
+```
+
+---
+
+## 🎯 ANA HEDEF VE ÇALIŞMA PRENSİPLERİ
+
+### Hedef
+Pezkuwi blockchain'i mainnet'e taşımak. Her test aşamasında (dev → local → alpha → beta → staging → mainnet) tüm bug/hataları kalıcı olarak çözmeden bir sonraki aşamaya GEÇİLMEZ.
+
+### Mevcut Aşama: DEV NETWORK
+**Başarı Kriterleri (hepsi sağlanmalı):**
+- [ ] 3 runtime çalışmalı (Relay Chain, Asset Hub, People Chain)
+- [ ] Birbirini görmeli (peer discovery)
+- [ ] Bloklar üretilmeli
+- [ ] Finalized olmalı
+- [ ] Alice hesabında genesis token'ları görülmeli (HEZ, PEZ)
+
+### Test Aşamaları Sırası
+1. **DEV** (1 validator - Alice) ← ŞU AN BURADAYIZ
+2. **LOCAL** (2 validator - Alice + Bob)
+3. **ALPHA** (4 validator)
+4. **BETA** (8 validator)
+5. **STAGING** (21 validator)
+6. **MAINNET** (100 validator)
+
+### Çalışma Prensibi
+```
+Her aşamada:
+1. Planlanan testleri yap
+2. Tüm testlerden başarılı sonuç al
+3. Hata/bug varsa → düzelt → tekrar test et
+4. Başarılı olunca → blockchain upgrade → sonraki aşama
+```
+
+**ÖNEMLİ:** Ekranda geçici başarı görmek yeterli DEĞİL. Kalıcı çözümler, tam testler, sonra ilerleme.
+
+---
+
 ## Dizin Kuralları
 
 | Dizin | Kullanım |
