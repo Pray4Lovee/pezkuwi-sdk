@@ -214,9 +214,6 @@ jobs:
           cargo-contract --version
           taplo --version
 
-      - name: Info forklift
-        run: forklift version
-
       - name: Info vars
         run: |
           echo "COMMIT_SHA: ${{ needs.preflight.outputs.COMMIT_SHA }}"

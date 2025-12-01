@@ -49,7 +49,7 @@ jobs:
       - name: build
         id: required
         run: |
-          forklift cargo build --locked --profile testnet --features pyroscope,fast-runtime --bin polkadot --bin polkadot-prepare-worker --bin polkadot-execute-worker
+          cargo build --locked --profile testnet --features pyroscope,fast-runtime --bin polkadot --bin polkadot-prepare-worker --bin polkadot-execute-worker
           PEZKUWICHAIN_EPOCH_DURATION=10 ./polkadot/scripts/build-only-wasm.sh pezkuwichain-runtime $(pwd)/runtimes/pezkuwichain-runtime-10/
           PEZKUWICHAIN_EPOCH_DURATION=100 ./polkadot/scripts/build-only-wasm.sh pezkuwichain-runtime $(pwd)/runtimes/pezkuwichain-runtime-100/
           PEZKUWICHAIN_EPOCH_DURATION=600 ./polkadot/scripts/build-only-wasm.sh pezkuwichain-runtime $(pwd)/runtimes/pezkuwichain-runtime-600/
@@ -109,7 +109,7 @@ jobs:
         id: required
         run: |
           echo "___Building a binary, please refrain from using it in production since it goes with the debug assertions.___"
-          forklift cargo build --release --locked -p polkadot-teyrchain-bin --bin polkadot-teyrchain
+          cargo build --release --locked -p polkadot-teyrchain-bin --bin polkadot-teyrchain
           echo "___Packing the artifacts___"
           mkdir -p ./artifacts
           mv ./target/release/polkadot-teyrchain ./artifacts/.
@@ -149,7 +149,7 @@ jobs:
         id: required
         run: |
           echo "___Building a binary, please refrain from using it in production since it goes with the debug assertions.___"
-          forklift cargo build --release --locked -p cumulus-test-service --bin test-teyrchain
+          cargo build --release --locked -p cumulus-test-service --bin test-teyrchain
       - name: pack artifacts
         run: |
           echo "___Packing the artifacts___"
@@ -190,8 +190,8 @@ jobs:
       - name: build
         id: required
         run: |
-          forklift cargo build --locked --profile testnet -p test-teyrchain-adder-collator
-          forklift cargo build --locked --profile testnet -p test-teyrchain-undying-collator
+          cargo build --locked --profile testnet -p test-teyrchain-adder-collator
+          cargo build --locked --profile testnet -p test-teyrchain-undying-collator
       - name: pack artifacts
         run: |
           mkdir -p ./artifacts
@@ -233,7 +233,7 @@ jobs:
       - name: build
         id: required
         run: |
-          forklift cargo build --locked --profile testnet -p polkadot-test-malus --bin malus --bin polkadot-prepare-worker --bin polkadot-execute-worker
+          cargo build --locked --profile testnet -p polkadot-test-malus --bin malus --bin polkadot-prepare-worker --bin polkadot-execute-worker
       - name: pack artifacts
         run: |
           mkdir -p ./artifacts
@@ -276,7 +276,7 @@ jobs:
         id: required
         run: |
           mkdir -p ./artifacts/substrate/
-          WASM_BUILD_NO_COLOR=1 forklift cargo build --locked --release -p staging-node-cli
+          WASM_BUILD_NO_COLOR=1 cargo build --locked --release -p staging-node-cli
           ls -la target/release/
       - name: pack artifacts
         shell: bash
@@ -322,9 +322,9 @@ jobs:
       - name: build
         id: required
         run: |
-          forklift cargo build --locked --package teyrchain-template-node --release
-          forklift cargo build --locked --package minimal-template-node --release
-          forklift cargo build --locked --package solochain-template-node --release
+          cargo build --locked --package teyrchain-template-node --release
+          cargo build --locked --package minimal-template-node --release
+          cargo build --locked --package solochain-template-node --release
       - name: pack artifacts
         run: |
           mkdir -p ./artifacts
@@ -368,7 +368,7 @@ jobs:
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
       - name: build
         run: |
-          forklift cargo build --locked --profile testnet -p polkadot-test-malus --bin malus --bin polkadot-prepare-worker --bin polkadot-execute-worker
+          cargo build --locked --profile testnet -p polkadot-test-malus --bin malus --bin polkadot-prepare-worker --bin polkadot-execute-worker
       - name: pack artifacts
         run: |
           mkdir -p ./artifacts/bridges-polkadot-sdk/bridges
@@ -398,7 +398,7 @@ jobs:
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
       - name: build
         run: |
-          forklift cargo nextest --manifest-path polkadot/zombienet-sdk-tests/Cargo.toml archive --locked --features zombie-metadata,zombie-ci --archive-file polkadot-zombienet-tests.tar.zst
+          cargo nextest --manifest-path polkadot/zombienet-sdk-tests/Cargo.toml archive --locked --features zombie-metadata,zombie-ci --archive-file polkadot-zombienet-tests.tar.zst
       - name: pack artifacts
         run: |
           mkdir -p artifacts
@@ -428,7 +428,7 @@ jobs:
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
       - name: build
         run: |
-          forklift cargo nextest --manifest-path cumulus/zombienet/zombienet-sdk/Cargo.toml archive --locked --features zombie-ci --archive-file cumulus-zombienet-tests.tar.zst
+          cargo nextest --manifest-path cumulus/zombienet/zombienet-sdk/Cargo.toml archive --locked --features zombie-ci --archive-file cumulus-zombienet-tests.tar.zst
       - name: pack artifacts
         run: |
           mkdir -p artifacts
@@ -455,7 +455,7 @@ jobs:
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
       - name: build
         run: |
-          forklift cargo nextest --manifest-path templates/zombienet/Cargo.toml archive --locked --features zombienet --archive-file teyrchain-templates-zombienet-tests.tar.zst
+          cargo nextest --manifest-path templates/zombienet/Cargo.toml archive --locked --features zombienet --archive-file teyrchain-templates-zombienet-tests.tar.zst
       - name: pack artifacts
         run: |
           mkdir -p artifacts

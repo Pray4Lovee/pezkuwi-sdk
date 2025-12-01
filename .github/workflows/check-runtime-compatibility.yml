@@ -69,7 +69,7 @@ jobs:
         id: build-runtime
         run: |
           echo "---------- Building ${{ matrix.package }} runtime with on-chain-release-build ----------"
-          forklift cargo build --release --locked -p ${{ matrix.package }} --features on-chain-release-build -q
+          cargo build --release --locked -p ${{ matrix.package }} --features on-chain-release-build -q
 
       - name: Setup Node.js
         uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
