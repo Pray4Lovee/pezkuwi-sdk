@@ -10,7 +10,7 @@ use cumulus_zombienet_sdk_helpers::{assert_para_throughput, wait_for_upgrade};
 use pezkuwi_primitives::Id as ParaId;
 use zombienet_configuration::types::AssetLocation;
 use zombienet_sdk::{
-	subxt::{OnlineClient, PezkuwiConfig},
+	subxt::{OnlineClient, PolkadotConfig},
 	tx_helper::{ChainUpgrade, RuntimeUpgradeOptions},
 	NetworkConfig, NetworkConfigBuilder,
 };
@@ -32,7 +32,7 @@ async fn runtime_upgrade() -> Result<(), anyhow::Error> {
 	let network = initialize_network(config).await?;
 
 	let alice = network.get_node("alice")?;
-	let alice_client: OnlineClient<PezkuwiConfig> = alice.wait_client().await?;
+	let alice_client: OnlineClient<PolkadotConfig> = alice.wait_client().await?;
 
 	log::info!("Ensuring teyrchain making progress");
 	assert_para_throughput(
@@ -44,7 +44,7 @@ async fn runtime_upgrade() -> Result<(), anyhow::Error> {
 
 	let timeout_secs: u64 = 250;
 	let charlie = network.get_node("charlie")?;
-	let charlie_client: OnlineClient<PezkuwiConfig> = charlie.wait_client().await?;
+	let charlie_client: OnlineClient<PolkadotConfig> = charlie.wait_client().await?;
 
 	let current_spec_version =
 		charlie_client.backend().current_runtime_version().await?.spec_version;
@@ -61,7 +61,7 @@ async fn runtime_upgrade() -> Result<(), anyhow::Error> {
 		.await?;
 
 	let dave = network.get_node("dave")?;
-	let dave_client: OnlineClient<PezkuwiConfig> = dave.wait_client().await?;
+	let dave_client: OnlineClient<PolkadotConfig> = dave.wait_client().await?;
 	let expected_spec_version = current_spec_version + 1;
 
 	log::info!(

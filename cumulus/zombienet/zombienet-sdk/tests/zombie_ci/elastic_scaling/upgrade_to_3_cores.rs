@@ -13,7 +13,7 @@ use cumulus_zombienet_sdk_helpers::{
 use pezkuwi_primitives::Id as ParaId;
 use rstest::rstest;
 use zombienet_sdk::{
-	subxt::{OnlineClient, PezkuwiConfig},
+	subxt::{OnlineClient, PolkadotConfig},
 	NetworkConfig, NetworkConfigBuilder,
 };
 
@@ -44,7 +44,7 @@ async fn elastic_scaling_upgrade_to_3_cores(
 	let network = initialize_network(config).await?;
 
 	let alice = network.get_node("validator0")?;
-	let alice_client: OnlineClient<PezkuwiConfig> = alice.wait_client().await?;
+	let alice_client: OnlineClient<PolkadotConfig> = alice.wait_client().await?;
 
 	assign_cores(alice, PARA_ID, vec![0]).await?;
 
@@ -69,7 +69,7 @@ async fn elastic_scaling_upgrade_to_3_cores(
 	assign_cores(alice, PARA_ID, vec![1, 2]).await?;
 	let timeout_secs: u64 = 250;
 	let collator0 = network.get_node("collator0")?;
-	let collator0_client: OnlineClient<PezkuwiConfig> = collator0.wait_client().await?;
+	let collator0_client: OnlineClient<PolkadotConfig> = collator0.wait_client().await?;
 
 	let current_spec_version =
 		collator0_client.backend().current_runtime_version().await?.spec_version;
@@ -81,7 +81,7 @@ async fn elastic_scaling_upgrade_to_3_cores(
 	runtime_upgrade(&network, collator0, PARA_ID, wasm).await?;
 
 	let collator1 = network.get_node("collator1")?;
-	let collator1_client: OnlineClient<PezkuwiConfig> = collator1.wait_client().await?;
+	let collator1_client: OnlineClient<PolkadotConfig> = collator1.wait_client().await?;
 	let expected_spec_version = current_spec_version + 1;
 
 	log::info!(

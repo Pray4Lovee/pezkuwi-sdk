@@ -1,5 +1,24 @@
 # Claude Code Kuralları - Pezkuwi SDK
 
+## 🚨 GITHUB ACTIONS KURALI - KESİNLİKLE UYULMALI
+
+**Workflow hata verdiğinde veya değişiklik yapılacağında:**
+1. **ÖNCE** tüm mevcut workflow run'larını iptal et (`gh run cancel`)
+2. **SONRA** hepsini sil (`gh run delete`)
+3. **EN SON** tek bir commit/push ile temiz başlat
+
+**ASLA eski workflow'ların üzerine yeni workflow bırakma!**
+**ASLA kuyrukta onlarca workflow biriktirme!**
+
+```bash
+# Temizlik komutu (her zaman önce bunu çalıştır):
+gh run list --limit 100 --json databaseId,status | jq -r '.[] | select(.status == "queued" or .status == "in_progress" or .status == "pending") | .databaseId' | xargs -I{} gh run cancel {} 2>/dev/null
+sleep 5
+gh run list --limit 100 --json databaseId -q '.[].databaseId' | xargs -I{} gh run delete {} 2>/dev/null
+```
+
+---
+
 ## ⚠️ PEZKUWI SDK TERMİNOLOJİSİ - KRİTİK
 
 **ASLA POLKADOT SDK TERİMLERİ KULLANMA! Bu bağımsız bir blockchain projesi.**

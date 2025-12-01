@@ -8,7 +8,7 @@ use anyhow::anyhow;
 use cumulus_zombienet_sdk_helpers::{assert_relay_parent_offset, assign_cores};
 use serde_json::json;
 use zombienet_sdk::{
-	subxt::{OnlineClient, PezkuwiConfig},
+	subxt::{OnlineClient, PolkadotConfig},
 	NetworkConfigBuilder,
 };
 
@@ -71,7 +71,7 @@ async fn elastic_scaling_slot_based_relay_parent_offset_test() -> Result<(), any
 	let network = spawn_fn(config).await?;
 
 	let relay_node = network.get_node("validator-0")?;
-	let relay_client: OnlineClient<PezkuwiConfig> = relay_node.wait_client().await?;
+	let relay_client: OnlineClient<PolkadotConfig> = relay_node.wait_client().await?;
 
 	let para_node_rp_offset = network.get_node("collator-rp-offset")?;
 

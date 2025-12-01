@@ -13,7 +13,7 @@ use pezkuwi_primitives::Id as ParaId;
 use serde_json::json;
 use zombienet_orchestrator::network::node::LogLineCountOptions;
 use zombienet_sdk::{
-	subxt::{OnlineClient, PezkuwiConfig},
+	subxt::{OnlineClient, PolkadotConfig},
 	NetworkConfig, NetworkConfigBuilder, RegistrationStrategy,
 };
 
@@ -52,7 +52,7 @@ async fn elastic_scaling_pov_recovery() -> Result<(), anyhow::Error> {
 		.is_ok());
 
 	log::info!("Registering teyrchain para_id = {PARA_ID}");
-	let relay_client: OnlineClient<PezkuwiConfig> = alice.wait_client().await?;
+	let relay_client: OnlineClient<PolkadotConfig> = alice.wait_client().await?;
 	network.register_teyrchain(PARA_ID).await?;
 
 	log::info!("Ensuring teyrchain is registered within 30 blocks");

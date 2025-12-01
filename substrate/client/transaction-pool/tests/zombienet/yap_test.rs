@@ -26,7 +26,7 @@ use cumulus_zombienet_sdk_helpers::create_assign_core_call;
 use serde_json::json;
 use txtesttool::{execution_log::ExecutionLog, scenario::ScenarioBuilder};
 use zombienet_sdk::{
-	subxt::{OnlineClient, PezkuwiConfig},
+	subxt::{OnlineClient, PolkadotConfig},
 	subxt_signer::sr25519::dev,
 	NetworkConfigBuilder,
 };
@@ -96,7 +96,7 @@ async fn slot_based_3cores_test() -> Result<(), anyhow::Error> {
 
 	let relay_node = spawner.network().get_node("alice")?;
 
-	let relay_client: OnlineClient<PezkuwiConfig> = relay_node.wait_client().await?;
+	let relay_client: OnlineClient<PolkadotConfig> = relay_node.wait_client().await?;
 	let alice = dev::alice();
 
 	let assign_cores_call = create_assign_core_call(&[(0, 2200), (1, 2200)]);

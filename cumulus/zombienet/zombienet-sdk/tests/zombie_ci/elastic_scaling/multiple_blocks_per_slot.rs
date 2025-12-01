@@ -9,7 +9,7 @@ use cumulus_zombienet_sdk_helpers::{assert_finality_lag, assert_para_throughput,
 use pezkuwi_primitives::Id as ParaId;
 use serde_json::json;
 use zombienet_sdk::{
-	subxt::{OnlineClient, PezkuwiConfig},
+	subxt::{OnlineClient, PolkadotConfig},
 	NetworkConfig, NetworkConfigBuilder,
 };
 
@@ -33,7 +33,7 @@ async fn elastic_scaling_multiple_blocks_per_slot() -> Result<(), anyhow::Error>
 	let relay_node = network.get_node("validator-0")?;
 	let para_node_elastic = network.get_node("collator-1")?;
 
-	let relay_client: OnlineClient<PezkuwiConfig> = relay_node.wait_client().await?;
+	let relay_client: OnlineClient<PolkadotConfig> = relay_node.wait_client().await?;
 	assert_para_throughput(
 		&relay_client,
 		10,

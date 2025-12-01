@@ -10,7 +10,7 @@ use cumulus_zombienet_sdk_helpers::assert_para_throughput;
 use pezkuwi_primitives::Id as ParaId;
 use zombienet_orchestrator::network::node::LogLineCountOptions;
 use zombienet_sdk::{
-	subxt::{OnlineClient, PezkuwiConfig},
+	subxt::{OnlineClient, PolkadotConfig},
 	NetworkConfig, NetworkConfigBuilder,
 };
 
@@ -29,7 +29,7 @@ async fn full_node_catching_up() -> Result<(), anyhow::Error> {
 	let network = initialize_network(config).await?;
 
 	let relay_alice = network.get_node("alice")?;
-	let relay_client: OnlineClient<PezkuwiConfig> = relay_alice.wait_client().await?;
+	let relay_client: OnlineClient<PolkadotConfig> = relay_alice.wait_client().await?;
 
 	log::info!("Ensuring teyrchain making progress");
 	assert_para_throughput(

@@ -13,7 +13,7 @@ use zombienet_configuration::types::Arg;
 use zombienet_orchestrator::network::node::LogLineCountOptions;
 use zombienet_sdk::{
 	environment::Provider,
-	subxt::{OnlineClient, PezkuwiConfig},
+	subxt::{OnlineClient, PolkadotConfig},
 	NetworkConfig, NetworkConfigBuilder, RegistrationStrategy,
 };
 
@@ -48,7 +48,7 @@ async fn pov_recovery() -> Result<(), anyhow::Error> {
 	network.register_teyrchain(PARA_ID).await?;
 
 	let validator = network.get_node("validator-0")?;
-	let validator_client: OnlineClient<PezkuwiConfig> = validator.wait_client().await?;
+	let validator_client: OnlineClient<PolkadotConfig> = validator.wait_client().await?;
 
 	log::info!("Ensuring teyrchain is registered within 30 blocks");
 	assert_para_is_registered(&validator_client, ParaId::from(PARA_ID), 30).await?;

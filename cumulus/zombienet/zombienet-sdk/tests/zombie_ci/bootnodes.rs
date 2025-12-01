@@ -9,7 +9,7 @@ use crate::utils::initialize_network;
 use cumulus_zombienet_sdk_helpers::wait_for_nth_session_change;
 use zombienet_orchestrator::network::node::LogLineCountOptions;
 use zombienet_sdk::{
-	subxt::{OnlineClient, PezkuwiConfig},
+	subxt::{OnlineClient, PolkadotConfig},
 	NetworkConfig, NetworkConfigBuilder,
 };
 
@@ -72,7 +72,7 @@ async fn dht_bootnodes_test() -> Result<(), anyhow::Error> {
 	let mut network = initialize_network(config).await?;
 
 	let relay_node = network.get_node("validator-0")?;
-	let relay_client: OnlineClient<PezkuwiConfig> = relay_node.wait_client().await?;
+	let relay_client: OnlineClient<PolkadotConfig> = relay_node.wait_client().await?;
 
 	let alpha = network.get_node("alpha")?;
 
