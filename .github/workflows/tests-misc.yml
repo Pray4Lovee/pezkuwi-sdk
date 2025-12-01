@@ -232,9 +232,9 @@ jobs:
           # but still want to have debug assertions.
           RUSTFLAGS: "-Cdebug-assertions=y -Dwarnings"
         run: |
-          cargo build --bin polkadot-execute-worker --bin polkadot-prepare-worker --profile testnet --verbose --locked
+          cargo build --bin pezkuwi-execute-worker --bin pezkuwi-prepare-worker --profile testnet --verbose --locked
           mkdir -p ./artifacts
-          cargo test --profile testnet --locked --features=runtime-metrics -p polkadot-node-metrics > ./artifacts/log.txt
+          cargo test --profile testnet --locked --features=runtime-metrics -p pezkuwi-node-metrics > ./artifacts/log.txt
           echo "Metrics test passed"
 
       - name: Upload artifacts if failed

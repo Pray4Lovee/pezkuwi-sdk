@@ -1,4 +1,4 @@
-name: Zombienet Polkadot
+name: Zombienet Pezkuwi
 
 on:
   workflow_call:
@@ -25,14 +25,14 @@ on:
         required: false
 
 concurrency:
-  group: polkadot-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}-${{ github.run_id }}
+  group: pezkuwi-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}-${{ github.run_id }}
   cancel-in-progress: true
 
 permissions: read-all
 
 env:
   FF_DISABLE_UMASK_FOR_DOCKER_EXECUTOR: 1
-  LOCAL_DIR: "./polkadot/zombienet_tests"
+  LOCAL_DIR: "./pezkuwi/zombienet_tests"
   GHA_CLUSTER_SERVER_ADDR: "https://kubernetes.default:443"
   # use spot by default
   X_INFRA_INSTANCE: "spot"
