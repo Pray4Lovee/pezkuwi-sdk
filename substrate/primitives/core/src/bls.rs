@@ -121,8 +121,8 @@ pub const SIGNATURE_SERIALIZED_SIZE: usize =
 	<DoubleSignature<TinyBLS381> as SerializableToBytes>::SERIALIZED_BYTES_SIZE;
 
 /// Signature serialized size (for back cert) + Nugget BLS PoP size
-pub const PROOF_OF_POSSESSION_SERIALIZED_SIZE: usize = SIGNATURE_SERIALIZED_SIZE +
-	<NuggetBLSnCPPoP<TinyBLS381> as SerializableToBytes>::SERIALIZED_BYTES_SIZE;
+pub const PROOF_OF_POSSESSION_SERIALIZED_SIZE: usize = SIGNATURE_SERIALIZED_SIZE
+	+ <NuggetBLSnCPPoP<TinyBLS381> as SerializableToBytes>::SERIALIZED_BYTES_SIZE;
 
 /// A secret seed.
 ///
@@ -185,7 +185,7 @@ impl<T: BlsBound> TraitPair for Pair<T> {
 
 	fn from_seed_slice(seed_slice: &[u8]) -> Result<Self, SecretStringError> {
 		if seed_slice.len() != SECRET_KEY_SERIALIZED_SIZE {
-			return Err(SecretStringError::InvalidSeedLength)
+			return Err(SecretStringError::InvalidSeedLength);
 		}
 		let secret = w3f_bls::SecretKey::from_seed(seed_slice);
 		let public = secret.into_public();
@@ -300,12 +300,12 @@ impl<T: BlsBound> ProofOfPossessionVerifier for Pair<T> {
 		let Ok(allegedly_possessed_pubkey_as_bls_pubkey) =
 			DoublePublicKey::<T>::from_bytes(allegedly_possessed_pubkey.as_ref())
 		else {
-			return false
+			return false;
 		};
 
 		let Ok(proof_of_ownership) = proof_of_possession.0[0..SIGNATURE_SERIALIZED_SIZE].try_into()
 		else {
-			return false
+			return false;
 		};
 
 		if !Self::verify(

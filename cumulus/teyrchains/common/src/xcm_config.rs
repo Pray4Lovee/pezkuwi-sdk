@@ -100,7 +100,7 @@ impl<SystemTeyrchainMatcher: Contains<Location>, Runtime: teyrchain_info::Config
 		let self_para_id: u32 = teyrchain_info::Pallet::<Runtime>::get().into();
 		if let (0, [Teyrchain(para_id)]) = l.unpack() {
 			if *para_id == self_para_id {
-				return false
+				return false;
 			}
 		}
 		matches!(l.unpack(), (1, [])) || SystemTeyrchainMatcher::contains(l)

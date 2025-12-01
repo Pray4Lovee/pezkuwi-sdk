@@ -230,7 +230,7 @@ impl PeerData {
 					active_leaves,
 					state.para_id,
 				) {
-					return Err(InsertAdvertisementError::OutOfOurView)
+					return Err(InsertAdvertisementError::OutOfOurView);
 				}
 
 				if let Some(candidate_hash) = candidate_hash {
@@ -239,7 +239,7 @@ impl PeerData {
 						.get(&on_relay_parent)
 						.map_or(false, |candidates| candidates.contains(&candidate_hash))
 					{
-						return Err(InsertAdvertisementError::Duplicate)
+						return Err(InsertAdvertisementError::Duplicate);
 					}
 
 					let candidates = state.advertisements.entry(on_relay_parent).or_default();
@@ -247,7 +247,7 @@ impl PeerData {
 					// Current assignments is equal to the length of the claim queue. No honest
 					// collator should send that many advertisements.
 					if candidates.len() > per_relay_parent.assignment.current.len() {
-						return Err(InsertAdvertisementError::PeerLimitReached)
+						return Err(InsertAdvertisementError::PeerLimitReached);
 					}
 
 					candidates.insert(candidate_hash);
@@ -261,7 +261,7 @@ impl PeerData {
 					}
 
 					if state.advertisements.contains_key(&on_relay_parent) {
-						return Err(InsertAdvertisementError::Duplicate)
+						return Err(InsertAdvertisementError::Duplicate);
 					}
 
 					state
@@ -335,8 +335,9 @@ impl PeerData {
 	fn is_inactive(&self, policy: &crate::CollatorEvictionPolicy) -> bool {
 		match self.state {
 			PeerState::Connected(connected_at) => connected_at.elapsed() >= policy.undeclared,
-			PeerState::Collating(ref state) =>
-				state.last_active.elapsed() >= policy.inactive_collator,
+			PeerState::Collating(ref state) => {
+				state.last_active.elapsed() >= policy.inactive_collator
+			},
 		}
 	}
 }
@@ -540,8 +541,8 @@ impl State {
 				acc + blocked_collations
 					.iter()
 					.filter(|pc| {
-						pc.candidate_receipt.descriptor.para_id() == *para_id &&
-							pc.candidate_receipt.descriptor.relay_parent() == *relay_parent
+						pc.candidate_receipt.descriptor.para_id() == *para_id
+							&& pc.candidate_receipt.descriptor.relay_parent() == *relay_parent
 					})
 					.count()
 			});
@@ -611,7 +612,7 @@ where
 		rotation_info.core_for_group(group, groups.len())
 	} else {
 		gum::trace!(target: LOG_TARGET, ?relay_parent, "Not a validator");
-		return Ok(None)
+		return Ok(None);
 	};
 
 	let mut claim_queue = request_claim_queue(relay_parent, sender)
@@ -747,14 +748,16 @@ async fn notify_collation_seconded(
 ) {
 	let statement = statement.into();
 	let wire_message = match version {
-		CollationVersion::V1 =>
+		CollationVersion::V1 => {
 			CollationProtocols::V1(protocol_v1::CollationProtocol::CollatorProtocol(
 				protocol_v1::CollatorProtocolMessage::CollationSeconded(relay_parent, statement),
-			)),
-		CollationVersion::V2 =>
+			))
+		},
+		CollationVersion::V2 => {
 			CollationProtocols::V2(protocol_v2::CollationProtocol::CollatorProtocol(
 				protocol_v2::CollatorProtocolMessage::CollationSeconded(relay_parent, statement),
-			)),
+			))
+		},
 	};
 	sender
 		.send_message(NetworkBridgeTxMessage::SendCollationMessage(vec![peer_id], wire_message))
@@ -793,7 +796,7 @@ async fn request_collation(
 	peer_protocol_version: CollationVersion,
 ) -> std::result::Result<(), FetchError> {
 	if state.collation_requests_cancel_handles.contains_key(&pending_collation) {
-		return Err(FetchError::AlreadyRequested)
+		return Err(FetchError::AlreadyRequested);
 	}
 
 	let PendingCollation { relay_parent, para_id, peer_id, prospective_candidate, .. } =
@@ -879,8 +882,8 @@ async fn process_incoming_peer_message<Context>(
 	use sp_runtime::traits::AppVerify;
 
 	match msg {
-		CollationProtocols::V1(V1::Declare(collator_id, para_id, signature)) |
-		CollationProtocols::V2(V2::Declare(collator_id, para_id, signature)) => {
+		CollationProtocols::V1(V1::Declare(collator_id, para_id, signature))
+		| CollationProtocols::V2(V2::Declare(collator_id, para_id, signature)) => {
 			if collator_peer_id(&state.peer_data, &collator_id).is_some() {
 				modify_reputation(
 					&mut state.reputation,
@@ -889,7 +892,7 @@ async fn process_incoming_peer_message<Context>(
 					COST_UNEXPECTED_MESSAGE,
 				)
 				.await;
-				return
+				return;
 			}
 
 			let peer_data = match state.peer_data.get_mut(&origin) {
@@ -908,7 +911,7 @@ async fn process_incoming_peer_message<Context>(
 						COST_UNEXPECTED_MESSAGE,
 					)
 					.await;
-					return
+					return;
 				},
 			};
 
@@ -926,7 +929,7 @@ async fn process_incoming_peer_message<Context>(
 					COST_UNEXPECTED_MESSAGE,
 				)
 				.await;
-				return
+				return;
 			}
 
 			if !signature.verify(&*protocol_v1::declare_signature_payload(&origin), &collator_id) {
@@ -943,7 +946,7 @@ async fn process_incoming_peer_message<Context>(
 					COST_INVALID_SIGNATURE,
 				)
 				.await;
-				return
+				return;
 			}
 
 			if state.current_assignments.contains_key(&para_id) {
@@ -1022,8 +1025,8 @@ async fn process_incoming_peer_message<Context>(
 				}
 			}
 		},
-		CollationProtocols::V1(V1::CollationSeconded(..)) |
-		CollationProtocols::V2(V2::CollationSeconded(..)) => {
+		CollationProtocols::V1(V1::CollationSeconded(..))
+		| CollationProtocols::V2(V2::CollationSeconded(..)) => {
 			gum::warn!(
 				target: LOG_TARGET,
 				peer_id = ?origin,
@@ -1053,9 +1056,9 @@ fn hold_off_asset_hub_collation_if_needed(
 	let peer_is_invulnerable = state.ah_invulnerables.contains(&peer_id);
 	let invulnerables_set_is_empty = state.ah_invulnerables.is_empty();
 
-	if maybe_para_id != Some(ASSET_HUB_PARA_ID) ||
-		peer_is_invulnerable ||
-		invulnerables_set_is_empty
+	if maybe_para_id != Some(ASSET_HUB_PARA_ID)
+		|| peer_is_invulnerable
+		|| invulnerables_set_is_empty
 	{
 		gum::trace!(
 			target: LOG_TARGET,
@@ -1068,7 +1071,7 @@ fn hold_off_asset_hub_collation_if_needed(
 			"Collation not held off",
 		);
 
-		return false
+		return false;
 	}
 
 	let Some(rp_state) = state.per_relay_parent.get_mut(&relay_parent) else {
@@ -1079,7 +1082,7 @@ fn hold_off_asset_hub_collation_if_needed(
 			?relay_parent,
 			"Trying to hold off AssetHub collation, but the relay parent is not known",
 		);
-		return false
+		return false;
 	};
 
 	let hold_off_outcome =
@@ -1269,8 +1272,8 @@ fn ensure_seconding_limit_is_respected(
 	for path in paths {
 		let mut cq_state = ClaimQueueState::new();
 		for ancestor in &path {
-			let seconded_and_pending = state.seconded_and_pending_for_para(&ancestor, &para_id) +
-				state.in_waiting_queue_for_para(relay_parent, &para_id);
+			let seconded_and_pending = state.seconded_and_pending_for_para(&ancestor, &para_id)
+				+ state.in_waiting_queue_for_para(relay_parent, &para_id);
 			cq_state.add_leaf(
 				&ancestor,
 				&state
@@ -1287,7 +1290,7 @@ fn ensure_seconding_limit_is_respected(
 
 		if cq_state.can_claim_at(relay_parent, &para_id) {
 			has_claim_at_some_path = true;
-			break
+			break;
 		}
 	}
 
@@ -1325,7 +1328,7 @@ where
 	let peer_data = state.peer_data.get_mut(&peer_id).ok_or(AdvertisementError::UnknownPeer)?;
 
 	if peer_data.version == CollationVersion::V1 && !state.active_leaves.contains(&relay_parent) {
-		return Err(AdvertisementError::ProtocolMisuse)
+		return Err(AdvertisementError::ProtocolMisuse);
 	}
 
 	let per_relay_parent = state
@@ -1340,7 +1343,7 @@ where
 
 	// Check if this is assigned to us.
 	if !assignment.current.contains(&collator_para_id) {
-		return Err(AdvertisementError::InvalidAssignment)
+		return Err(AdvertisementError::InvalidAssignment);
 	}
 
 	// Always insert advertisements that pass all the checks for spam protection.
@@ -1362,7 +1365,7 @@ where
 		relay_parent,
 		prospective_candidate,
 	) {
-		return Ok(())
+		return Ok(());
 	}
 
 	process_advertisement(
@@ -1399,7 +1402,7 @@ where
 			can_second(sender, para_id, relay_parent, candidate_hash, parent_head_data_hash).await;
 
 		if !can_second {
-			return Err(AdvertisementError::BlockedByBacking)
+			return Err(AdvertisementError::BlockedByBacking);
 		}
 	}
 
@@ -1461,7 +1464,7 @@ where
 				?prospective_candidate,
 				"Candidate relay parent went out of view for valid advertisement",
 			);
-			return Ok(())
+			return Ok(());
 		},
 	};
 	let prospective_candidate =
@@ -1534,7 +1537,7 @@ where
 		)
 		.await?
 		else {
-			continue
+			continue;
 		};
 
 		state.active_leaves.insert(*leaf);
@@ -1658,7 +1661,7 @@ async fn handle_network_msg<Context>(
 						?err,
 						"Unsupported protocol version"
 					);
-					return Ok(())
+					return Ok(());
 				},
 			};
 
@@ -1683,7 +1686,7 @@ async fn handle_network_msg<Context>(
 					"Peer connection refused, no slots for invulnerable AssetHub collators",
 				);
 				disconnect_peer(ctx.sender(), peer_id).await;
-				return Ok(())
+				return Ok(());
 			}
 
 			state.peer_data.entry(peer_id).or_insert_with(|| PeerData {
@@ -1774,7 +1777,7 @@ async fn process_msg<Context>(
 						relay_parent = %parent,
 						"Seconded message received with a `Valid` statement",
 					);
-					return
+					return;
 				},
 			};
 			let output_head_data = receipt.commitments.head_data.clone();
@@ -1847,9 +1850,11 @@ async fn process_msg<Context>(
 			let candidate_hash = fetched_collation.candidate_hash;
 			let id = match state.fetched_candidates.entry(fetched_collation) {
 				Entry::Occupied(entry)
-					if entry.get().pending_collation.commitments_hash ==
-						Some(candidate_receipt.commitments_hash) =>
-					entry.remove().collator_id,
+					if entry.get().pending_collation.commitments_hash
+						== Some(candidate_receipt.commitments_hash) =>
+				{
+					entry.remove().collator_id
+				},
 				Entry::Occupied(_) => {
 					gum::error!(
 						target: LOG_TARGET,
@@ -1857,7 +1862,7 @@ async fn process_msg<Context>(
 						candidate = ?candidate_receipt.hash(),
 						"Reported invalid candidate for unknown `pending_candidate`!",
 					);
-					return
+					return;
 				},
 				Entry::Vacant(_) => return,
 			};
@@ -2113,7 +2118,7 @@ async fn dequeue_next_collation_and_fetch<Context>(
 				"Failed to request a collation, dequeueing next one",
 			);
 		} else {
-			break
+			break;
 		}
 	}
 }
@@ -2187,7 +2192,7 @@ async fn kick_off_seconding<Context>(
 				relay_parent = ?relay_parent,
 				"Fetched collation for a parent out of view",
 			);
-			return Ok(false)
+			return Ok(false);
 		},
 	};
 
@@ -2232,7 +2237,7 @@ async fn kick_off_seconding<Context>(
 			},
 			_ => {
 				// `handle_advertisement` checks for protocol mismatch.
-				return Ok(false)
+				return Ok(false);
 			},
 		};
 
@@ -2264,12 +2269,12 @@ async fn kick_off_seconding<Context>(
 					.or_insert_with(Vec::new)
 					.push(blocked_collation);
 
-				return Ok(false)
+				return Ok(false);
 			},
 			(None, _, _) => {
 				// Even though we already have the parent head data, the pvd fetching failed. We
 				// don't need to wait for seconding another collation outputting this head data.
-				return Err(SecondingError::PersistedValidationDataNotFound)
+				return Err(SecondingError::PersistedValidationDataNotFound);
 			},
 		};
 
@@ -2335,7 +2340,7 @@ async fn handle_collation_fetch_response(
 				peer_id = ?pending_collation.peer_id,
 				"Request was cancelled from the validator side"
 			);
-			return Err(None)
+			return Err(None);
 		},
 		Err(CollationFetchError::Request(req_error)) => Err(req_error),
 		Ok(resp) => Ok(resp),
@@ -2400,10 +2405,10 @@ async fn handle_collation_fetch_response(
 			Err(None)
 		},
 		Ok(
-			request_v1::CollationFetchingResponse::Collation(receipt, _) |
-			request_v2::CollationFetchingResponse::Collation(receipt, _) |
-			request_v1::CollationFetchingResponse::CollationWithParentHeadData { receipt, .. } |
-			request_v2::CollationFetchingResponse::CollationWithParentHeadData { receipt, .. },
+			request_v1::CollationFetchingResponse::Collation(receipt, _)
+			| request_v2::CollationFetchingResponse::Collation(receipt, _)
+			| request_v1::CollationFetchingResponse::CollationWithParentHeadData { receipt, .. }
+			| request_v2::CollationFetchingResponse::CollationWithParentHeadData { receipt, .. },
 		) if receipt.descriptor().para_id() != pending_collation.para_id => {
 			gum::debug!(
 				target: LOG_TARGET,
@@ -2531,7 +2536,7 @@ fn get_next_collation_to_fetch(
 				?err,
 				"Failed to get unfulfilled claim queue entries"
 			);
-			return None
+			return None;
 		},
 	};
 	let rp_state = match state.per_relay_parent.get_mut(&relay_parent) {
@@ -2542,7 +2547,7 @@ fn get_next_collation_to_fetch(
 				?relay_parent,
 				"Failed to get relay parent state"
 			);
-			return None
+			return None;
 		},
 	};
 
@@ -2550,8 +2555,8 @@ fn get_next_collation_to_fetch(
 	// to replace it.
 	if let Some((collator_id, maybe_candidate_hash)) = rp_state.collations.fetching_from.as_ref() {
 		// If a candidate hash was saved previously, `finished_one` must include this too.
-		if collator_id != &finished_one.0 &&
-			maybe_candidate_hash.map_or(true, |hash| Some(&hash) != finished_one.1.as_ref())
+		if collator_id != &finished_one.0
+			&& maybe_candidate_hash.map_or(true, |hash| Some(&hash) != finished_one.1.as_ref())
 		{
 			gum::trace!(
 				target: LOG_TARGET,
@@ -2559,7 +2564,7 @@ fn get_next_collation_to_fetch(
 				?finished_one,
 				"Not proceeding to the next collation - has already been done."
 			);
-			return None
+			return None;
 		}
 	}
 	rp_state.collations.status.back_to_waiting();
@@ -2579,7 +2584,7 @@ fn descriptor_version_sanity_check(
 					return Err(SecondingError::InvalidCoreIndex(
 						core_index.0,
 						per_relay_parent.current_core.0,
-					))
+					));
 				}
 			}
 
@@ -2588,7 +2593,7 @@ fn descriptor_version_sanity_check(
 					return Err(SecondingError::InvalidSessionIndex(
 						session_index,
 						per_relay_parent.session_index,
-					))
+					));
 				}
 			}
 

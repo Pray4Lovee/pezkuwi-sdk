@@ -378,7 +378,7 @@ async fn expect_determine_validator_group(
 				)))
 				.unwrap();
 				// This call is mandatory - we are done:
-				break
+				break;
 			},
 			other => panic!("Unexpected message received: {:?}", other),
 		}
@@ -545,10 +545,12 @@ fn decode_collation_response(bytes: &[u8]) -> (CandidateReceipt, PoV) {
 	let response: CollationFetchingResponse =
 		CollationFetchingResponse::decode(&mut &bytes[..]).expect("Decoding should work");
 	match response {
-		CollationFetchingResponse::Collation(_, _) =>
-			panic!("Expected to always receive CollationWithParentHeadData"),
-		CollationFetchingResponse::CollationWithParentHeadData { receipt, pov, .. } =>
-			(receipt, pov),
+		CollationFetchingResponse::Collation(_, _) => {
+			panic!("Expected to always receive CollationWithParentHeadData")
+		},
+		CollationFetchingResponse::CollationWithParentHeadData { receipt, pov, .. } => {
+			(receipt, pov)
+		},
 	}
 }
 

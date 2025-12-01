@@ -139,7 +139,7 @@ impl Diff {
 		let info = if let Some(info) = info {
 			info
 		} else {
-			return bytes_deposit.saturating_add(&items_deposit)
+			return bytes_deposit.saturating_add(&items_deposit);
 		};
 
 		// Refunds are calculated pro rata based on the accumulated storage within the contract
@@ -162,16 +162,20 @@ impl Diff {
 		info.storage_items =
 			info.storage_items.saturating_add(items_added).saturating_sub(items_removed);
 		match &bytes_deposit {
-			Deposit::Charge(amount) =>
-				info.storage_byte_deposit = info.storage_byte_deposit.saturating_add(*amount),
-			Deposit::Refund(amount) =>
-				info.storage_byte_deposit = info.storage_byte_deposit.saturating_sub(*amount),
+			Deposit::Charge(amount) => {
+				info.storage_byte_deposit = info.storage_byte_deposit.saturating_add(*amount)
+			},
+			Deposit::Refund(amount) => {
+				info.storage_byte_deposit = info.storage_byte_deposit.saturating_sub(*amount)
+			},
 		}
 		match &items_deposit {
-			Deposit::Charge(amount) =>
-				info.storage_item_deposit = info.storage_item_deposit.saturating_add(*amount),
-			Deposit::Refund(amount) =>
-				info.storage_item_deposit = info.storage_item_deposit.saturating_sub(*amount),
+			Deposit::Charge(amount) => {
+				info.storage_item_deposit = info.storage_item_deposit.saturating_add(*amount)
+			},
+			Deposit::Refund(amount) => {
+				info.storage_item_deposit = info.storage_item_deposit.saturating_sub(*amount)
+			},
 		}
 
 		bytes_deposit.saturating_add(&items_deposit)
@@ -300,7 +304,7 @@ where
 		// do not sapwn a frame. This is specifically to enforce the limit for those.
 		if self.is_root && total_deposit.charge_or_zero() > self.limit {
 			log::debug!( target: LOG_TARGET, "Storage deposit limit exhausted: {:?} > {:?}", amount, self.limit);
-			return Err(<Error<T>>::StorageDepositLimitExhausted.into())
+			return Err(<Error<T>>::StorageDepositLimitExhausted.into());
 		}
 
 		self.total_deposit = total_deposit;
@@ -368,17 +372,18 @@ where
 							) => {
 								*last_amount = last_amount.saturating_add(ch_amount);
 							},
-							(ContractState::Alive { amount }, ContractState::Terminated) |
-							(ContractState::Terminated, ContractState::Alive { amount }) => {
+							(ContractState::Alive { amount }, ContractState::Terminated)
+							| (ContractState::Terminated, ContractState::Alive { amount }) => {
 								// undo all deposits made by a terminated contract
 								self.total_deposit = self.total_deposit.saturating_sub(amount);
 								last.state = ContractState::Terminated;
 							},
-							(ContractState::Terminated, ContractState::Terminated) =>
+							(ContractState::Terminated, ContractState::Terminated) => {
 								debug_assert!(
 									false,
 									"We never emit two terminates for the same contract."
-								),
+								)
+							},
 						}
 						continue;
 					}
@@ -450,7 +455,7 @@ impl<T: Config, E: Ext<T>> RawMeter<T, E, Nested> {
 		if let Deposit::Charge(amount) = total_deposit {
 			if amount > self.limit {
 				log::debug!( target: LOG_TARGET, "Storage deposit limit exhausted: {:?} > {:?}", amount, self.limit);
-				return Err(<Error<T>>::StorageDepositLimitExhausted.into())
+				return Err(<Error<T>>::StorageDepositLimitExhausted.into());
 			}
 		}
 		Ok(())

@@ -138,7 +138,7 @@ where
 		if !self.0.is_signed() {
 			if let Some(crate::Call::eth_transact { payload }) = self.0.function.is_sub_type() {
 				let checked = E::try_into_checked_extrinsic(payload, self.encoded_size())?;
-				return Ok(checked)
+				return Ok(checked);
 			};
 		}
 		self.0.check(lookup)
@@ -285,9 +285,9 @@ pub trait EthExtra {
 
 		// Check transaction type and reject unsupported transaction types
 		match &tx {
-			crate::evm::api::TransactionSigned::Transaction1559Signed(_) |
-			crate::evm::api::TransactionSigned::Transaction2930Signed(_) |
-			crate::evm::api::TransactionSigned::TransactionLegacySigned(_) => {
+			crate::evm::api::TransactionSigned::Transaction1559Signed(_)
+			| crate::evm::api::TransactionSigned::Transaction2930Signed(_)
+			| crate::evm::api::TransactionSigned::TransactionLegacySigned(_) => {
 				// Supported transaction types, continue processing
 			},
 			crate::evm::api::TransactionSigned::Transaction7702Signed(_) => {
@@ -542,11 +542,11 @@ mod test {
 				transaction_encoded,
 				effective_gas_price,
 				encoded_len,
-			}) if dest == tx.to.unwrap() &&
-				value == tx.value.unwrap_or_default().as_u64().into() &&
-				data == tx.input.to_vec() &&
-				transaction_encoded == signed_transaction.signed_payload() &&
-				effective_gas_price == expected_effective_gas_price =>
+			}) if dest == tx.to.unwrap()
+				&& value == tx.value.unwrap_or_default().as_u64().into()
+				&& data == tx.input.to_vec()
+				&& transaction_encoded == signed_transaction.signed_payload()
+				&& effective_gas_price == expected_effective_gas_price =>
 			{
 				assert_eq!(encoded_len, expected_encoded_len);
 				assert!(
@@ -581,11 +581,11 @@ mod test {
 				transaction_encoded,
 				effective_gas_price,
 				encoded_len,
-			}) if value == expected_value &&
-				code == expected_code &&
-				data == expected_data &&
-				transaction_encoded == signed_transaction.signed_payload() &&
-				effective_gas_price == expected_effective_gas_price =>
+			}) if value == expected_value
+				&& code == expected_code
+				&& data == expected_data
+				&& transaction_encoded == signed_transaction.signed_payload()
+				&& effective_gas_price == expected_effective_gas_price =>
 			{
 				assert_eq!(encoded_len, expected_encoded_len);
 				assert!(

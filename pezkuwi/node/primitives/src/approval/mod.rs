@@ -210,7 +210,7 @@ pub mod v1 {
 					vrf_pre_output: sig.pre_output.clone(),
 					slot,
 					authority_index,
-				})
+				});
 			}
 		}
 
@@ -346,7 +346,7 @@ pub mod v2 {
 
 		fn try_from(mut value: Vec<T>) -> Result<Self, Self::Error> {
 			if value.is_empty() {
-				return Err(BitfieldError::NullAssignment)
+				return Err(BitfieldError::NullAssignment);
 			}
 
 			let initial_bitfield =
@@ -412,10 +412,12 @@ pub mod v2 {
 		fn from(cert: super::v1::AssignmentCert) -> Self {
 			Self {
 				kind: match cert.kind {
-					super::v1::AssignmentCertKind::RelayVRFDelay { core_index } =>
-						AssignmentCertKindV2::RelayVRFDelay { core_index },
-					super::v1::AssignmentCertKind::RelayVRFModulo { sample } =>
-						AssignmentCertKindV2::RelayVRFModulo { sample },
+					super::v1::AssignmentCertKind::RelayVRFDelay { core_index } => {
+						AssignmentCertKindV2::RelayVRFDelay { core_index }
+					},
+					super::v1::AssignmentCertKind::RelayVRFModulo { sample } => {
+						AssignmentCertKindV2::RelayVRFModulo { sample }
+					},
 				},
 				vrf: cert.vrf,
 			}
@@ -434,10 +436,12 @@ pub mod v2 {
 		fn try_from(cert: AssignmentCertV2) -> Result<Self, AssignmentConversionError> {
 			Ok(Self {
 				kind: match cert.kind {
-					AssignmentCertKindV2::RelayVRFDelay { core_index } =>
-						super::v1::AssignmentCertKind::RelayVRFDelay { core_index },
-					AssignmentCertKindV2::RelayVRFModulo { sample } =>
-						super::v1::AssignmentCertKind::RelayVRFModulo { sample },
+					AssignmentCertKindV2::RelayVRFDelay { core_index } => {
+						super::v1::AssignmentCertKind::RelayVRFDelay { core_index }
+					},
+					AssignmentCertKindV2::RelayVRFModulo { sample } => {
+						super::v1::AssignmentCertKind::RelayVRFModulo { sample }
+					},
 					// Not supported
 					_ => return Err(AssignmentConversionError::CertificateNotSupported),
 				},
@@ -506,7 +510,7 @@ pub mod v2 {
 			if value.candidate_indices.count_ones() != 1 {
 				return Err(ApprovalConversionError::MoreThanOneCandidate(
 					value.candidate_indices.count_ones(),
-				))
+				));
 			}
 			Ok(Self {
 				block_hash: value.block_hash,
@@ -557,7 +561,7 @@ mod test {
 		// Test 0 bits.
 		for index in 0..max_index {
 			if candidate_indices.contains(&BitIndex(index as usize)) {
-				continue
+				continue;
 			}
 			assert!(!bitfield.bit_at(BitIndex(index as usize)));
 		}

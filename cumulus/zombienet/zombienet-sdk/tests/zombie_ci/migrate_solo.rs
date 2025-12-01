@@ -11,9 +11,7 @@ use cumulus_zombienet_sdk_helpers::assert_para_throughput;
 use pezkuwi_primitives::Id as ParaId;
 use sp_core::{hexdisplay::AsBytesRef, Bytes};
 use zombienet_sdk::{
-	subxt::{
-		self, dynamic::Value, tx::DynamicPayload, OnlineClient, PolkadotConfig, PolkadotConfig,
-	},
+	subxt::{self, dynamic::Value, tx::DynamicPayload, OnlineClient, PolkadotConfig},
 	subxt_signer::sr25519::dev,
 	NetworkConfig, NetworkConfigBuilder, RegistrationStrategy,
 };

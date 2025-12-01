@@ -48,22 +48,22 @@ impl<T: Config> Pallet<T> {
 				target: "ethereum-client",
 				"💫 Event log not found in receipt for transaction",
 			);
-			return Err(LogNotFound)
+			return Err(LogNotFound);
 		}
 		Ok(())
 	}
 
 	fn check_log_match(log: &Log, receipt_log: &AlloyLog) -> bool {
-		let equal = receipt_log.data.data.0 == log.data &&
-			receipt_log.address.0 == log.address.0 &&
-			receipt_log.topics().len() == log.topics.len();
+		let equal = receipt_log.data.data.0 == log.data
+			&& receipt_log.address.0 == log.address.0
+			&& receipt_log.topics().len() == log.topics.len();
 		if !equal {
-			return false
+			return false;
 		}
 		for (_, (topic1, topic2)) in receipt_log.topics().iter().zip(log.topics.iter()).enumerate()
 		{
 			if topic1.0 != topic2.0 {
-				return false
+				return false;
 			}
 		}
 		true
@@ -103,7 +103,7 @@ impl<T: Config> Pallet<T> {
 				let state = <FinalizedBeaconState<T>>::get(beacon_block_root)
 					.ok_or(Error::<T>::ExpectedFinalizedHeaderNotStored)?;
 				if execution_proof.header.slot != state.slot {
-					return Err(Error::<T>::ExpectedFinalizedHeaderNotStored.into())
+					return Err(Error::<T>::ExpectedFinalizedHeaderNotStored.into());
 				}
 			},
 		}

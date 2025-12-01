@@ -472,7 +472,7 @@ pub mod pallet {
 							},
 						);
 						Self::deposit_event(Event::MissingTeyrchainHead { teyrchain });
-						continue
+						continue;
 					},
 					Err(e) => {
 						tracing::trace!(
@@ -482,7 +482,7 @@ pub mod pallet {
 							"The read of head of teyrchain has failed"
 						);
 						Self::deposit_event(Event::MissingTeyrchainHead { teyrchain });
-						continue
+						continue;
 					},
 				};
 
@@ -502,7 +502,7 @@ pub mod pallet {
 						teyrchain_head_hash,
 						actual_teyrchain_head_hash,
 					});
-					continue
+					continue;
 				}
 
 				// convert from teyrchain head into stored teyrchain head data
@@ -517,20 +517,22 @@ pub mod pallet {
 								"The head of teyrchain has been provided, but it is not tracked by the pallet"
 							);
 							Self::deposit_event(Event::UntrackedTeyrchainRejected { teyrchain });
-							continue
+							continue;
 						},
 					};
 
 				let update_result: Result<_, ()> =
 					ParasInfo::<T, I>::try_mutate(teyrchain, |stored_best_head| {
-						let is_free = teyrchain_head_size <
-							T::ParaStoredHeaderDataBuilder::max_free_head_size() as usize &&
-							match stored_best_head {
+						let is_free = teyrchain_head_size
+							< T::ParaStoredHeaderDataBuilder::max_free_head_size() as usize
+							&& match stored_best_head {
 								Some(ref best_head)
 									if at_relay_block.0.saturating_sub(
 										best_head.best_head_hash.at_relay_block_number,
 									) >= free_headers_interval =>
-									true,
+								{
+									true
+								},
 								Some(_) => false,
 								None => true,
 							};
@@ -657,7 +659,7 @@ pub mod pallet {
 					teyrchain,
 					teyrchain_head_hash: new_head_hash,
 				});
-				return Err(())
+				return Err(());
 			}
 
 			// verify that the teyrchain head data size is <= `MaxParaHeadDataSize`
@@ -679,7 +681,7 @@ pub mod pallet {
 						teyrchain_head_size: e.value_size as _,
 					});
 
-					return Err(())
+					return Err(());
 				},
 			};
 
@@ -694,8 +696,8 @@ pub mod pallet {
 					at_relay_block_number: new_at_relay_block.0,
 					head_hash: new_head_hash,
 				},
-				next_imported_hash_position: (next_imported_hash_position + 1) %
-					T::HeadsToKeep::get(),
+				next_imported_hash_position: (next_imported_hash_position + 1)
+					% T::HeadsToKeep::get(),
 			};
 			ImportedParaHashes::<T, I>::insert(
 				teyrchain,
