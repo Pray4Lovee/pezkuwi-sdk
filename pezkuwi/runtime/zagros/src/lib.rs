@@ -171,7 +171,7 @@ pub mod fast_runtime_binary {
 #[sp_version::runtime_version]
 pub const VERSION: RuntimeVersion = RuntimeVersion {
 	spec_name: alloc::borrow::Cow::Borrowed("zagros"),
-	impl_name: alloc::borrow::Cow::Borrowed("parity-zagros"),
+	impl_name: alloc::borrow::Cow::Borrowed("zagros"),
 	authoring_version: 2,
 	spec_version: 1_020_001,
 	impl_version: 0,
@@ -1123,7 +1123,7 @@ where
 }
 
 parameter_types! {
-	// Minimum 100 bytes/KSM deposited (1 CENT/byte)
+	// Minimum 100 bytes/HEZ deposited (1 CENT/byte)
 	pub const BasicDeposit: Balance = 1000 * CENTS;       // 258 bytes on-chain
 	pub const ByteDeposit: Balance = deposit(0, 1);
 	pub const UsernameDeposit: Balance = deposit(0, 32);

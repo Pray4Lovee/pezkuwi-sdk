@@ -117,7 +117,7 @@ include!(concat!(env!("OUT_DIR"), "/wasm_binary.rs"));
 #[sp_version::runtime_version]
 pub const VERSION: RuntimeVersion = RuntimeVersion {
 	spec_name: alloc::borrow::Cow::Borrowed("pezkuwi-test-runtime"),
-	impl_name: alloc::borrow::Cow::Borrowed("parity-pezkuwi-test-runtime"),
+	impl_name: alloc::borrow::Cow::Borrowed("pezkuwi-test-runtime"),
 	authoring_version: 2,
 	spec_version: 1056,
 	impl_version: 0,
@@ -507,7 +507,7 @@ parameter_types! {
 }
 
 parameter_types! {
-	pub Prefix: &'static [u8] = b"Pay KSMs to the Kusama account:";
+	pub Prefix: &'static [u8] = b"Pay HEZ to the Pezkuwi account:";
 }
 
 impl claims::Config for Runtime {

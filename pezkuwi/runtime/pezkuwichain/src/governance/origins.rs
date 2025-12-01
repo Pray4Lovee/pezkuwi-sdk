@@ -58,15 +58,15 @@ pub mod pallet_custom_origins {
 		ReferendumCanceller,
 		/// Origin able to kill referenda.
 		ReferendumKiller,
-		/// Origin able to spend up to 1 KSM from the treasury at once.
+		/// Origin able to spend up to 1 HEZ from the treasury at once.
 		SmallTipper,
-		/// Origin able to spend up to 5 KSM from the treasury at once.
+		/// Origin able to spend up to 5 HEZ from the treasury at once.
 		BigTipper,
-		/// Origin able to spend up to 50 KSM from the treasury at once.
+		/// Origin able to spend up to 50 HEZ from the treasury at once.
 		SmallSpender,
-		/// Origin able to spend up to 500 KSM from the treasury at once.
+		/// Origin able to spend up to 500 HEZ from the treasury at once.
 		MediumSpender,
-		/// Origin able to spend up to 5,000 KSM from the treasury at once.
+		/// Origin able to spend up to 5,000 HEZ from the treasury at once.
 		BigSpender,
 		/// Origin able to dispatch a whitelisted call.
 		WhitelistedCaller,

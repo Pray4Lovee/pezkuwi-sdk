@@ -1,7 +1,7 @@
 version: '3'
 services:
   pezkuwi:
-    image: parity/pezkuwi:latest
+    image: pezkuwichain/pezkuwi:latest
 
     ports:
       - "127.0.0.1:30333:30333/tcp"
