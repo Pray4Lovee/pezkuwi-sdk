@@ -43,12 +43,6 @@ jobs:
         run: |
           cargo build --locked --quiet --release -p asset-hub-zagros-runtime --features runtime-benchmarks
           cargo run --locked --release -p frame-omni-bencher --quiet -- v1 benchmark pallet --runtime target/release/wbuild/asset-hub-zagros-runtime/asset_hub_zagros_runtime.compact.compressed.wasm --all --steps 2 --repeat 1 --quiet
-      - name: Stop all workflows if failed
-        if: ${{ failure() && steps.required.conclusion == 'failure' && !github.event.pull_request.head.repo.fork }}
-        uses: ./.github/actions/workflow-stopper
-        with:
-          app-id: ${{ secrets.WORKFLOW_STOPPER_RUNNER_APP_ID }}
-          app-key: ${{ secrets.WORKFLOW_STOPPER_RUNNER_APP_KEY }}
 
   runtime-matrix:
     runs-on: ubuntu-latest
@@ -112,12 +106,6 @@ jobs:
 
           echo "Running command: $cmd"
           eval "$cmd"
-      - name: Stop all workflows if failed
-        if: ${{ failure() && steps.required.conclusion == 'failure' && !github.event.pull_request.head.repo.fork }}
-        uses: ./.github/actions/workflow-stopper
-        with:
-          app-id: ${{ secrets.WORKFLOW_STOPPER_RUNNER_APP_ID }}
-          app-key: ${{ secrets.WORKFLOW_STOPPER_RUNNER_APP_KEY }}
 
   confirm-frame-omni-benchers-passed:
     runs-on: ubuntu-latest
