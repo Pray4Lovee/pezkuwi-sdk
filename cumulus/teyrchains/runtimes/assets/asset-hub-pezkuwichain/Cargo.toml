@@ -207,7 +207,6 @@ try-runtime = [
 std = [
 	"assets-common/std",
 	"bp-asset-hub-pezkuwichain/std",
-	"log/std",
 	"bp-asset-hub-zagros/std",
 	"bp-bridge-hub-pezkuwichain/std",
 	"bp-bridge-hub-zagros/std",
@@ -229,6 +228,7 @@ std = [
 	"frame-system-rpc-runtime-api/std",
 	"frame-system/std",
 	"frame-try-runtime?/std",
+	"log/std",
 	"pallet-asset-conversion-ops/std",
 	"pallet-asset-conversion-tx-payment/std",
 	"pallet-asset-conversion/std",

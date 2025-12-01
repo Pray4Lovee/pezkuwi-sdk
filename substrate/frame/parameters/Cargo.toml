@@ -4,7 +4,11 @@ description = "Pallet to store and configure parameters."
 repository.workspace = true
 license = "Apache-2.0"
 version = "0.1.0"
-authors = ["Acala Developers", "Parity Technologies <admin@parity.io>"]
+authors = [
+	"Acala Developers",
+	"Kurdistan Tech Institute <info@pezkuwichain.io>",
+	"Parity Technologies <admin@parity.io>",
+]
 edition.workspace = true
 
 [dependencies]

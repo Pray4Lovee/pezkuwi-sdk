@@ -3,8 +3,8 @@
 Bu doküman, Pezkuwi Ağı'nın (Relay Chain, Asset Hub, People Chain) geliştirme aşamasından Mainnet'e kadar olan başlatma süreçlerini, konfigürasyon detaylarını ve test stratejilerini içerir.
 
 **Son Güncelleme:** 2025-11-30
-**Versiyon:** 2.1.0
-**Durum:** FAZ 1 TAMAMLANDI ✅ | FAZ 2 BEKLEMEDE
+**Versiyon:** 2.2.0
+**Durum:** FAZ 1 TAMAMLANDI ✅ | BENCHMARK'LAR TAMAMLANDI ✅ | FAZ 2 BEKLEMEDE
 
 ---
 
@@ -682,6 +682,9 @@ name = "asset-hub-collator-1"
 - [ ] Bug bounty programı aktif
 - [ ] Sudo kaldırma planı hazır
 - [ ] Governance geçiş planı hazır
+- [x] **Telif hakkı güncelleme:** ✅ **Tamamlandı (2025-11-30)**
+  - **Dosya:** `/Cargo.toml` (workspace root - satır 2)
+  - `authors = ["Parity Technologies <admin@parity.io>", "Kurdistan Tech Institute <info@pezkuwichain.io>"]`
 
 ---
 
@@ -719,6 +722,20 @@ name = "asset-hub-collator-1"
 | Relay Chain HEZ genesis dağılımı | Claude | ✅ **Tamamlandı** |
 | Bridge Hub Parachain ID düzeltmesi (1013→1002) | Claude | ✅ **Tamamlandı** |
 | Dev preset compile testleri | Claude | ✅ **Tamamlandı** |
+| **Tüm özel pallet benchmark'ları** | Claude | ✅ **Tamamlandı (2025-11-30)** |
+| **Weight generation (gerçek değerler)** | Claude | ✅ **Tamamlandı** |
+
+#### Benchmark Özeti (2025-11-30)
+| Pallet | Extrinsic Sayısı | Durum |
+|--------|------------------|-------|
+| pallet_staking_score | 1 | ✅ Gerçek weight |
+| pallet_pez_rewards | 6 | ✅ Gerçek weight |
+| pallet_perwerde | 4 | ✅ Gerçek weight |
+| pallet_trust | 3 | ✅ Gerçek weight |
+| pallet_presale | 6 gerçek + 3 placeholder | ✅ Tamamlandı |
+| pallet_identity_kyc | 6 | ✅ Gerçek weight |
+
+**Commit:** `057124ddc7` - Benchmark düzeltmeleri ve weight generation
 
 ### 10.2. Faz 2: Testnet Presetleri (2-3 Gün)
 | Görev | Sorumlu | Durum |

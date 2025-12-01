@@ -5,7 +5,10 @@
 use super::{BalanceOf, Call, Config};
 use crate::{Pallet as PezRewards, Pallet};
 use frame_benchmarking::v2::*;
-use frame_support::traits::{fungibles::{Create, Mutate}, Currency, Get};
+use frame_support::traits::{
+	fungibles::{Create, Mutate},
+	Currency, Get,
+};
 use frame_system::{Pallet as System, RawOrigin};
 use sp_runtime::traits::{Bounded, Saturating, StaticLookup, Zero}; // AccountIdConversion removed
 
@@ -125,7 +128,10 @@ mod benchmarks {
 		crate::UserEpochScores::<T>::insert(epoch_index, caller.clone(), 100u128);
 
 		// Give caller some native balance for existential deposit
-		Balances::<T>::make_free_balance_be(&caller, Balances::<T>::minimum_balance() * 10u32.into());
+		Balances::<T>::make_free_balance_be(
+			&caller,
+			Balances::<T>::minimum_balance() * 10u32.into(),
+		);
 
 		// Also give caller some PEZ tokens (asset account needs existential deposit)
 		let _ = T::Assets::mint_into(T::PezAssetId::get(), &caller, 1_000u32.into());

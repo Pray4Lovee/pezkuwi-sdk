@@ -1,5 +1,8 @@
 [book]
-authors = ["Parity Technologies <admin@parity.io>"]
+authors = [
+	"Kurdistan Tech Institute <info@pezkuwichain.io>",
+	"Parity Technologies <admin@parity.io>",
+]
 language = "en"
 multilingual = false
 src = "src"

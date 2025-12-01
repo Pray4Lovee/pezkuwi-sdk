@@ -1,7 +1,10 @@
 [package]
 name = "pallet-example-frame-crate"
 version = "0.0.1"
-authors = ["Parity Technologies <admin@parity.io>"]
+authors = [
+	"Kurdistan Tech Institute <info@pezkuwichain.io>",
+	"Parity Technologies <admin@parity.io>",
+]
 edition.workspace = true
 license = "MIT-0"
 homepage.workspace = true

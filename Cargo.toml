@@ -1,5 +1,8 @@
 [workspace.package]
-authors = ["Parity Technologies <admin@parity.io>"]
+authors = [
+	"Kurdistan Tech Institute <info@pezkuwichain.io>",
+	"Parity Technologies <admin@parity.io>",
+]
 edition = "2021"
 homepage = "https://docs.pezkuwichain.io/sdk/"
 license = "GPL-3.0-only"
@@ -143,6 +146,7 @@ members = [
 	"cumulus/teyrchains/pallets/tiki",
 	"cumulus/teyrchains/pallets/token-wrapper",
 	"cumulus/teyrchains/pallets/trust",
+	"cumulus/teyrchains/pallets/welati",
 	"cumulus/teyrchains/runtimes/assets/asset-hub-pezkuwichain",
 	"cumulus/teyrchains/runtimes/assets/asset-hub-pezkuwichain/bridge-primitives",
 	"cumulus/teyrchains/runtimes/assets/asset-hub-zagros",

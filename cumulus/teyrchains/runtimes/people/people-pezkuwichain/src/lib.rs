@@ -23,6 +23,9 @@ pub mod people;
 mod weights;
 pub mod xcm_config;
 
+// Re-export komisyon tipleri (lib.rs'de kullanım için)
+pub use people::CouncilCollective;
+
 extern crate alloc;
 
 use alloc::{vec, vec::Vec};
@@ -95,6 +98,8 @@ pub type SignedBlock = generic::SignedBlock<Block>;
 pub type BlockId = generic::BlockId<Block>;
 
 /// The TransactionExtension to the basic transaction logic.
+/// Includes SkipCheckIfFeeless to exempt governance members from fees
+/// when using #[pallet::feeless_if] marked extrinsics.
 pub type TxExtension = cumulus_pallet_weight_reclaim::StorageWeightReclaim<
 	Runtime,
 	(
@@ -106,7 +111,10 @@ pub type TxExtension = cumulus_pallet_weight_reclaim::StorageWeightReclaim<
 		frame_system::CheckEra<Runtime>,
 		frame_system::CheckNonce<Runtime>,
 		frame_system::CheckWeight<Runtime>,
-		pallet_transaction_payment::ChargeTransactionPayment<Runtime>,
+		pallet_skip_feeless_payment::SkipCheckIfFeeless<
+			Runtime,
+			pallet_transaction_payment::ChargeTransactionPayment<Runtime>,
+		>,
 	),
 >;
 
@@ -261,6 +269,10 @@ impl pallet_transaction_payment::Config for Runtime {
 	type WeightInfo = weights::pallet_transaction_payment::WeightInfo<Runtime>;
 }
 
+impl pallet_skip_feeless_payment::Config for Runtime {
+	type RuntimeEvent = RuntimeEvent;
+}
+
 parameter_types! {
 	pub const ReservedXcmpWeight: Weight = MAXIMUM_BLOCK_WEIGHT.saturating_div(4);
 	pub const ReservedDmpWeight: Weight = MAXIMUM_BLOCK_WEIGHT.saturating_div(4);
@@ -330,6 +342,78 @@ parameter_types! {
 pub type RootOrFellows = EitherOfDiverse<
 	EnsureRoot<AccountId>,
 	EnsureXcm<IsVoiceOfBody<FellowshipLocation, FellowsBodyId>>,
+>;
+
+// =============================================================================
+// Kademeli Yetki Devri Origin Tanımları (Progressive Decentralization)
+// =============================================================================
+//
+// Bu origin'ler başlangıçta Root (Sudo) ile çalışır, ancak Welati pallet'i
+// aracılığıyla seçimler yapıldığında yetki demokratik organlara devredilir.
+//
+// Kullanım:
+// - Başlangıç: Root (Sudo) tüm yetkilere sahip
+// - Seçim sonrası: Root VEYA ilgili demokratik organ
+// - Sudo kaldırıldığında: Sadece demokratik organlar
+// =============================================================================
+
+/// Root VEYA Serok (Cumhurbaşkanı) yetkisi
+/// Kullanım: Yüksek düzey yönetim kararları, atamalar
+pub type RootOrSerok = EitherOfDiverse<EnsureRoot<AccountId>, pallet_welati::EnsureSerok<Runtime>>;
+
+/// Root VEYA Parlamento üyesi yetkisi
+/// Kullanım: Yasama işlemleri, bütçe onayları
+pub type RootOrParliament =
+	EitherOfDiverse<EnsureRoot<AccountId>, pallet_welati::EnsureParlementer<Runtime>>;
+
+/// Root VEYA Divan (Anayasa Mahkemesi) yetkisi
+/// Kullanım: Anayasal kararlar, vatandaşlık işlemleri
+pub type RootOrDiwan = EitherOfDiverse<EnsureRoot<AccountId>, pallet_welati::EnsureDiwan<Runtime>>;
+
+/// Root VEYA Council (Genel Konsey) yetkisi
+/// Kullanım: Genel yönetişim kararları
+pub type RootOrCouncil = EitherOfDiverse<
+	EnsureRoot<AccountId>,
+	pallet_collective::EnsureProportionMoreThan<AccountId, CouncilCollective, 1, 2>,
+>;
+
+/// Root VEYA Serok VEYA Council yetkisi
+/// Kullanım: Çoğu yönetim işlemi için esnek yetki
+pub type RootOrSerokOrCouncil = EitherOfDiverse<
+	RootOrSerok,
+	pallet_collective::EnsureProportionMoreThan<AccountId, CouncilCollective, 1, 2>,
+>;
+
+// =============================================================================
+// Welati-Based Origin Combinations (Welati Tabanlı Origin Kombinasyonları)
+// =============================================================================
+//
+// Bu origin'ler şu an için sadece Welati pallet origin'lerini kullanıyor.
+// İleride pallet_collective instance'ları eklendiğinde genişletilebilir.
+//
+// Fee Muafiyeti Notu: Komisyon üyeleri (Serok, Parlementer, Diwan) resmi
+// görevlerini yaparken fee'den muaf olmalı. Bu SignedExtension ile sağlanabilir.
+// =============================================================================
+
+/// Root VEYA Serok VEYA Council için esnek yetki
+/// Kullanım: Teknik kararlar, NFT/Tiki yönetimi
+pub type RootOrTechnicalCommittee = EitherOfDiverse<
+	RootOrSerok,
+	pallet_collective::EnsureProportionMoreThan<AccountId, CouncilCollective, 1, 2>,
+>;
+
+/// Root VEYA Serok VEYA Council için hazine yetkisi
+/// Kullanım: PEZ dağıtım yönetimi, ekonomik kararlar
+pub type RootOrTreasuryCommittee = EitherOfDiverse<
+	RootOrSerok,
+	pallet_collective::EnsureProportionMoreThan<AccountId, CouncilCollective, 2, 3>,
+>;
+
+/// Root VEYA Diwan VEYA Council
+/// Kullanım: Vatandaşlık ve kimlik işlemleri için kademeli yetki devri
+pub type RootOrDiwanOrTechnical = EitherOfDiverse<
+	RootOrDiwan,
+	pallet_collective::EnsureProportionMoreThan<AccountId, CouncilCollective, 1, 2>,
 >;
 
 impl cumulus_pallet_xcmp_queue::Config for Runtime {
@@ -591,6 +675,7 @@ construct_runtime!(
 		// Monetary stuff.
 		Balances: pallet_balances = 10,
 		TransactionPayment: pallet_transaction_payment = 11,
+		SkipFeelessPayment: pallet_skip_feeless_payment = 12,
 
 		// Collator support. The order of these 5 are important and shall not change.
 		Authorship: pallet_authorship = 20,
@@ -620,14 +705,19 @@ construct_runtime!(
 		Nfts: pallet_nfts = 60,
 		Tiki: pallet_tiki = 61,
 
-		// Governance - Core
+		// Governance - Core Council
 		Council: pallet_collective::<Instance1> = 70,
 		Scheduler: pallet_scheduler = 71,
 		Democracy: pallet_democracy = 72,
 		Elections: pallet_elections_phragmen = 73,
 
-		// PezkuwiChain Governance
+		// PezkuwiChain Governance (Welati handles committees internally)
 		Welati: pallet_welati = 75,
+
+		// Reserved slots for future committee instances:
+		// EducationCommittee: pallet_collective::<Instance2> = 74,
+		// TechnicalCommittee: pallet_collective::<Instance3> = 76,
+		// TreasuryCommittee: pallet_collective::<Instance4> = 77,
 
 		// Trust & Staking
 		StakingScore: pallet_staking_score = 80,

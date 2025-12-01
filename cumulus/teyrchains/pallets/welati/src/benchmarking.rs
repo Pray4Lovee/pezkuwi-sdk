@@ -1,9 +1,9 @@
 #![cfg(feature = "runtime-benchmarks")]
 
-use frame_benchmarking::v2::*;
-use frame_system::RawOrigin;
 use super::*;
 use crate::types::*;
+use frame_benchmarking::v2::*;
+use frame_system::RawOrigin;
 
 #[benchmarks]
 mod benchmarks {
@@ -25,7 +25,13 @@ mod benchmarks {
 	#[benchmark]
 	fn register_candidate() {
 		// --- SETUP ---
-		Pallet::<T>::initiate_election(RawOrigin::Root.into(), ElectionType::Parliamentary, None, None).unwrap();
+		Pallet::<T>::initiate_election(
+			RawOrigin::Root.into(),
+			ElectionType::Parliamentary,
+			None,
+			None,
+		)
+		.unwrap();
 
 		// Simplified endorsers for benchmark - KYC bypass
 		let endorsers: Vec<T::AccountId> = (0..T::ParliamentaryEndorsements::get())
@@ -46,7 +52,13 @@ mod benchmarks {
 	fn cast_vote() {
 		// --- SETUP ---
 		// 1. Prepare election and candidates
-		Pallet::<T>::initiate_election(RawOrigin::Root.into(), ElectionType::Parliamentary, None, None).unwrap();
+		Pallet::<T>::initiate_election(
+			RawOrigin::Root.into(),
+			ElectionType::Parliamentary,
+			None,
+			None,
+		)
+		.unwrap();
 
 		let candidate: T::AccountId = account("candidate", 1, 0);
 		let voter: T::AccountId = whitelisted_caller();
@@ -58,7 +70,13 @@ mod benchmarks {
 
 		// KYC check is already bypassed in test environment
 
-		Pallet::<T>::register_candidate(RawOrigin::Signed(candidate.clone()).into(), 0, None, endorsers).unwrap();
+		Pallet::<T>::register_candidate(
+			RawOrigin::Signed(candidate.clone()).into(),
+			0,
+			None,
+			endorsers,
+		)
+		.unwrap();
 
 		// 2. Advance to voting period
 		let election = ActiveElections::<T>::get(0).unwrap();
@@ -76,7 +94,13 @@ mod benchmarks {
 	fn finalize_election() {
 		// --- SETUP ---
 		// 1. Prepare election, candidate and a vote
-		Pallet::<T>::initiate_election(RawOrigin::Root.into(), ElectionType::Parliamentary, None, None).unwrap();
+		Pallet::<T>::initiate_election(
+			RawOrigin::Root.into(),
+			ElectionType::Parliamentary,
+			None,
+			None,
+		)
+		.unwrap();
 
 		let candidate: T::AccountId = account("candidate", 1, 0);
 		let voter: T::AccountId = account("voter", 2, 0);
@@ -87,11 +111,18 @@ mod benchmarks {
 
 		// KYC check is already bypassed in test environment
 
-		Pallet::<T>::register_candidate(RawOrigin::Signed(candidate.clone()).into(), 0, None, endorsers).unwrap();
+		Pallet::<T>::register_candidate(
+			RawOrigin::Signed(candidate.clone()).into(),
+			0,
+			None,
+			endorsers,
+		)
+		.unwrap();
 
 		let election = ActiveElections::<T>::get(0).unwrap();
 		frame_system::Pallet::<T>::set_block_number(election.voting_start);
-		Pallet::<T>::cast_vote(RawOrigin::Signed(voter.clone()).into(), 0, vec![candidate], None).unwrap();
+		Pallet::<T>::cast_vote(RawOrigin::Signed(voter.clone()).into(), 0, vec![candidate], None)
+			.unwrap();
 
 		// 2. Advance to election end time
 		frame_system::Pallet::<T>::set_block_number(election.end_block + 1u32.into());
@@ -120,7 +151,12 @@ mod benchmarks {
 		// This is important because we added RoleAlreadyFilled check in lib.rs
 
 		#[extrinsic_call]
-		nominate_official(RawOrigin::Signed(nominator), nominee, OfficialRole::Dadger, justification);
+		nominate_official(
+			RawOrigin::Signed(nominator),
+			nominee,
+			OfficialRole::Dadger,
+			justification,
+		);
 
 		assert_eq!(NextAppointmentId::<T>::get(), 1);
 		// Verify that the role is still not filled (nomination doesn't fill it, approval does)
@@ -139,7 +175,13 @@ mod benchmarks {
 		CurrentOfficials::<T>::insert(GovernmentPosition::Serok, nominator.clone());
 
 		// Use a different role (Dozger) to avoid conflicts with nominate_official benchmark
-		Pallet::<T>::nominate_official(RawOrigin::Signed(nominator).into(), nominee.clone(), OfficialRole::Dozger, justification).unwrap();
+		Pallet::<T>::nominate_official(
+			RawOrigin::Signed(nominator).into(),
+			nominee.clone(),
+			OfficialRole::Dozger,
+			justification,
+		)
+		.unwrap();
 
 		// Set approver as Serok to pass authorization check for approval
 		CurrentOfficials::<T>::insert(GovernmentPosition::Serok, approver.clone());
@@ -172,14 +214,22 @@ mod benchmarks {
 			participation_rate: 100,
 			committees: Default::default(),
 		};
-		let members: BoundedVec<ParliamentMember<T>, T::ParliamentSize> = vec![member].try_into().unwrap();
+		let members: BoundedVec<ParliamentMember<T>, T::ParliamentSize> =
+			vec![member].try_into().unwrap();
 		ParliamentMembers::<T>::put(members);
 
 		let title = b"Test Proposal".to_vec().try_into().unwrap();
 		let description = b"Test proposal description".to_vec().try_into().unwrap();
 
 		#[extrinsic_call]
-		submit_proposal(RawOrigin::Signed(proposer), title, description, CollectiveDecisionType::ParliamentSimpleMajority, ProposalPriority::Normal, None);
+		submit_proposal(
+			RawOrigin::Signed(proposer),
+			title,
+			description,
+			CollectiveDecisionType::ParliamentSimpleMajority,
+			ProposalPriority::Normal,
+			None,
+		);
 
 		assert!(ActiveProposals::<T>::get(0).is_some());
 	}
@@ -209,12 +259,21 @@ mod benchmarks {
 			participation_rate: 100,
 			committees: Default::default(),
 		};
-		let members: BoundedVec<ParliamentMember<T>, T::ParliamentSize> = vec![member1, member2].try_into().unwrap();
+		let members: BoundedVec<ParliamentMember<T>, T::ParliamentSize> =
+			vec![member1, member2].try_into().unwrap();
 		ParliamentMembers::<T>::put(members);
 
 		let title = b"Test Proposal".to_vec().try_into().unwrap();
 		let description = b"Test proposal description".to_vec().try_into().unwrap();
-		Pallet::<T>::submit_proposal(RawOrigin::Signed(proposer).into(), title, description, CollectiveDecisionType::ParliamentSimpleMajority, ProposalPriority::Normal, None).unwrap();
+		Pallet::<T>::submit_proposal(
+			RawOrigin::Signed(proposer).into(),
+			title,
+			description,
+			CollectiveDecisionType::ParliamentSimpleMajority,
+			ProposalPriority::Normal,
+			None,
+		)
+		.unwrap();
 
 		let proposal = ActiveProposals::<T>::get(0).unwrap();
 		frame_system::Pallet::<T>::set_block_number(proposal.voting_starts_at + 1u32.into());
@@ -238,5 +297,9 @@ mod benchmarks {
 		// 2. ProposalAlreadyVoted check (voter hasn't voted before)
 	}
 
-	impl_benchmark_test_suite!(Pallet, crate::mock::ExtBuilder::default().build(), crate::mock::Test);
+	impl_benchmark_test_suite!(
+		Pallet,
+		crate::mock::ExtBuilder::default().build(),
+		crate::mock::Test
+	);
 }

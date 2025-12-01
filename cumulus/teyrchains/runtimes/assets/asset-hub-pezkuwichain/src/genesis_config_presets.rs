@@ -135,7 +135,11 @@ fn asset_hub_pezkuwichain_genesis(
 			accounts: vec![
 				// Treasury gets: 20.25% + 76% rewards pool = 4,812,500,000 PEZ
 				// Rewards will be distributed via pallet-pez-treasury with sentetik halving
-				(PEZ_ASSET_ID, treasury_account.clone(), PEZ_TREASURY_ALLOCATION + PEZ_REWARDS_POOL),
+				(
+					PEZ_ASSET_ID,
+					treasury_account.clone(),
+					PEZ_TREASURY_ALLOCATION + PEZ_REWARDS_POOL
+				),
 				// Founder allocation: 1.875% = 93,750,000 PEZ (4 year vesting)
 				(PEZ_ASSET_ID, founder_account.clone(), PEZ_FOUNDER_ALLOCATION),
 				// Presale allocation: 1.875% = 93,750,000 PEZ
@@ -181,34 +185,41 @@ pub fn get_preset(id: &PresetId) -> Option<Vec<u8>> {
 		PRESET_GENESIS => {
 			// Placeholder accounts - MUST be replaced with real addresses from
 			// Founder_treasury_presale_wallets.json before mainnet launch
-			let treasury_account: AccountId = hex!("44cb62d1d6cdd2fff2a5ef3bb7ef827be5b3e117a394ecaa634d8dd9809d5608").into();
-			let founder_account: AccountId = hex!("44cb62d1d6cdd2fff2a5ef3bb7ef827be5b3e117a394ecaa634d8dd9809d5608").into();
-			let presale_account: AccountId = hex!("44cb62d1d6cdd2fff2a5ef3bb7ef827be5b3e117a394ecaa634d8dd9809d5608").into();
+			let treasury_account: AccountId =
+				hex!("44cb62d1d6cdd2fff2a5ef3bb7ef827be5b3e117a394ecaa634d8dd9809d5608").into();
+			let founder_account: AccountId =
+				hex!("44cb62d1d6cdd2fff2a5ef3bb7ef827be5b3e117a394ecaa634d8dd9809d5608").into();
+			let presale_account: AccountId =
+				hex!("44cb62d1d6cdd2fff2a5ef3bb7ef827be5b3e117a394ecaa634d8dd9809d5608").into();
 
 			asset_hub_pezkuwichain_genesis(
 				// initial collators.
 				vec![
 					// E8XC6rTJRsioKCp6KMy6zd24ykj4gWsusZ3AkSeyavpVBAG
 					(
-						hex!("44cb62d1d6cdd2fff2a5ef3bb7ef827be5b3e117a394ecaa634d8dd9809d5608").into(),
+						hex!("44cb62d1d6cdd2fff2a5ef3bb7ef827be5b3e117a394ecaa634d8dd9809d5608")
+							.into(),
 						hex!("44cb62d1d6cdd2fff2a5ef3bb7ef827be5b3e117a394ecaa634d8dd9809d5608")
 							.unchecked_into(),
 					),
 					// G28iWEybndgGRbhfx83t7Q42YhMPByHpyqWDUgeyoGF94ri
 					(
-						hex!("9864b85e23aa4506643db9879c3dbbeabaa94d269693a4447f537dd6b5893944").into(),
+						hex!("9864b85e23aa4506643db9879c3dbbeabaa94d269693a4447f537dd6b5893944")
+							.into(),
 						hex!("9864b85e23aa4506643db9879c3dbbeabaa94d269693a4447f537dd6b5893944")
 							.unchecked_into(),
 					),
 					// G839e2eMiq7UXbConsY6DS1XDAYG2XnQxAmLuRLGGQ3Px9c
 					(
-						hex!("9ce5741ee2f1ac3bdedbde9f3339048f4da2cb88ddf33a0977fa0b4cf86e2948").into(),
+						hex!("9ce5741ee2f1ac3bdedbde9f3339048f4da2cb88ddf33a0977fa0b4cf86e2948")
+							.into(),
 						hex!("9ce5741ee2f1ac3bdedbde9f3339048f4da2cb88ddf33a0977fa0b4cf86e2948")
 							.unchecked_into(),
 					),
 					// GLao4ukFUW6qhexuZowdFrKa2NLCfnEjZMftSXXfvGv1vvt
 					(
-						hex!("a676ed15f5a325eab49ed8d5f8c00f3f814b19bb58cda14ad10894c078dd337f").into(),
+						hex!("a676ed15f5a325eab49ed8d5f8c00f3f814b19bb58cda14ad10894c078dd337f")
+							.into(),
 						hex!("a676ed15f5a325eab49ed8d5f8c00f3f814b19bb58cda14ad10894c078dd337f")
 							.unchecked_into(),
 					),
@@ -278,7 +289,10 @@ pub fn get_preset(id: &PresetId) -> Option<Vec<u8>> {
 
 			asset_hub_pezkuwichain_genesis(
 				// initial collators.
-				vec![(Sr25519Keyring::Alice.to_account_id(), Sr25519Keyring::Alice.public().into())],
+				vec![(
+					Sr25519Keyring::Alice.to_account_id(),
+					Sr25519Keyring::Alice.public().into(),
+				)],
 				vec![
 					Sr25519Keyring::Alice.to_account_id(),
 					Sr25519Keyring::Bob.to_account_id(),

@@ -1,40 +1,40 @@
-# PezkuwiChain: Dijital Bir Ulus İçin Egemen Blockchain Altyapısı
-**Teknik Whitepaper v3.0**
-**Kasım 2025**
-**Hazırlayan:** Kurdistan Tech Ministry & PezkuwiChain Katılımcıları
+# PezkuwiChain: A Sovereign Blockchain Infrastructure for a Digital Nation
+**Technical Whitepaper v3.0**
+**November 2025**
+**Prepared by:** Kurdistan Tech Ministry & PezkuwiChain Katılımcıları
 
 ---
 
-## Özet
+## Abstract
 PezkuwiChain, sosyal itibarı blockchain güvenliğine entegre eden yeni bir konsensüs mekanizması olan Trust-enhanced Nominated Proof-of-Stake (T-NPoS) sistemini sunar. Polkadot SDK üzerine inşa edilen ve gelişmiş çift tokenlı bir ekonomi (HEZ/PEZ) içeren PezkuwiChain, Kürt ulusu için kimlik, yönetişim, eğitim ve hazine yönetimi için özel palletler içeren egemen bir dijital altyapı sağlar. Bu whitepaper, dünyanın ilk güven artırılmış Katman-1 blockchain'i için teknik mimariyi, ekonomik modeli, güvenlik çerçevesini ve stratejik yol haritasını sunmaktadır.
 
 ---
 
-## İçindekiler
-1.  Yönetici Özeti
-2.  Giriş
-3.  Sorun
-4.  Çözüm: PezkuwiChain Mimarisi (Multi-Chain Güncel)
-5.  Çift Tokenlı Ekonomik Model
-6.  Temel Özellikler ve Özel Palletler
-7.  Teknik Özellikler
-8.  Ağ Mimarisi
-9.  Yönetişim Modeli
-10. Güvenlik ve Denetim
-11. Yol Haritası ve Geliştirme Aşamaları (Güncel)
-12. Kullanım Alanları ve Uygulamalar
-13. Takım ve Katılımcılar
-14. Ekosistem ve Ortaklıklar
-15. Yasal ve Uyumluluk
-16. Sonuç
-17. Referanslar
-18. İletişim ve Kaynaklar
-19. Ek A: Terimler Sözlüğü
-20. Ek B: Geliştirici Kaynakları
+## Table of Contents
+1.  Yönetici Abstracti
+2.  Introduction
+3.  The Problem
+4.  The Solution: PezkuwiChain Architecture (Multi-Chain Updated)
+5.  Dual-Token Economic Model
+6.  Core Features & Custom Pallets
+7.  Technical Specifications
+8.  Network Architecture
+9.  Governance Model
+10. Security and Auditing
+11. Roadmap & Development Phases (Updated)
+12. Use Cases & Applications
+13. Team & Contributors
+14. Ecosystem & Partnerships
+15. Legal & Compliance
+16. Conclusion
+17. References
+18. Contact & Resources
+19. Appendix A: Glossary
+20. Appendix B: Developer Resources
 
 ---
 
-## 1. Yönetici Özeti
+## 1. Yönetici Abstracti
 
 PezkuwiChain, Kürt bölgesinin ve küresel diasporasının dijital altyapı ihtiyaçlarını karşılamak üzere titizlikle tasarlanmış egemen bir Katman-1 blockchain ağıdır. Güçlü ve sahada test edilmiş Polkadot SDK üzerine inşa edilen PezkuwiChain, yenilikçi Trust-enhanced Nominated Proof-of-Stake (TNPoS) konsensüs mekanizmasını, sofistike çift tokenlı ekonomik modeli ve yönetişim, kimlik ve eğitim için özel olarak oluşturulmuş kapsamlı bir pallet paketini sunar.
 
@@ -50,7 +50,7 @@ Projenin vizyonu, merkeziyetsiz teknoloji aracılığıyla Kürt ulusunu güçle
 
 ---
 
-## 2. Giriş
+## 2. Introduction
 
 Blockchain teknolojisinin ortaya çıkışı, merkeziyetsiz, şeffaf ve güvenli dijital altyapılar oluşturmak için eşi benzeri görülmemiş fırsatlar sunmuştur. Ancak, mevcut blockchain çözümlerinin çoğu, belirli kültürel, ekonomik ve yönetişim ihtiyaçlarını ele almakta çoğu zaman yetersiz kalan genel amaçlı platformlar olarak tasarlanmıştır.
 
@@ -60,7 +60,7 @@ Misy, Kürt halkına finansal hizmetler, dijital kimlik, demokratik yönetişim 
 
 ---
 
-## 3. Sorun
+## 3. The Problem
 
 Geleneksel finansal ve idari sistemler genellikle önemli giriş engelleri sunar, şeffaflıktan yoksundur ve küresel olarak dağılmış, ancak kültürel olarak birleşik ulusların benzersiz ihtiyaçlarına kötü uyum sağlar. On milyonlarca Kürt halkı, egemen bir dijital altyapının ele alabileceği farklı zorluklarla karşı karşıyadır:
 
@@ -98,7 +98,7 @@ PezkuwiChain'in benzersiz değer önerisini anlamak için, önde gelen Katman-1 
 
 ---
 
-## 4. Çözüm: PezkuwiChain Mimarisi (Multi-Chain Güncel)
+## 4. The Solution: PezkuwiChain Architecture (Multi-Chain Updated)
 
 PezkuwiChain, bu zorluklara kapsamlı bir çözüm olarak mimarisi tasarlanmıştır ve Kürt ulusu için güvenli, merkeziyetsiz ve egemen bir dijital omurga sağlar. Yeni nesil blokzincirler oluşturmak için en son teknoloji çerçevesi olan Polkadot SDK kullanılarak inşa edilmiştir.
 
@@ -166,7 +166,7 @@ Mimari katmanlı bir yaklaşımı takip eder:
 
 ---
 
-## 5. Çift Tokenlı Ekonomik Model
+## 5. Dual-Token Economic Model
 
 PezkuwiChain, hem kamu hem de hükümet işlevlerine hizmet eden dengeli ve sürdürülebilir bir ekosistem oluşturmak için yenilikçi bir çift tokenlı ekonomik model sunar. İki yerel token, HEZ ve PEZ, farklı amaçlar ve parasal politikalarla tasarlanmıştır.
 
@@ -268,7 +268,7 @@ Not: Gerçek emisyon oranları, yönetişim yoluyla belirlenecek ve ağ güvenli
 
 ---
 
-## 6. Temel Özellikler ve Özel Palletler
+## 6. Core Features & Custom Pallets
 
 PezkuwiChain, Polkadot SDK'nın temel işlevselliğini, her biri Kürt dijital devlet ekosistemi içindeki belirli bir ihtiyacı karşılamak üzere tasarlanmış bir dizi özel yapım pallet ile genişletir.
 
@@ -320,7 +320,7 @@ pub const CLAIM_PERIOD_BLOCKS: u32 = 100_800; // ~7 days
 
 ---
 
-## 7. Teknik Özellikler
+## 7. Technical Specifications
 
 PezkuwiChain'in teknik mimarisi, Polkadot ekosisteminin en son teknolojilerinden yararlanarak güvenlik, ölçeklenebilirlik ve birlikte çalışabilirlik için tasarlanmıştır.
 
@@ -346,7 +346,7 @@ PezkuwiChain'in teknik mimarisi, Polkadot ekosisteminin en son teknolojilerinden
 
 ---
 
-## 8. Ağ Mimarisi
+## 8. Network Architecture
 
 PezkuwiChain ağı, blockchain'in bütünlüğünü ve güvenliğini sürdürmek için birlikte çalışan merkeziyetsiz bir node sistemidir. Mimari, dayanıklı, ölçeklenebilir ve sansür dirençli olacak şekilde tasarlanmıştır.
 
@@ -371,7 +371,7 @@ PezkuwiChain node'ları isteğe bağlı olarak halka açık gösterge panoların
 
 ---
 
-## 9. Yönetişim Modeli
+## 9. Governance Model
 
 PezkuwiChain, topluluğunu güçlendiren tamamen merkeziyetsiz, zincir içi bir yönetişim modeline kendini adamıştır. `welati` paleti, teklifler, oylama ve ağ yükseltmelerinin otonom olarak yürürlüğe konması için çerçeve sağlayan bu demokratik sistemin temel taşıdır.
 
@@ -497,7 +497,7 @@ PezkuwiChain güvenlik ve esneklik göz önünde bulundurularak tasarlanmış ol
     *   Slashing kötü niyetli davranışları caydırır.
     *   Çeşitli validatör seti saldırı maliyetini artırır.
 
-### 9.4.5. Yasal ve Uyumluluk Riskleri
+### 9.4.5. Legal & Compliance Riskleri
 **Yasal Belirsizlik:**
 *   **Risk:** Gelişen düzenlemeler operasyonları etkileyebilir.
 *   **Azaltma:** 
@@ -516,7 +516,7 @@ PezkuwiChain, sürekli bir risk yönetimi süreci uygular:
 
 ---
 
-## 10. Güvenlik ve Denetim
+## 10. Security and Auditing
 
 Güvenlik, PezkuwiChain için her şeyden önemli bir konudur. Proje, Rust programlama dilinin seçiminden çekirdek protokollerinin tasarımına kadar çoklu güvenlik katmanlarından yararlanmaktadır.
 
@@ -571,7 +571,7 @@ PezkuwiChain'in Proof-of-Stake konsensüsü, Proof-of-Work sistemlerine göre ö
 
 **Karbon Ayak İzi:** PezkuwiChain'in tahmini karbon ayak izi, Bitcoin'den yaklaşık %99.99 daha düşüktür, bu da onu en çevre dostu blockchain ağlarından biri yapar.
 
-**Yeşil Girişimler:**
+**Yeşil Introductionimler:**
 *   Yenilenebilir enerji kullanımı için validatör teşvikleri.
 *   Hazine tarafından finanse edilen karbon dengeleme programları.
 *   Yeşil blockchain standartları için sertifikasyon çalışmaları.
@@ -579,7 +579,7 @@ PezkuwiChain'in Proof-of-Stake konsensüsü, Proof-of-Work sistemlerine göre ö
 
 ---
 
-## 11. Yol Haritası ve Geliştirme Aşamaları (Güncel)
+## 11. Roadmap & Development Phases (Updated)
 
 PezkuwiChain, istikrarlı, güvenli ve özellik açısından zengin bir mainnet lansmanını sağlamak için aşamalı bir geliştirme yol haritası takip eder.
 
@@ -613,7 +613,7 @@ PezkuwiChain, istikrarlı, güvenli ve özellik açısından zengin bir mainnet 
 
 ---
 
-## 12. Kullanım Alanları ve Uygulamalar
+## 12. Use Cases & Applications
 
 PezkuwiChain, Kürt ulusuna ve ötesine hizmet eden geniş bir yelpazedeki merkeziyetsiz uygulamalar ve hizmetler için temel bir katman olarak tasarlanmıştır.
 
@@ -671,7 +671,7 @@ PezkuwiChain, Kürt ulusuna ve ötesine hizmet eden geniş bir yelpazedeki merke
 
 ---
 
-## 13. Takım ve Katılımcılar
+## 13. Team & Contributors
 
 PezkuwiChain, ulusal kalkınma için en son teknolojiyi kullanma konusundaki güçlü taahhüdünü yansıtan Kürdistan Teknoloji Bakanlığı liderliğinde bir girişimdir. Proje, PezkuwiChain ekosistemini inşa etmeye uzmanlıklarını adamış küresel bir 156 katılımcı topluluğundan (Ekim 2025 itibarıyla) yararlanmaktadır.
 
@@ -703,7 +703,7 @@ Projenin 156 katılımcısı birden fazla disiplini kapsar:
 
 ---
 
-## 14. Ekosistem ve Ortaklıklar
+## 14. Ecosystem & Partnerships
 
 PezkuwiChain, canlı ve birbirine bağlı bir ekosistem olarak tasarlanmıştır. Polkadot SDK üzerindeki temeli, dünyanın en aktif blockchain ekosistemlerinden biriyle doğal birlikte çalışabilirlik sağlar.
 
@@ -755,7 +755,7 @@ PezkuwiChain, canlı ve birbirine bağlı bir ekosistem olarak tasarlanmıştır
 
 ---
 
-## 15. Yasal ve Uyumluluk
+## 15. Legal & Compliance
 
 PezkuwiChain, ademi merkeziyetçilik ve egemenlik ilkelerini korurken sorumlu ve uyumlu bir şekilde faaliyet göstermeyi taahhüt eder.
 
@@ -780,7 +780,7 @@ Proje, yeniliği ve işbirliğini teşvik eden açık ve izinli bir lisans olan 
 
 ---
 
-## 16. Sonuç
+## 16. Conclusion
 
 PezkuwiChain, Kürt ulusu için bir paradigma değişimi ve yenilikçi TNPoS konsensüs mekanizması aracılığıyla blockchain teknolojisine önemli bir katkı sağlamaktadır. Sağlam bir teknik mimariyi, düşünceli bir ekonomik ve sosyal vizyonu birleştirerek ve sosyal güveni çekirdek konsensüs katmanına entegre ederek, PezkuwiChain yeni bir dijital devlet için temel katmanı sağlar.
 
@@ -795,7 +795,7 @@ PezkuwiChain, Kürt ulusunun dijital omurgası olmayı hedefleyerek şunları sa
 *   **Finansal Katılım:** DeFi ve dijital para birimleri aracılığıyla bankasızları bankacılıkla buluşturma.
 *   **Demokratik Katılım:** Şeffaf zincir içi yönetişim aracılığıyla doğrudan demokrasi.
 *   **Eğitimsel İlerleme:** Doğrulanabilir kimlik bilgileri ve yaşam boyu öğrenme kayıtları.
-*   **Ekonomik Fırsat:** Girişimciler ve geliştiriciler için gelecek inşa etme platformu.
+*   **Ekonomik Fırsat:** Introductionimciler ve geliştiriciler için gelecek inşa etme platformu.
 
 Bu, topluluk tarafından, topluluk için inşa edilen bir platformdur ve nihai hedefi, blockchain teknolojisinin dönüştürücü gücü aracılığıyla Kürdistan'ı güçlendirmektir. Ağ büyüdükçe ve olgunlaştıkça, PezkuwiChain, tek beden herkese uyar çözümleri dayatmak yerine, blockchain'in ulusların ve toplulukların özel ihtiyaçlarına nasıl hizmet edebileceğine dair bir model olarak hizmet edecektir.
 
@@ -803,7 +803,7 @@ Konseptten mainnet'e giden yolculuk, titiz geliştirme, topluluk işbirliği ve 
 
 ---
 
-## 17. Referanslar
+## 17. References
 
 ### Akademik ve Teknik Makaleler
 1.  Polkadot: Vision for a Heterogeneous Multi-Chain Framework - Dr. Gavin Wood, 2016. [https://polkadot.network/whitepaper/](https://polkadot.network/whitepaper/)
@@ -839,7 +839,7 @@ Konseptten mainnet'e giden yolculuk, titiz geliştirme, topluluk işbirliği ve 
 
 ---
 
-## 18. İletişim ve Kaynaklar
+## 18. Contact & Resources
 
 ### Resmi Kanallar
 *   **Web Sitesi:** [https://pezkuwichain.io](https://pezkuwichain.io)
@@ -867,7 +867,7 @@ Konseptten mainnet'e giden yolculuk, titiz geliştirme, topluluk işbirliği ve 
 
 ---
 
-## 19. Ek A: Terimler Sözlüğü
+## 19. Appendix A: Glossary
 
 **BABE (Blind Assignment for Blockchain Extension):** Blok oluşturma için validatörlere blok oluşturma slotlarını rastgele atayan, sansür direncini ve tutarlı blok sürelerini sağlayan bir blok üretim mekanizmasıdır. PezkuwiChain yaklaşık 6 saniyeyi hedefler.
 
@@ -935,7 +935,7 @@ Konseptten mainnet'e giden yolculuk, titiz geliştirme, topluluk işbirliği ve 
 
 ---
 
-## 20. Ek B: Geliştirici Kaynakları
+## 20. Appendix B: Developer Resources
 
 ### Başlarken
 **Node Kurulumu:**
@@ -1052,8 +1052,8 @@ cargo test --features runtime-benchmarks
 *   **Ofis Saatleri:** Haftalık geliştirici görüşmeleri (web sitesinde program).
 
 **Doküman Sürümü:** 3.0
-**Son Güncelleme:** Kasım 2025
-**Hazırlayan:** Kürdistan Teknoloji Bakanlığı & PezkuwiChain Katılımcıları
+**Son Güncelleme:** November 2025
+**Prepared by:** Kürdistan Teknoloji Bakanlığı & PezkuwiChain Katılımcıları
 **Lisans:** Kurdistan Talent Institute License
 
 Bu whitepaper, PezkuwiChain'in güncel vizyonunu ve teknik özelliklerini temsil etmektedir. Sürekli geliştirme aşamasında olan açık kaynaklı bir proje olarak, özellikler topluluk geri bildirimi, güvenlik denetimleri ve teknolojik gelişmeler temelinde evrimleşebilir. En güncel bilgiler için lütfen resmi GitHub deposuna ve dokümantasyona bakın.

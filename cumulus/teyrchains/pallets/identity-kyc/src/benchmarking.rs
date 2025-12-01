@@ -23,15 +23,9 @@ fn setup_citizen<T: Config>(who: &T::AccountId) {
 }
 
 /// Helper function to setup an applicant in PendingReferral state
-fn setup_pending_referral<T: Config>(
-	applicant: &T::AccountId,
-	referrer: &T::AccountId,
-) {
+fn setup_pending_referral<T: Config>(applicant: &T::AccountId, referrer: &T::AccountId) {
 	let identity_hash = H256::repeat_byte(0x01);
-	let application = CitizenshipApplication {
-		identity_hash,
-		referrer: referrer.clone(),
-	};
+	let application = CitizenshipApplication { identity_hash, referrer: referrer.clone() };
 	Applications::<T>::insert(applicant, application);
 	KycStatuses::<T>::insert(applicant, KycLevel::PendingReferral);
 
@@ -41,15 +35,9 @@ fn setup_pending_referral<T: Config>(
 }
 
 /// Helper function to setup an applicant in ReferrerApproved state
-fn setup_referrer_approved<T: Config>(
-	applicant: &T::AccountId,
-	referrer: &T::AccountId,
-) {
+fn setup_referrer_approved<T: Config>(applicant: &T::AccountId, referrer: &T::AccountId) {
 	let identity_hash = H256::repeat_byte(0x01);
-	let application = CitizenshipApplication {
-		identity_hash,
-		referrer: referrer.clone(),
-	};
+	let application = CitizenshipApplication { identity_hash, referrer: referrer.clone() };
 	Applications::<T>::insert(applicant, application);
 	KycStatuses::<T>::insert(applicant, KycLevel::ReferrerApproved);
 
@@ -71,7 +59,11 @@ mod benchmarks {
 		let identity_hash = H256::repeat_byte(0x42);
 
 		#[extrinsic_call]
-		apply_for_citizenship(RawOrigin::Signed(applicant.clone()), identity_hash, referrer.clone());
+		apply_for_citizenship(
+			RawOrigin::Signed(applicant.clone()),
+			identity_hash,
+			referrer.clone(),
+		);
 
 		assert_eq!(KycStatuses::<T>::get(&applicant), KycLevel::PendingReferral);
 	}

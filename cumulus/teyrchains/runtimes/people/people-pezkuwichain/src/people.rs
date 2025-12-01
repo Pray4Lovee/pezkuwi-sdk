@@ -18,10 +18,8 @@ use crate::xcm_config::LocationToAccountId;
 use codec::{Decode, Encode, MaxEncodedLen};
 use enumflags2::{bitflags, BitFlags};
 use frame_support::{
-	parameter_types,
-	traits::ConstU32,
-	weights::Weight,
-	CloneNoBound, EqNoBound, PartialEqNoBound, RuntimeDebugNoBound,
+	parameter_types, traits::ConstU32, weights::Weight, CloneNoBound, EqNoBound, PartialEqNoBound,
+	RuntimeDebugNoBound,
 };
 use frame_system::EnsureRoot;
 use pallet_identity::{Data, IdentityInformationProvider};
@@ -30,8 +28,8 @@ use sp_runtime::{
 	traits::{AccountIdConversion, Verify},
 	RuntimeDebug,
 };
-use teyrchains_common::{impls::ToParentTreasury, DAYS, HOURS};
 use testnet_teyrchains_constants::pezkuwichain::currency::UNITS;
+use teyrchains_common::{impls::ToParentTreasury, DAYS, HOURS};
 
 parameter_types! {
 	//   27 | Min encoded size of `Registration`
@@ -289,7 +287,9 @@ impl pallet_identity_kyc::types::CitizenNftProvider<AccountId> for CitizenNftPro
 impl pallet_identity_kyc::Config for Runtime {
 	type RuntimeEvent = RuntimeEvent;
 	type Currency = Balances;
-	type GovernanceOrigin = EnsureRoot<AccountId>;
+	// Kademeli yetki devri: Root → Diwan → Teknik Komisyon
+	// Vatandaşlık kararları için Divan (Anayasa Mahkemesi) yetkili
+	type GovernanceOrigin = crate::RootOrDiwanOrTechnical;
 	type WeightInfo = pallet_identity_kyc::weights::SubstrateWeight<Runtime>;
 	type OnKycApproved = OnKycApprovedHook;
 	type OnCitizenshipRevoked = OnCitizenshipRevokedHook;
@@ -311,15 +311,44 @@ parameter_types! {
 	pub const MaxCoursesPerStudent: u32 = 50;
 }
 
-/// Admin origin that returns the account ID
+/// Admin origin for Perwerde pallet that supports progressive decentralization
+///
+/// Yetki devri sırası:
+/// 1. Root (Sudo) - Başlangıç aşaması
+/// 2. Council (1/2 çoğunluk) - Seçimler sonrası
+/// 3. Serok atayabilir - Cumhurbaşkanlığı yetkisi
+///
+/// Bu origin AccountId döndürür (kurs sahibi olarak kullanılır)
 pub struct PerwerdeAdminOrigin;
 impl frame_support::traits::EnsureOrigin<RuntimeOrigin> for PerwerdeAdminOrigin {
 	type Success = AccountId;
 	fn try_origin(o: RuntimeOrigin) -> Result<Self::Success, RuntimeOrigin> {
-		frame_system::ensure_root(o.clone())
-			.map(|_| sp_keyring::Sr25519Keyring::Alice.to_account_id())
-			.map_err(|_| o)
+		// 1. Root origin kontrolü
+		if let Ok(_) = frame_system::ensure_root(o.clone()) {
+			// Root için varsayılan admin hesabı
+			return Ok(sp_keyring::Sr25519Keyring::Alice.to_account_id());
+		}
+
+		// 2. Council kontrolü (1/2'den fazla oy)
+		if let Ok(_) = pallet_collective::EnsureProportionMoreThan::<
+			AccountId,
+			CouncilCollective,
+			1,
+			2,
+		>::try_origin(o.clone())
+		{
+			// Komisyon için varsayılan admin hesabı
+			return Ok(sp_keyring::Sr25519Keyring::Alice.to_account_id());
+		}
+
+		// 3. Serok (Cumhurbaşkanı) kontrolü
+		if let Ok(serok) = pallet_welati::EnsureSerok::<Runtime>::try_origin(o.clone()) {
+			return Ok(serok);
+		}
+
+		Err(o)
 	}
+
 	#[cfg(feature = "runtime-benchmarks")]
 	fn try_successful_origin() -> Result<RuntimeOrigin, ()> {
 		Ok(RuntimeOrigin::root())
@@ -376,7 +405,8 @@ impl pallet_nfts::Config for Runtime {
 	type ItemId = u32;
 	type Currency = Balances;
 	type ForceOrigin = EnsureRoot<AccountId>;
-	type CreateOrigin = frame_support::traits::AsEnsureOriginWithArg<frame_system::EnsureSigned<AccountId>>;
+	type CreateOrigin =
+		frame_support::traits::AsEnsureOriginWithArg<frame_system::EnsureSigned<AccountId>>;
 	type Locker = ();
 	type CollectionDeposit = NftsCollectionDeposit;
 	type ItemDeposit = NftsItemDeposit;
@@ -413,7 +443,9 @@ parameter_types! {
 
 impl pallet_tiki::Config for Runtime {
 	type RuntimeEvent = RuntimeEvent;
-	type AdminOrigin = EnsureRoot<AccountId>;
+	// Kademeli yetki devri: Root → Teknik Komisyon
+	// NFT/Rol yönetimi için Teknik Komisyon yetkili
+	type AdminOrigin = crate::RootOrTechnicalCommittee;
 	type WeightInfo = pallet_tiki::weights::SubstrateWeight<Runtime>;
 	type TikiCollectionId = TikiCollectionId;
 	type MaxTikisPerUser = MaxTikisPerUser;
@@ -471,6 +503,17 @@ impl pallet_staking_score::Config for Runtime {
 // =============================================================================
 // Collective Pallet Configuration (for governance)
 // =============================================================================
+//
+// Pezkuwichain Komisyon Yapısı:
+// - Council (Instance1): Genel Konsey - Ana yönetişim organı
+//
+// Ek komisyonlar (EducationCommittee, TechnicalCommittee, TreasuryCommittee)
+// runtime upgrade ile eklenecek. Şu an Welati pallet'in EnsureSerok,
+// EnsureParlementer ve EnsureDiwan origin'leri kullanılıyor.
+//
+// Bu komisyonlar başlangıçta Root (Sudo) tarafından yönetilir.
+// Welati pallet'i aracılığıyla seçimler yapıldığında yetki devredilir.
+// =============================================================================
 
 parameter_types! {
 	pub const CouncilMotionDuration: BlockNumber = 7 * DAYS;
@@ -479,7 +522,10 @@ parameter_types! {
 	pub MaxProposalWeight: Weight = sp_runtime::Perbill::from_percent(50) * RuntimeBlockWeights::get().max_block;
 }
 
-type CouncilCollective = pallet_collective::Instance1;
+// Instance tanımları
+pub type CouncilCollective = pallet_collective::Instance1;
+
+/// Council (Genel Konsey) - Ana yönetişim organı
 impl pallet_collective::Config<CouncilCollective> for Runtime {
 	type RuntimeOrigin = RuntimeOrigin;
 	type Proposal = RuntimeCall;
@@ -597,7 +643,8 @@ impl pallet_assets::Config for Runtime {
 	type AssetId = u32;
 	type AssetIdParameter = codec::Compact<u32>;
 	type Currency = Balances;
-	type CreateOrigin = frame_support::traits::AsEnsureOriginWithArg<frame_system::EnsureSigned<AccountId>>;
+	type CreateOrigin =
+		frame_support::traits::AsEnsureOriginWithArg<frame_system::EnsureSigned<AccountId>>;
 	type ForceOrigin = EnsureRoot<AccountId>;
 	type AssetDeposit = AssetsAssetDeposit;
 	type AssetAccountDeposit = AssetsAssetAccountDeposit;
@@ -832,7 +879,9 @@ impl pallet_pez_rewards::Config for Runtime {
 	type TrustScoreSource = PezRewardsTrustScoreSource;
 	type IncentivePotId = IncentivePotId;
 	type ClawbackRecipient = ClawbackRecipient;
-	type ForceOrigin = EnsureRoot<AccountId>;
+	// Kademeli yetki devri: Root → Hazine Komisyonu
+	// PEZ ödül dağıtımı için Hazine Komisyonu yetkili
+	type ForceOrigin = crate::RootOrTreasuryCommittee;
 	type CollectionId = u32;
 	type ItemId = u32;
 }

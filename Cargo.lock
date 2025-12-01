@@ -15013,6 +15013,7 @@ dependencies = [
  "pallet-referral",
  "pallet-scheduler",
  "pallet-session",
+ "pallet-skip-feeless-payment",
  "pallet-staking-score",
  "pallet-tiki",
  "pallet-timestamp",

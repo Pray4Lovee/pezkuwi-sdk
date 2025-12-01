@@ -25,8 +25,7 @@ use alloc::{vec, vec::Vec};
 use cumulus_primitives_core::ParaId;
 use frame_support::build_struct_json_patch;
 use hex_literal::hex;
-use sp_core::crypto::UncheckedInto;
-use sp_core::H256;
+use sp_core::{crypto::UncheckedInto, H256};
 use sp_genesis_builder::PresetId;
 use sp_keyring::Sr25519Keyring;
 use testnet_teyrchains_constants::pezkuwichain::{
@@ -92,10 +91,7 @@ fn people_pezkuwichain_genesis(
 		// ====================================================================
 		// These accounts start with Approved status and can accept referrals immediately
 		// This solves the chicken-egg problem: first citizens need to exist for others to join
-		identity_kyc: IdentityKycConfig {
-			founding_citizens,
-			_phantom: Default::default(),
-		},
+		identity_kyc: IdentityKycConfig { founding_citizens, _phantom: Default::default() },
 	})
 }
 
@@ -116,32 +112,37 @@ pub fn get_preset(id: &PresetId) -> Option<Vec<u8>> {
 		PRESET_GENESIS => {
 			// Founder account - MUST be replaced with real address from
 			// Founder_treasury_presale_wallets.json before mainnet launch
-			let founder_account: AccountId = hex!("44cb62d1d6cdd2fff2a5ef3bb7ef827be5b3e117a394ecaa634d8dd9809d5608").into();
+			let founder_account: AccountId =
+				hex!("44cb62d1d6cdd2fff2a5ef3bb7ef827be5b3e117a394ecaa634d8dd9809d5608").into();
 
 			people_pezkuwichain_genesis(
 				// initial collators.
 				vec![
 					// E8XC6rTJRsioKCp6KMy6zd24ykj4gWsusZ3AkSeyavpVBAG
 					(
-						hex!("44cb62d1d6cdd2fff2a5ef3bb7ef827be5b3e117a394ecaa634d8dd9809d5608").into(),
+						hex!("44cb62d1d6cdd2fff2a5ef3bb7ef827be5b3e117a394ecaa634d8dd9809d5608")
+							.into(),
 						hex!("44cb62d1d6cdd2fff2a5ef3bb7ef827be5b3e117a394ecaa634d8dd9809d5608")
 							.unchecked_into(),
 					),
 					// G28iWEybndgGRbhfx83t7Q42YhMPByHpyqWDUgeyoGF94ri
 					(
-						hex!("9864b85e23aa4506643db9879c3dbbeabaa94d269693a4447f537dd6b5893944").into(),
+						hex!("9864b85e23aa4506643db9879c3dbbeabaa94d269693a4447f537dd6b5893944")
+							.into(),
 						hex!("9864b85e23aa4506643db9879c3dbbeabaa94d269693a4447f537dd6b5893944")
 							.unchecked_into(),
 					),
 					// G839e2eMiq7UXbConsY6DS1XDAYG2XnQxAmLuRLGGQ3Px9c
 					(
-						hex!("9ce5741ee2f1ac3bdedbde9f3339048f4da2cb88ddf33a0977fa0b4cf86e2948").into(),
+						hex!("9ce5741ee2f1ac3bdedbde9f3339048f4da2cb88ddf33a0977fa0b4cf86e2948")
+							.into(),
 						hex!("9ce5741ee2f1ac3bdedbde9f3339048f4da2cb88ddf33a0977fa0b4cf86e2948")
 							.unchecked_into(),
 					),
 					// GLao4ukFUW6qhexuZowdFrKa2NLCfnEjZMftSXXfvGv1vvt
 					(
-						hex!("a676ed15f5a325eab49ed8d5f8c00f3f814b19bb58cda14ad10894c078dd337f").into(),
+						hex!("a676ed15f5a325eab49ed8d5f8c00f3f814b19bb58cda14ad10894c078dd337f")
+							.into(),
 						hex!("a676ed15f5a325eab49ed8d5f8c00f3f814b19bb58cda14ad10894c078dd337f")
 							.unchecked_into(),
 					),

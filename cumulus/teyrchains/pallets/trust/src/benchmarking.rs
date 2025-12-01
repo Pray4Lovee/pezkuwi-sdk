@@ -23,8 +23,8 @@ mod benchmarks {
 	/// Instead of calling identity-kyc extrinsics, we mock the citizenship source
 	fn setup_citizen<T: Config>(account: &T::AccountId) {
 		// For benchmarks, we rely on the runtime's CitizenshipSource implementation
-		// The benchmark mock should configure CitizenshipSource to return true for whitelisted accounts
-		// This is typically done via TestCitizenshipProvider in mock.rs
+		// The benchmark mock should configure CitizenshipSource to return true for whitelisted
+		// accounts This is typically done via TestCitizenshipProvider in mock.rs
 
 		// Initialize trust score storage for the account so update operations work
 		TrustScores::<T>::insert(account, T::Score::zero());

@@ -526,16 +526,20 @@ fn pezkuwichain_genesis_config() -> serde_json::Value {
 	// ==========================================================================
 
 	// Founder account - receives 10% (20M HEZ)
-	let founder_account: AccountId = hex!("44cb62d1d6cdd2fff2a5ef3bb7ef827be5b3e117a394ecaa634d8dd9809d5608").into();
+	let founder_account: AccountId =
+		hex!("44cb62d1d6cdd2fff2a5ef3bb7ef827be5b3e117a394ecaa634d8dd9809d5608").into();
 
 	// Presale account - receives 50% (100M HEZ)
-	let presale_account: AccountId = hex!("44cb62d1d6cdd2fff2a5ef3bb7ef827be5b3e117a394ecaa634d8dd9809d5608").into();
+	let presale_account: AccountId =
+		hex!("44cb62d1d6cdd2fff2a5ef3bb7ef827be5b3e117a394ecaa634d8dd9809d5608").into();
 
 	// Kurdistan Treasury account - receives 20% (40M HEZ)
-	let treasury_account: AccountId = hex!("44cb62d1d6cdd2fff2a5ef3bb7ef827be5b3e117a394ecaa634d8dd9809d5608").into();
+	let treasury_account: AccountId =
+		hex!("44cb62d1d6cdd2fff2a5ef3bb7ef827be5b3e117a394ecaa634d8dd9809d5608").into();
 
 	// Airdrop account - receives 20% (40M HEZ)
-	let airdrop_account: AccountId = hex!("44cb62d1d6cdd2fff2a5ef3bb7ef827be5b3e117a394ecaa634d8dd9809d5608").into();
+	let airdrop_account: AccountId =
+		hex!("44cb62d1d6cdd2fff2a5ef3bb7ef827be5b3e117a394ecaa634d8dd9809d5608").into();
 
 	// ==========================================================================
 	// INITIAL VALIDATORS - First 4 validators from mainnet_validators JSON
@@ -555,45 +559,69 @@ fn pezkuwichain_genesis_config() -> serde_json::Value {
 			// Validator 1: E8XC6rTJRsioKCp6KMy6zd24ykj4gWsusZ3AkSeyavpVBAG (stash)
 			hex!("44cb62d1d6cdd2fff2a5ef3bb7ef827be5b3e117a394ecaa634d8dd9809d5608").into(),
 			hex!("44cb62d1d6cdd2fff2a5ef3bb7ef827be5b3e117a394ecaa634d8dd9809d5608").into(),
-			hex!("44cb62d1d6cdd2fff2a5ef3bb7ef827be5b3e117a394ecaa634d8dd9809d5608").unchecked_into(),
-			hex!("44cb62d1d6cdd2fff2a5ef3bb7ef827be5b3e117a394ecaa634d8dd9809d5608").unchecked_into(),
-			hex!("44cb62d1d6cdd2fff2a5ef3bb7ef827be5b3e117a394ecaa634d8dd9809d5608").unchecked_into(),
-			hex!("44cb62d1d6cdd2fff2a5ef3bb7ef827be5b3e117a394ecaa634d8dd9809d5608").unchecked_into(),
-			hex!("44cb62d1d6cdd2fff2a5ef3bb7ef827be5b3e117a394ecaa634d8dd9809d5608").unchecked_into(),
-			hex!("0244cb62d1d6cdd2fff2a5ef3bb7ef827be5b3e117a394ecaa634d8dd9809d5608").unchecked_into(),
+			hex!("44cb62d1d6cdd2fff2a5ef3bb7ef827be5b3e117a394ecaa634d8dd9809d5608")
+				.unchecked_into(),
+			hex!("44cb62d1d6cdd2fff2a5ef3bb7ef827be5b3e117a394ecaa634d8dd9809d5608")
+				.unchecked_into(),
+			hex!("44cb62d1d6cdd2fff2a5ef3bb7ef827be5b3e117a394ecaa634d8dd9809d5608")
+				.unchecked_into(),
+			hex!("44cb62d1d6cdd2fff2a5ef3bb7ef827be5b3e117a394ecaa634d8dd9809d5608")
+				.unchecked_into(),
+			hex!("44cb62d1d6cdd2fff2a5ef3bb7ef827be5b3e117a394ecaa634d8dd9809d5608")
+				.unchecked_into(),
+			hex!("0244cb62d1d6cdd2fff2a5ef3bb7ef827be5b3e117a394ecaa634d8dd9809d5608")
+				.unchecked_into(),
 		),
 		(
 			// Validator 2: G28iWEybndgGRbhfx83t7Q42YhMPByHpyqWDUgeyoGF94ri (stash)
 			hex!("9864b85e23aa4506643db9879c3dbbeabaa94d269693a4447f537dd6b5893944").into(),
 			hex!("9864b85e23aa4506643db9879c3dbbeabaa94d269693a4447f537dd6b5893944").into(),
-			hex!("9864b85e23aa4506643db9879c3dbbeabaa94d269693a4447f537dd6b5893944").unchecked_into(),
-			hex!("9864b85e23aa4506643db9879c3dbbeabaa94d269693a4447f537dd6b5893944").unchecked_into(),
-			hex!("9864b85e23aa4506643db9879c3dbbeabaa94d269693a4447f537dd6b5893944").unchecked_into(),
-			hex!("9864b85e23aa4506643db9879c3dbbeabaa94d269693a4447f537dd6b5893944").unchecked_into(),
-			hex!("9864b85e23aa4506643db9879c3dbbeabaa94d269693a4447f537dd6b5893944").unchecked_into(),
-			hex!("029864b85e23aa4506643db9879c3dbbeabaa94d269693a4447f537dd6b5893944").unchecked_into(),
+			hex!("9864b85e23aa4506643db9879c3dbbeabaa94d269693a4447f537dd6b5893944")
+				.unchecked_into(),
+			hex!("9864b85e23aa4506643db9879c3dbbeabaa94d269693a4447f537dd6b5893944")
+				.unchecked_into(),
+			hex!("9864b85e23aa4506643db9879c3dbbeabaa94d269693a4447f537dd6b5893944")
+				.unchecked_into(),
+			hex!("9864b85e23aa4506643db9879c3dbbeabaa94d269693a4447f537dd6b5893944")
+				.unchecked_into(),
+			hex!("9864b85e23aa4506643db9879c3dbbeabaa94d269693a4447f537dd6b5893944")
+				.unchecked_into(),
+			hex!("029864b85e23aa4506643db9879c3dbbeabaa94d269693a4447f537dd6b5893944")
+				.unchecked_into(),
 		),
 		(
 			// Validator 3: G839e2eMiq7UXbConsY6DS1XDAYG2XnQxAmLuRLGGQ3Px9c (stash)
 			hex!("9ce5741ee2f1ac3bdedbde9f3339048f4da2cb88ddf33a0977fa0b4cf86e2948").into(),
 			hex!("9ce5741ee2f1ac3bdedbde9f3339048f4da2cb88ddf33a0977fa0b4cf86e2948").into(),
-			hex!("9ce5741ee2f1ac3bdedbde9f3339048f4da2cb88ddf33a0977fa0b4cf86e2948").unchecked_into(),
-			hex!("9ce5741ee2f1ac3bdedbde9f3339048f4da2cb88ddf33a0977fa0b4cf86e2948").unchecked_into(),
-			hex!("9ce5741ee2f1ac3bdedbde9f3339048f4da2cb88ddf33a0977fa0b4cf86e2948").unchecked_into(),
-			hex!("9ce5741ee2f1ac3bdedbde9f3339048f4da2cb88ddf33a0977fa0b4cf86e2948").unchecked_into(),
-			hex!("9ce5741ee2f1ac3bdedbde9f3339048f4da2cb88ddf33a0977fa0b4cf86e2948").unchecked_into(),
-			hex!("029ce5741ee2f1ac3bdedbde9f3339048f4da2cb88ddf33a0977fa0b4cf86e2948").unchecked_into(),
+			hex!("9ce5741ee2f1ac3bdedbde9f3339048f4da2cb88ddf33a0977fa0b4cf86e2948")
+				.unchecked_into(),
+			hex!("9ce5741ee2f1ac3bdedbde9f3339048f4da2cb88ddf33a0977fa0b4cf86e2948")
+				.unchecked_into(),
+			hex!("9ce5741ee2f1ac3bdedbde9f3339048f4da2cb88ddf33a0977fa0b4cf86e2948")
+				.unchecked_into(),
+			hex!("9ce5741ee2f1ac3bdedbde9f3339048f4da2cb88ddf33a0977fa0b4cf86e2948")
+				.unchecked_into(),
+			hex!("9ce5741ee2f1ac3bdedbde9f3339048f4da2cb88ddf33a0977fa0b4cf86e2948")
+				.unchecked_into(),
+			hex!("029ce5741ee2f1ac3bdedbde9f3339048f4da2cb88ddf33a0977fa0b4cf86e2948")
+				.unchecked_into(),
 		),
 		(
 			// Validator 4: GLao4ukFUW6qhexuZowdFrKa2NLCfnEjZMftSXXfvGv1vvt (stash)
 			hex!("a676ed15f5a325eab49ed8d5f8c00f3f814b19bb58cda14ad10894c078dd337f").into(),
 			hex!("a676ed15f5a325eab49ed8d5f8c00f3f814b19bb58cda14ad10894c078dd337f").into(),
-			hex!("a676ed15f5a325eab49ed8d5f8c00f3f814b19bb58cda14ad10894c078dd337f").unchecked_into(),
-			hex!("a676ed15f5a325eab49ed8d5f8c00f3f814b19bb58cda14ad10894c078dd337f").unchecked_into(),
-			hex!("a676ed15f5a325eab49ed8d5f8c00f3f814b19bb58cda14ad10894c078dd337f").unchecked_into(),
-			hex!("a676ed15f5a325eab49ed8d5f8c00f3f814b19bb58cda14ad10894c078dd337f").unchecked_into(),
-			hex!("a676ed15f5a325eab49ed8d5f8c00f3f814b19bb58cda14ad10894c078dd337f").unchecked_into(),
-			hex!("02a676ed15f5a325eab49ed8d5f8c00f3f814b19bb58cda14ad10894c078dd337f").unchecked_into(),
+			hex!("a676ed15f5a325eab49ed8d5f8c00f3f814b19bb58cda14ad10894c078dd337f")
+				.unchecked_into(),
+			hex!("a676ed15f5a325eab49ed8d5f8c00f3f814b19bb58cda14ad10894c078dd337f")
+				.unchecked_into(),
+			hex!("a676ed15f5a325eab49ed8d5f8c00f3f814b19bb58cda14ad10894c078dd337f")
+				.unchecked_into(),
+			hex!("a676ed15f5a325eab49ed8d5f8c00f3f814b19bb58cda14ad10894c078dd337f")
+				.unchecked_into(),
+			hex!("a676ed15f5a325eab49ed8d5f8c00f3f814b19bb58cda14ad10894c078dd337f")
+				.unchecked_into(),
+			hex!("02a676ed15f5a325eab49ed8d5f8c00f3f814b19bb58cda14ad10894c078dd337f")
+				.unchecked_into(),
 		),
 	]);
 
@@ -604,10 +632,10 @@ fn pezkuwichain_genesis_config() -> serde_json::Value {
 		balances: BalancesConfig {
 			balances: vec![
 				// HEZ Genesis Distribution (200M Total)
-				(founder_account.clone(), HEZ_FOUNDER_ALLOCATION),      // 10% = 20M HEZ
-				(presale_account.clone(), HEZ_PRESALE_ALLOCATION),      // 50% = 100M HEZ
-				(treasury_account.clone(), HEZ_TREASURY_ALLOCATION),    // 20% = 40M HEZ
-				(airdrop_account.clone(), HEZ_AIRDROP_ALLOCATION),      // 20% = 40M HEZ
+				(founder_account.clone(), HEZ_FOUNDER_ALLOCATION), // 10% = 20M HEZ
+				(presale_account.clone(), HEZ_PRESALE_ALLOCATION), // 50% = 100M HEZ
+				(treasury_account.clone(), HEZ_TREASURY_ALLOCATION), // 20% = 40M HEZ
+				(airdrop_account.clone(), HEZ_AIRDROP_ALLOCATION), // 20% = 40M HEZ
 			]
 			.into_iter()
 			// Add validator stash balances

@@ -91,8 +91,11 @@ mod benchmarks {
 			&T::PlatformTreasury::get(),
 			payment_amount,
 		);
-		let _ =
-			T::Assets::mint_into(payment_asset.clone(), &T::StakingRewardPool::get(), payment_amount);
+		let _ = T::Assets::mint_into(
+			payment_asset.clone(),
+			&T::StakingRewardPool::get(),
+			payment_amount,
+		);
 
 		// Mint reward tokens to presale treasury for distribution
 		let reward_amount: T::Balance = 10_000_000_000u128.into();
@@ -121,17 +124,17 @@ mod benchmarks {
 			10_000_000_000u128, // tokens_for_sale (10M)
 			1000u32.into(),     // duration (long enough for tests)
 			is_whitelist,
-			100u128,           // min_contribution
-			10_000_000u128,    // max_contribution
-			1_000_000u128,     // soft_cap
-			100_000_000u128,   // hard_cap
+			100u128,         // min_contribution
+			10_000_000u128,  // max_contribution
+			1_000_000u128,   // soft_cap
+			100_000_000u128, // hard_cap
 			enable_vesting,
 			if enable_vesting { 20u8 } else { 0u8 }, // 20% immediate if vesting
 			if enable_vesting { 100u32.into() } else { 0u32.into() }, // vesting_duration
-			if enable_vesting { 10u32.into() } else { 0u32.into() },  // cliff
-			10u32.into(),      // grace_period_blocks
-			5u8,               // refund_fee_percent
-			2u8,               // grace_refund_fee_percent
+			if enable_vesting { 10u32.into() } else { 0u32.into() }, // cliff
+			10u32.into(),                            // grace_period_blocks
+			5u8,                                     // refund_fee_percent
+			2u8,                                     // grace_refund_fee_percent
 		);
 
 		presale_id
@@ -148,20 +151,20 @@ mod benchmarks {
 			RawOrigin::Signed(caller),
 			payment_asset,
 			reward_asset,
-			1_000_000u128,     // tokens_for_sale
-			100u32.into(),     // duration
-			false,             // is_whitelist
-			100u128,           // min_contribution
-			10_000u128,        // max_contribution
-			500_000u128,       // soft_cap
-			1_000_000u128,     // hard_cap
-			false,             // enable_vesting
-			0u8,               // vesting_immediate_percent
-			0u32.into(),       // vesting_duration_blocks
-			0u32.into(),       // vesting_cliff_blocks
-			10u32.into(),      // grace_period_blocks
-			5u8,               // refund_fee_percent
-			10u8,              // grace_refund_fee_percent
+			1_000_000u128, // tokens_for_sale
+			100u32.into(), // duration
+			false,         // is_whitelist
+			100u128,       // min_contribution
+			10_000u128,    // max_contribution
+			500_000u128,   // soft_cap
+			1_000_000u128, // hard_cap
+			false,         // enable_vesting
+			0u8,           // vesting_immediate_percent
+			0u32.into(),   // vesting_duration_blocks
+			0u32.into(),   // vesting_cliff_blocks
+			10u32.into(),  // grace_period_blocks
+			5u8,           // refund_fee_percent
+			10u8,          // grace_refund_fee_percent
 		);
 
 		// Verify presale was created
@@ -175,7 +178,8 @@ mod benchmarks {
 		let reward_asset = get_asset_id::<T>(2);
 
 		// Create a presale first
-		let presale_id = create_test_presale::<T>(&caller, payment_asset, reward_asset, false, false);
+		let presale_id =
+			create_test_presale::<T>(&caller, payment_asset, reward_asset, false, false);
 
 		#[extrinsic_call]
 		cancel_presale(RawOrigin::Root, presale_id);
@@ -240,11 +244,8 @@ mod benchmarks {
 
 		// Make a contribution first
 		let amount: u128 = 10_000u128;
-		let _ = Presale::<T>::contribute(
-			RawOrigin::Signed(caller.clone()).into(),
-			presale_id,
-			amount,
-		);
+		let _ =
+			Presale::<T>::contribute(RawOrigin::Signed(caller.clone()).into(), presale_id, amount);
 
 		// Verify contribution exists
 		assert!(crate::Contributions::<T>::get(presale_id, &caller).is_some());
@@ -272,11 +273,8 @@ mod benchmarks {
 
 		// Make a contribution
 		let amount: u128 = 1_000_000u128; // Large enough to reach soft cap
-		let _ = Presale::<T>::contribute(
-			RawOrigin::Signed(caller.clone()).into(),
-			presale_id,
-			amount,
-		);
+		let _ =
+			Presale::<T>::contribute(RawOrigin::Signed(caller.clone()).into(), presale_id, amount);
 
 		// Advance blocks past presale end
 		frame_system::Pallet::<T>::set_block_number(2000u32.into());
@@ -310,11 +308,8 @@ mod benchmarks {
 
 		// Make a contribution
 		let amount: u128 = 10_000u128;
-		let _ = Presale::<T>::contribute(
-			RawOrigin::Signed(caller.clone()).into(),
-			presale_id,
-			amount,
-		);
+		let _ =
+			Presale::<T>::contribute(RawOrigin::Signed(caller.clone()).into(), presale_id, amount);
 
 		// Cancel the presale
 		let _ = Presale::<T>::cancel_presale(RawOrigin::Root.into(), presale_id);
@@ -340,7 +335,13 @@ mod benchmarks {
 		let (payment_asset, reward_asset) = setup_benchmark_assets::<T>(&caller, &presale_treasury);
 
 		// Create presale (will get the presale_id we calculated)
-		let _ = create_test_presale::<T>(&caller, payment_asset.clone(), reward_asset.clone(), false, false);
+		let _ = create_test_presale::<T>(
+			&caller,
+			payment_asset.clone(),
+			reward_asset.clone(),
+			false,
+			false,
+		);
 
 		// Add n contributors
 		for i in 0..n {
@@ -367,8 +368,7 @@ mod benchmarks {
 		// Verify presale was finalized
 		let presale = crate::Presales::<T>::get(presale_id).unwrap();
 		assert!(
-			presale.status == PresaleStatus::Finalized ||
-				presale.status == PresaleStatus::Failed
+			presale.status == PresaleStatus::Finalized || presale.status == PresaleStatus::Failed
 		);
 	}
 
@@ -389,8 +389,8 @@ mod benchmarks {
 			RawOrigin::Signed(caller.clone()).into(),
 			payment_asset.clone(),
 			reward_asset,
-			10_000_000_000u128,    // tokens_for_sale
-			1000u32.into(),        // duration
+			10_000_000_000u128, // tokens_for_sale
+			1000u32.into(),     // duration
 			false,
 			100u128,               // min_contribution
 			10_000_000u128,        // max_contribution
