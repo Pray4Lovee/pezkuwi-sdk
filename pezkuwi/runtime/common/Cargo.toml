@@ -86,6 +86,7 @@ std = [
 	"log/std",
 	"pallet-asset-rate?/std",
 	"pallet-authorship/std",
+	"pallet-babe?/std",
 	"pallet-balances/std",
 	"pallet-broker/std",
 	"pallet-election-provider-multi-phase/std",
