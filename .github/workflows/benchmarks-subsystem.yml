@@ -33,23 +33,23 @@ jobs:
         features:
           [
             {
-              name: "polkadot-availability-recovery",
+              name: "pezkuwi-availability-recovery",
               bench: "availability-recovery-regression-bench",
             },
             {
-              name: "polkadot-availability-distribution",
+              name: "pezkuwi-availability-distribution",
               bench: "availability-distribution-regression-bench",
             },
             {
-              name: "polkadot-node-core-approval-voting",
+              name: "pezkuwi-node-core-approval-voting",
               bench: "approval-voting-regression-bench",
             },
             {
-              name: "polkadot-statement-distribution",
+              name: "pezkuwi-statement-distribution",
               bench: "statement-distribution-regression-bench",
             },
             {
-              name: "polkadot-node-core-dispute-coordinator",
+              name: "pezkuwi-node-core-dispute-coordinator",
               bench: "dispute-coordinator-regression-bench",
             },
           ]

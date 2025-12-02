@@ -3,11 +3,11 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: Current release/rc version in format polkadot-stableYYMM
+        description: Current release/rc version in format pezkuwi-stableYYMM
   workflow_call:
     inputs:
       version:
-        description: Current release/rc version in format polkadot-stableYYMM
+        description: Current release/rc version in format pezkuwi-stableYYMM
         type: string
 
 jobs:
@@ -16,7 +16,7 @@ jobs:
     strategy:
       matrix:
         channel:
-          - name: "RelEng: Polkadot Release Coordination"
+          - name: "RelEng: Pezkuwi Release Coordination"
             room: '!cqAmzdIcbOFwrdrubV:parity.io'
     environment: release
     env:
@@ -69,14 +69,14 @@ jobs:
 
           # Get last rc tag if exists, else set it to {version}-rc1
           if [[ -z "${{ inputs.version }}" ]]; then
-            version=v$(get_polkadot_node_version_from_code)
+            version=v$(get_pezkuwi_node_version_from_code)
           else
             version=$(validate_stable_tag ${{ inputs.version }})
           fi
           echo "$version"
           echo "version=$version" >> $GITHUB_OUTPUT
 
-          last_rc=$(get_latest_rc_tag $version polkadot)
+          last_rc=$(get_latest_rc_tag $version pezkuwi)
 
           if [ -n "$last_rc" ]; then
             suffix=$(increment_rc_tag $last_rc)
@@ -103,4 +103,4 @@ jobs:
           access_token: ${{ secrets.RELEASENOTES_MATRIX_V2_ACCESS_TOKEN }}
           server: m.parity.io
           message: |
-            Release process for polkadot ${{ steps.compute_tag.outputs.new_tag }} has been started.<br/>
+            Release process for pezkuwi ${{ steps.compute_tag.outputs.new_tag }} has been started.<br/>

@@ -1,5 +1,5 @@
 name: Binary Build
-# This workflow can be used to build a binary like polkadot + workers, omninode or polkadot-teyrchain
+# This workflow can be used to build a binary like pezkuwi + workers, omninode or pezkuwi-teyrchain
 # from any branch with release or profuction profile to be later used for testing.
 # ⚠️ IT should not be used for release purposes! 
 
@@ -8,10 +8,10 @@ on:
     inputs:
       binary:
         required: true
-        default: "polkadot"
+        default: "pezkuwi"
         description: "The binary to build"
       package:
-        description: Package to be built, can be polkadot, polkadot-teyrchain-bin, polkadot-omni-node etc.
+        description: Package to be built, can be pezkuwi, pezkuwi-teyrchain-bin, pezkuwi-omni-node etc.
         required: true
         type: string
       profile:
@@ -45,7 +45,7 @@ jobs:
         id: set_runner
         shell: bash
         run: |
-          if [[ "${{ inputs.binary }}" == "polkadot-teyrchain" ]]; then
+          if [[ "${{ inputs.binary }}" == "pezkuwi-teyrchain" ]]; then
             echo "RUNNER=parity-large" >> $GITHUB_OUTPUT
           else
             echo "RUNNER=ubuntu-latest" >> $GITHUB_OUTPUT
@@ -64,8 +64,8 @@ jobs:
         run: |
           git config --global --add safe.directory "${GITHUB_WORKSPACE}" #avoid "detected dubious ownership" error
           PROFILE=${{ inputs.profile }}
-          if [ "${{ inputs.binary }}" = "polkadot" ]; then
-              for binary in polkadot polkadot-prepare-worker polkadot-execute-worker; do
+          if [ "${{ inputs.binary }}" = "pezkuwi" ]; then
+              for binary in pezkuwi pezkuwi-prepare-worker pezkuwi-execute-worker; do
                   echo "Building $binary with profile $PROFILE and features ${{ inputs.features }}"
                   ./.github/scripts/release/build-linux-release.sh $binary ${{ inputs.package }} ${{ inputs.features }}
               done

@@ -333,7 +333,7 @@ jobs:
           mv ./target/release/solochain-template-node ./artifacts/.
           echo -n "${{ needs.preflight.outputs.SOURCE_REF_SLUG }}" > ./artifacts/VERSION
           echo -n "${{ needs.preflight.outputs.SOURCE_REF_SLUG }}-${COMMIT_SHA}" > ./artifacts/EXTRATAG
-          echo "polkadot-test-malus = $(cat ./artifacts/VERSION) (EXTRATAG = $(cat ./artifacts/EXTRATAG))"
+          echo "pezkuwi-test-malus = $(cat ./artifacts/VERSION) (EXTRATAG = $(cat ./artifacts/EXTRATAG))"
 
       - name: tar
         run: tar -cvf artifacts.tar artifacts
@@ -387,7 +387,7 @@ jobs:
   #
   #
   #
-  prepare-polkadot-zombienet-artifacts:
+  prepare-pezkuwi-zombienet-artifacts:
     needs: [preflight]
     runs-on: ${{ needs.preflight.outputs.RUNNER }}
     timeout-minutes: 60
@@ -607,7 +607,7 @@ jobs:
   #
   #
   # unlike other images, bridges+zombienet image is based on Zombienet image that pulls required binaries
-  # from other fresh images (polkadot and cumulus)
+  # from other fresh images (pezkuwi and cumulus)
   build-push-image-bridges-zombienet-tests:
     needs:
       [
@@ -657,7 +657,7 @@ jobs:
   #
   #
   #
-  build-push-image-polkadot-teyrchain-debug:
+  build-push-image-pezkuwi-teyrchain-debug:
     needs: [preflight, build-linux-stable-cumulus]
     runs-on: ${{ needs.preflight.outputs.RUNNER_DEFAULT }}
     timeout-minutes: 60
@@ -675,8 +675,8 @@ jobs:
       - name: build and push image
         uses: ./.github/actions/build-push-image
         with:
-          image-name: "polkadot-teyrchain-debug"
-          dockerfile: "docker/dockerfiles/polkadot-teyrchain/polkadot-teyrchain-debug_unsigned_injected.Dockerfile"
+          image-name: "pezkuwi-teyrchain-debug"
+          dockerfile: "docker/dockerfiles/pezkuwi-teyrchain/pezkuwi-teyrchain-debug_unsigned_injected.Dockerfile"
           username: ${{ secrets.PEZKUWI_DOCKERHUB_USERNAME }}
           password: ${{ secrets.PEZKUWI_DOCKERHUB_PASSWORD }}
 
