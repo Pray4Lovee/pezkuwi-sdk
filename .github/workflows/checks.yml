@@ -36,9 +36,7 @@ jobs:
       - name: script
         id: required
         run: |
-          cargo clippy --all-targets --locked --workspace --quiet
-          # Note: --all-features disabled due to static_assertions conditional compile issue
-          # cargo clippy --all-targets --all-features --locked --workspace --quiet
+          cargo clippy --all-targets --all-features --locked --workspace --quiet
 
   check-try-runtime:
     runs-on: ${{ needs.preflight.outputs.RUNNER }}
