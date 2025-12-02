@@ -32,7 +32,8 @@ crates.sort()
 
 target_group = int(sys.argv[1]) - 1
 groups_total = int(sys.argv[2])
-disable_forklift = bool(sys.argv[3] if len(sys.argv) > 3 else False)
+# Forklift is disabled by default since Pezkuwi doesn't have access to Parity's GCP infrastructure
+disable_forklift = True
 
 print(f"Target group: {target_group}, Total groups: {groups_total}, Disable forklift: {disable_forklift}", file=sys.stderr)
 
