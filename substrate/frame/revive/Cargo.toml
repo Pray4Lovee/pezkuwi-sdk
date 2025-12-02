@@ -38,8 +38,8 @@ polkavm = { version = "0.29.1", default-features = false }
 polkavm-common = { version = "0.29.0", default-features = false, features = [
 	"alloc",
 ] }
-rand = { workspace = true, optional = true }
-rand_pcg = { workspace = true, optional = true }
+rand = { workspace = true }
+rand_pcg = { workspace = true }
 revm = { workspace = true }
 rlp = { workspace = true }
 scale-info = { features = ["derive"], workspace = true }
@@ -118,7 +118,7 @@ std = [
 	"pallet-utility/std",
 	"polkavm-common/std",
 	"polkavm/std",
-	"rand?/std",
+	"rand/std",
 	"revm/std",
 	"ripemd/std",
 	"rlp/std",
@@ -150,8 +150,6 @@ runtime-benchmarks = [
 	"pallet-timestamp/runtime-benchmarks",
 	"pallet-transaction-payment/runtime-benchmarks",
 	"pallet-utility/runtime-benchmarks",
-	"rand",
-	"rand_pcg",
 	"sp-consensus-aura",
 	"sp-consensus-babe",
 	"sp-consensus-slots",
