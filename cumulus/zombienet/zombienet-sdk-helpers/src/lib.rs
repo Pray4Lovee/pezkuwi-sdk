@@ -34,6 +34,11 @@ use zombienet_sdk::{
 
 use zombienet_configuration::types::AssetLocation;
 
+// Type aliases for Pezkuwi SDK terminology compatibility
+// These map external crate types to our internal naming convention
+// Note: PolkadotExtrinsicParamsBuilder requires a generic type parameter
+type PezkuwiExtrinsicParamsBuilder<T> = PolkadotExtrinsicParamsBuilder<T>;
+
 // Maximum number of blocks to wait for a session change.
 // If it does not arrive for whatever reason, we should not wait forever.
 const WAIT_MAX_BLOCKS_FOR_SESSION: u32 = 50;
@@ -347,7 +352,7 @@ pub async fn submit_extrinsic_and_wait_for_finalization_success<S: Signer<Polkad
 	call: &DynamicPayload,
 	signer: &S,
 ) -> Result<(), anyhow::Error> {
-	let extensions = PezkuwiExtrinsicParamsBuilder::new().immortal().build();
+	let extensions = PezkuwiExtrinsicParamsBuilder::<PolkadotConfig>::new().immortal().build();
 
 	let mut tx = client
 		.tx()
@@ -452,7 +457,8 @@ pub async fn runtime_upgrade(
 	wasm_path: &str,
 ) -> Result<(), anyhow::Error> {
 	log::info!("Performing runtime upgrade for teyrchain {}, wasm: {}", para_id, wasm_path);
-	let para = network.teyrchain(para_id).unwrap();
+	// Note: Using external zombienet_sdk API which uses 'parachain' terminology
+	let para = network.parachain(para_id).unwrap();
 
 	para.perform_runtime_upgrade(node, RuntimeUpgradeOptions::new(AssetLocation::from(wasm_path)))
 		.await
