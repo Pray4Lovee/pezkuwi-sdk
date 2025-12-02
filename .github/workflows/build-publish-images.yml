@@ -356,11 +356,11 @@ jobs:
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
       - name: build
         run: |
-          cargo nextest --manifest-path polkadot/zombienet-sdk-tests/Cargo.toml archive --locked --features zombie-metadata,zombie-ci --archive-file polkadot-zombienet-tests.tar.zst
+          cargo nextest --manifest-path pezkuwi/zombienet-sdk-tests/Cargo.toml archive --locked --features zombie-metadata,zombie-ci --archive-file pezkuwi-zombienet-tests.tar.zst
       - name: pack artifacts
         run: |
           mkdir -p artifacts
-          cp polkadot-zombienet-tests.tar.zst ./artifacts
+          cp pezkuwi-zombienet-tests.tar.zst ./artifacts
 
       - name: tar
         run: tar -cvf artifacts.tar artifacts
@@ -460,7 +460,7 @@ jobs:
   #
   #
   #
-  build-push-image-polkadot-debug:
+  build-push-image-pezkuwi-debug:
     needs: [preflight, build-linux-stable]
     runs-on: ${{ needs.preflight.outputs.RUNNER_DEFAULT }}
     timeout-minutes: 60
@@ -478,8 +478,8 @@ jobs:
       - name: build and push image
         uses: ./.github/actions/build-push-image
         with:
-          image-name: "polkadot-debug"
-          dockerfile: "docker/dockerfiles/polkadot/polkadot_injected_debug.Dockerfile"
+          image-name: "pezkuwi-debug"
+          dockerfile: "docker/dockerfiles/pezkuwi/pezkuwi_injected_debug.Dockerfile"
           username: ${{ secrets.PEZKUWI_DOCKERHUB_USERNAME }}
           password: ${{ secrets.PEZKUWI_DOCKERHUB_PASSWORD }}
 
