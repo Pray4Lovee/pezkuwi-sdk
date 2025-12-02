@@ -15,7 +15,7 @@
 #
 # Requirements:
 # - GitHub CLI (gh) must be installed and authenticated
-# - Must be run from polkadot-sdk repository root
+# - Must be run from pezkuwi-sdk repository root
 # - Target branch must have corresponding PR with CI enabled
 
 # Exit on error

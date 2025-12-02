@@ -1,6 +1,6 @@
 """
 This script is used to turn the JSON report produced by the revive differential tests tool into an
-easy to consume markdown document for the purpose of reporting this information in the Polkadot SDK
+easy to consume markdown document for the purpose of reporting this information in the Pezkuwi SDK
 CI. The full models used in the JSON report can be found in the revive differential tests repo and
 the models used in this script are just a partial reproduction of the full report models.
 """
@@ -79,7 +79,7 @@ def path_relative_to_resolc_compiler_test_directory(path: str) -> str:
     Given a path, this function returns the path relative to the resolc-compiler-test directory. The
     following is an example of an input and an output:
 
-    Input: ~/polkadot-sdk/revive-differential-tests/resolc-compiler-tests/fixtures/solidity/test.json
+    Input: ~/pezkuwi-sdk/revive-differential-tests/resolc-compiler-tests/fixtures/solidity/test.json
     Output: test.json
     """
 

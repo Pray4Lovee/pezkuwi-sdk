@@ -27,11 +27,11 @@ check_workspace = importlib.import_module("check-workspace")
 
 README_TEMPLATE = """<div align="center">
 
-<img src="https://raw.githubusercontent.com/paritytech/polkadot-sdk/master/docs/images/Polkadot_Logo_Horizontal_Pink_BlackOnWhite.png" alt="Polkadot logo" width="200">
+<img src="https://raw.githubusercontent.com/pezkuwichain/pezkuwi-sdk/master/docs/images/Pezkuwi_Logo.png" alt="Pezkuwi logo" width="200">
 
 # {name}
 
-This crate is part of the [Polkadot SDK](https://github.com/pezkuwichain/pezkuwi-sdk/).
+This crate is part of the [Pezkuwi SDK](https://github.com/pezkuwichain/pezkuwi-sdk/).
 
 </div>
 
@@ -41,9 +41,9 @@ This crate is part of the [Polkadot SDK](https://github.com/pezkuwichain/pezkuwi
 
 ## Additional Resources
 
-In order to learn about Polkadot SDK, head over to the [Polkadot SDK Developer Documentation](https://paritytech.github.io/polkadot-sdk/master/polkadot_sdk_docs/index.html).
+In order to learn about Pezkuwi SDK, head over to the [Pezkuwi SDK Developer Documentation](https://pezkuwichain.github.io/pezkuwi-sdk/master/pezkuwi_sdk_docs/index.html).
 
-To learn about Polkadot, visit [polkadot.com](https://pezkuwichain.io/).
+To learn about Pezkuwi, visit [pezkuwichain.io](https://pezkuwichain.io/).
 
 ## License
 
@@ -53,7 +53,7 @@ This crate is licensed with {license}.
 VERSION_TEMPLATE = """
 ## Version
 
-This version of `{name}` is associated with Polkadot {sdk_version} release.
+This version of `{name}` is associated with Pezkuwi {sdk_version} release.
 """
 
 

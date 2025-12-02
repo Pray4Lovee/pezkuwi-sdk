@@ -3,7 +3,7 @@ Script to deny Git dependencies in the Cargo workspace. Can be passed one option
 root folder. If not provided, it will use the cwd.
 
 ## Usage
-	python3 .github/scripts/deny-git-deps.py polkadot-sdk
+	python3 .github/scripts/deny-git-deps.py pezkuwi-sdk
 """
 
 import os
@@ -13,7 +13,7 @@ from cargo_workspace import Workspace, DependencyLocation
 
 # Some crates are allowed to have git dependencies until we fix them.
 ALLOWED_GIT_DEPS = {
-	'subwasmlib': ['polkadot-zombienet-sdk-tests'],
+	'subwasmlib': ['pezkuwi-zombienet-sdk-tests'],
 }
 
 root = sys.argv[1] if len(sys.argv) > 1 else os.getcwd()

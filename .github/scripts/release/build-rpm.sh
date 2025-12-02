@@ -28,13 +28,13 @@ cp "${SOURCE_DIR}/${PRODUCT}" "${STAGING_DIR}/usr/bin/"
 cp "${SOURCE_DIR}/${PRODUCT}-prepare-worker" "${STAGING_DIR}/usr/lib/${PRODUCT}/"
 cp "${SOURCE_DIR}/${PRODUCT}-execute-worker" "${STAGING_DIR}/usr/lib/${PRODUCT}/"
 # MODIFIED PATH: Prefixed with the subdirectory name
-cp "polkadot/scripts/packaging/polkadot.service" "${STAGING_DIR}/usr/lib/systemd/system/"
+cp "pezkuwi/scripts/packaging/pezkuwi.service" "${STAGING_DIR}/usr/lib/systemd/system/"
 
 # Create default config file
-echo 'POLKADOT_CLI_ARGS=""' > "$STAGING_DIR/etc/default/polkadot"
+echo 'PEZKUWI_CLI_ARGS=""' > "$STAGING_DIR/etc/default/pezkuwi"
 
 # 3. Use fpm to package the staging directory into an RPM
-# fpm config file .fpm is located in the polkadot-sdk root directory
+# fpm config file .fpm is located in the pezkuwi-sdk root directory
 echo "🎁 Running fpm to create the RPM package..."
 fpm \
   -s dir \
@@ -43,15 +43,15 @@ fpm \
   -v "$VERSION" \
   -a "$ARCH" \
   --rpm-os linux \
-  --description "Polkadot Node" \
+  --description "Pezkuwi Node" \
   --license "GPL-3.0-only" \
-  --url "https://polkadot.network/" \
+  --url "https://pezkuwi.network/" \
   --depends systemd \
   --depends shadow-utils \
-  --after-install "polkadot/scripts/packaging/rpm-maintainer-scripts/rpm-postinst.sh" \
-  --before-remove "polkadot/scripts/packaging/rpm-maintainer-scripts/rpm-preun.sh" \
-  --after-remove "polkadot/scripts/packaging/rpm-maintainer-scripts/rpm-postun.sh" \
-  --config-files "/etc/default/polkadot" \
+  --after-install "pezkuwi/scripts/packaging/rpm-maintainer-scripts/rpm-postinst.sh" \
+  --before-remove "pezkuwi/scripts/packaging/rpm-maintainer-scripts/rpm-preun.sh" \
+  --after-remove "pezkuwi/scripts/packaging/rpm-maintainer-scripts/rpm-postun.sh" \
+  --config-files "/etc/default/pezkuwi" \
   -C "$STAGING_DIR" \
   .
 

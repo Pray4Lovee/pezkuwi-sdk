@@ -15,7 +15,7 @@ Add labels to your PR without requiring maintainer intervention:
 ```
 
 **Available Labels:**
-The bot dynamically fetches all current labels from the repository, ensuring it's always up-to-date. For label meanings and descriptions, see the [official label documentation](https://docs.pezkuwichain.io/labels/doc_polkadot-sdk.html).
+The bot dynamically fetches all current labels from the repository, ensuring it's always up-to-date. For label meanings and descriptions, see the [official label documentation](https://docs.pezkuwichain.io/labels/doc_pezkuwi-sdk.html).
 
 **Features**:
 - **Auto-Correction**: Automatically fixes high-confidence typos (e.g., `T1-FRAM` → `T1-FRAME`)
