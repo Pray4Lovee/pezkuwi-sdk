@@ -669,7 +669,6 @@ parameter_types! {
 }
 
 impl pallet_validator_pool::Config for Runtime {
-	type RuntimeEvent = RuntimeEvent;
 	type WeightInfo = pallet_validator_pool::weights::SubstrateWeight<Runtime>;
 	type Randomness = pallet_babe::RandomnessFromOneEpochAgo<Runtime>;
 	type TrustSource = StubTrustProvider;
