@@ -1068,11 +1068,11 @@ impl InstanceFilter<RuntimeCall> for ProxyType {
 			},
 			ProxyType::Auction => matches!(
 				c,
-				RuntimeCall::Auctions { .. }
-					| RuntimeCall::Crowdloan { .. }
-					| RuntimeCall::Registrar { .. }
-					| RuntimeCall::Multisig(..)
-					| RuntimeCall::Slots { .. }
+				RuntimeCall::Auctions { .. } |
+					RuntimeCall::Crowdloan { .. } |
+					RuntimeCall::Registrar { .. } |
+					RuntimeCall::Multisig(..) |
+					RuntimeCall::Slots { .. }
 			),
 			ProxyType::OnDemandOrdering => matches!(c, RuntimeCall::OnDemandAssignmentProvider(..)),
 		}
