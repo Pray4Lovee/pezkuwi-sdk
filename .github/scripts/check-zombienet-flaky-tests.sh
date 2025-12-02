@@ -38,7 +38,7 @@ while IFS= read -r line || [[ -n "$line" ]]; do
         echo "❌ Line $line_num: Missing required issue number" >&2
         echo "   Entry: '$line'" >&2
         echo "   Expected format: <test-name>:<issue-number>" >&2
-        echo "   Example: zombienet-polkadot-test-name:1234" >&2
+        echo "   Example: zombienet-pezkuwi-test-name:1234" >&2
         has_errors=true
         continue
     fi

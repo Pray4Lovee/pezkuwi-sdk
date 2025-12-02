@@ -38,13 +38,13 @@ def fetch_repo_labels():
     """Fetch current labels from the GitHub repository"""
     try:
         # Use GitHub API to get current labels
-        repo_owner = os.environ.get('GITHUB_REPOSITORY_OWNER', 'paritytech')
-        repo_name = os.environ.get('GITHUB_REPOSITORY', 'paritytech/polkadot-sdk').split('/')[-1]
+        repo_owner = os.environ.get('GITHUB_REPOSITORY_OWNER', 'pezkuwichain')
+        repo_name = os.environ.get('GITHUB_REPOSITORY', 'pezkuwichain/pezkuwi-sdk').split('/')[-1]
 
         api_url = f"https://api.github.com/repos/{repo_owner}/{repo_name}/labels?per_page=100"
 
         # Add GitHub token if available for higher rate limits
-        headers = {'User-Agent': 'polkadot-sdk-cmd-bot'}
+        headers = {'User-Agent': 'pezkuwi-sdk-cmd-bot'}
         github_token = os.environ.get('GITHUB_TOKEN')
         if github_token:
             headers['Authorization'] = f'token {github_token}'
@@ -74,12 +74,12 @@ def check_pr_status(pr_number):
             print_and_log("Error: GITHUB_TOKEN not set, cannot verify PR status")
             return False  # Prevent labeling if we can't check status
 
-        repo_owner = os.environ.get('GITHUB_REPOSITORY_OWNER', 'paritytech')
-        repo_name = os.environ.get('GITHUB_REPOSITORY', 'paritytech/polkadot-sdk').split('/')[-1]
+        repo_owner = os.environ.get('GITHUB_REPOSITORY_OWNER', 'pezkuwichain')
+        repo_name = os.environ.get('GITHUB_REPOSITORY', 'pezkuwichain/pezkuwi-sdk').split('/')[-1]
         api_url = f"https://api.github.com/repos/{repo_owner}/{repo_name}/pulls/{pr_number}"
 
         headers = {
-            'User-Agent': 'polkadot-sdk-cmd-bot',
+            'User-Agent': 'pezkuwi-sdk-cmd-bot',
             'Authorization': f'token {github_token}',
             'Accept': 'application/vnd.github.v3+json'
         }
@@ -171,7 +171,7 @@ def auto_correct_labels(invalid_labels, valid_labels, auto_correct_threshold=0.8
 
     return corrections, suggestions
 
-parser = argparse.ArgumentParser(prog="/cmd ", description='A command runner for polkadot-sdk repo', add_help=False)
+parser = argparse.ArgumentParser(prog="/cmd ", description='A command runner for pezkuwi-sdk repo', add_help=False)
 parser.add_argument('--help', action=_HelpAction, help='help for help if you need some help')  # help for help
 for arg, config in common_args.items():
     parser.add_argument(arg, **config)
@@ -292,7 +292,7 @@ def validate_and_auto_correct_labels(input_labels, valid_labels):
                 error_parts.append(f"  • '{label}' → no valid suggestions available")
 
         error_parts.append("")
-        error_parts.append("For all available labels, see: https://paritytech.github.io/labels/doc_polkadot-sdk.html")
+        error_parts.append("For all available labels, see: https://docs.pezkuwichain.io/labels/doc_pezkuwi-sdk.html")
 
         error_msg = "\n".join(error_parts)
         raise ValueError(error_msg)
@@ -311,7 +311,7 @@ label_example = '''**Examples**:
 
 Labels are fetched dynamically from the repository.
 Typos are auto-corrected when confidence is high (>80% similarity).
-For label meanings, see: https://paritytech.github.io/labels/doc_polkadot-sdk.html
+For label meanings, see: https://docs.pezkuwichain.io/labels/doc_pezkuwi-sdk.html
 '''
 
 parser_label = subparsers.add_parser('label', help='Add labels to PR (self-service for contributors)', epilog=label_example, formatter_class=argparse.RawDescriptionHelpFormatter)

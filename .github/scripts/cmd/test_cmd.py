@@ -17,27 +17,27 @@ mock_runtimes_matrix = [
         "bench_flags": "--flag1 --flag2"
     },
     {
-        "name": "westend",
-        "package": "westend-runtime",
-        "path": "polkadot/runtime/westend",
-        "header": "polkadot/file_header.txt",
-        "template": "polkadot/xcm/pallet-xcm-benchmarks/template.hbs",
+        "name": "zagros",
+        "package": "zagros-runtime",
+        "path": "pezkuwi/runtime/zagros",
+        "header": "pezkuwi/file_header.txt",
+        "template": "pezkuwi/xcm/pallet-xcm-benchmarks/template.hbs",
         "bench_features": "runtime-benchmarks",
         "bench_flags": "--flag3 --flag4"
     },
     {
-        "name": "rococo",
-        "package": "rococo-runtime",
-        "path": "polkadot/runtime/rococo",
-        "header": "polkadot/file_header.txt",
-        "template": "polkadot/xcm/pallet-xcm-benchmarks/template.hbs",
+        "name": "pezkuwichain",
+        "package": "pezkuwichain-runtime",
+        "path": "pezkuwi/runtime/pezkuwichain",
+        "header": "pezkuwi/file_header.txt",
+        "template": "pezkuwi/xcm/pallet-xcm-benchmarks/template.hbs",
         "bench_features": "runtime-benchmarks",
         "bench_flags": ""
     },
     {
-        "name": "asset-hub-westend",
-        "package": "asset-hub-westend-runtime",
-        "path": "cumulus/parachains/runtimes/assets/asset-hub-westend",
+        "name": "asset-hub-zagros",
+        "package": "asset-hub-zagros-runtime",
+        "path": "cumulus/teyrchains/runtimes/assets/asset-hub-zagros",
         "header": "cumulus/file_header.txt",
         "template": "cumulus/templates/xcm-bench-template.hbs",
         "bench_features": "runtime-benchmarks",
@@ -104,9 +104,9 @@ class TestCmd(unittest.TestCase):
 
         self.mock_popen.return_value.read.side_effect = [
             "pallet_balances\npallet_staking\npallet_something\n",  # Output for dev runtime
-            "pallet_balances\npallet_staking\npallet_something\n",  # Output for westend runtime
-            "pallet_staking\npallet_something\n",                   # Output for rococo runtime - no pallet here
-            "pallet_balances\npallet_staking\npallet_something\n",  # Output for asset-hub-westend runtime
+            "pallet_balances\npallet_staking\npallet_something\n",  # Output for zagros runtime
+            "pallet_staking\npallet_something\n",                   # Output for pezkuwichain runtime - no pallet here
+            "pallet_balances\npallet_staking\npallet_something\n",  # Output for asset-hub-zagros runtime
             "./substrate/frame/balances/Cargo.toml\n",                # Mock manifest path for dev -> pallet_balances
         ]
 
@@ -118,9 +118,9 @@ class TestCmd(unittest.TestCase):
             expected_calls = [
                 # Build calls
                 call("forklift cargo build -q -p kitchensink-runtime --profile production --features=runtime-benchmarks"),
-                call("forklift cargo build -q -p westend-runtime --profile production --features=runtime-benchmarks"),
-                call("forklift cargo build -q -p rococo-runtime --profile production --features=runtime-benchmarks"),
-                call("forklift cargo build -q -p asset-hub-westend-runtime --profile production --features=runtime-benchmarks"),
+                call("forklift cargo build -q -p zagros-runtime --profile production --features=runtime-benchmarks"),
+                call("forklift cargo build -q -p pezkuwichain-runtime --profile production --features=runtime-benchmarks"),
+                call("forklift cargo build -q -p asset-hub-zagros-runtime --profile production --features=runtime-benchmarks"),
 
                 call(get_mock_bench_output(
                     runtime='kitchensink',
@@ -131,17 +131,17 @@ class TestCmd(unittest.TestCase):
                     template="substrate/.maintain/frame-weight-template.hbs"
                 )),
                 call(get_mock_bench_output(
-                    runtime='westend',
+                    runtime='zagros',
                     pallets='pallet_balances',
-                    output_path='./polkadot/runtime/westend/src/weights',
-                    header=os.path.abspath('polkadot/file_header.txt'),
+                    output_path='./pezkuwi/runtime/zagros/src/weights',
+                    header=os.path.abspath('pezkuwi/file_header.txt'),
                     bench_flags='--flag3 --flag4'
                 )),
-                # skips rococo benchmark
+                # skips pezkuwichain benchmark
                 call(get_mock_bench_output(
-                    runtime='asset-hub-westend',
+                    runtime='asset-hub-zagros',
                     pallets='pallet_balances',
-                    output_path='./cumulus/parachains/runtimes/assets/asset-hub-westend/src/weights',
+                    output_path='./cumulus/teyrchains/runtimes/assets/asset-hub-zagros/src/weights',
                     header=os.path.abspath('cumulus/file_header.txt'),
                     bench_flags='--flag7 --flag8'
                 )),
@@ -151,16 +151,16 @@ class TestCmd(unittest.TestCase):
     def test_bench_command_normal_execution(self):
         self.mock_parse_args.return_value = (argparse.Namespace(
             command='bench-omni',
-            runtime=['westend'],
+            runtime=['zagros'],
             pallet=['pallet_balances', 'pallet_staking'],
             fail_fast=True,
             quiet=False,
             clean=False,
             image=None
         ), [])
-        header_path = os.path.abspath('polkadot/file_header.txt')
+        header_path = os.path.abspath('pezkuwi/file_header.txt')
         self.mock_popen.return_value.read.side_effect = [
-            "pallet_balances\npallet_staking\npallet_something\n",  # Output for westend runtime
+            "pallet_balances\npallet_staking\npallet_something\n",  # Output for zagros runtime
         ]
 
         with patch('sys.exit') as mock_exit:
@@ -170,20 +170,20 @@ class TestCmd(unittest.TestCase):
 
             expected_calls = [
                 # Build calls
-                call("forklift cargo build -q -p westend-runtime --profile production --features=runtime-benchmarks"),
+                call("forklift cargo build -q -p zagros-runtime --profile production --features=runtime-benchmarks"),
 
-                # Westend runtime calls
+                # Zagros runtime calls
                 call(get_mock_bench_output(
-                    runtime='westend',
+                    runtime='zagros',
                     pallets='pallet_balances',
-                    output_path='./polkadot/runtime/westend/src/weights',
+                    output_path='./pezkuwi/runtime/zagros/src/weights',
                     header=header_path,
                     bench_flags='--flag3 --flag4'
                 )),
                 call(get_mock_bench_output(
-                    runtime='westend',
+                    runtime='zagros',
                     pallets='pallet_staking',
-                    output_path='./polkadot/runtime/westend/src/weights',
+                    output_path='./pezkuwi/runtime/zagros/src/weights',
                     header=header_path,
                     bench_flags='--flag3 --flag4'
                 )),
@@ -194,16 +194,16 @@ class TestCmd(unittest.TestCase):
     def test_bench_command_normal_execution_xcm(self):
         self.mock_parse_args.return_value = (argparse.Namespace(
             command='bench-omni',
-            runtime=['westend'],
+            runtime=['zagros'],
             pallet=['pallet_xcm_benchmarks::generic'],
             fail_fast=True,
             quiet=False,
             clean=False,
             image=None
         ), [])
-        header_path = os.path.abspath('polkadot/file_header.txt')
+        header_path = os.path.abspath('pezkuwi/file_header.txt')
         self.mock_popen.return_value.read.side_effect = [
-            "pallet_balances\npallet_staking\npallet_something\npallet_xcm_benchmarks::generic\n",  # Output for westend runtime
+            "pallet_balances\npallet_staking\npallet_something\npallet_xcm_benchmarks::generic\n",  # Output for zagros runtime
         ]
 
         with patch('sys.exit') as mock_exit:
@@ -213,16 +213,16 @@ class TestCmd(unittest.TestCase):
 
             expected_calls = [
                 # Build calls
-                call("forklift cargo build -q -p westend-runtime --profile production --features=runtime-benchmarks"),
+                call("forklift cargo build -q -p zagros-runtime --profile production --features=runtime-benchmarks"),
 
-                # Westend runtime calls
+                # Zagros runtime calls
                 call(get_mock_bench_output(
-                    runtime='westend',
+                    runtime='zagros',
                     pallets='pallet_xcm_benchmarks::generic',
-                    output_path='./polkadot/runtime/westend/src/weights/xcm',
+                    output_path='./pezkuwi/runtime/zagros/src/weights/xcm',
                     header=header_path,
                     bench_flags='--flag3 --flag4',
-                    template="polkadot/xcm/pallet-xcm-benchmarks/template.hbs"
+                    template="pezkuwi/xcm/pallet-xcm-benchmarks/template.hbs"
                 )),
             ]
             self.mock_system.assert_has_calls(expected_calls, any_order=True)
@@ -230,7 +230,7 @@ class TestCmd(unittest.TestCase):
     def test_bench_command_two_runtimes_two_pallets(self):
         self.mock_parse_args.return_value = (argparse.Namespace(
             command='bench-omni',
-            runtime=['westend', 'rococo'],
+            runtime=['zagros', 'pezkuwichain'],
             pallet=['pallet_balances', 'pallet_staking'],
             fail_fast=True,
             quiet=False,
@@ -238,47 +238,47 @@ class TestCmd(unittest.TestCase):
             image=None
         ), [])
         self.mock_popen.return_value.read.side_effect = [
-            "pallet_staking\npallet_balances\n",  # Output for westend runtime
-            "pallet_staking\npallet_balances\n",  # Output for rococo runtime
+            "pallet_staking\npallet_balances\n",  # Output for zagros runtime
+            "pallet_staking\npallet_balances\n",  # Output for pezkuwichain runtime
         ]
 
         with patch('sys.exit') as mock_exit:
             import cmd
             cmd.main()
             mock_exit.assert_not_called()
-            header_path = os.path.abspath('polkadot/file_header.txt')
+            header_path = os.path.abspath('pezkuwi/file_header.txt')
 
             expected_calls = [
                 # Build calls
-                call("forklift cargo build -q -p westend-runtime --profile production --features=runtime-benchmarks"),
-                call("forklift cargo build -q -p rococo-runtime --profile production --features=runtime-benchmarks"),
-                # Westend runtime calls
+                call("forklift cargo build -q -p zagros-runtime --profile production --features=runtime-benchmarks"),
+                call("forklift cargo build -q -p pezkuwichain-runtime --profile production --features=runtime-benchmarks"),
+                # Zagros runtime calls
                 call(get_mock_bench_output(
-                    runtime='westend',
+                    runtime='zagros',
                     pallets='pallet_staking',
-                    output_path='./polkadot/runtime/westend/src/weights',
+                    output_path='./pezkuwi/runtime/zagros/src/weights',
                     header=header_path,
                     bench_flags='--flag3 --flag4'
                 )),
                 call(get_mock_bench_output(
-                    runtime='westend',
+                    runtime='zagros',
                     pallets='pallet_balances',
-                    output_path='./polkadot/runtime/westend/src/weights',
+                    output_path='./pezkuwi/runtime/zagros/src/weights',
                     header=header_path,
                     bench_flags='--flag3 --flag4'
                 )),
-                # Rococo runtime calls
+                # Pezkuwichain runtime calls
                 call(get_mock_bench_output(
-                    runtime='rococo',
+                    runtime='pezkuwichain',
                     pallets='pallet_staking',
-                    output_path='./polkadot/runtime/rococo/src/weights',
+                    output_path='./pezkuwi/runtime/pezkuwichain/src/weights',
                     header=header_path,
                     bench_flags=''
                 )),
                 call(get_mock_bench_output(
-                    runtime='rococo',
+                    runtime='pezkuwichain',
                     pallets='pallet_balances',
-                    output_path='./polkadot/runtime/rococo/src/weights',
+                    output_path='./pezkuwi/runtime/pezkuwichain/src/weights',
                     header=header_path,
                     bench_flags=''
                 )),
@@ -325,7 +325,7 @@ class TestCmd(unittest.TestCase):
     def test_bench_command_one_cumulus_runtime(self):
         self.mock_parse_args.return_value = (argparse.Namespace(
             command='bench-omni',
-            runtime=['asset-hub-westend'],
+            runtime=['asset-hub-zagros'],
             pallet=['pallet_assets'],
             fail_fast=True,
             quiet=False,
@@ -333,7 +333,7 @@ class TestCmd(unittest.TestCase):
             image=None
         ), [])
         self.mock_popen.return_value.read.side_effect = [
-            "pallet_assets\n",  # Output for asset-hub-westend runtime
+            "pallet_assets\n",  # Output for asset-hub-zagros runtime
         ]
         header_path = os.path.abspath('cumulus/file_header.txt')
 
@@ -344,12 +344,12 @@ class TestCmd(unittest.TestCase):
 
             expected_calls = [
                 # Build calls
-                call("forklift cargo build -q -p asset-hub-westend-runtime --profile production --features=runtime-benchmarks"),
-                # Asset-hub-westend runtime calls
+                call("forklift cargo build -q -p asset-hub-zagros-runtime --profile production --features=runtime-benchmarks"),
+                # Asset-hub-zagros runtime calls
                 call(get_mock_bench_output(
-                    runtime='asset-hub-westend',
+                    runtime='asset-hub-zagros',
                     pallets='pallet_assets',
-                    output_path='./cumulus/parachains/runtimes/assets/asset-hub-westend/src/weights',
+                    output_path='./cumulus/teyrchains/runtimes/assets/asset-hub-zagros/src/weights',
                     header=header_path,
                     bench_flags='--flag7 --flag8'
                 )),
@@ -360,7 +360,7 @@ class TestCmd(unittest.TestCase):
     def test_bench_command_one_cumulus_runtime_xcm(self):
         self.mock_parse_args.return_value = (argparse.Namespace(
             command='bench-omni',
-            runtime=['asset-hub-westend'],
+            runtime=['asset-hub-zagros'],
             pallet=['pallet_xcm_benchmarks::generic', 'pallet_assets'],
             fail_fast=True,
             quiet=False,
@@ -368,7 +368,7 @@ class TestCmd(unittest.TestCase):
             image=None
         ), [])
         self.mock_popen.return_value.read.side_effect = [
-            "pallet_assets\npallet_xcm_benchmarks::generic\n",  # Output for asset-hub-westend runtime
+            "pallet_assets\npallet_xcm_benchmarks::generic\n",  # Output for asset-hub-zagros runtime
         ]
         header_path = os.path.abspath('cumulus/file_header.txt')
 
@@ -379,20 +379,20 @@ class TestCmd(unittest.TestCase):
 
             expected_calls = [
                 # Build calls
-                call("forklift cargo build -q -p asset-hub-westend-runtime --profile production --features=runtime-benchmarks"),
-                # Asset-hub-westend runtime calls
+                call("forklift cargo build -q -p asset-hub-zagros-runtime --profile production --features=runtime-benchmarks"),
+                # Asset-hub-zagros runtime calls
                 call(get_mock_bench_output(
-                    runtime='asset-hub-westend',
+                    runtime='asset-hub-zagros',
                     pallets='pallet_xcm_benchmarks::generic',
-                    output_path='./cumulus/parachains/runtimes/assets/asset-hub-westend/src/weights/xcm',
+                    output_path='./cumulus/teyrchains/runtimes/assets/asset-hub-zagros/src/weights/xcm',
                     header=header_path,
                     bench_flags='--flag7 --flag8',
                     template="cumulus/templates/xcm-bench-template.hbs"
                 )),
                 call(get_mock_bench_output(
-                    runtime='asset-hub-westend',
+                    runtime='asset-hub-zagros',
                     pallets='pallet_assets',
-                    output_path='./cumulus/parachains/runtimes/assets/asset-hub-westend/src/weights',
+                    output_path='./cumulus/teyrchains/runtimes/assets/asset-hub-zagros/src/weights',
                     header=header_path,
                     bench_flags='--flag7 --flag8'
                 )),
