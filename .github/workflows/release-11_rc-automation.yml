@@ -61,7 +61,7 @@ jobs:
           git config --global user.signingKey "D8018FBB3F534D866A45998293C5FB5F6A367B51"
 
       - name: Compute next rc tag
-        # if: ${{ steps.get_rel_product.outputs.product == 'polkadot' }}
+        # if: ${{ steps.get_rel_product.outputs.product == 'pezkuwi' }}
         id: compute_tag
         shell: bash
         run: |

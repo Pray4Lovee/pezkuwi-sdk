@@ -41,7 +41,7 @@ env:
   KUBECONFIG: "/data/config"
   ZOMBIE_CLEANER_DISABLED: 1
 
-# only run if we have changes in [subtrate, cumulus, polkadot] directories or this workflow.
+# only run if we have changes in [substrate, cumulus, pezkuwi] directories or this workflow.
 jobs:
   isdraft:
     uses: ./.github/workflows/reusable-isdraft.yml

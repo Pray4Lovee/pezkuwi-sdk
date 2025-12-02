@@ -44,7 +44,7 @@ jobs:
         run: |
           . ./.github/scripts/common/lib.sh
 
-          version=v$(get_polkadot_node_version_from_code)
+          version=v$(get_pezkuwi_node_version_from_code)
           echo "Extracted node version: $version"
           echo "node_version=$version" >> $GITHUB_OUTPUT
 
