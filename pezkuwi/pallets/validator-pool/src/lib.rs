@@ -124,8 +124,7 @@ pub mod pallet {
 	pub struct Pallet<T>(_);
 
 	#[pallet::config]
-	pub trait Config: frame_system::Config {
-		type RuntimeEvent: From<Event<Self>> + IsType<<Self as frame_system::Config>::RuntimeEvent>;
+	pub trait Config: frame_system::Config<RuntimeEvent: From<Event<Self>>> {
 		type WeightInfo: crate::WeightInfo;
 		type Randomness: Randomness<Self::Hash, BlockNumberFor<Self>>;
 
@@ -365,7 +364,7 @@ pub mod pallet {
 				weight = weight.saturating_add(T::DbWeight::get().reads(2));
 
 				// Trigger new era if enough time has passed
-				if let Err(_) = Self::do_new_era() {
+				if Self::do_new_era().is_err() {
 					// Log error but don't panic
 				}
 				weight = weight.saturating_add(T::WeightInfo::force_new_era(Self::pool_size()));
@@ -634,36 +633,42 @@ pub mod pallet {
 		) -> DispatchResult {
 			// Skip validation during benchmarking
 			#[cfg(feature = "runtime-benchmarks")]
-			return Ok(());
-
-			match category {
-				ValidatorPoolCategory::StakeValidator { min_stake, trust_threshold } => {
-					// Check minimum stake (implementation depends on staking pallet)
-					ensure!(*min_stake >= T::MinStakeAmount::get(), Error::<T>::InsufficientStake);
-
-					// Check trust score
-					let trust_score = T::TrustSource::trust_score_of(who);
-					ensure!(trust_score >= *trust_threshold, Error::<T>::InsufficientTrustScore);
-				},
-				ValidatorPoolCategory::ParliamentaryValidator => {
-					// Check if user has Parlementer tiki
-					let tiki_score = T::TikiSource::get_tiki_score(who);
-					ensure!(tiki_score > 0, Error::<T>::MissingRequiredTiki);
-				},
-				ValidatorPoolCategory::MeritValidator { special_tikis: _, community_threshold } => {
-					// Check special tikis
-					let user_tiki_score = T::TikiSource::get_tiki_score(who);
-					ensure!(user_tiki_score > 0, Error::<T>::MissingRequiredTiki);
-
-					// Check community support (referral count)
-					let referral_count = T::ReferralSource::get_referral_count(who);
-					ensure!(
-						referral_count >= *community_threshold,
-						Error::<T>::InsufficientCommunitySupport
-					);
-				},
+			{
+				let _ = (who, category);
+				Ok(())
 			}
-			Ok(())
+
+			#[cfg(not(feature = "runtime-benchmarks"))]
+			{
+				match category {
+					ValidatorPoolCategory::StakeValidator { min_stake, trust_threshold } => {
+						// Check minimum stake (implementation depends on staking pallet)
+						ensure!(*min_stake >= T::MinStakeAmount::get(), Error::<T>::InsufficientStake);
+
+						// Check trust score
+						let trust_score = T::TrustSource::trust_score_of(who);
+						ensure!(trust_score >= *trust_threshold, Error::<T>::InsufficientTrustScore);
+					},
+					ValidatorPoolCategory::ParliamentaryValidator => {
+						// Check if user has Parlementer tiki
+						let tiki_score = T::TikiSource::get_tiki_score(who);
+						ensure!(tiki_score > 0, Error::<T>::MissingRequiredTiki);
+					},
+					ValidatorPoolCategory::MeritValidator { special_tikis: _, community_threshold } => {
+						// Check special tikis
+						let user_tiki_score = T::TikiSource::get_tiki_score(who);
+						ensure!(user_tiki_score > 0, Error::<T>::MissingRequiredTiki);
+
+						// Check community support (referral count)
+						let referral_count = T::ReferralSource::get_referral_count(who);
+						ensure!(
+							referral_count >= *community_threshold,
+							Error::<T>::InsufficientCommunitySupport
+						);
+					},
+				}
+				Ok(())
+			}
 		}
 
 		/// Perform new era transition
@@ -785,7 +790,7 @@ pub mod pallet {
 		}
 
 		/// Simple shuffle implementation using randomness
-		fn shuffle_validators(validators: &mut Vec<T::AccountId>, seed: &T::Hash, index: &mut u32) {
+		fn shuffle_validators(validators: &mut [T::AccountId], seed: &T::Hash, index: &mut u32) {
 			let seed_bytes = seed.as_ref();
 			for i in (1..validators.len()).rev() {
 				let random_byte = seed_bytes.get(*index as usize % seed_bytes.len()).unwrap_or(&0);
@@ -856,7 +861,7 @@ pub mod pallet {
 				tnpos_total_stake: 0, // Would need staking integration to fill
 				npos_total_stake: 0,
 				tnpos_avg_trust: Self::calculate_avg_trust(&tnpos_all),
-				npos_avg_trust: Self::calculate_avg_trust(&npos_validators.to_vec()),
+				npos_avg_trust: Self::calculate_avg_trust(npos_validators),
 				tnpos_stake_count: tnpos_stake as u8,
 				tnpos_parliamentary_count: tnpos_parliamentary as u8,
 				tnpos_merit_count: tnpos_merit as u8,
@@ -914,13 +919,13 @@ pub mod pallet {
 		}
 
 		/// Calculate average trust score for a set of validators
-		fn calculate_avg_trust(validators: &Vec<T::AccountId>) -> u32 {
+		fn calculate_avg_trust(validators: &[T::AccountId]) -> u32 {
 			if validators.is_empty() {
 				return 0;
 			}
 
 			let total_trust: u128 =
-				validators.iter().map(|v| T::TrustSource::trust_score_of(v)).sum();
+				validators.iter().map(T::TrustSource::trust_score_of).sum();
 
 			(total_trust / validators.len() as u128) as u32
 		}
