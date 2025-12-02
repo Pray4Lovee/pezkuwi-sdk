@@ -31,7 +31,6 @@ sp-io = { workspace = true }
 sp-runtime = { workspace = true }
 
 [dev-dependencies]
-assert_matches = { workspace = true }
 pallet-balances = { workspace = true, default-features = true }
 pallet-preimage = { workspace = true, default-features = true }
 pallet-scheduler = { workspace = true, default-features = true }
@@ -40,7 +39,6 @@ sp-core = { workspace = true, default-features = true }
 [features]
 default = ["std"]
 std = [
-	"assert_matches/std",
 	"codec/std",
 	"frame-benchmarking?/std",
 	"frame-support/std",
