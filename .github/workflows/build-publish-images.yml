@@ -49,30 +49,30 @@ jobs:
       - name: build
         id: required
         run: |
-          forklift cargo build --locked --profile testnet --features pyroscope,fast-runtime --bin polkadot --bin polkadot-prepare-worker --bin polkadot-execute-worker
-          PEZKUWICHAIN_EPOCH_DURATION=10 ./polkadot/scripts/build-only-wasm.sh pezkuwichain-runtime $(pwd)/runtimes/pezkuwichain-runtime-10/
-          PEZKUWICHAIN_EPOCH_DURATION=100 ./polkadot/scripts/build-only-wasm.sh pezkuwichain-runtime $(pwd)/runtimes/pezkuwichain-runtime-100/
-          PEZKUWICHAIN_EPOCH_DURATION=600 ./polkadot/scripts/build-only-wasm.sh pezkuwichain-runtime $(pwd)/runtimes/pezkuwichain-runtime-600/
+          forklift cargo build --locked --profile testnet --features pyroscope,fast-runtime --bin pezkuwi --bin pezkuwi-prepare-worker --bin pezkuwi-execute-worker
+          PEZKUWICHAIN_EPOCH_DURATION=10 ./pezkuwi/scripts/build-only-wasm.sh pezkuwichain-runtime $(pwd)/runtimes/pezkuwichain-runtime-10/
+          PEZKUWICHAIN_EPOCH_DURATION=100 ./pezkuwi/scripts/build-only-wasm.sh pezkuwichain-runtime $(pwd)/runtimes/pezkuwichain-runtime-100/
+          PEZKUWICHAIN_EPOCH_DURATION=600 ./pezkuwi/scripts/build-only-wasm.sh pezkuwichain-runtime $(pwd)/runtimes/pezkuwichain-runtime-600/
           pwd
           ls -alR runtimes
       - name: pack artifacts
         run: |
           mkdir -p ./artifacts
           VERSION="${{ needs.preflight.outputs.SOURCE_REF_SLUG }}" # will be tag or branch name
-          mv ./target/testnet/polkadot ./artifacts/.
-          mv ./target/testnet/polkadot-prepare-worker ./artifacts/.
-          mv ./target/testnet/polkadot-execute-worker ./artifacts/.
+          mv ./target/testnet/pezkuwi ./artifacts/.
+          mv ./target/testnet/pezkuwi-prepare-worker ./artifacts/.
+          mv ./target/testnet/pezkuwi-execute-worker ./artifacts/.
           mv ./runtimes/ ./artifacts/.
           cd artifacts/
-          sha256sum polkadot | tee polkadot.sha256
-          shasum -c polkadot.sha256
+          sha256sum pezkuwi | tee pezkuwi.sha256
+          shasum -c pezkuwi.sha256
           cd ../
           EXTRATAG="${{ needs.preflight.outputs.SOURCE_REF_SLUG }}-${COMMIT_SHA}"
-          echo "Polkadot version = ${VERSION} (EXTRATAG = ${EXTRATAG})"
+          echo "Pezkuwi version = ${VERSION} (EXTRATAG = ${EXTRATAG})"
           echo -n ${VERSION} > ./artifacts/VERSION
           echo -n ${EXTRATAG} > ./artifacts/EXTRATAG
           echo -n ${GITHUB_RUN_ID} > ./artifacts/BUILD_LINUX_JOB_ID
-          RELEASE_VERSION=$(./artifacts/polkadot -V | awk '{print $2}'| awk -F "-" '{print $1}')
+          RELEASE_VERSION=$(./artifacts/pezkuwi -V | awk '{print $2}'| awk -F "-" '{print $1}')
           echo -n "v${RELEASE_VERSION}" > ./artifacts/BUILD_RELEASE_VERSION
           cp -r docker/* ./artifacts
 
@@ -109,10 +109,10 @@ jobs:
         id: required
         run: |
           echo "___Building a binary, please refrain from using it in production since it goes with the debug assertions.___"
-          forklift cargo build --release --locked -p polkadot-teyrchain-bin --bin polkadot-teyrchain
+          forklift cargo build --release --locked -p pezkuwi-teyrchain-bin --bin pezkuwi-teyrchain
           echo "___Packing the artifacts___"
           mkdir -p ./artifacts
-          mv ./target/release/polkadot-teyrchain ./artifacts/.
+          mv ./target/release/pezkuwi-teyrchain ./artifacts/.
           echo "___The VERSION is either a tag name or the curent branch if triggered not by a tag___"
           echo ${{ needs.preflight.outputs.SOURCE_REF_SLUG }} | tee ./artifacts/VERSION
 
@@ -233,16 +233,16 @@ jobs:
       - name: build
         id: required
         run: |
-          forklift cargo build --locked --profile testnet -p polkadot-test-malus --bin malus --bin polkadot-prepare-worker --bin polkadot-execute-worker
+          forklift cargo build --locked --profile testnet -p pezkuwi-test-malus --bin malus --bin pezkuwi-prepare-worker --bin pezkuwi-execute-worker
       - name: pack artifacts
         run: |
           mkdir -p ./artifacts
           mv ./target/testnet/malus ./artifacts/.
-          mv ./target/testnet/polkadot-execute-worker ./artifacts/.
-          mv ./target/testnet/polkadot-prepare-worker ./artifacts/.
+          mv ./target/testnet/pezkuwi-execute-worker ./artifacts/.
+          mv ./target/testnet/pezkuwi-prepare-worker ./artifacts/.
           echo -n "${{ needs.preflight.outputs.SOURCE_REF_SLUG }}" > ./artifacts/VERSION
           echo -n "${{ needs.preflight.outputs.SOURCE_REF_SLUG }}-${COMMIT_SHA}" > ./artifacts/EXTRATAG
-          echo "polkadot-test-malus = $(cat ./artifacts/VERSION) (EXTRATAG = $(cat ./artifacts/EXTRATAG))"
+          echo "pezkuwi-test-malus = $(cat ./artifacts/VERSION) (EXTRATAG = $(cat ./artifacts/EXTRATAG))"
           cp -r ./docker/* ./artifacts
 
       - name: tar
@@ -368,11 +368,11 @@ jobs:
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
       - name: build
         run: |
-          forklift cargo build --locked --profile testnet -p polkadot-test-malus --bin malus --bin polkadot-prepare-worker --bin polkadot-execute-worker
+          forklift cargo build --locked --profile testnet -p pezkuwi-test-malus --bin malus --bin pezkuwi-prepare-worker --bin pezkuwi-execute-worker
       - name: pack artifacts
         run: |
-          mkdir -p ./artifacts/bridges-polkadot-sdk/bridges
-          cp -r bridges/testing ./artifacts/bridges-polkadot-sdk/bridges/testing
+          mkdir -p ./artifacts/bridges-pezkuwi-sdk/bridges
+          cp -r bridges/testing ./artifacts/bridges-pezkuwi-sdk/bridges/testing
 
       - name: tar
         run: tar -cvf artifacts.tar artifacts
@@ -398,11 +398,11 @@ jobs:
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
       - name: build
         run: |
-          forklift cargo nextest --manifest-path polkadot/zombienet-sdk-tests/Cargo.toml archive --locked --features zombie-metadata,zombie-ci --archive-file polkadot-zombienet-tests.tar.zst
+          forklift cargo nextest --manifest-path pezkuwi/zombienet-sdk-tests/Cargo.toml archive --locked --features zombie-metadata,zombie-ci --archive-file pezkuwi-zombienet-tests.tar.zst
       - name: pack artifacts
         run: |
           mkdir -p artifacts
-          cp polkadot-zombienet-tests.tar.zst ./artifacts
+          cp pezkuwi-zombienet-tests.tar.zst ./artifacts
 
       - name: tar
         run: tar -cvf artifacts.tar artifacts
@@ -502,7 +502,7 @@ jobs:
   #
   #
   #
-  build-push-image-polkadot-debug:
+  build-push-image-pezkuwi-debug:
     needs: [preflight, build-linux-stable]
     runs-on: ${{ needs.preflight.outputs.RUNNER_DEFAULT }}
     timeout-minutes: 60
@@ -520,8 +520,8 @@ jobs:
       - name: build and push image
         uses: ./.github/actions/build-push-image
         with:
-          image-name: "polkadot-debug"
-          dockerfile: "docker/dockerfiles/polkadot/polkadot_injected_debug.Dockerfile"
+          image-name: "pezkuwi-debug"
+          dockerfile: "docker/dockerfiles/pezkuwi/pezkuwi_injected_debug.Dockerfile"
           username: ${{ secrets.PEZKUWI_DOCKERHUB_USERNAME }}
           password: ${{ secrets.PEZKUWI_DOCKERHUB_PASSWORD }}
 

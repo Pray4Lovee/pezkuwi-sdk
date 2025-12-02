@@ -94,7 +94,7 @@ jobs:
       matrix:
         template: ["minimal", "solochain", "teyrchain"]
     env:
-      template-path: "polkadot-sdk-${{ matrix.template }}-template"
+      template-path: "pezkuwi-sdk-${{ matrix.template }}-template"
     steps:
 
       # 1. Prerequisites.
@@ -105,7 +105,7 @@ jobs:
           git config --global user.email "163342540+pezkuwichain-templatebot[bot]@users.noreply.github.com"
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
-          path: polkadot-sdk
+          path: pezkuwi-sdk
           ref: "${{ github.event.inputs.stable_release_branch }}"
       - name: Download template artifacts
         uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6.0.0
@@ -118,7 +118,7 @@ jobs:
         uses: actions/create-github-app-token@67018539274d69449ef7c02e8e71183d1719ab42 # v2.1.4
         with:
           owner: "pezkuwichain"
-          repositories: "polkadot-sdk-${{ matrix.template }}-template"
+          repositories: "pezkuwi-sdk-${{ matrix.template }}-template"
           app-id: ${{ secrets.TEMPLATE_APP_ID }}
           private-key: ${{ secrets.TEMPLATE_APP_KEY }}
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
@@ -141,14 +141,14 @@ jobs:
       # 2. Yanking the template out of the monorepo workspace.
 
       - name: Replace dev-dependencies path references with workspace references
-        run: find . -type f -name 'Cargo.toml' -exec sed -i'' -E "s/path = \"\.\.\/.*\"/workspace = true/g" {} \; 
-        working-directory: polkadot-sdk/templates/${{ matrix.template }}/
+        run: find . -type f -name 'Cargo.toml' -exec sed -i'' -E "s/path = \"\.\.\/.*\"/workspace = true/g" {} \;
+        working-directory: pezkuwi-sdk/templates/${{ matrix.template }}/
       - name: Create a new workspace Cargo.toml
         run: |
           # This replaces the existing Cargo.toml for teyrchain-template,
           # corresponding to the `teyrchain-template-docs` crate, so no need
-          # to delete that `Cargo.toml` after copying the `polkadot-sdk/templates/teyrchain/*`
-          # to the `polkadot-sdk-teyrchain-template` repo.
+          # to delete that `Cargo.toml` after copying the `pezkuwi-sdk/templates/teyrchain/*`
+          # to the `pezkuwi-sdk-teyrchain-template` repo.
           cat << EOF > Cargo.toml
           [workspace.package]
           license = "MIT-0"
@@ -176,7 +176,7 @@ jobs:
           echo "$(toml get -r ./pallets/template/Cargo.toml 'package.name') = { path = \"./pallets/template\", default-features = false }" >> Cargo.toml
 
         shell: bash
-        working-directory: polkadot-sdk/templates/${{ matrix.template }}/
+        working-directory: pezkuwi-sdk/templates/${{ matrix.template }}/
       - name: Update workspace configuration
         run: |
           set -euo pipefail
@@ -188,19 +188,19 @@ jobs:
 
           toml set templates/${{ matrix.template }}/Cargo.toml 'workspace.package.edition' "$(toml get --raw Cargo.toml 'workspace.package.edition')" > Cargo.temp
           mv Cargo.temp ./templates/${{ matrix.template }}/Cargo.toml
-        working-directory: polkadot-sdk
+        working-directory: pezkuwi-sdk
 
       - name: Print the result Cargo.tomls for debugging
         if: ${{ github.event.inputs.debug }}
         run: find . -type f -name 'Cargo.toml' -exec cat {} \;
-        working-directory: polkadot-sdk/templates/${{ matrix.template }}/
+        working-directory: pezkuwi-sdk/templates/${{ matrix.template }}/
 
       - name: Clean the destination repository
         run: rm -rf ./*
         working-directory: "${{ env.template-path }}"
       - name: Copy over the new changes
         run: |
-          cp -r polkadot-sdk/templates/${{ matrix.template }}/* "${{ env.template-path }}/"
+          cp -r pezkuwi-sdk/templates/${{ matrix.template }}/* "${{ env.template-path }}/"
       - name: Remove unnecessary files from teyrchain template
         if: ${{ matrix.template == 'teyrchain' }}
         run: |
@@ -216,7 +216,7 @@ jobs:
             patch=""
           fi
           psvm -o -v "${{ github.event.inputs.stable_release_branch }}$patch" -p ./Cargo.toml
-        working-directory: polkadot-sdk/
+        working-directory: pezkuwi-sdk/
       - name: Copy over required workspace dependencies
         run: |
           set +e
@@ -225,7 +225,7 @@ jobs:
             # Get its name..
             missing_dep=$(cargo tree --depth 1 --prefix none --no-dedupe 2>&1 | grep 'was not found in `workspace.dependencies`' | sed -E 's/(.*)`dependency.(.*)` was not found in `workspace.dependencies`/\2/')
             # And copy the dependency from the monorepo.
-            toml get ../polkadot-sdk/Cargo.toml 'workspace.dependencies' --output-toml | grep "^${missing_dep} = " >> Cargo.toml
+            toml get ../pezkuwi-sdk/Cargo.toml 'workspace.dependencies' --output-toml | grep "^${missing_dep} = " >> Cargo.toml
           done;
         working-directory: "${{ env.template-path }}"
 
@@ -250,7 +250,7 @@ jobs:
       - name: Print the result Cargo.tomls for debugging after copying required workspace dependencies
         if: ${{ github.event.inputs.debug }}
         run: find . -type f -name 'Cargo.toml' -exec cat {} \;
-        working-directory: polkadot-sdk/templates/${{ matrix.template }}/
+        working-directory: pezkuwi-sdk/templates/${{ matrix.template }}/
 
 
       # 3. Verify the build. Push the changes or create a PR.
