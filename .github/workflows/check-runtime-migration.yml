@@ -25,7 +25,7 @@ jobs:
     needs: isdraft
     uses: ./.github/workflows/reusable-preflight.yml
 
-  # More info can be found here: https://github.com/paritytech/polkadot/pull/5865
+  # More info can be found here: https://github.com/pezkuwichain/pezkuwi-sdk/pull/5865
   check-runtime-migration:
     runs-on: ${{ needs.preflight.outputs.RUNNER }}
     if: ${{ needs.preflight.outputs.changes_rust }}

@@ -19,10 +19,10 @@ on:
           - people-zagros
       runtime_dir:
         description: The runtime dir to be used (⚠️ this parameter is optional and needed only in case of the single runtime build, set it accordingly to the runtime you want to build)
-        default: polkadot/runtime/zagros
+        default: pezkuwi/runtime/zagros
         type: choice
         options:
-          - polkadot/runtime/zagros
+          - pezkuwi/runtime/zagros
           - cumulus/teyrchains/runtimes/assets/asset-hub-zagros
           - cumulus/teyrchains/runtimes/bridge-hubs/bridge-hub-zagros
           - cumulus/teyrchains/runtimes/collectives/collectives-zagros
@@ -34,9 +34,9 @@ on:
         default: all
         type: choice
         options:
-          - polkadot
-          - polkadot-teyrchain
-          - polkadot-omni-node
+          - pezkuwi
+          - pezkuwi-teyrchain
+          - pezkuwi-omni-node
           - frame-omni-bencher
           - chain-spec-builder
           - substrate-node
@@ -44,7 +44,7 @@ on:
           - subkey
           - all
       release_tag:
-        description: Tag matching the actual release candidate with the format polkadot-stableYYMM(-X)-rcY or polkadot-stableYYMM(-X)
+        description: Tag matching the actual release candidate with the format pezkuwi-stableYYMM(-X)-rcY or pezkuwi-stableYYMM(-X)
         type: string
         required: true
       no_runtimes:

@@ -41,7 +41,13 @@ jobs:
         env:
           SUBSTRATE_RUNTIME_TARGET: riscv
         id: required
-        run: cargo check -p minimal-template-runtime -p zagros-runtime -p pezkuwichain-runtime -p pezkuwi-test-runtime
+        run: forklift cargo check -p minimal-template-runtime -p zagros-runtime -p pezkuwichain-runtime -p pezkuwi-test-runtime
+      - name: Stop all workflows if failed
+        if: ${{ failure() && steps.required.conclusion == 'failure' && !github.event.pull_request.head.repo.fork }}
+        uses: ./.github/actions/workflow-stopper
+        with:
+          app-id: ${{ secrets.WORKFLOW_STOPPER_RUNNER_APP_ID }}
+          app-key: ${{ secrets.WORKFLOW_STOPPER_RUNNER_APP_KEY }}
 
   # As part of our test fixtures we build the revive-uapi crate always with the `unstable-hostfn` feature.
   # To make sure that it won't break for users downstream which are not setting this feature
@@ -64,6 +70,12 @@ jobs:
       - name: Build
         id: required
         run: cargo +nightly check -p pallet-revive-uapi --no-default-features --target riscv64imac-unknown-none-elf -Zbuild-std=core
+      - name: Stop all workflows if failed
+        if: ${{ failure() && steps.required.conclusion == 'failure' && !github.event.pull_request.head.repo.fork }}
+        uses: ./.github/actions/workflow-stopper
+        with:
+          app-id: ${{ secrets.WORKFLOW_STOPPER_RUNNER_APP_ID }}
+          app-key: ${{ secrets.WORKFLOW_STOPPER_RUNNER_APP_KEY }}
 
   build-subkey:
     timeout-minutes: 20
@@ -86,7 +98,13 @@ jobs:
         id: required
         run: |
           cd ./substrate/bin/utils/subkey
-          cargo build --locked --release
+          forklift cargo build --locked --release
+      - name: Stop all workflows if failed
+        if: ${{ failure() && steps.required.conclusion == 'failure' && !github.event.pull_request.head.repo.fork }}
+        uses: ./.github/actions/workflow-stopper
+        with:
+          app-id: ${{ secrets.WORKFLOW_STOPPER_RUNNER_APP_ID }}
+          app-key: ${{ secrets.WORKFLOW_STOPPER_RUNNER_APP_KEY }}
 
   confirm-required-build-misc-jobs-passed:
     runs-on: ubuntu-latest

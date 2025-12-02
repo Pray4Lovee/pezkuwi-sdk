@@ -1,5 +1,5 @@
-name: Release - Create polkadot-vX.YY.Z tag
-# This workflow creates a final release tag in the old format (e.g. polkadot-v1.20.0) for a published release.
+name: Release - Create pezkuwi-vX.YY.Z tag
+# This workflow creates a final release tag in the old format (e.g. pezkuwi-v1.20.0) for a published release.
 
 on:
   release:
@@ -56,8 +56,8 @@ jobs:
         run: |
           . ./.github/scripts/common/lib.sh
 
-          version=$(get_polkadot_node_version_from_code)
+          version=$(get_pezkuwi_node_version_from_code)
           echo "Extracted node version: $version"
 
-          git tag -s "polkadot-v${version}" -m "Old release tag polkadot-v${version}"
-          git push origin "polkadot-v${version}"
+          git tag -s "pezkuwi-v${version}" -m "Old release tag pezkuwi-v${version}"
+          git push origin "pezkuwi-v${version}"

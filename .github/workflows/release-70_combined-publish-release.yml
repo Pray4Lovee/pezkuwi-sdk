@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
     inputs:
       release_tag:
-        description: Release tag in the format polkadot-stableYYMM or polkadot-stableYYMM-X or polkadot-stableYYMM(-X)-rcX
+        description: Release tag in the format pezkuwi-stableYYMM or pezkuwi-stableYYMM-X or pezkuwi-stableYYMM(-X)-rcX
         type: string
         required: true
 
@@ -20,9 +20,9 @@ on:
         required: true
         options:
           - all
-          - polkadot
-          - polkadot-teyrchain
-          - polkadot-omni-node
+          - pezkuwi
+          - pezkuwi-teyrchain
+          - pezkuwi-omni-node
           - frame-omni-bencher
           - chain-spec-builder
 
@@ -99,42 +99,42 @@ jobs:
   # ==============================================
   # PHASE 3: Publish Docker Images
   # ==============================================
-  publish-docker-polkadot:
-    name: Publish Docker image - polkadot
+  publish-docker-pezkuwi:
+    name: Publish Docker image - pezkuwi
     # needs: [publish-deb-package, publish-rpm-package]
-    if: ${{ inputs.binary == 'polkadot' || inputs.binary == 'all' }}
+    if: ${{ inputs.binary == 'pezkuwi' || inputs.binary == 'all' }}
     uses: ./.github/workflows/release-50_publish-docker.yml
     with:
       image_type: ${{ inputs.image_type }}
-      binary: polkadot
+      binary: pezkuwi
       registry: ${{ inputs.registry }}
       owner: ${{ inputs.owner }}
       version: ${{ inputs.version }}
       stable_tag: ${{ inputs.release_tag }}
     secrets: inherit
 
-  publish-docker-polkadot-teyrchain:
-    name: Publish Docker image - polkadot-teyrchain
+  publish-docker-pezkuwi-teyrchain:
+    name: Publish Docker image - pezkuwi-teyrchain
     # needs: [publish-deb-package, publish-rpm-package]
-    if: ${{ inputs.binary == 'polkadot-teyrchain' || inputs.binary == 'all' }}
+    if: ${{ inputs.binary == 'pezkuwi-teyrchain' || inputs.binary == 'all' }}
     uses: ./.github/workflows/release-50_publish-docker.yml
     with:
       image_type: ${{ inputs.image_type }}
-      binary: polkadot-teyrchain
+      binary: pezkuwi-teyrchain
       registry: ${{ inputs.registry }}
       owner: ${{ inputs.owner }}
       version: ${{ inputs.version }}
       stable_tag: ${{ inputs.release_tag }}
     secrets: inherit
 
-  publish-docker-polkadot-omni-node:
-    name: Publish Docker image - polkadot-omni-node
+  publish-docker-pezkuwi-omni-node:
+    name: Publish Docker image - pezkuwi-omni-node
     # needs: [publish-deb-package, publish-rpm-package]
-    if: ${{ inputs.binary == 'polkadot-omni-node' || inputs.binary == 'all' }}
+    if: ${{ inputs.binary == 'pezkuwi-omni-node' || inputs.binary == 'all' }}
     uses: ./.github/workflows/release-50_publish-docker.yml
     with:
       image_type: ${{ inputs.image_type }}
-      binary: polkadot-omni-node
+      binary: pezkuwi-omni-node
       registry: ${{ inputs.registry }}
       owner: ${{ inputs.owner }}
       version: ${{ inputs.version }}
