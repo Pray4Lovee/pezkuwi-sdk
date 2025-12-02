@@ -127,7 +127,7 @@ async fn build_network_config() -> Result<NetworkConfig, anyhow::Error> {
 				.with_node(|node| node.with_name("alice"))
 				.with_node(|node| node.with_name("bob"))
 		})
-		.with_teyrchain(|p| {
+		.with_parachain(|p| {
 			// teyrchain A
 			p.with_id(PARA_ID)
 				.with_default_command("test-teyrchain")
@@ -136,7 +136,7 @@ async fn build_network_config() -> Result<NetworkConfig, anyhow::Error> {
 					n.with_name("dave").with_args(vec![("-lteyrchain=debug").into()])
 				})
 		})
-		.with_teyrchain(|p| {
+		.with_parachain(|p| {
 			// teyrchain B
 			p.with_id(PARA_ID)
 				.with_registration_strategy(RegistrationStrategy::Manual)

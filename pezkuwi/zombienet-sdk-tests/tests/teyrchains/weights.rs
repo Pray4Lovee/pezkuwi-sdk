@@ -20,8 +20,8 @@ use sp_core::{H160, H256};
 use std::str::FromStr;
 use zombienet_sdk::{
 	subxt::{
-		self, config::pezkuwi::PezkuwiExtrinsicParamsBuilder, tx::SubmittableTransaction,
-		OnlineClient, PezkuwiConfig,
+		self, config::polkadot::PolkadotExtrinsicParamsBuilder, tx::SubmittableTransaction,
+		OnlineClient, PolkadotConfig,
 	},
 	subxt_signer::{
 		sr25519::{dev, Keypair},
@@ -42,10 +42,10 @@ async fn weights_test() -> Result<(), anyhow::Error> {
 
 	let network = setup_network().await?;
 	let collator = network.get_node("collator")?;
-	let para_client: OnlineClient<PezkuwiConfig> = collator.wait_client().await?;
+	let para_client: OnlineClient<PolkadotConfig> = collator.wait_client().await?;
 	let mut call_clients = vec![];
 	for _ in 0..(KEYS_COUNT / CALL_CHUNK_SIZE + 1) {
-		let call_client: OnlineClient<PezkuwiConfig> = collator.wait_client().await?;
+		let call_client: OnlineClient<PolkadotConfig> = collator.wait_client().await?;
 		call_clients.push(call_client);
 	}
 	log::info!("Network is ready, waiting for warm-up to finish");
@@ -106,10 +106,10 @@ async fn weights_test() -> Result<(), anyhow::Error> {
 
 	collator.restart(None).await?;
 	let mut call_clients = vec![];
-	let para_client: OnlineClient<PezkuwiConfig> = collator.wait_client().await?;
+	let para_client: OnlineClient<PolkadotConfig> = collator.wait_client().await?;
 
 	for _ in 0..(KEYS_COUNT / CALL_CHUNK_SIZE + 1) {
-		let call_client: OnlineClient<PezkuwiConfig> = collator.wait_client().await?;
+		let call_client: OnlineClient<PolkadotConfig> = collator.wait_client().await?;
 		call_clients.push(call_client);
 	}
 
@@ -165,7 +165,7 @@ async fn setup_network() -> Result<Network<LocalFileSystem>, anyhow::Error> {
 				.with_node(|node| node.with_name("validator-0"))
 				.with_node(|node| node.with_name("validator-1"))
 		})
-		.with_teyrchain(|p| {
+		.with_parachain(|p| {
 			p.with_id(2000)
 				.with_default_command("pezkuwi-teyrchain")
 				.with_default_image(
@@ -213,11 +213,11 @@ fn create_keys(n: usize) -> Vec<Keypair> {
 fn tx_params<T: subxt::Config>(
 	nonce: u64,
 ) -> <subxt::config::DefaultExtrinsicParams<T> as subxt::config::ExtrinsicParams<T>>::Params {
-	PezkuwiExtrinsicParamsBuilder::<T>::new().nonce(nonce).build()
+	PolkadotExtrinsicParamsBuilder::<T>::new().nonce(nonce).build()
 }
 
 async fn setup_accounts(
-	client: &OnlineClient<PezkuwiConfig>,
+	client: &OnlineClient<PolkadotConfig>,
 	caller: &Keypair,
 	keys: &[Keypair],
 	nonce: u64,
@@ -258,7 +258,7 @@ async fn setup_accounts(
 }
 
 async fn instantiate_contract(
-	client: &OnlineClient<PezkuwiConfig>,
+	client: &OnlineClient<PolkadotConfig>,
 	caller: &Keypair,
 ) -> Result<H160, anyhow::Error> {
 	let code_path = std::env::current_dir().unwrap().join("tests/teyrchains/contract.polkavm");
@@ -289,7 +289,7 @@ async fn instantiate_contract(
 }
 
 async fn instantiate_params(
-	client: &OnlineClient<PezkuwiConfig>,
+	client: &OnlineClient<PolkadotConfig>,
 	code: Vec<u8>,
 	caller: &Keypair,
 ) -> Result<(u64, u64, u128), anyhow::Error> {
@@ -310,7 +310,7 @@ async fn instantiate_params(
 }
 
 async fn call_params(
-	client: &OnlineClient<PezkuwiConfig>,
+	client: &OnlineClient<PolkadotConfig>,
 	contract: H160,
 	payload: Vec<u8>,
 	caller: &Keypair,
@@ -327,8 +327,8 @@ async fn call_params(
 }
 
 async fn call_contract(
-	client: &OnlineClient<PezkuwiConfig>,
-	mut call_clients: Vec<OnlineClient<PezkuwiConfig>>,
+	client: &OnlineClient<PolkadotConfig>,
+	mut call_clients: Vec<OnlineClient<PolkadotConfig>>,
 	contract: H160,
 	caller: &Keypair,
 	keys: &[Keypair],
@@ -364,7 +364,7 @@ async fn call_contract(
 }
 
 async fn submit_txs(
-	txs: Vec<SubmittableTransaction<PezkuwiConfig, OnlineClient<PezkuwiConfig>>>,
+	txs: Vec<SubmittableTransaction<PolkadotConfig, OnlineClient<PolkadotConfig>>>,
 ) -> Result<std::collections::HashSet<H256>, anyhow::Error> {
 	let futs = txs.iter().map(|tx| tx.submit_and_watch()).collect::<FuturesUnordered<_>>();
 	let res = futs.collect::<Vec<_>>().await;

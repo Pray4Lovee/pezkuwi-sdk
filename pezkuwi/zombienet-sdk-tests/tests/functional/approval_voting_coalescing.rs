@@ -9,7 +9,7 @@ use cumulus_zombienet_sdk_helpers::{assert_finality_lag, assert_para_throughput}
 use pezkuwi_primitives::Id as ParaId;
 use serde_json::json;
 use zombienet_sdk::{
-	subxt::{OnlineClient, PezkuwiConfig},
+	subxt::{OnlineClient, PolkadotConfig},
 	NetworkConfigBuilder,
 };
 
@@ -46,7 +46,7 @@ async fn approval_voting_coalescing_test() -> Result<(), anyhow::Error> {
 
 	for para_id in 2000..2008 {
 		let collator_name = format!("collator-undying-{para_id}");
-		config_builder = config_builder.with_teyrchain(|p| {
+		config_builder = config_builder.with_parachain(|p| {
 			p.with_id(para_id)
 				.with_default_command("undying-collator")
 				.with_default_image(
@@ -73,7 +73,7 @@ async fn approval_voting_coalescing_test() -> Result<(), anyhow::Error> {
 	log::info!("Waiting for network to initialize");
 	let relay_node = network.get_node("validator-0")?;
 
-	let relay_client: OnlineClient<PezkuwiConfig> = relay_node.wait_client().await?;
+	let relay_client: OnlineClient<PolkadotConfig> = relay_node.wait_client().await?;
 
 	log::info!("Waiting for teyrchains to advance to block 15");
 	assert_para_throughput(

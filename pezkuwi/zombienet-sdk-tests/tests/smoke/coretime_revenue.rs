@@ -34,7 +34,7 @@ use serde_json::json;
 use std::{fmt::Display, sync::Arc};
 use tokio::sync::RwLock;
 use zombienet_sdk::{
-	subxt::{events::StaticEvent, utils::AccountId32, OnlineClient, PezkuwiConfig},
+	subxt::{events::StaticEvent, utils::AccountId32, OnlineClient, PolkadotConfig},
 	subxt_signer::sr25519::dev,
 	NetworkConfigBuilder,
 };
@@ -57,8 +57,8 @@ type CoretimeBrokerCall = coretime_api::runtime_types::pallet_broker::pallet::Ca
 const ON_DEMAND_BASE_FEE: u128 = 50_000_000;
 
 async fn get_total_issuance(
-	relay: OnlineClient<PezkuwiConfig>,
-	coretime: OnlineClient<PezkuwiConfig>,
+	relay: OnlineClient<PolkadotConfig>,
+	coretime: OnlineClient<PolkadotConfig>,
 ) -> (u128, u128) {
 	(
 		relay
@@ -83,8 +83,8 @@ async fn get_total_issuance(
 }
 
 async fn assert_total_issuance(
-	relay: OnlineClient<PezkuwiConfig>,
-	coretime: OnlineClient<PezkuwiConfig>,
+	relay: OnlineClient<PolkadotConfig>,
+	coretime: OnlineClient<PolkadotConfig>,
 	ti: (u128, u128),
 ) {
 	let actual_ti = get_total_issuance(relay, coretime).await;
@@ -240,7 +240,7 @@ async fn coretime_revenue_test() -> Result<(), anyhow::Error> {
 				.with_node(|node| node.with_name("bob"))
 				.with_node(|node| node.with_name("charlie"))
 		})
-		.with_teyrchain(|p| {
+		.with_parachain(|p| {
 			p.with_id(1005)
 				.with_default_command("pezkuwi-teyrchain")
 				.with_default_image(images.cumulus.as_str())
@@ -259,8 +259,8 @@ async fn coretime_revenue_test() -> Result<(), anyhow::Error> {
 	let relay_node = network.get_node("alice")?;
 	let para_node = network.get_node("coretime")?;
 
-	let relay_client: OnlineClient<PezkuwiConfig> = relay_node.wait_client().await?;
-	let para_client: OnlineClient<PezkuwiConfig> = para_node.wait_client().await?;
+	let relay_client: OnlineClient<PolkadotConfig> = relay_node.wait_client().await?;
+	let para_client: OnlineClient<PolkadotConfig> = para_node.wait_client().await?;
 
 	// Get total issuance on both sides
 	let mut total_issuance = get_total_issuance(relay_client.clone(), para_client.clone()).await;
@@ -272,7 +272,7 @@ async fn coretime_revenue_test() -> Result<(), anyhow::Error> {
 
 	let bob = dev::bob();
 
-	let para_events: EventOf<PezkuwiConfig> = Arc::new(RwLock::new(Vec::new()));
+	let para_events: EventOf<PolkadotConfig> = Arc::new(RwLock::new(Vec::new()));
 	let p_api = para_node.wait_client().await?;
 	let p_events = para_events.clone();
 
@@ -280,7 +280,7 @@ async fn coretime_revenue_test() -> Result<(), anyhow::Error> {
 		para_watcher(p_api, p_events).await;
 	});
 
-	let relay_events: EventOf<PezkuwiConfig> = Arc::new(RwLock::new(Vec::new()));
+	let relay_events: EventOf<PolkadotConfig> = Arc::new(RwLock::new(Vec::new()));
 	let r_api = relay_node.wait_client().await?;
 	let r_events = relay_events.clone();
 
@@ -288,11 +288,11 @@ async fn coretime_revenue_test() -> Result<(), anyhow::Error> {
 		relay_watcher(r_api, r_events).await;
 	});
 
-	let api: OnlineClient<PezkuwiConfig> = para_node.wait_client().await?;
+	let api: OnlineClient<PolkadotConfig> = para_node.wait_client().await?;
 	let _s1 = tokio::spawn(async move {
 		ti_watcher(api, "PARA").await;
 	});
-	let api: OnlineClient<PezkuwiConfig> = relay_node.wait_client().await?;
+	let api: OnlineClient<PolkadotConfig> = relay_node.wait_client().await?;
 	let _s2 = tokio::spawn(async move {
 		ti_watcher(api, "RELAY").await;
 	});

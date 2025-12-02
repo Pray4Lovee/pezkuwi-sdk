@@ -203,7 +203,7 @@ async fn build_network_config() -> Result<NetworkConfig, anyhow::Error> {
 					])
 				})
 		})
-		.with_teyrchain(|p| {
+		.with_parachain(|p| {
 			p.with_id(PARA_ID)
 				.with_default_command("test-teyrchain")
 				.with_default_image(images.cumulus.as_str())

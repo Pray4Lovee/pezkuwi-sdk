@@ -14,7 +14,7 @@ use pezkuwi_primitives::Id as ParaId;
 use serde_json::json;
 use zombienet_orchestrator::network::node::LogLineCountOptions;
 use zombienet_sdk::{
-	subxt::{OnlineClient, PezkuwiConfig},
+	subxt::{OnlineClient, PolkadotConfig},
 	NetworkConfigBuilder,
 };
 
@@ -66,7 +66,7 @@ async fn approved_peer_mixed_validators_test() -> Result<(), anyhow::Error> {
 			})
 		})
 		// Teyrchain 2000 is sending the ApprovedPeer ump signal.
-		.with_teyrchain(|p| {
+		.with_parachain(|p| {
 			p.with_id(2000)
 				.with_default_command("undying-collator")
 				.with_default_image(
@@ -82,7 +82,7 @@ async fn approved_peer_mixed_validators_test() -> Result<(), anyhow::Error> {
 				.with_collator(|n| n.with_name("collator-2000"))
 		})
 		// Teyrchain 2001 is NOT sending the ApprovedPeer ump signal.
-		.with_teyrchain(|p| {
+		.with_parachain(|p| {
 			p.with_id(2001)
 				.with_default_command("undying-collator")
 				.with_default_image(
@@ -105,7 +105,7 @@ async fn approved_peer_mixed_validators_test() -> Result<(), anyhow::Error> {
 
 	let relay_node = network.get_node("validator-0")?;
 
-	let relay_client: OnlineClient<PezkuwiConfig> = relay_node.wait_client().await?;
+	let relay_client: OnlineClient<PolkadotConfig> = relay_node.wait_client().await?;
 
 	// The min throughput for para 2000 is going to be lower, but it depends on how the old
 	// validators are distributed into backing groups.

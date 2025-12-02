@@ -10,7 +10,7 @@ use cumulus_zombienet_sdk_helpers::{assert_finality_lag, assert_para_throughput}
 use pezkuwi_primitives::Id as ParaId;
 use serde_json::json;
 use zombienet_sdk::{
-	subxt::{self, ext::scale_value::value, OnlineClient, PezkuwiConfig},
+	subxt::{self, ext::scale_value::value, OnlineClient, PolkadotConfig},
 	subxt_signer::sr25519::dev,
 	NetworkConfigBuilder,
 };
@@ -44,7 +44,7 @@ async fn shared_core_idle_teyrchain_test() -> Result<(), anyhow::Error> {
 
 			(1..4).fold(r, |acc, i| acc.with_node(|node| node.with_name(&format!("validator-{i}"))))
 		})
-		.with_teyrchain(|p| {
+		.with_parachain(|p| {
 			p.with_id(2000)
 				// Don't onboard as teyrchain, as this would automatically add one more core and
 				// assign it to the para.
@@ -69,7 +69,7 @@ async fn shared_core_idle_teyrchain_test() -> Result<(), anyhow::Error> {
 	let relay_node = network.get_node("validator-0")?;
 	let para_node_2000 = network.get_node("collator-2000")?;
 
-	let relay_client: OnlineClient<PezkuwiConfig> = relay_node.wait_client().await?;
+	let relay_client: OnlineClient<PolkadotConfig> = relay_node.wait_client().await?;
 	let alice = dev::alice();
 
 	// Assign core 0 to be shared between paraid 2000 and another, non-existant paraid 2001.

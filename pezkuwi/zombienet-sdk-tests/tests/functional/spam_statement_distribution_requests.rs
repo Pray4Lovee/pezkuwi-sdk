@@ -11,7 +11,7 @@ use pezkuwi_primitives::Id as ParaId;
 use serde_json::json;
 use zombienet_orchestrator::network::node::LogLineCountOptions;
 use zombienet_sdk::{
-	subxt::{OnlineClient, PezkuwiConfig},
+	subxt::{OnlineClient, PolkadotConfig},
 	NetworkConfigBuilder,
 };
 
@@ -70,7 +70,7 @@ async fn spam_statement_distribution_requests_test() -> Result<(), anyhow::Error
 						])
 				})
 		})
-		.with_teyrchain(|p| {
+		.with_parachain(|p| {
 			p.with_id(2000)
 				.with_default_command("undying-collator")
 				.cumulus_based(false)
@@ -82,7 +82,7 @@ async fn spam_statement_distribution_requests_test() -> Result<(), anyhow::Error
 				.with_default_args(vec![("-lteyrchain=debug").into()])
 				.with_collator(|n| n.with_name("collator-2000"))
 		})
-		.with_teyrchain(|p| {
+		.with_parachain(|p| {
 			p.with_id(2001)
 				.with_default_command("undying-collator")
 				.cumulus_based(false)
@@ -105,8 +105,8 @@ async fn spam_statement_distribution_requests_test() -> Result<(), anyhow::Error
 
 	let malus = network.get_node("malus")?;
 	let honest = network.get_node("honest-0")?;
-	let relay_client: OnlineClient<PezkuwiConfig> = honest.wait_client().await?;
-	let _malus_client: OnlineClient<PezkuwiConfig> = malus.wait_client().await?;
+	let relay_client: OnlineClient<PolkadotConfig> = honest.wait_client().await?;
+	let _malus_client: OnlineClient<PolkadotConfig> = malus.wait_client().await?;
 
 	// Check authority status and peers.
 	malus.assert("node_roles", 4.0).await?;

@@ -13,7 +13,7 @@ use pezkuwi_primitives::{CoreIndex, Id as ParaId};
 use serde_json::json;
 use std::collections::{BTreeMap, VecDeque};
 use zombienet_sdk::{
-	subxt::{OnlineClient, PezkuwiConfig},
+	subxt::{OnlineClient, PolkadotConfig},
 	subxt_signer::sr25519::dev,
 	NetworkConfigBuilder,
 };
@@ -49,7 +49,7 @@ async fn doesnt_break_teyrchains_test() -> Result<(), anyhow::Error> {
 
 			(1..4).fold(r, |acc, i| acc.with_node(|node| node.with_name(&format!("validator-{i}"))))
 		})
-		.with_teyrchain(|p| {
+		.with_parachain(|p| {
 			// Use pezkuwichain-teyrchain default, which has 6 second slot time. Also, don't use
 			// slot-based collator.
 			p.with_id(2000)
@@ -70,7 +70,7 @@ async fn doesnt_break_teyrchains_test() -> Result<(), anyhow::Error> {
 	let relay_node = network.get_node("validator-0")?;
 	let para_node = network.get_node("collator-2000")?;
 
-	let relay_client: OnlineClient<PezkuwiConfig> = relay_node.wait_client().await?;
+	let relay_client: OnlineClient<PolkadotConfig> = relay_node.wait_client().await?;
 	let alice = dev::alice();
 
 	relay_client

@@ -9,7 +9,7 @@ use cumulus_zombienet_sdk_helpers::{assert_para_throughput, create_assign_core_c
 use pezkuwi_primitives::Id as ParaId;
 use serde_json::json;
 use zombienet_sdk::{
-	subxt::{OnlineClient, PezkuwiConfig},
+	subxt::{OnlineClient, PolkadotConfig},
 	subxt_signer::sr25519::dev,
 	NetworkConfigBuilder,
 };
@@ -45,7 +45,7 @@ async fn basic_3cores_test() -> Result<(), anyhow::Error> {
 
 			(1..4).fold(r, |acc, i| acc.with_node(|node| node.with_name(&format!("validator-{i}"))))
 		})
-		.with_teyrchain(|p| {
+		.with_parachain(|p| {
 			p.with_id(2000)
 				.with_default_command("adder-collator")
 				.cumulus_based(false)
@@ -53,7 +53,7 @@ async fn basic_3cores_test() -> Result<(), anyhow::Error> {
 				.with_default_args(vec![("-lteyrchain=debug").into()])
 				.with_collator(|n| n.with_name("adder-2000"))
 		})
-		.with_teyrchain(|p| {
+		.with_parachain(|p| {
 			p.with_id(2001)
 				.with_default_command("adder-collator")
 				.cumulus_based(false)
@@ -72,7 +72,7 @@ async fn basic_3cores_test() -> Result<(), anyhow::Error> {
 
 	let relay_node = network.get_node("validator-0")?;
 
-	let relay_client: OnlineClient<PezkuwiConfig> = relay_node.wait_client().await?;
+	let relay_client: OnlineClient<PolkadotConfig> = relay_node.wait_client().await?;
 	let alice = dev::alice();
 
 	// Assign two extra cores to adder-2000.

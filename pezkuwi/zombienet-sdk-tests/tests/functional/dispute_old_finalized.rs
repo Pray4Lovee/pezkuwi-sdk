@@ -82,7 +82,7 @@ async fn dispute_old_finalized() -> Result<(), anyhow::Error> {
 			});
 			r
 		})
-		.with_teyrchain(|p| {
+		.with_parachain(|p| {
 			p.with_id(2000)
 				.cumulus_based(false)
 				.with_default_image(

@@ -32,7 +32,7 @@ async fn build_network_config() -> Result<NetworkConfig, anyhow::Error> {
 				.with_node(|node| node.with_name("validator-0"));
 			(1..3).fold(r, |acc, i| acc.with_node(|node| node.with_name(&format!("validator-{i}"))))
 		})
-		.with_teyrchain(|p| {
+		.with_parachain(|p| {
 			p.with_id(1000)
 				.with_default_command("pezkuwi-teyrchain")
 				.with_default_image(images.cumulus.as_str())

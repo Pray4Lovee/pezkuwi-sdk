@@ -45,7 +45,7 @@ async fn pov_recovery() -> Result<(), anyhow::Error> {
 		.is_ok());
 
 	log::info!("Registering teyrchain para_id = {PARA_ID}");
-	network.register_teyrchain(PARA_ID).await?;
+	network.register_parachain(PARA_ID).await?;
 
 	let validator = network.get_node("validator-0")?;
 	let validator_client: OnlineClient<PolkadotConfig> = validator.wait_client().await?;
@@ -172,7 +172,7 @@ async fn build_network_config() -> Result<NetworkConfig, anyhow::Error> {
 				})
 			})
 		})
-		.with_teyrchain(|p| {
+		.with_parachain(|p| {
 			p.with_id(PARA_ID)
 				.with_registration_strategy(RegistrationStrategy::Manual)
 				.with_default_command("test-teyrchain")
