@@ -29,10 +29,17 @@ jobs:
           echo "node_version=$version" >> $GITHUB_OUTPUT
 
       - name: Send Discord notification
-        if: ${{ secrets.PEZKUWI_DISCORD_WEBHOOK != '' }}
         env:
           DISCORD_WEBHOOK: ${{ secrets.PEZKUWI_DISCORD_WEBHOOK }}
         run: |
+          if [ -z "$DISCORD_WEBHOOK" ]; then
+            echo "::notice::Discord webhook not configured. Release notification skipped."
+            echo "Release: ${{ github.event.release.tag_name }}"
+            echo "URL: ${{ github.event.release.html_url }}"
+            echo "Node Version: ${{ steps.extract_version.outputs.node_version }}"
+            exit 0
+          fi
+
           RELEASE_TYPE="${{ github.event.action }}"
           TAG_NAME="${{ github.event.release.tag_name }}"
           RELEASE_URL="${{ github.event.release.html_url }}"
@@ -73,17 +80,9 @@ jobs:
               "timestamp": "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
             }]
           }
-          EOF
+EOF
           )
 
           curl -H "Content-Type: application/json" \
                -d "$PAYLOAD" \
                "$DISCORD_WEBHOOK"
-
-      - name: Log release info (if no webhook configured)
-        if: ${{ secrets.PEZKUWI_DISCORD_WEBHOOK == '' }}
-        run: |
-          echo "::notice::Discord webhook not configured. Release notification skipped."
-          echo "Release: ${{ github.event.release.tag_name }}"
-          echo "URL: ${{ github.event.release.html_url }}"
-          echo "Node Version: ${{ steps.extract_version.outputs.node_version }}"
