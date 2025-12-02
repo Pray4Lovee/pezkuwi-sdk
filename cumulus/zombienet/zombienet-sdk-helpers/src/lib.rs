@@ -450,6 +450,10 @@ pub async fn assert_para_is_registered(
 	Err(anyhow!("No more blocks to check"))
 }
 
+/// Performs a runtime upgrade for a teyrchain
+///
+/// Note: The external `zombienet_sdk` crate uses "parachain" terminology in its API.
+/// We wrap it here with Pezkuwi SDK's "teyrchain" terminology in logs and documentation.
 pub async fn runtime_upgrade(
 	network: &Network<LocalFileSystem>,
 	node: &NetworkNode,
@@ -457,10 +461,11 @@ pub async fn runtime_upgrade(
 	wasm_path: &str,
 ) -> Result<(), anyhow::Error> {
 	log::info!("Performing runtime upgrade for teyrchain {}, wasm: {}", para_id, wasm_path);
-	// Note: Using external zombienet_sdk API which uses 'parachain' terminology
-	let para = network.parachain(para_id).unwrap();
+	// Note: External zombienet_sdk uses 'parachain' method name - this is the external API
+	let teyrchain = network.parachain(para_id).unwrap();
 
-	para.perform_runtime_upgrade(node, RuntimeUpgradeOptions::new(AssetLocation::from(wasm_path)))
+	teyrchain
+		.perform_runtime_upgrade(node, RuntimeUpgradeOptions::new(AssetLocation::from(wasm_path)))
 		.await
 }
 
