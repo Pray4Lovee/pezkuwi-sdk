@@ -12,7 +12,7 @@ use cumulus_zombienet_sdk_helpers::{
 use pezkuwi_primitives::Id as ParaId;
 use serde_json::json;
 use zombienet_sdk::{
-	subxt::{OnlineClient, PolkadotConfig},
+	subxt::{OnlineClient, PezkuwiConfig},
 	subxt_signer::sr25519::dev,
 	NetworkConfigBuilder,
 };
@@ -53,7 +53,7 @@ async fn slot_based_3cores_test() -> Result<(), anyhow::Error> {
 			(1..12)
 				.fold(r, |acc, i| acc.with_node(|node| node.with_name(&format!("validator-{i}"))))
 		})
-		.with_parachain(|p| {
+		.with_teyrchain(|p| {
 			// Para 2100 uses the old elastic scaling mvp, which doesn't send the new UMP signal
 			// commitment for selecting the core index.
 			p.with_id(2100)
@@ -66,7 +66,7 @@ async fn slot_based_3cores_test() -> Result<(), anyhow::Error> {
 				])
 				.with_collator(|n| n.with_name("collator-elastic-mvp"))
 		})
-		.with_parachain(|p| {
+		.with_teyrchain(|p| {
 			// Para 2200 uses the new RFC103-enabled collator which sends the UMP signal commitment
 			// for selecting the core index
 			p.with_id(2200)
@@ -92,7 +92,7 @@ async fn slot_based_3cores_test() -> Result<(), anyhow::Error> {
 	let para_node_elastic = network.get_node("collator-elastic")?;
 	let para_node_elastic_mvp = network.get_node("collator-elastic-mvp")?;
 
-	let relay_client: OnlineClient<PolkadotConfig> = relay_node.wait_client().await?;
+	let relay_client: OnlineClient<PezkuwiConfig> = relay_node.wait_client().await?;
 	let alice = dev::alice();
 
 	let assign_cores_call = create_assign_core_call(&[(0, 2100), (1, 2100), (2, 2200), (3, 2200)]);

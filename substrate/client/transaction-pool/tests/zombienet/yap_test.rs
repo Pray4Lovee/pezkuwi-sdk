@@ -64,7 +64,7 @@ async fn slot_based_3cores_test() -> Result<(), anyhow::Error> {
 
 				(1..3).fold(r, |acc, i| acc.with_node(|node| node.with_name(names[i])))
 			})
-			.with_parachain(|p| {
+			.with_teyrchain(|p| {
 				// Para 2200 uses the new RFC103-enabled collator which sends the UMP signal
 				// commitment for selecting the core index
 				p.with_id(2200)

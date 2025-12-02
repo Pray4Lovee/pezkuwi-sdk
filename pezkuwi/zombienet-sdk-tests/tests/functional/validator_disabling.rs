@@ -10,7 +10,7 @@ use pezkuwi_primitives::{
 };
 use serde_json::json;
 use zombienet_sdk::{
-	subxt::{OnlineClient, PolkadotConfig},
+	subxt::{OnlineClient, PezkuwiConfig},
 	NetworkConfigBuilder,
 };
 
@@ -66,7 +66,7 @@ async fn validator_disabling_test() -> Result<(), anyhow::Error> {
 			});
 			r
 		})
-		.with_parachain(|p| {
+		.with_teyrchain(|p| {
 			p.with_id(1000)
 				.with_default_command("adder-collator")
 				.cumulus_based(false)
@@ -86,7 +86,7 @@ async fn validator_disabling_test() -> Result<(), anyhow::Error> {
 
 	log::info!("Waiting for parablocks to be produced");
 	let honest_validator = network.get_node("honest-validator-0")?;
-	let relay_client: OnlineClient<PolkadotConfig> = honest_validator.wait_client().await?;
+	let relay_client: OnlineClient<PezkuwiConfig> = honest_validator.wait_client().await?;
 	assert_para_throughput(
 		&relay_client,
 		20,

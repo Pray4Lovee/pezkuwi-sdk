@@ -29,7 +29,7 @@ async fn statement_store() -> Result<(), anyhow::Error> {
 
 			(1..6).fold(r, |acc, i| acc.with_node(|node| node.with_name(&format!("validator-{i}"))))
 		})
-		.with_parachain(|p| {
+		.with_teyrchain(|p| {
 			p.with_id(2400)
 				.with_default_command("pezkuwi-teyrchain")
 				.with_default_image(images.cumulus.as_str())

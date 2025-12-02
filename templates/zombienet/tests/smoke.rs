@@ -70,7 +70,7 @@ mod smoke {
 		});
 
 		let config = if let Some(para_cmd) = network_spec.para_cmd {
-			config.with_parachain(|p| {
+			config.with_teyrchain(|p| {
 				let mut p = p.with_id(TEYRCHAIN_ID).with_default_command(para_cmd);
 				if let Some(args) = network_spec.para_cmd_args {
 					p = p.with_default_args(args.into_iter().map(|arg| arg.into()).collect());

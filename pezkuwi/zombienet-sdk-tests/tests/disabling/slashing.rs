@@ -16,7 +16,7 @@ use tokio::time::Duration;
 use tokio_util::time::FutureExt;
 use zombienet_orchestrator::network::node::LogLineCountOptions;
 use zombienet_sdk::{
-	subxt::{OnlineClient, PolkadotConfig},
+	subxt::{OnlineClient, PezkuwiConfig},
 	NetworkConfigBuilder,
 };
 
@@ -69,7 +69,7 @@ async fn dispute_past_session_slashing() -> Result<(), anyhow::Error> {
 						])
 				})
 		})
-		.with_parachain(|p| {
+		.with_teyrchain(|p| {
 			p.with_id(1337)
 				.with_default_command("pezkuwi-teyrchain")
 				.with_default_image(images.cumulus.as_str())
@@ -89,7 +89,7 @@ async fn dispute_past_session_slashing() -> Result<(), anyhow::Error> {
 	malus.pause().await?;
 
 	let honest = network.get_node("honest-validator-0")?;
-	let relay_client: OnlineClient<PolkadotConfig> = honest.wait_client().await?;
+	let relay_client: OnlineClient<PezkuwiConfig> = honest.wait_client().await?;
 
 	// Wait for some para blocks being produced
 	assert_para_throughput(&relay_client, 20, [(ParaId::from(1337), 10..20)].into_iter().collect())

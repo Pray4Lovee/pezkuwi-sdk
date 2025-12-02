@@ -149,7 +149,7 @@ async fn build_network_config(async_backing: bool) -> Result<NetworkConfig, anyh
 				.with_node(|node| node.with_name("validator1"))
 				.with_node(|node| node.with_name("validator2"))
 		})
-		.with_parachain(|p| {
+		.with_teyrchain(|p| {
 			p.with_id(PARA_ID)
 				.with_default_command("test-teyrchain")
 				.onboard_as_teyrchain(false)

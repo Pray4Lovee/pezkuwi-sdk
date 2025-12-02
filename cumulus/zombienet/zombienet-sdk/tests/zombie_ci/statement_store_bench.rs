@@ -321,7 +321,7 @@ async fn spawn_network(collators: &[&str]) -> Result<Network<LocalFileSystem>, a
 				.with_node(|node| node.with_name("validator-0"))
 				.with_node(|node| node.with_name("validator-1"))
 		})
-		.with_parachain(|p| {
+		.with_teyrchain(|p| {
 			let p = p
 				.with_id(2400)
 				.with_default_command("pezkuwi-teyrchain")

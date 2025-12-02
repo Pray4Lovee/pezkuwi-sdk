@@ -53,7 +53,7 @@ async fn elastic_scaling_pov_recovery() -> Result<(), anyhow::Error> {
 
 	log::info!("Registering teyrchain para_id = {PARA_ID}");
 	let relay_client: OnlineClient<PolkadotConfig> = alice.wait_client().await?;
-	network.register_parachain(PARA_ID).await?;
+	network.register_teyrchain(PARA_ID).await?;
 
 	log::info!("Ensuring teyrchain is registered within 30 blocks");
 	assert_para_is_registered(&relay_client, ParaId::from(PARA_ID), 30).await?;
@@ -170,7 +170,7 @@ async fn build_network_config() -> Result<NetworkConfig, anyhow::Error> {
 				})
 			})
 		})
-		.with_parachain(|p| {
+		.with_teyrchain(|p| {
 			p.with_id(PARA_ID)
 				.with_chain("elastic-scaling")
 				.with_registration_strategy(RegistrationStrategy::Manual)

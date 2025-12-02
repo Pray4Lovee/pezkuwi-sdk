@@ -9,7 +9,7 @@ use cumulus_zombienet_sdk_helpers::{assert_finality_lag, assert_para_throughput}
 use pezkuwi_primitives::Id as ParaId;
 use serde_json::json;
 use zombienet_sdk::{
-	subxt::{OnlineClient, PolkadotConfig},
+	subxt::{OnlineClient, PezkuwiConfig},
 	NetworkConfigBuilder,
 };
 
@@ -41,7 +41,7 @@ async fn sync_backing_test() -> Result<(), anyhow::Error> {
 
 			(1..5).fold(r, |acc, i| acc.with_node(|node| node.with_name(&format!("validator-{i}"))))
 		})
-		.with_parachain(|p| {
+		.with_teyrchain(|p| {
 			p.with_id(2500)
 				.with_default_command("test-teyrchain")
 				.with_default_image(images.cumulus.as_str())
@@ -61,7 +61,7 @@ async fn sync_backing_test() -> Result<(), anyhow::Error> {
 	let relay_node = network.get_node("validator-0")?;
 	let para_node = network.get_node("collator-2500")?;
 
-	let relay_client: OnlineClient<PolkadotConfig> = relay_node.wait_client().await?;
+	let relay_client: OnlineClient<PezkuwiConfig> = relay_node.wait_client().await?;
 
 	assert_para_throughput(&relay_client, 15, [(ParaId::from(2500), 5..9)].into_iter().collect())
 		.await?;

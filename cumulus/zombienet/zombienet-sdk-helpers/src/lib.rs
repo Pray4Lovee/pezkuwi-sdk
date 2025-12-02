@@ -347,7 +347,7 @@ pub async fn submit_extrinsic_and_wait_for_finalization_success<S: Signer<Polkad
 	call: &DynamicPayload,
 	signer: &S,
 ) -> Result<(), anyhow::Error> {
-	let extensions = PolkadotExtrinsicParamsBuilder::new().immortal().build();
+	let extensions = PezkuwiExtrinsicParamsBuilder::new().immortal().build();
 
 	let mut tx = client
 		.tx()
@@ -452,7 +452,7 @@ pub async fn runtime_upgrade(
 	wasm_path: &str,
 ) -> Result<(), anyhow::Error> {
 	log::info!("Performing runtime upgrade for teyrchain {}, wasm: {}", para_id, wasm_path);
-	let para = network.parachain(para_id).unwrap();
+	let para = network.teyrchain(para_id).unwrap();
 
 	para.perform_runtime_upgrade(node, RuntimeUpgradeOptions::new(AssetLocation::from(wasm_path)))
 		.await

@@ -12,7 +12,7 @@ use pezkuwi_primitives::Id as ParaId;
 use serde_json::json;
 use zombienet_orchestrator::network::node::LogLineCountOptions;
 use zombienet_sdk::{
-	subxt::{OnlineClient, PolkadotConfig},
+	subxt::{OnlineClient, PezkuwiConfig},
 	subxt_signer::sr25519::dev,
 	NetworkConfigBuilder,
 };
@@ -53,7 +53,7 @@ async fn duplicate_collations_test() -> Result<(), anyhow::Error> {
 			(1..VALIDATOR_COUNT)
 				.fold(r, |acc, i| acc.with_node(|node| node.with_name(&format!("validator-{i}"))))
 		})
-		.with_parachain(|p| {
+		.with_teyrchain(|p| {
 			p.with_id(2000)
 				.with_default_command("undying-collator")
 				.cumulus_based(false)
@@ -83,7 +83,7 @@ async fn duplicate_collations_test() -> Result<(), anyhow::Error> {
 
 	let relay_node = network.get_node("validator-0")?;
 
-	let relay_client: OnlineClient<PolkadotConfig> = relay_node.wait_client().await?;
+	let relay_client: OnlineClient<PezkuwiConfig> = relay_node.wait_client().await?;
 	let alice = dev::alice();
 
 	// Assign two extra cores to teyrchain-2000.
