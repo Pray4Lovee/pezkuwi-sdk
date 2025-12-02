@@ -161,7 +161,8 @@ async fn prepare_substrate_transactions(
 			vec![subxt::dynamic::Value::from_bytes(remark_data.as_bytes())],
 		);
 
-		let params = subxt::config::pezkuwi::PezkuwiExtrinsicParamsBuilder::new()
+		// Note: Using polkadot config from subxt (external crate)
+		let params = subxt::config::polkadot::PolkadotExtrinsicParamsBuilder::new()
 			.nonce(nonce)
 			.build();
 

@@ -20,8 +20,8 @@ use sp_core::{H160, H256};
 use std::str::FromStr;
 use zombienet_sdk::{
 	subxt::{
-		self, config::pezkuwi::PezkuwiExtrinsicParamsBuilder, tx::SubmittableTransaction,
-		OnlineClient, PezkuwiConfig,
+		self, config::polkadot::PolkadotExtrinsicParamsBuilder, tx::SubmittableTransaction,
+		OnlineClient, PolkadotConfig,
 	},
 	subxt_signer::{
 		sr25519::{dev, Keypair},
@@ -29,6 +29,10 @@ use zombienet_sdk::{
 	},
 	LocalFileSystem, Network, NetworkConfigBuilder, NetworkNode,
 };
+
+// Type aliases for Pezkuwi SDK terminology consistency
+type PezkuwiConfig = PolkadotConfig;
+type PezkuwiExtrinsicParamsBuilder<T> = PolkadotExtrinsicParamsBuilder<T>;
 
 const KEYS_COUNT: usize = 6000;
 const CHUNK_SIZE: usize = 3000;
@@ -165,7 +169,8 @@ async fn setup_network() -> Result<Network<LocalFileSystem>, anyhow::Error> {
 				.with_node(|node| node.with_name("validator-0"))
 				.with_node(|node| node.with_name("validator-1"))
 		})
-		.with_teyrchain(|p| {
+		// Note: External zombienet_sdk API uses 'parachain' terminology
+		.with_parachain(|p| {
 			p.with_id(2000)
 				.with_default_command("pezkuwi-teyrchain")
 				.with_default_image(
