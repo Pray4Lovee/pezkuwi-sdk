@@ -643,18 +643,27 @@ pub mod pallet {
 				match category {
 					ValidatorPoolCategory::StakeValidator { min_stake, trust_threshold } => {
 						// Check minimum stake (implementation depends on staking pallet)
-						ensure!(*min_stake >= T::MinStakeAmount::get(), Error::<T>::InsufficientStake);
+						ensure!(
+							*min_stake >= T::MinStakeAmount::get(),
+							Error::<T>::InsufficientStake
+						);
 
 						// Check trust score
 						let trust_score = T::TrustSource::trust_score_of(who);
-						ensure!(trust_score >= *trust_threshold, Error::<T>::InsufficientTrustScore);
+						ensure!(
+							trust_score >= *trust_threshold,
+							Error::<T>::InsufficientTrustScore
+						);
 					},
 					ValidatorPoolCategory::ParliamentaryValidator => {
 						// Check if user has Parlementer tiki
 						let tiki_score = T::TikiSource::get_tiki_score(who);
 						ensure!(tiki_score > 0, Error::<T>::MissingRequiredTiki);
 					},
-					ValidatorPoolCategory::MeritValidator { special_tikis: _, community_threshold } => {
+					ValidatorPoolCategory::MeritValidator {
+						special_tikis: _,
+						community_threshold,
+					} => {
 						// Check special tikis
 						let user_tiki_score = T::TikiSource::get_tiki_score(who);
 						ensure!(user_tiki_score > 0, Error::<T>::MissingRequiredTiki);
@@ -924,8 +933,7 @@ pub mod pallet {
 				return 0;
 			}
 
-			let total_trust: u128 =
-				validators.iter().map(T::TrustSource::trust_score_of).sum();
+			let total_trust: u128 = validators.iter().map(T::TrustSource::trust_score_of).sum();
 
 			(total_trust / validators.len() as u128) as u32
 		}
