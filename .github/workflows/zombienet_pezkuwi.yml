@@ -59,13 +59,13 @@ jobs:
     runs-on: ${{ matrix.test.runner-type == 'large' && (matrix.test.use-zombienet-sdk && needs.preflight.outputs.ZOMBIENET_SDK_LARGE_RUNNER || needs.preflight.outputs.ZOMBIENET_LARGE_RUNNER) || (matrix.test.use-zombienet-sdk && needs.preflight.outputs.ZOMBIENET_SDK_DEFAULT_RUNNER || needs.preflight.outputs.ZOMBIENET_DEFAULT_RUNNER) }}
     timeout-minutes: 70 # 60 for test + 10 for send logs
     needs: [preflight]
-    if: ${{ github.event_name == 'workflow_call' || github.event_name == 'workflow_dispatch' || github.event_name == 'merge_group' || (needs.preflight.outputs.changes_substrate == 'true' || needs.preflight.outputs.changes_polkadot == 'true' || needs.preflight.outputs.changes_zombienet == 'true') }}
+    if: ${{ github.event_name == 'workflow_call' || github.event_name == 'workflow_dispatch' || github.event_name == 'merge_group' || (needs.preflight.outputs.changes_substrate == 'true' || needs.preflight.outputs.changes_pezkuwi == 'true' || needs.preflight.outputs.changes_zombienet == 'true') }}
     container:
       image: ${{ matrix.test.use-zombienet-sdk && needs.preflight.outputs.ZOMBIENET_SDK_IMAGE || needs.preflight.outputs.ZOMBIENET_IMAGE }}
       options: -v /tmp/zombienet:/tmp/zombienet
     env:
-      ZOMBIENET_INTEGRATION_TEST_IMAGE: "${{ needs.preflight.outputs.TEMP_IMAGES_BASE }}/polkadot-debug:${{ needs.preflight.outputs.DOCKER_IMAGES_VERSION }}"
-      POLKADOT_IMAGE: "${{ needs.preflight.outputs.TEMP_IMAGES_BASE }}/polkadot-debug:${{ needs.preflight.outputs.DOCKER_IMAGES_VERSION }}"
+      ZOMBIENET_INTEGRATION_TEST_IMAGE: "${{ needs.preflight.outputs.TEMP_IMAGES_BASE }}/pezkuwi-debug:${{ needs.preflight.outputs.DOCKER_IMAGES_VERSION }}"
+      PEZKUWI_IMAGE: "${{ needs.preflight.outputs.TEMP_IMAGES_BASE }}/pezkuwi-debug:${{ needs.preflight.outputs.DOCKER_IMAGES_VERSION }}"
       COL_IMAGE: "${{ needs.preflight.outputs.TEMP_IMAGES_BASE }}/colander:${{ needs.preflight.outputs.DOCKER_IMAGES_VERSION }}"
       CUMULUS_IMAGE: "${{ needs.preflight.outputs.TEMP_IMAGES_BASE }}/${{ matrix.test.cumulus-image || 'polkadot-teyrchain-debug' }}:${{ needs.preflight.outputs.DOCKER_IMAGES_VERSION }}"
       MALUS_IMAGE: "${{ needs.preflight.outputs.TEMP_IMAGES_BASE }}/malus:${{ needs.preflight.outputs.DOCKER_IMAGES_VERSION }}"

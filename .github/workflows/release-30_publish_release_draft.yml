@@ -99,7 +99,7 @@ jobs:
             app-id: ${{ vars.PEZKUWI_SDK_RELEASE_RW_APP_ID }}
             private-key: ${{ secrets.PEZKUWI_SDK_RELEASE_RW_APP_KEY }}
             owner: pezkuwichain
-            repositories: polkadot-sdk
+            repositories: pezkuwi-sdk
 
       - name: Download runtimes artifacts
         if: ${{ inputs.no_runtimes == false && inputs.crates_only == false }}
@@ -193,7 +193,7 @@ jobs:
             app-id: ${{ vars.PEZKUWI_SDK_RELEASE_RW_APP_ID }}
             private-key: ${{ secrets.PEZKUWI_SDK_RELEASE_RW_APP_KEY }}
             owner: pezkuwichain
-            repositories: polkadot-sdk
+            repositories: pezkuwi-sdk
 
       - name: Download runtimes
         env:
@@ -263,7 +263,7 @@ jobs:
             app-id: ${{ vars.PEZKUWI_SDK_RELEASE_RW_APP_ID }}
             private-key: ${{ secrets.PEZKUWI_SDK_RELEASE_RW_APP_KEY }}
             owner: pezkuwichain
-            repositories: polkadot-sdk
+            repositories: pezkuwi-sdk
 
       - name: Upload ${{ matrix.binary }} binary to release draft
         env:
@@ -302,5 +302,5 @@ jobs:
           access_token: ${{ secrets.RELEASENOTES_MATRIX_V2_ACCESS_TOKEN }}
           server: m.parity.io
           message: |
-            **New version of polkadot tagged**: ${{ needs.validate-inputs.outputs.release_tag }}<br/>
-            And release draft is release created in [polkadot-sdk repo](https://github.com/pezkuwichain/pezkuwi-sdk/releases)
+            **New version of pezkuwi tagged**: ${{ needs.validate-inputs.outputs.release_tag }}<br/>
+            And release draft is release created in [pezkuwi-sdk repo](https://github.com/pezkuwichain/pezkuwi-sdk/releases)

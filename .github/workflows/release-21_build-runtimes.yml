@@ -79,7 +79,7 @@ jobs:
     needs: [validate-inputs]
     uses: "./.github/workflows/release-srtool.yml"
     with:
-       excluded_runtimes: "asset-hub-pezkuwichain bridge-hub-pezkuwichain coretime-pezkuwichain people-pezkuwichain pezkuwichain pezkuwichain-teyrchain substrate-test bp cumulus-test kitchensink minimal-template teyrchain-template penpal polkadot-test seedling shell frame-try sp solochain-template polkadot-sdk-docs-first pallet-staking-async-teyrchain pallet-staking-async-rc frame-storage-access-test yet-another-teyrchain revive-dev"
+       excluded_runtimes: "asset-hub-pezkuwichain bridge-hub-pezkuwichain coretime-pezkuwichain people-pezkuwichain pezkuwichain pezkuwichain-teyrchain substrate-test bp cumulus-test kitchensink minimal-template teyrchain-template penpal pezkuwi-test seedling shell frame-try sp solochain-template pezkuwi-sdk-docs-first pallet-staking-async-teyrchain pallet-staking-async-rc frame-storage-access-test yet-another-teyrchain revive-dev"
        build_opts: "--features on-chain-release-build"
        profile: production
        chain: ${{ inputs.chain }}

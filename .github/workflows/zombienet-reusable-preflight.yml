@@ -42,10 +42,10 @@ on:
         description: |
           True iff there are changes in cumulus directory or the current workflow
 
-      changes_polkadot:
-        value: ${{ jobs.preflight.outputs.changes_polkadot }}
+      changes_pezkuwi:
+        value: ${{ jobs.preflight.outputs.changes_pezkuwi }}
         description: |
-          True iff there are changes in polkadot directory or the current workflow
+          True iff there are changes in pezkuwi directory or the current workflow
 
       changes_bridges:
         value: ${{ jobs.preflight.outputs.changes_bridges }}
@@ -162,7 +162,7 @@ jobs:
     outputs:
       changes_substrate: ${{ steps.set_changes.outputs.substrate_any_changed == 'true' || steps.set_changes.outputs.currentWorkflow_any_changed == 'true' }}
       changes_cumulus: ${{ steps.set_changes.outputs.cumulus_any_changed == 'true' || steps.set_changes.outputs.currentWorkflow_any_changed == 'true' }}
-      changes_polkadot: ${{ steps.set_changes.outputs.polkadot_any_changed == 'true' || steps.set_changes.outputs.currentWorkflow_any_changed == 'true' }}
+      changes_pezkuwi: ${{ steps.set_changes.outputs.pezkuwi_any_changed == 'true' || steps.set_changes.outputs.currentWorkflow_any_changed == 'true' }}
       changes_bridges: ${{ steps.set_changes.outputs.bridges_any_changed == 'true' || steps.set_changes.outputs.currentWorkflow_any_changed == 'true' }}
       changes_templates: ${{ steps.set_changes.outputs.templates_any_changed == 'true' || steps.set_changes.outputs.currentWorkflow_any_changed == 'true' }}
       changes_zombienet: ${{ steps.set_changes.outputs.zombienet_any_changed == 'true' || steps.set_changes.outputs.currentWorkflow_any_changed == 'true' }}
@@ -216,8 +216,8 @@ jobs:
               - 'substrate/**/*'
             cumulus:
               - 'cumulus/**/*'
-            polkadot:
-              - 'polkadot/**/*'
+            pezkuwi:
+              - 'pezkuwi/**/*'
             bridges:
               - 'bridges/**/*'
             templates:

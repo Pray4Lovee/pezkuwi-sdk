@@ -179,7 +179,7 @@ jobs:
           THREE_MONTHS_DATE=$(echo "$THREE_MONTHS_INFO" | cut -d'|' -f2 | cut -d'T' -f1)
 
           # Base URL for Subweight comparisons
-          BASE_URL="https://weights.tasty.limo/compare?repo=polkadot-sdk&threshold=5&path_pattern=.%2F**%2Fweights%2F**%2F*.rs%2C.%2F**%2Fweights.rs&method=asymptotic&ignore_errors=true&unit=time"
+          BASE_URL="https://weights.tasty.limo/compare?repo=pezkuwi-sdk&threshold=5&path_pattern=.%2F**%2Fweights%2F**%2F*.rs%2C.%2F**%2Fweights.rs&method=asymptotic&ignore_errors=true&unit=time"
           
           # Generate comparison links
           MASTER_LINK="${BASE_URL}&old=master&new=${BRANCH}"
