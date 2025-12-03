@@ -46,7 +46,7 @@ PezkuwiChain is more than a blockchain. It is the foundational layer for **decen
 └─────────────────────────────────────────────────────────────┘
 ```
 
-**TeyrChain (تێیرچەین)** — Production-ready parachain runtime built on Polkadot SDK v1.15.6
+**TeyrChain (تێیرچەین)** — Production-ready teyrchain runtime built on Pezkuwi SDK (forked from Polkadot SDK stable2512)
 
 ---
 
@@ -134,7 +134,7 @@ TeyrChain Parachain
 
 - Full XCM v5 implementation
 - Reserve-backed wUSDT bridge
-- HRMP channels for system parachains
+- HRMP channels for system teyrchains
 - Future bridges: wETH, wBTC, Ethereum, Tron, BSC
 
 ---
@@ -199,7 +199,7 @@ cargo build --release
 cargo build --release --features runtime-benchmarks
 
 # Run local testnet
-./target/release/pezkuwi-parachain --dev
+./target/release/pezkuwi-node --dev
 ```
 
 ---
@@ -255,7 +255,7 @@ curl --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/pezkuwich
 
 ## 👩🏽‍💻 Building
 
-In order to build this project you need to install some dependencies, follow the instructions in [this guide](https://docs.pezkuwichain.io/develop/parachains/install-pezkuwi-sdk).
+In order to build this project you need to install some dependencies, follow the instructions in [this guide](https://docs.pezkuwichain.io/develop/teyrchains/install-pezkuwi-sdk).
 
 ## 📚 Documentation
 
