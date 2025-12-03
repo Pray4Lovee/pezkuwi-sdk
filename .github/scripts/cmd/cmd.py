@@ -185,17 +185,17 @@ BENCH
 """
 
 bench_example = '''**Examples**:
- Runs all benchmarks 
+ Runs all benchmarks
  %(prog)s
 
  Runs benchmarks for pallet_balances and pallet_multisig for all runtimes which have these pallets. **--quiet** makes it to output nothing to PR but reactions
  %(prog)s --pallet pallet_balances pallet_xcm_benchmarks::generic --quiet
- 
- Runs bench for all pallets for westend runtime and fails fast on first failed benchmark
- %(prog)s --runtime westend --fail-fast
- 
- Does not output anything and cleans up the previous bot's & author command triggering comments in PR 
- %(prog)s --runtime westend rococo --pallet pallet_balances pallet_multisig --quiet --clean
+
+ Runs bench for all pallets for zagros runtime and fails fast on first failed benchmark
+ %(prog)s --runtime zagros --fail-fast
+
+ Does not output anything and cleans up the previous bot's & author command triggering comments in PR
+ %(prog)s --runtime zagros pezkuwichain --pallet pallet_balances pallet_multisig --quiet --clean
 '''
 
 parser_bench = subparsers.add_parser('bench', aliases=['bench-omni'], help='Runs benchmarks (frame omni bencher)', epilog=bench_example, formatter_class=argparse.RawDescriptionHelpFormatter)

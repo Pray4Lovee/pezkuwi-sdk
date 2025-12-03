@@ -67,7 +67,7 @@ The script automatically creates a CSV file (`workflow_results_YYYYMMDD_HHMMSS.c
 
 ### Requirements
 
-- Run from `polkadot-sdk` repository root
+- Run from `pezkuwi-sdk` repository root
 - Requires `gh` CLI (will prompt for login on first use)
 
 ## Flaky Tests

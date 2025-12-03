@@ -36,9 +36,9 @@ runs:
         run-id: ${{ inputs.build-id }}
         extract-path: ./tmp
         files-to-copy: |
-          artifacts/polkadot
-          artifacts/polkadot-execute-worker
-          artifacts/polkadot-prepare-worker
+          artifacts/pezkuwi
+          artifacts/pezkuwi-execute-worker
+          artifacts/pezkuwi-prepare-worker
         destination-path: ${{ inputs.destination-path }}
         cleanup: "true"
 
@@ -50,7 +50,7 @@ runs:
         run-id: ${{ inputs.build-id }}
         extract-path: ./tmp
         files-to-copy: |
-          artifacts/polkadot-teyrchain
+          artifacts/pezkuwi-teyrchain
         destination-path: ${{ inputs.destination-path }}
         cleanup: "true"
 
@@ -83,7 +83,7 @@ runs:
         gh-token: ${{ inputs.gh-token }}
         run-id: ${{ inputs.build-id }}
         extract-path: ./tmp
-        # TODO: should copy polkadot-execute-worker and polkadot-prepare-worker?
+        # TODO: should copy pezkuwi-execute-worker and pezkuwi-prepare-worker?
         # if yes then it overlaps with build-linux-stable - address this
         files-to-copy: |
           artifacts/malus

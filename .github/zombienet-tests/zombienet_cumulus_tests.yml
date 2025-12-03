@@ -65,13 +65,13 @@
 - job-name: "zombienet-cumulus-0011-dht-bootnodes"
   test-filter: "zombie_ci::bootnodes::dht_bootnodes_test"
   runner-type: "default"
-  cumulus-image: "polkadot-teyrchain-debug"
+  cumulus-image: "pezkuwi-teyrchain-debug"
   use-zombienet-sdk: true
 
 - job-name: "zombienet-cumulus-0012-teyrchain_extrinsic_gets_finalized"
   test-filter: "zombie_ci::teyrchain_extrinsic_get_finalized::teyrchain_extrinsic_gets_finalized"
   runner-type: "default"
-  cumulus-image: "polkadot-teyrchain-debug"
+  cumulus-image: "pezkuwi-teyrchain-debug"
   use-zombienet-sdk: true
 
 - job-name: "zombienet-cumulus-0013-elastic_scaling_slot_based_rp_offset"
