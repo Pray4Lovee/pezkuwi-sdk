@@ -4,7 +4,7 @@ name: Synchronize templates
 # This job is used to keep the repository templates up-to-date.
 # The code of the templates exist inside the monorepo, and upon releases we synchronize the repositories:
 # - https://github.com/pezkuwichain/pezkuwi-sdk-minimal-template
-# - https://github.com/pezkuwichain/pezkuwi-sdk-parachain-template
+# - https://github.com/pezkuwichain/pezkuwi-sdk-teyrchain-template
 # - https://github.com/pezkuwichain/pezkuwi-sdk-solochain-template
 #
 # The job moves the template code out of the monorepo,

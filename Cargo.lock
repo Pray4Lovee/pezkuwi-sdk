@@ -29071,8 +29071,6 @@ dependencies = [
 [[package]]
 name = "zombienet-configuration"
 version = "0.3.13"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "939599296b4660c38fc4350444a80e34c241c0f0640de33dded9648082b994c8"
 dependencies = [
  "anyhow",
  "lazy_static",
