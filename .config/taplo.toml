@@ -10,7 +10,6 @@ exclude = [
 	"substrate/zombienet/**",
 	"target/**",
 	"umbrella/**",
-	"vendor/**",
 ]
 
 # global rules
