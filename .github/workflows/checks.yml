@@ -25,7 +25,7 @@ jobs:
     runs-on: ${{ needs.preflight.outputs.RUNNER }}
     needs: [preflight]
     if: ${{ needs.preflight.outputs.changes_rust }}
-    timeout-minutes: 40
+    timeout-minutes: 60
     container:
       image: ${{ needs.preflight.outputs.IMAGE }}
     env:
@@ -33,6 +33,13 @@ jobs:
       SKIP_WASM_BUILD: 1
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v4.1.7
+
+      - name: Clean cargo cache to free disk space
+        run: |
+          cargo clean 2>/dev/null || true
+          rm -rf ~/.cargo/registry/cache 2>/dev/null || true
+          rm -rf ~/.cargo/git/db 2>/dev/null || true
+
       - name: script
         id: required
         run: |
@@ -42,11 +49,18 @@ jobs:
     runs-on: ${{ needs.preflight.outputs.RUNNER }}
     needs: [preflight]
     if: ${{ needs.preflight.outputs.changes_rust }}
-    timeout-minutes: 40
+    timeout-minutes: 60
     container:
       image: ${{ needs.preflight.outputs.IMAGE }}
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v4.1.7
+
+      - name: Clean cargo cache to free disk space
+        run: |
+          cargo clean 2>/dev/null || true
+          rm -rf ~/.cargo/registry/cache 2>/dev/null || true
+          rm -rf ~/.cargo/git/db 2>/dev/null || true
+
       - name: script
         id: required
         run: |

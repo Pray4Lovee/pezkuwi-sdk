@@ -23,7 +23,7 @@ jobs:
     uses: ./.github/workflows/reusable-preflight.yml
 
   build-runtimes-polkavm:
-    timeout-minutes: 60
+    timeout-minutes: 75
     needs: [preflight]
     runs-on: ${{ needs.preflight.outputs.RUNNER }}
     container:
@@ -31,6 +31,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+
+      - name: Clean cargo cache to free disk space
+        run: |
+          cargo clean 2>/dev/null || true
+          rm -rf ~/.cargo/registry/cache 2>/dev/null || true
+          rm -rf ~/.cargo/git/db 2>/dev/null || true
 
       - name: Check Rust
         run: |

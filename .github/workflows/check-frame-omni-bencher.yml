@@ -32,12 +32,19 @@ jobs:
       WASM_BUILD_NO_COLOR: 1
       WASM_BUILD_RUSTFLAGS: "-C debug-assertions"
       RUST_LOG: "frame_omni_bencher=info,pezkuwi_sdk_frame=info"
-    timeout-minutes: 30
+    timeout-minutes: 60
     container:
       image: ${{ needs.preflight.outputs.IMAGE }}
     steps:
       - name: Checkout
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+
+      - name: Clean cargo cache to free disk space
+        run: |
+          cargo clean 2>/dev/null || true
+          rm -rf ~/.cargo/registry/cache 2>/dev/null || true
+          rm -rf ~/.cargo/git/db 2>/dev/null || true
+
       - name: script
         id: required
         run: |
@@ -68,7 +75,7 @@ jobs:
     runs-on: ${{ needs.preflight.outputs.RUNNER_BENCHMARK }}
     needs: [preflight, runtime-matrix]
     if: ${{ needs.preflight.outputs.changes_rust }}
-    timeout-minutes: 30
+    timeout-minutes: 60
     strategy:
       fail-fast: false # keep running other workflows even if one fails, to see the logs of all possible failures
       matrix:

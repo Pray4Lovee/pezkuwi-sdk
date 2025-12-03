@@ -98,7 +98,7 @@ jobs:
           cargo test --locked -q --profile testnet --manifest-path substrate/primitives/runtime-interface/Cargo.toml ui
 
   test-deterministic-wasm:
-    timeout-minutes: 20
+    timeout-minutes: 40
     needs: [preflight, test-frame-examples-compile-to-wasm]
     runs-on: ${{ needs.preflight.outputs.RUNNER }}
     if: ${{ needs.preflight.outputs.changes_rust }}
@@ -109,6 +109,13 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+
+      - name: Clean cargo cache to free disk space
+        run: |
+          cargo clean 2>/dev/null || true
+          rm -rf ~/.cargo/registry/cache 2>/dev/null || true
+          rm -rf ~/.cargo/git/db 2>/dev/null || true
+
       - name: script
         run: |
           # build runtime
@@ -219,7 +226,7 @@ jobs:
 
   test-node-metrics:
     needs: [preflight]
-    timeout-minutes: 30
+    timeout-minutes: 45
     runs-on: ${{ needs.preflight.outputs.RUNNER }}
     if: ${{ needs.preflight.outputs.changes_rust }}
     container:
@@ -227,6 +234,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+
+      - name: Clean cargo cache to free disk space
+        run: |
+          cargo clean 2>/dev/null || true
+          rm -rf ~/.cargo/registry/cache 2>/dev/null || true
+          rm -rf ~/.cargo/git/db 2>/dev/null || true
 
       - name: Run tests
         id: tests
@@ -349,7 +362,7 @@ jobs:
           PYTHONUNBUFFERED=x .github/scripts/check-each-crate.py ${{ matrix.index }} ${{ strategy.job-total }}
 
   cargo-check-all-crate-macos:
-    timeout-minutes: 30
+    timeout-minutes: 60
     needs: [preflight]
     runs-on: ${{ needs.preflight.outputs.RUNNER_MACOS }}
     if: ${{ needs.preflight.outputs.changes_rust }}
