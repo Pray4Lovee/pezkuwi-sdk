@@ -56,32 +56,43 @@ jobs:
           fi
 
           # Create Discord embed payload
-          PAYLOAD=$(cat <<EOF
+          PAYLOAD=$(cat <<'PAYLOAD_EOF'
           {
             "embeds": [{
-              "title": "$EMOJI $TITLE",
-              "description": "A new node release has been $RELEASE_TYPE in **$REPO_NAME**",
+              "title": "EMOJI_PLACEHOLDER TITLE_PLACEHOLDER",
+              "description": "A new node release has been RELEASE_TYPE_PLACEHOLDER in **REPO_NAME_PLACEHOLDER**",
               "color": 5814783,
               "fields": [
                 {
                   "name": "Release Version",
-                  "value": "[$TAG_NAME]($RELEASE_URL)",
+                  "value": "[TAG_NAME_PLACEHOLDER](RELEASE_URL_PLACEHOLDER)",
                   "inline": true
                 },
                 {
                   "name": "Node Version",
-                  "value": "$NODE_VERSION",
+                  "value": "NODE_VERSION_PLACEHOLDER",
                   "inline": true
                 }
               ],
               "footer": {
                 "text": "Pezkuwi SDK Release"
               },
-              "timestamp": "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+              "timestamp": "TIMESTAMP_PLACEHOLDER"
             }]
           }
-EOF
+          PAYLOAD_EOF
           )
+
+          # Replace placeholders with actual values
+          TIMESTAMP=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+          PAYLOAD="${PAYLOAD//EMOJI_PLACEHOLDER/$EMOJI}"
+          PAYLOAD="${PAYLOAD//TITLE_PLACEHOLDER/$TITLE}"
+          PAYLOAD="${PAYLOAD//RELEASE_TYPE_PLACEHOLDER/$RELEASE_TYPE}"
+          PAYLOAD="${PAYLOAD//REPO_NAME_PLACEHOLDER/$REPO_NAME}"
+          PAYLOAD="${PAYLOAD//TAG_NAME_PLACEHOLDER/$TAG_NAME}"
+          PAYLOAD="${PAYLOAD//RELEASE_URL_PLACEHOLDER/$RELEASE_URL}"
+          PAYLOAD="${PAYLOAD//NODE_VERSION_PLACEHOLDER/$NODE_VERSION}"
+          PAYLOAD="${PAYLOAD//TIMESTAMP_PLACEHOLDER/$TIMESTAMP}"
 
           curl -H "Content-Type: application/json" \
                -d "$PAYLOAD" \
