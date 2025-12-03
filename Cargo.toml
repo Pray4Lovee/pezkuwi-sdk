@@ -1615,4 +1615,3 @@ zeroize = { opt-level = 3 }
 # Pezkuwi SDK: Patch zombienet-configuration to support [[teyrchains]] alias
 [patch.crates-io]
 zombienet-configuration = { path = "vendor/zombienet-configuration" }
-
