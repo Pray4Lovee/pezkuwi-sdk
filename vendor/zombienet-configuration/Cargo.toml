@@ -24,7 +24,7 @@ autotests = false
 autobenches = false
 description = "Zombienet sdk config builder, allow to build a network configuration"
 readme = false
-keywords = ["zombienet", "configuration", "sdk"]
+keywords = ["configuration", "sdk", "zombienet"]
 license = "Apache-2.0 OR GPL-3.0"
 repository = "https://github.com/paritytech/zombienet-sdk"
 
@@ -48,22 +48,22 @@ version = "1.8"
 version = "0.12.9"
 
 [dependencies.serde]
-version = "1.0"
 features = ["derive", "derive"]
+version = "1.0"
 
 [dependencies.serde_json]
 version = "1.0"
 
 [dependencies.support]
-version = "0.3.13"
 package = "zombienet-support"
+version = "0.3.13"
 
 [dependencies.thiserror]
 version = "1.0"
 
 [dependencies.tokio]
-version = "1.28"
 features = ["fs"]
+version = "1.28"
 
 [dependencies.toml]
 version = "0.8.19"
@@ -72,8 +72,8 @@ version = "0.8.19"
 version = "0.1.35"
 
 [dependencies.url]
-version = "2.3"
 features = ["serde"]
+version = "2.3"
 
 # Pezkuwi SDK: Keep this vendored crate isolated from the main workspace
 [workspace]
