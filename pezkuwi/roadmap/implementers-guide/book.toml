@@ -10,11 +10,14 @@ title = "The Pezkuwi Teyrchain Host Implementers' Guide"
 
 [preprocessor.graphviz]
 command = "mdbook-graphviz"
+optional = true
 [preprocessor.mermaid]
 command = "mdbook-mermaid"
+optional = true
 [preprocessor.last-changed]
 command = "mdbook-last-changed"
 renderer = ["html"]
+optional = true
 
 [output.html]
 additional-css = ["last-changed.css"]
@@ -23,3 +26,4 @@ additional-js = ["mermaid-init.js", "mermaid.min.js"]
 git-repository-url = "https://github.com/pezkuwichain/pezkuwi-sdk"
 
 [output.linkcheck]
+optional = true
