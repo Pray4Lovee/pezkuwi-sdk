@@ -1,0 +1,40 @@
+diff --git a/cumulus/client/consensus/aura/src/collators/slot_based/block_builder_task.rs b/cumulus/client/consensus/aura/src/collators/slot_based/block_builder_task.rs
+index c72d4e9f..5e8f1a3d 100644
+--- a/cumulus/client/consensus/aura/src/collators/slot_based/block_builder_task.rs
++++ b/cumulus/client/consensus/aura/src/collators/slot_based/block_builder_task.rs
+@@ -106,10 +106,6 @@ pub struct BuilderTaskParams<
+         /// intent to keep our "clock" slightly behind the relay chain one and thus reducing the
+         /// likelihood of encountering unfavorable notification arrival timings (i.e. we don't want to
+         /// wait for relay chain notifications because we woke up too early).
+         pub slot_offset: Duration,
+-        /// The maximum percentage of the maximum PoV size that the collator can use.
+-        /// It will be removed once https://github.com/pezkuwichain/pezkuwi-sdk/issues/6020 is fixed.
+-        pub max_pov_percentage: Option<u32>,
+ }
+ 
+ /// Run block-builder.
+@@ -151,7 +147,6 @@ where
+                         relay_chain_slot_duration,
+                         para_backend,
+                         slot_offset,
+-                        max_pov_percentage,
+                 } = params;
+ 
+                 let mut slot_timer = SlotTimer::<_, _, P>::new_with_offset(
+@@ -447,18 +434,8 @@ where
+                         .await;
+ 
+                         let allowed_pov_size = if let Some(max_pov_percentage) = max_pov_percentage {
+-                                validation_data.max_pov_size * max_pov_percentage / 100
+-                        } else {
+-                                // Set the block limit to 85% of the maximum PoV size.
+-                                //
+-                                // Once https://github.com/pezkuwichain/pezkuwi-sdk/issues/6020 issue is
+-                                // fixed, this should be removed.
+-                                validation_data.max_pov_size * 85 / 100
++                                validation_data.max_pov_size * max_pov_percentage / 100
+                         } as usize;
+-
+-                        let adjusted_authoring_duration =
+-                                slot_timer.adjust_authoring_duration(authoring_duration);
++                        let adjusted_authoring_duration = slot_timer.adjust_authoring_duration(authoring_duration);
